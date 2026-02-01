@@ -19,24 +19,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ------------------------------------------------------------
+      # 0. Checkout
+      # ------------------------------------------------------------
       - name: Checkout
         uses: actions/checkout@v4
 
+      # ------------------------------------------------------------
+      # 1. Setup Go (for protoc plugins)
+      # ------------------------------------------------------------
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      # ------------------------------------------------------------
+      # 2. Install protobuf generators (NOT committed)
+      # ------------------------------------------------------------
+      - name: Install Go protobuf plugins
+        run: |
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+
+      # ------------------------------------------------------------
+      # 3. Setup Buf
+      # ------------------------------------------------------------
       - name: Setup Buf
         uses: bufbuild/buf-setup-action@v1
         with:
           version: latest
 
       # ------------------------------------------------------------
-      # 1. Lint: schema correctness, style, naming
+      # 4. Lint: schema correctness & style
       # ------------------------------------------------------------
       - name: Buf Lint
         run: buf lint
 
       # ------------------------------------------------------------
-      # 2. Breaking change detection
-      # v1alpha1 / v1beta1 may change
-      # v1 must never break
+      # 5. Breaking change detection
+      #   - v1alpha1 / v1beta1 may change
+      #   - v1 MUST NOT break
       # ------------------------------------------------------------
       - name: Buf Breaking Check
         run: |
@@ -45,7 +67,9 @@ jobs:
             || echo "⚠️ Breaking changes detected (allowed outside v1)"
 
       # ------------------------------------------------------------
-      # 3. Generate outputs (Go, TS, WASM, etc)
+      # 6. Generate outputs (Go, TS, WASM, etc)
+      #   - Output is ephemeral
+      #   - NEVER committed
       # ------------------------------------------------------------
       - name: Buf Generate
         run: buf generate
