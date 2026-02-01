@@ -46,6 +46,9 @@ message BuildSpec {
 
   // Optional image TTL after successful build
   google.protobuf.Duration time_to_live = 8;
+
+  // Optional build time took duration
+  google.protobuf.Timestamp duration = 9;
 }
 
 
