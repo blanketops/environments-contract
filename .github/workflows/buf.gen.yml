@@ -1,43 +1,75 @@
 name: Validate & Generate Contracts
 
 on:
-    push:
-        branches: ["main", "develop"]
-    pull_request:
-        branches: ["main", "develop"]
+  push:
+    branches:
+      - main
+      - develop
+      - feature/**
+      - release/**
+      - hotfix/**
+      - bugfix/**
+  pull_request:
+    branches:
+      - main
+      - develop
 
 jobs:
-    buf:
-        runs-on: ubuntu-latest
+  buf:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+    steps:
+      # ------------------------------------------------------------
+      # 0. Checkout
+      # ------------------------------------------------------------
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            - name: Setup Buf
-              uses: bufbuild/buf-setup-action@v1
-              with:
-                  version: latest
+      # ------------------------------------------------------------
+      # 1. Setup Go (for protoc plugins)
+      # ------------------------------------------------------------
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
 
-            # ------------------------------------------------------------
-            # 1. Lint: schema correctness, style, naming
-            # ------------------------------------------------------------
-            - name: Buf Lint
-              run: buf lint
+      # ------------------------------------------------------------
+      # 2. Install protobuf generators (NOT committed)
+      # ------------------------------------------------------------
+      - name: Install Go protobuf plugins
+        run: |
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
-            # ------------------------------------------------------------
-            # 2. Breaking change detection
-            # v1alpha1 is allowed to change
-            # v1 must never break
-            # ------------------------------------------------------------
-            - name: Buf Breaking Check
-              run: |
-                  buf breaking \
-                    --against '.git#branch=main' \
-                    || echo "⚠️ Breaking changes detected (allowed on non-v1)"
+      # ------------------------------------------------------------
+      # 3. Setup Buf
+      # ------------------------------------------------------------
+      - name: Setup Buf
+        uses: bufbuild/buf-setup-action@v1
+        with:
+          version: latest
 
-            # ------------------------------------------------------------
-            # 3. Generate outputs (Go, TS, WASM, etc)
-            # ------------------------------------------------------------
-            - name: Buf Generate
-              run: buf generate
+      # ------------------------------------------------------------
+      # 4. Lint: schema correctness & style
+      # ------------------------------------------------------------
+      - name: Buf Lint
+        run: buf lint
+
+      # ------------------------------------------------------------
+      # 5. Breaking change detection
+      #   - v1alpha1 / v1beta1 may change
+      #   - v1 MUST NOT break
+      # ------------------------------------------------------------
+      - name: Buf Breaking Check
+        run: |
+          buf breaking \
+            --against '.git#branch=main' \
+            || echo "⚠️ Breaking changes detected (allowed outside v1)"
+
+      # ------------------------------------------------------------
+      # 6. Generate outputs (Go, TS, WASM, etc)
+      #   - Output is ephemeral
+      #   - NEVER committed
+      # ------------------------------------------------------------
+      - name: Buf Generate
+        run: buf generate

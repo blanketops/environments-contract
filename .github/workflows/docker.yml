@@ -2,9 +2,9 @@ name: Publish Contract Image
 
 on:
     workflow_dispatch:
-    push:
-        tags:
-            - "v0.0.1"
+    # push:
+    #     tags:
+    #         - "v0.0.1"
 
 env:
     IMAGE_NAME: blanketops/environments-contract

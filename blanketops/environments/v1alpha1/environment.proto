@@ -49,17 +49,28 @@ message EnvironmentSpec {
   // Optional external routing
   EnvironmentRouteRef route = 9;
 
-  // Reconciliation / drift control
-  EnvironmentReconcilePolicy reconcile = 10;
-
   // Optional packaging / release artifact
-  EnvironmentPackageRef package = 11;
+  EnvironmentPackageRef package = 10;
+
+  // Build configuration
+  EnvironmentBuildRef build = 11;
+
+  // Build triggers
+  repeated EnvironmentBuildTriggerRef build_triggers = 12;
 }
 
 
 // -----------------------------------------------------------------------------
 // References (composition, not ownership)
 // -----------------------------------------------------------------------------
+
+message EnvironmentBuildRef {
+  string name = 1;
+}
+
+message EnvironmentBuildTriggerRef {
+  string name = 1;
+}
 
 message EnvironmentServiceUnitRef {
   string name = 1;
@@ -75,23 +86,6 @@ message EnvironmentRouteRef {
 
 message EnvironmentPackageRef {
   string name = 1;
-}
-
-
-// -----------------------------------------------------------------------------
-// Reconciliation
-// -----------------------------------------------------------------------------
-
-message EnvironmentReconcilePolicy {
-  bool enabled = 1;
-  bool image_automation = 2;
-  EnvironmentReconcileStrategy strategy = 3;
-}
-
-enum EnvironmentReconcileStrategy {
-  ENVIRONMENT_RECONCILE_STRATEGY_UNSPECIFIED = 0;
-  ENVIRONMENT_RECONCILE_STRATEGY_GITOPS = 1;
-  ENVIRONMENT_RECONCILE_STRATEGY_KUSTOMIZE = 2;
 }
 
 
