@@ -2,11 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [ls] - 2026-03-26
+
+### 🚀 Features
+
+- *(build)* To grpc stub types, preparation for sdk, update buf gen add c# models
+- *(types)* Namespaces for dotnet gen types, init
+
+### Bugfix
+
+- *(workflow)* , left release, force update
+
+## [0.1.6] - 2026-03-26
 
 ### ⚙️ Miscellaneous Tasks
 
 - *(release)* Update changelog for v0.1.3
+- *(release)* Update changelog for v0.1.5
+
+### Bugfix
+
+- *(workflow)* Update go version setup
 
 ## [0.1.5] - 2026-03-17
 
