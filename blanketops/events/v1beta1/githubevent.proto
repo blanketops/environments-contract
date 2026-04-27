@@ -2,17 +2,21 @@ syntax = "proto3";
 
 package blanketops.events.v1beta1;
 
+import "blanketops/environments/common/v1/event.proto";
+import "blanketops/environments/common/v1/metadata.proto";
 import "google/protobuf/timestamp.proto";
 
+option csharp_namespace = "BlanketOps.Events.V1beta1";
 option go_package = "github.com/ntlaletsi70/blanketops-environments-contract/blanketops/events/v1beta1;v1beta1";
-
+option java_outer_classname = "GitHubEventProto";
 // -----------------------------------------------------------------------------
 // GitHubEvent
 // -----------------------------------------------------------------------------
 
 message GitHubEvent {
-  GitHubEventSpec spec = 1;
-  GitHubEventStatus status = 2;
+  blanketops.environments.common.v1.Metadata metadata = 1;
+  GitHubEventSpec spec = 2;
+  GitHubEventStatus status = 3;
 }
 
 // -----------------------------------------------------------------------------
