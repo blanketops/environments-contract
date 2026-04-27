@@ -1,31 +1,34 @@
 version: v1
-
 plugins:
 # -----------------------------
-# Go
+# Go — source_relative handles versioned namespacing
 # -----------------------------
-- plugin: go
+- plugin: buf.build/protocolbuffers/go
   out: gen/go
   opt: paths=source_relative
 
-- plugin: go-grpc
+- plugin: buf.build/grpc/go
   out: gen/go
   opt: paths=source_relative
 
 # -----------------------------
-# C#
+# C# — source_relative avoids Build.cs collisions across versions
 # -----------------------------
-- plugin: csharp
+- plugin: buf.build/protocolbuffers/csharp
   out: gen/csharp
+  opt: paths=source_relative
 
-- plugin: grpc_csharp
+- plugin: buf.build/grpc/csharp
   out: gen/csharp
+  opt: paths=source_relative
 
 # -----------------------------
-# Java
+# Java — source_relative avoids Build.java collisions across versions
 # -----------------------------
-- plugin: java
+- plugin: buf.build/protocolbuffers/java
   out: gen/java
+  opt: paths=source_relative
 
-- plugin: grpc-java
+- plugin: buf.build/grpc/java
   out: gen/java
+  opt: paths=source_relative
