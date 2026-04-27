@@ -4,7 +4,6 @@ package blanketops.events.v1;
 
 import "blanketops/environments/common/v1/event.proto";
 import "blanketops/environments/common/v1/metadata.proto";
-import "blanketops/events/v1/githubevent.proto";
 import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "BlanketOps.Events.V1";
@@ -73,17 +72,6 @@ message GitHubPayloadStatus {
   google.protobuf.Timestamp evaluated_at = 5;
 
   int64 observed_generation = 6;
-}
-
-// -----------------------------------------------------------------------------
-// Enums
-// -----------------------------------------------------------------------------
-enum GitHubPayloadPhase {
-  GIT_HUB_PAYLOAD_PHASE_UNSPECIFIED = 0;
-  GIT_HUB_PAYLOAD_PHASE_RECEIVED = 1; // Created by Sensor, awaiting evaluation
-  GIT_HUB_PAYLOAD_PHASE_MATCHED = 2; // BuildTrigger matched, build fired
-  GIT_HUB_PAYLOAD_PHASE_UNMATCHED = 3; // No BuildTrigger matched, ignored
-  GIT_HUB_PAYLOAD_PHASE_FAILED = 4; // Evaluation error
 }
 
 // -----------------------------------------------------------------------------

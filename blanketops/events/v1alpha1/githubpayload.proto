@@ -76,17 +76,6 @@ message GitHubPayloadStatus {
 }
 
 // -----------------------------------------------------------------------------
-// Enums
-// -----------------------------------------------------------------------------
-enum GitHubPayloadPhase {
-  GIT_HUB_PAYLOAD_PHASE_UNSPECIFIED = 0;
-  GIT_HUB_PAYLOAD_PHASE_RECEIVED = 1; // Created by Sensor, awaiting evaluation
-  GIT_HUB_PAYLOAD_PHASE_MATCHED = 2; // BuildTrigger matched, build fired
-  GIT_HUB_PAYLOAD_PHASE_UNMATCHED = 3; // No BuildTrigger matched, ignored
-  GIT_HUB_PAYLOAD_PHASE_FAILED = 4; // Evaluation error
-}
-
-// -----------------------------------------------------------------------------
 // Requests / Responses
 // -----------------------------------------------------------------------------
 message CreateGitHubPayloadRequest {
