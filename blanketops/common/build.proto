@@ -4,3 +4,54 @@ package blanketops.common;
 
 option csharp_namespace = "BlanketOps.Common";
 option go_package = "github.com/ntlaletsi70/blanketops-environments-contract/blanketops/common;common";
+
+// Lifecycle phase of this Build.
+enum BuildPhase {
+  BUILD_PHASE_UNSPECIFIED = 0;
+
+  // Waiting for a trigger event or dependency to be ready.
+  BUILD_PHASE_PENDING = 1;
+
+  // A BuildRun is currently executing.
+  BUILD_PHASE_RUNNING = 2;
+
+  // The most recent BuildRun completed successfully.
+  // Image has been pushed to the registry.
+  BUILD_PHASE_SUCCEEDED = 3;
+
+  // The most recent BuildRun failed.
+  // Check execution_ref for BuildRun details.
+  BUILD_PHASE_FAILED = 4;
+
+  // The BuildRun was cancelled before completion.
+  BUILD_PHASE_CANCELLED = 5;
+}
+
+// Event type that may trigger this build.
+enum BuildEventType {
+  BUILD_EVENT_TYPE_UNSPECIFIED = 0;
+
+  // Manual trigger only — no automatic runs.
+  BUILD_EVENT_TYPE_MANUAL = 1;
+
+  // Push to the configured revision.
+  BUILD_EVENT_TYPE_PUSH = 2;
+
+  // Pull request opened or updated.
+  BUILD_EVENT_TYPE_PULL_REQUEST = 3;
+
+  // Scheduled trigger (cron-based, future).
+  BUILD_EVENT_TYPE_SCHEDULE = 4;
+}
+
+// Whether the strategy is cluster-scoped or namespace-scoped.
+enum BuildStrategyKind {
+  BUILD_STRATEGY_KIND_UNSPECIFIED = 0;
+
+  // ClusterBuildStrategy — available cluster-wide.
+  // Standard for BlanketOps platform strategies.
+  BUILD_STRATEGY_KIND_CLUSTER = 1;
+
+  // BuildStrategy — scoped to a specific namespace.
+  BUILD_STRATEGY_KIND_NAMESPACED = 2;
+}
