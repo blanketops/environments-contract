@@ -13,16 +13,16 @@
 
 syntax = "proto3";
 
-package blanketops.environments.v1alpha1;
+package blanketops.environments.v1;
 
 import "blanketops/environments/common/v1/event.proto";
 import "blanketops/environments/common/v1/metadata.proto";
 import "google/protobuf/timestamp.proto";
 
-option csharp_namespace = "BlanketOps.Environments.V1Alpha1";
-option go_package = "github.com/ntlaletsi70/blanketops-environments-contract/blanketops/environments/v1alpha1;v1alpha1";
+option csharp_namespace = "BlanketOps.Environments.V1";
+option go_package = "github.com/ntlaletsi70/blanketops-environments-contract/blanketops/environments/v1;v1";
 option java_outer_classname = "BuildTriggerProto";
-option java_package = "v1alpha1.blanketops.environments";
+option java_package = "v1.blanketops.environments";
 
 // =============================================================================
 // BuildTrigger
@@ -252,4 +252,33 @@ message WatchBuildTriggerResponse {
 
 // -----------------------------------------------------------------------------
 // Service
-// --------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+
+service BuildTriggerService {
+  // ── CRUD — aligned with OrganizationService pattern ─────────────────────
+
+  // Declare a new Build intent.
+  // Controller emits Shipwright Build + BuildRun on first trigger.
+  rpc CreateBuildTrigger(CreateBuildTriggerRequest) returns (CreateBuildTriggerResponse);
+
+  // Fetch a Build CR by name.
+  rpc GetBuildTrigger(GetBuildTriggerRequest) returns (GetBuildTriggerResponse);
+
+  // Full replace of a Build spec.
+  rpc UpdateBuildTrigger(UpdateBuildTriggerRequest) returns (UpdateBuildTriggerResponse);
+
+  // Partial update via JSON merge patch RFC 7396.
+  rpc PatchBuildTrigger(PatchBuildTriggerRequest) returns (PatchBuildTriggerResponse);
+
+  // List Build CRs with optional phase/strategy filter and paging.
+  rpc ListBuildTriggers(ListBuildTriggersRequest) returns (ListBuildTriggersResponse);
+
+  // Delete a Build CR and its owned Shipwright resources.
+  rpc DeleteBuildTrigger(DeleteBuildTriggerRequest) returns (DeleteBuildTriggerResponse);
+
+  // ── Streaming ────────────────────────────────────────────────────────────
+
+  // Stream phase transitions for a Build CR.
+  // Closes when the build reaches a terminal phase (SUCCEEDED, FAILED, CANCELLED).
+  rpc WatchBuildTrigger(WatchBuildTriggerRequest) returns (stream WatchBuildTriggerResponse);
+}
