@@ -54,19 +54,6 @@ message Environment {
 // -----------------------------------------------------------------------------
 
 message EnvironmentSpec {
-  // Classification of this environment.
-  enum Type {
-    TYPE_UNSPECIFIED = 0;
-    // Development — ephemeral, relaxed guardrails.
-    TYPE_DEVELOPMENT = 1;
-    // Staging — production-shaped validation.
-    TYPE_STAGING = 2;
-    // Production — full guardrails.
-    TYPE_PRODUCTION = 3;
-    // Testing — CI-driven, short-lived.
-    TYPE_TESTING = 4;
-  }
-
   // Human-readable application identifier.
   // e.g. for-kaniko-app
   string application_name = 1;
