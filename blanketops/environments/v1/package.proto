@@ -1,12 +1,25 @@
+/*
+   Copyright 2026 The BlanketOps Authors.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+   	http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
 syntax = "proto3";
 
 package blanketops.environments.v1;
 
-option go_package = "github.com/ntlaletsi70/blanketops-environments-contract/blanketops/environments/v1;v1";
-option csharp_namespace = "BlanketOps.Environments.V1";
-
 import "google/protobuf/timestamp.proto";
 
+option csharp_namespace = "BlanketOps.Environments.V1";
+option go_package = "github.com/ntlaletsi70/blanketops-environments-contract/blanketops/environments/v1;v1";
 
 // -----------------------------------------------------------------------------
 // Package
@@ -16,7 +29,6 @@ message Package {
   PackageSpec spec = 1;
   PackageStatus status = 2;
 }
-
 
 // -----------------------------------------------------------------------------
 // Spec
@@ -48,7 +60,6 @@ message PackageSpec {
   StateRepository state_repository = 8;
 }
 
-
 // -----------------------------------------------------------------------------
 // Repositories
 // -----------------------------------------------------------------------------
@@ -66,7 +77,6 @@ message StateRepository {
   string path = 5;
 }
 
-
 // -----------------------------------------------------------------------------
 // Maintainers
 // -----------------------------------------------------------------------------
@@ -75,7 +85,6 @@ message Maintainer {
   string name = 1;
   string email = 2;
 }
-
 
 // -----------------------------------------------------------------------------
 // Status
@@ -100,7 +109,6 @@ message PackageStatus {
   PackageState state = 6;
 }
 
-
 // -----------------------------------------------------------------------------
 // Applied State
 // -----------------------------------------------------------------------------
@@ -109,7 +117,6 @@ message PackageState {
   string repository = 1;
   string revision = 2;
 }
-
 
 // -----------------------------------------------------------------------------
 // Enums
