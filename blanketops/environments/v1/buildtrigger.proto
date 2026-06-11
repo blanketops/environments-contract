@@ -190,6 +190,18 @@ message GetBuildTriggerResponse {
   BuildTrigger build_trigger = 1;
 }
 
+// UpdateBuildTrigger — full replace of the BuildTrigger spec.
+// Equivalent to kubectl apply — all fields replaced.
+message UpdateBuildTriggerRequest {
+  // Full BuildTrigger object including metadata and desired spec.
+  BuildTrigger build_trigger = 1;
+}
+
+message UpdateBuildTriggerResponse {
+  // The updated BuildTrigger object.
+  BuildTrigger build_trigger = 1;
+}
+
 // ListBuildTriggers — list BuildTrigger CRs with optional filtering and paging.
 message ListBuildTriggersRequest {
   // Filter by current lifecycle phase.
@@ -264,21 +276,21 @@ service BuildTriggerService {
   // Fetch a Build CR by name.
   rpc GetBuildTrigger(GetBuildTriggerRequest) returns (GetBuildTriggerResponse);
 
-  // Full replace of a Build spec.
+  // Full replace of a BuildTrigger spec.
   rpc UpdateBuildTrigger(UpdateBuildTriggerRequest) returns (UpdateBuildTriggerResponse);
 
   // Partial update via JSON merge patch RFC 7396.
   rpc PatchBuildTrigger(PatchBuildTriggerRequest) returns (PatchBuildTriggerResponse);
 
-  // List Build CRs with optional phase/strategy filter and paging.
+  // List BuildTrigger CRs with optional phase/strategy filter and paging.
   rpc ListBuildTriggers(ListBuildTriggersRequest) returns (ListBuildTriggersResponse);
 
-  // Delete a Build CR and its owned Shipwright resources.
+  // Delete a BuildTrigger CR and its owned Shipwright resources.
   rpc DeleteBuildTrigger(DeleteBuildTriggerRequest) returns (DeleteBuildTriggerResponse);
 
   // ── Streaming ────────────────────────────────────────────────────────────
 
-  // Stream phase transitions for a Build CR.
+  // Stream phase transitions for a BuildTrigger CR.
   // Closes when the build reaches a terminal phase (SUCCEEDED, FAILED, CANCELLED).
   rpc WatchBuildTrigger(WatchBuildTriggerRequest) returns (stream WatchBuildTriggerResponse);
 }
