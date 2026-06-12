@@ -17,8 +17,10 @@ syntax = "proto3";
 
 package blanketops.environments.v1;
 
-import "blanketops/environments/common/v1/event.proto";
-import "blanketops/environments/common/v1/metadata.proto";
+import "blanketops/common/build.proto";
+import "blanketops/common/buildtrigger.proto";
+import "blanketops/common/event.proto";
+import "blanketops/common/metadata.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -46,7 +48,7 @@ option java_package = "v1.blanketops.environments";
 
 message Build {
   // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
-  blanketops.environments.common.v1.Metadata metadata = 1;
+  blanketops.common.Metadata metadata = 1;
 
   // Desired state declared by the operator.
   BuildSpec spec = 2;
@@ -126,24 +128,12 @@ message GitSource {
 // -----------------------------------------------------------------------------
 
 message BuildStrategy {
-  // Whether the strategy is cluster-scoped or namespace-scoped.
-  enum Kind {
-    KIND_UNSPECIFIED = 0;
-
-    // ClusterBuildStrategy — available cluster-wide.
-    // Standard for BlanketOps platform strategies.
-    KIND_CLUSTER = 1;
-
-    // BuildStrategy — scoped to a specific namespace.
-    KIND_NAMESPACED = 2;
-  }
-
   // Name of the Shipwright BuildStrategy.
   // Known values: kaniko | buildah-shipwright-managed-push | buildpacks-v3
   string name = 1;
 
   // Scope of the strategy resource.
-  Kind kind = 2;
+  blanketops.common.BuildStrategyKind kind = 2;
 }
 
 // -----------------------------------------------------------------------------
@@ -160,25 +150,8 @@ message BuildPolicy {
 }
 
 message BuildTriggerPolicy {
-  // Event type that may trigger this build.
-  enum Type {
-    TYPE_UNSPECIFIED = 0;
-
-    // Manual trigger only — no automatic runs.
-    TYPE_MANUAL = 1;
-
-    // Push to the configured revision.
-    TYPE_PUSH = 2;
-
-    // Pull request opened or updated.
-    TYPE_PULL_REQUEST = 3;
-
-    // Scheduled trigger (cron-based, future).
-    TYPE_SCHEDULE = 4;
-  }
-
   // The event type that permits a BuildRun to be triggered.
-  Type type = 1;
+  blanketops.common.BuildTriggerType type = 1;
 }
 
 message RetryPolicy {
@@ -221,30 +194,8 @@ message Param {
 // -----------------------------------------------------------------------------
 
 message BuildStatus {
-  // Lifecycle phase of this Build.
-  enum Phase {
-    PHASE_UNSPECIFIED = 0;
-
-    // Waiting for a trigger event or dependency to be ready.
-    PHASE_PENDING = 1;
-
-    // A BuildRun is currently executing.
-    PHASE_RUNNING = 2;
-
-    // The most recent BuildRun completed successfully.
-    // Image has been pushed to the registry.
-    PHASE_SUCCEEDED = 3;
-
-    // The most recent BuildRun failed.
-    // Check execution_ref for BuildRun details.
-    PHASE_FAILED = 4;
-
-    // The BuildRun was cancelled before completion.
-    PHASE_CANCELLED = 5;
-  }
-
   // Current lifecycle phase. Set by the controller.
-  Phase phase = 1;
+  blanketops.common.BuildStatusPhase phase = 1;
 
   // Fully qualified image reference including digest, once pushed.
   // e.g. docker.io/nkanyezisolutions/for-kaniko-app@sha256:abc...
@@ -321,7 +272,7 @@ message PatchBuildResponse {
 // ListBuilds — list Build CRs with optional filtering and paging.
 message ListBuildsRequest {
   // Filter by current lifecycle phase.
-  optional BuildStatus.Phase phase = 1;
+  optional blanketops.common.BuildStatusPhase phase = 1;
 
   // Filter by strategy name.
   // e.g. kaniko | buildah-shipwright-managed-push | buildpacks-v3
@@ -388,7 +339,7 @@ message WatchBuildResponse {
   Build build = 1;
 
   // The type of change that triggered this event.
-  blanketops.environments.common.v1.EventType type = 2;
+  blanketops.common.EventType type = 2;
 }
 
 // -----------------------------------------------------------------------------

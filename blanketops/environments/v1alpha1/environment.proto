@@ -15,8 +15,9 @@ syntax = "proto3";
 
 package blanketops.environments.v1alpha1;
 
-import "blanketops/environments/common/v1/event.proto";
-import "blanketops/environments/common/v1/metadata.proto";
+import "blanketops/common/environment.proto";
+import "blanketops/common/event.proto";
+import "blanketops/common/metadata.proto";
 import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "BlanketOps.Environments.V1Alpha1";
@@ -40,7 +41,7 @@ option java_package = "v1alpha1.blanketops.environments";
 
 message Environment {
   // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
-  blanketops.environments.common.v1.Metadata metadata = 1;
+  blanketops.common.Metadata metadata = 1;
 
   // Desired state declared by the operator.
   EnvironmentSpec spec = 2;
@@ -54,19 +55,6 @@ message Environment {
 // -----------------------------------------------------------------------------
 
 message EnvironmentSpec {
-  // Classification of this environment.
-  enum Type {
-    TYPE_UNSPECIFIED = 0;
-    // Development — ephemeral, relaxed guardrails.
-    TYPE_DEVELOPMENT = 1;
-    // Staging — production-shaped validation.
-    TYPE_STAGING = 2;
-    // Production — full guardrails.
-    TYPE_PRODUCTION = 3;
-    // Testing — CI-driven, short-lived.
-    TYPE_TESTING = 4;
-  }
-
   // Human-readable application identifier.
   // e.g. for-kaniko-app
   string application_name = 1;
@@ -80,7 +68,7 @@ message EnvironmentSpec {
   string git_owner = 3;
 
   // Environment classification.
-  Type environment_type = 4;
+  blanketops.common.EnvironmentType environment_type = 4;
 
   // Application version — semantic or otherwise.
   // e.g. v1.2.3
@@ -124,22 +112,8 @@ message ObjectRef {
 // -----------------------------------------------------------------------------
 
 message EnvironmentStatus {
-  // Aggregate lifecycle phase of this Environment.
-  enum Phase {
-    PHASE_UNSPECIFIED = 0;
-    // One or more composed resources are not yet ready.
-    PHASE_PENDING = 1;
-    // All composed resources are ready.
-    PHASE_READY = 2;
-    // The environment is serving but one or more resources are unhealthy.
-    PHASE_DEGRADED = 3;
-    // One or more composed resources failed.
-    // Check conditions for per-resource detail.
-    PHASE_FAILED = 4;
-  }
-
   // Current aggregate phase. Set by the controller.
-  Phase phase = 1;
+  blanketops.common.EnvironmentPhase phase = 1;
 
   // Human-readable status summary. Populated on failure.
   string message = 2;
@@ -226,10 +200,10 @@ message PatchEnvironmentResponse {
 // ListEnvironments — list Environment CRs with optional filtering and paging.
 message ListEnvironmentsRequest {
   // Filter by current aggregate phase.
-  optional EnvironmentStatus.Phase phase = 1;
+  optional blanketops.common.EnvironmentPhase phase = 1;
 
   // Filter by environment classification.
-  optional EnvironmentSpec.Type environment_type = 2;
+  optional blanketops.common.EnvironmentType environment_type = 2;
 
   // Filter by application name.
   optional string application_name = 3;
@@ -274,7 +248,7 @@ message WatchEnvironmentResponse {
   Environment environment = 1;
 
   // The type of change that triggered this event.
-  blanketops.environments.common.v1.EventType type = 2;
+  blanketops.common.EventType type = 2;
 }
 
 // -----------------------------------------------------------------------------

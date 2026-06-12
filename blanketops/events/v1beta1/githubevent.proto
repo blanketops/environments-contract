@@ -13,7 +13,8 @@ option java_outer_classname = "GitHubEventProto";
 // Resource
 // -----------------------------------------------------------------------------
 message GitHubEvent {
-  blanketops.environments.common.v1.Metadata metadata = 1;
+  blanketops.common.v1.Metadata metadata = 1;
+
   GitHubEventSpec spec = 2;
   GitHubEventStatus status = 3;
 }

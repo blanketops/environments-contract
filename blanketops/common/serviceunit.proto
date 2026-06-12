@@ -1,0 +1,61 @@
+/*
+   Copyright 2026 The BlanketOps Authors.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   	http://www.apache.org/licenses/LICENSE-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+syntax = "proto3";
+
+package blanketops.common;
+
+option csharp_namespace = "BlanketOps.Common.";
+option go_package = "github.com/ntlaletsi70/blanketops-environments-contract/blanketops/common;common";
+
+message ServiceUnitDeploymentPhase {
+  // Deployment phase of this individual service unit.
+  enum ServiceUnitDeploymentPhase {
+    SERVICE_UNIT_DEPLOYMENT_PHASE_UNSPECIFIED = 0;
+    // Awaiting image resolution or dependency readiness.
+    SERVICE_UNIT_DEPLOYMENT_PHASE_PENDING = 1;
+    // Workload is being rolled out.
+    SERVICE_UNIT_DEPLOYMENT_PHASE_DEPLOYING = 2;
+    // Workload is deployed and healthy.
+    SERVICE_UNIT_DEPLOYMENT_PHASE_READY = 3;
+    // Workload failed to deploy. Check error for details.
+    SERVICE_UNIT_DEPLOYMENT_PHASE_FAILED = 4;
+  }
+}
+
+message ServiceUnitType {
+  // How this service unit's image is sourced.
+  enum ServiceUnitType {
+    SERVICE_UNIT_TYPE_UNSPECIFIED = 0;
+    // Image pinned directly in spec.image.
+    SERVICE_UNIT_TYPE_STATIC = 1;
+    // Image resolved from a Build CR's output via spec.build_ref.
+    SERVICE_UNIT_TYPE_BUILD = 2;
+    // Image resolved from a SupplyChain's output via spec.supply_chain_ref.
+    SERVICE_UNIT_TYPE_SUPPLYCHAIN = 3;
+  }
+}
+
+message ServiceUnitRuntime {
+  // Runtime backend used to materialize the workload.
+  enum ServiceUnitRuntime {
+    SERVICE_UNIT_RUNTIME_UNSPECIFIED = 0;
+    // Native Kubernetes Deployment + Service.
+    SERVICE_UNIT_RUNTIME_KUBERNETES = 1;
+    // Knative Service, served via Kourier.
+    SERVICE_UNIT_RUNTIME_KNATIVE = 2;
+    // AWS ECS task (future).
+    SERVICE_UNIT_RUNTIME_ECS = 3;
+    // WebAssembly workload (future).
+    SERVICE_UNIT_RUNTIME_WASM = 4;
+  }
+}

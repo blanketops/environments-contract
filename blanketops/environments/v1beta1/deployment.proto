@@ -15,11 +15,12 @@ syntax = "proto3";
 
 package blanketops.environments.v1beta1;
 
-import "blanketops/environments/common/v1/event.proto";
-import "blanketops/environments/common/v1/metadata.proto";
+import "blanketops/common/deployment.proto";
+import "blanketops/common/event.proto";
+import "blanketops/common/metadata.proto";
 import "google/protobuf/timestamp.proto";
 
-option csharp_namespace = "BlanketOps.Environments.V1beta1";
+option csharp_namespace = "BlanketOps.Environments.V1Beta1";
 option go_package = "github.com/ntlaletsi70/blanketops-environments-contract/blanketops/environments/v1beta1;v1beta1";
 option java_outer_classname = "DeploymentProto";
 option java_package = "v1beta1.blanketops.environments";
@@ -39,32 +40,12 @@ option java_package = "v1beta1.blanketops.environments";
 // =============================================================================
 
 // -----------------------------------------------------------------------------
-// Shared enums
-// -----------------------------------------------------------------------------
-
-// Target runtime backend. Top-level by design: referenced from
-// DeploymentSpec, DeploymentStatus, and ServiceUnitDeploymentStatus.
-enum DeploymentRuntime {
-  DEPLOYMENT_RUNTIME_UNSPECIFIED = 0;
-  // Native Kubernetes Deployment + Service.
-  DEPLOYMENT_RUNTIME_KUBERNETES_CONTAINER = 1;
-  // Knative Service, served via Kourier.
-  DEPLOYMENT_RUNTIME_KNATIVE_SERVICE = 2;
-  // WebAssembly workload (future).
-  DEPLOYMENT_RUNTIME_WASM = 3;
-  // AWS ECS task (future).
-  DEPLOYMENT_RUNTIME_AWS_ECS = 4;
-  // Azure Container Instance (future).
-  DEPLOYMENT_RUNTIME_AZURE_CONTAINER = 5;
-}
-
-// -----------------------------------------------------------------------------
 // Resource
 // -----------------------------------------------------------------------------
 
 message Deployment {
   // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
-  blanketops.environments.common.v1.Metadata metadata = 1;
+  blanketops.common.Metadata metadata = 1;
 
   // Desired state declared by the operator.
   DeploymentSpec spec = 2;
@@ -83,7 +64,7 @@ message DeploymentSpec {
   repeated string service_units = 1;
 
   // Target runtime backend for all service units.
-  DeploymentRuntime runtime = 2;
+  blanketops.common.DeploymentRuntime runtime = 2;
 
   // Enable automatic image updates from Build outputs.
   // Materialized as FluxCD ImageUpdateAutomation when GitOps is active.
@@ -94,7 +75,7 @@ message DeploymentSpec {
   ManifestsRepo manifests_repo = 4;
 
   // Manifest application strategy. Required when manifests_repo is set.
-  ReconciliationStrategy reconciliation_strategy = 5;
+  blanketops.common.ReconciliationStrategy reconciliation_strategy = 5;
 }
 
 // -----------------------------------------------------------------------------
@@ -127,42 +108,17 @@ message ManifestsRepo {
 // -----------------------------------------------------------------------------
 
 message DeploymentStatus {
-  // Lifecycle phase of this Deployment.
-  enum Phase {
-    PHASE_UNSPECIFIED = 0;
-    // Waiting for service units or GitOps sources to be ready.
-    PHASE_PENDING = 1;
-    // Workloads are being rolled out.
-    PHASE_DEPLOYING = 2;
-    // All service units are deployed and healthy.
-    PHASE_READY = 3;
-    // One or more service units failed to deploy.
-    // Check service_unit_statuses for per-unit detail.
-    PHASE_FAILED = 4;
-  }
-
-  // Rollout strategy applied by the runtime.
-  enum Strategy {
-    STRATEGY_UNSPECIFIED = 0;
-    // Rolling update — default.
-    STRATEGY_ROLLING = 1;
-    // Canary rollout (future).
-    STRATEGY_CANARY = 2;
-    // Blue/green rollout (future).
-    STRATEGY_BLUE_GREEN = 3;
-  }
-
   // Current lifecycle phase. Set by the controller.
-  Phase phase = 1;
+  blanketops.common.DeploymentPhase phase = 1;
 
   // Human-readable status summary. Populated on failure.
   string message = 2;
 
   // Runtime actually used to materialize workloads.
-  DeploymentRuntime runtime = 3;
+  blanketops.common.DeploymentRuntime runtime = 3;
 
   // Rollout strategy applied by the runtime.
-  Strategy strategy = 4;
+  blanketops.common.DeploymentStrategy strategy = 4;
 
   // Per-ServiceUnit deployment status.
   repeated ServiceUnitDeploymentStatus service_unit_statuses = 5;
@@ -176,30 +132,17 @@ message DeploymentStatus {
 // -----------------------------------------------------------------------------
 
 message ServiceUnitDeploymentStatus {
-  // Deployment phase of this individual service unit.
-  enum Phase {
-    PHASE_UNSPECIFIED = 0;
-    // Awaiting image resolution or dependency readiness.
-    PHASE_PENDING = 1;
-    // Workload is being rolled out.
-    PHASE_DEPLOYING = 2;
-    // Workload is deployed and healthy.
-    PHASE_READY = 3;
-    // Workload failed to deploy. Check error for details.
-    PHASE_FAILED = 4;
-  }
-
   // Name of the ServiceUnit CR.
   string name = 1;
 
   // Current deployment phase for this unit.
-  Phase phase = 2;
+  blanketops.common.DeploymentPhase phase = 2;
 
   // Fully qualified image that was deployed, including digest when known.
   string image = 3;
 
   // Runtime backend used for this unit.
-  DeploymentRuntime runtime = 4;
+  blanketops.common.DeploymentRuntime runtime = 4;
 
   // Human-readable status message.
   string message = 5;
@@ -268,10 +211,10 @@ message PatchDeploymentResponse {
 // ListDeployments — list Deployment CRs with optional filtering and paging.
 message ListDeploymentsRequest {
   // Filter by current lifecycle phase.
-  optional DeploymentStatus.Phase phase = 1;
+  optional blanketops.common.DeploymentPhase phase = 1;
 
   // Filter by target runtime.
-  optional DeploymentRuntime runtime = 2;
+  optional blanketops.common.DeploymentRuntime runtime = 2;
 
   // Maximum number of results to return. Server may return fewer.
   optional int32 page_size = 3;
@@ -314,7 +257,7 @@ message WatchDeploymentResponse {
   Deployment deployment = 1;
 
   // The type of change that triggered this event.
-  blanketops.environments.common.v1.EventType type = 2;
+  blanketops.common.EventType type = 2;
 }
 
 // -----------------------------------------------------------------------------
