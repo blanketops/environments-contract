@@ -1,48 +1,57 @@
+/*
+   Copyright 2026 The BlanketOps Authors.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   	http://www.apache.org/licenses/LICENSE-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
 syntax = "proto3";
 
 package blanketops.common;
 
-option csharp_namespace = "BlanketOps.Common";
+option csharp_namespace = "BlanketOps.Common.";
 option go_package = "github.com/ntlaletsi70/blanketops-environments-contract/blanketops/common;common";
-
-// -----------------------------------------------------------------------------
-// Event Type (SHARED)
-// -----------------------------------------------------------------------------
-enum EventType {
-  EVENT_TYPE_UNSPECIFIED = 0;
-  EVENT_TYPE_ADDED = 1;
-  EVENT_TYPE_MODIFIED = 2;
-  EVENT_TYPE_DELETED = 3;
-}
 
 // -----------------------------------------------------------------------------
 // GitHub Event Type
 // -----------------------------------------------------------------------------
-enum GitHubEventType {
-  GIT_HUB_EVENT_TYPE_UNSPECIFIED = 0;
-  GIT_HUB_EVENT_TYPE_PUSH = 1;
-  GIT_HUB_EVENT_TYPE_PULL_REQUEST = 2;
-  GIT_HUB_EVENT_TYPE_RELEASE = 3;
-  GIT_HUB_EVENT_TYPE_MANUAL = 4;
+message GitHubEventType {
+  enum GitHubEventType {
+    GIT_HUB_EVENT_TYPE_UNSPECIFIED = 0;
+    GIT_HUB_EVENT_TYPE_PUSH = 1;
+    GIT_HUB_EVENT_TYPE_PULL_REQUEST = 2;
+    GIT_HUB_EVENT_TYPE_RELEASE = 3;
+    GIT_HUB_EVENT_TYPE_MANUAL = 4;
+  }
 }
 
 // -----------------------------------------------------------------------------
 // GitHub Event Phase (lifecycle of a GitHubEvent CR)
 // -----------------------------------------------------------------------------
-enum GitHubEventPhase {
-  GIT_HUB_EVENT_PHASE_UNSPECIFIED = 0;
-  GIT_HUB_EVENT_PHASE_PENDING = 1; // CR created, Argo stack not yet provisioned
-  GIT_HUB_EVENT_PHASE_READY = 2; // Argo EventSource + Sensor active
-  GIT_HUB_EVENT_PHASE_FAILED = 3; // Provisioning failed
+message GitHubEventPhase {
+  enum GitHubEventPhase {
+    GIT_HUB_EVENT_PHASE_UNSPECIFIED = 0;
+    GIT_HUB_EVENT_PHASE_PENDING = 1; // CR created, Argo stack not yet provisioned
+    GIT_HUB_EVENT_PHASE_READY = 2; // Argo EventSource + Sensor active
+    GIT_HUB_EVENT_PHASE_FAILED = 3; // Provisioning failed
+  }
 }
 
 // -----------------------------------------------------------------------------
 // GitHub Payload Phase (lifecycle of a GitHubPayload CR)
 // -----------------------------------------------------------------------------
-enum GitHubPayloadPhase {
-  GIT_HUB_PAYLOAD_PHASE_UNSPECIFIED = 0;
-  GIT_HUB_PAYLOAD_PHASE_RECEIVED = 1; // Created by Sensor, awaiting evaluation
-  GIT_HUB_PAYLOAD_PHASE_MATCHED = 2; // BuildTrigger matched, build fired
-  GIT_HUB_PAYLOAD_PHASE_UNMATCHED = 3; // No BuildTrigger matched, ignored
-  GIT_HUB_PAYLOAD_PHASE_FAILED = 4; // Evaluation error
+message GitHubPayloadPhase {
+  enum GitHubPayloadPhase {
+    GIT_HUB_PAYLOAD_PHASE_UNSPECIFIED = 0;
+    GIT_HUB_PAYLOAD_PHASE_RECEIVED = 1; // Created by Sensor, awaiting evaluation
+    GIT_HUB_PAYLOAD_PHASE_MATCHED = 2; // BuildTrigger matched, build fired
+    GIT_HUB_PAYLOAD_PHASE_UNMATCHED = 3; // No BuildTrigger matched, ignored
+    GIT_HUB_PAYLOAD_PHASE_FAILED = 4; // Evaluation error
+  }
 }

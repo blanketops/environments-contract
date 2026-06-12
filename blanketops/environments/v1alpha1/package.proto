@@ -15,8 +15,9 @@ syntax = "proto3";
 
 package blanketops.environments.v1alpha1;
 
-import "blanketops/environments/common/v1/event.proto";
-import "blanketops/environments/common/v1/metadata.proto";
+import "blanketops/common/event.proto";
+import "blanketops/common/metadata.proto";
+import "blanketops/common/package.proto";
 import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "BlanketOps.Environments.V1Alpha1";
@@ -40,7 +41,7 @@ option java_package = "v1alpha1.blanketops.environments";
 
 message Package {
   // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
-  blanketops.environments.common.v1.Metadata metadata = 1;
+  blanketops.common.Metadata metadata = 1;
 
   // Desired state declared by the operator.
   PackageSpec spec = 2;
@@ -135,7 +136,7 @@ message Maintainer {
 
 message PackageStatus {
   // Current lifecycle phase. Set by the controller.
-  Phase phase = 1;
+  blanketops.common.PackagePhase phase = 1;
 
   // Human-readable status message. Populated on failure.
   string message = 2;
@@ -222,7 +223,7 @@ message PatchPackageResponse {
 // ListPackages — list Package CRs with optional filtering and paging.
 message ListPackagesRequest {
   // Filter by current lifecycle phase.
-  optional PackageStatus.Phase phase = 1;
+  optional blanketops.common.PackagePhase phase = 1;
 
   // Filter by enabled state.
   optional bool enabled = 2;
@@ -271,7 +272,7 @@ message WatchPackageResponse {
   Package package = 1;
 
   // The type of change that triggered this event.
-  blanketops.environments.common.v1.EventType type = 2;
+  blanketops.common.EventType type = 2;
 }
 
 // -----------------------------------------------------------------------------
