@@ -1,13 +1,12 @@
 name: Publish Proto Contract
 on:
-    push:
-        tags:
-            - "v*"
+  push:
+    tags:
+      - "v*"
 permissions:
-    contents: read
-    packages: write
+  contents: read
+  packages: write
 jobs:
-<<<<<<< Updated upstream
     publish:
         runs-on: self-hosted
         steps:
@@ -43,7 +42,6 @@ jobs:
                   [ "${{ steps.publish.outcome }}" = "success" ] || status="❌ failed"
                   cat >> $GITHUB_STEP_SUMMARY <<EOF
                   # 📜 Proto Contract Package
-=======
   publish:
     runs-on: self-hosted
     steps:
@@ -71,22 +69,21 @@ jobs:
           [ "${{ steps.publish.outcome }}" = "success" ] || status="❌ failed"
           cat >> $GITHUB_STEP_SUMMARY <<EOF
           # 📜 Proto Contract Package
->>>>>>> Stashed changes
 
-                  **Status:** $status
-                  **Version:** \`${{ github.ref_name }}\`
-                  **Registry:** [\`$ref\`](https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/pkgs/container/environments-contract)
+          **Status:** $status
+          **Version:** \`${{ github.ref_name }}\`
+          **Registry:** [\`$ref\`](https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/pkgs/container/environments-contract)
 
-                  ## Contents
-                  - Buf image (\`image.binpb\`) — compiled binary descriptor
-                  - Proto sources (\`protos.tar.gz\`)
-                  - Generated Go / C# / Java / TypeScript (\`gen.tar.gz\`)
-                  - Contract metadata (\`metadata.yaml\`)
+          ## Contents
+          - Buf image (\`image.binpb\`) — compiled binary descriptor
+          - Proto sources (\`protos.tar.gz\`)
+          - Generated Go / C# / Java / TypeScript (\`gen.tar.gz\`)
+          - Contract metadata (\`metadata.yaml\`)
 
-                  ## Consume
-                  \`\`\`bash
-                  oras pull $ref
-                  tar -xzf gen.tar.gz        # generated code, all targets
-                  buf ls-files image.binpb   # inspect the compiled contract
-                  \`\`\`
-                  EOF
+          ## Consume
+          \`\`\`bash
+          oras pull $ref
+          tar -xzf gen.tar.gz        # generated code, all targets
+          buf ls-files image.binpb   # inspect the compiled contract
+          \`\`\`
+          EOF
