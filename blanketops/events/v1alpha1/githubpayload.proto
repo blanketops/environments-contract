@@ -17,7 +17,8 @@ option java_outer_classname = "GitHubPayloadProto";
 // Ephemeral — scrubbed after BuildTrigger evaluation.
 // -----------------------------------------------------------------------------
 message GitHubPayload {
-  blanketops.environments.common.v1.Metadata metadata = 1;
+  blanketops.common.v1.Metadata metadata = 1;
+
   GitHubPayloadSpec spec = 2;
   GitHubPayloadStatus status = 3;
 }
@@ -118,7 +119,7 @@ message WatchGitHubPayloadRequest {
 
 message WatchGitHubPayloadResponse {
   GitHubPayload github_payload = 1;
-  blanketops.environments.common.v1.EventType type = 2;
+  blanketops.common.EventType type = 2;
 }
 
 // -----------------------------------------------------------------------------

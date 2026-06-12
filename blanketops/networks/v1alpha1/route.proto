@@ -31,7 +31,7 @@ option java_package = "v1alpha1.networking.blanketops.environments";
 
 message Route {
   // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
-  blanketops.environments.common.v1.Metadata metadata = 1;
+  blanketops.common.v1.Metadata metadata = 1;
 
   // Desired state declared by the operator.
   RouteSpec spec = 2;
@@ -257,7 +257,7 @@ message WatchRouteResponse {
   Route route = 1;
 
   // The type of change that triggered this event.
-  blanketops.environments.common.v1.EventType type = 2;
+  blanketops.common.EventType type = 2;
 }
 
 // -----------------------------------------------------------------------------

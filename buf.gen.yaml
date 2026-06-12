@@ -1,63 +1,30 @@
 version: v2
 inputs:
-  - directory: blanketops
-
+  - directory: .
+    paths:
+      - blanketops
 plugins:
-  # ---------------------------------------------------------------------------
-  # Go — source_relative handles versioned namespacing
-  # ---------------------------------------------------------------------------
-  - plugin: buf.build/protocolbuffers/go
+  # Go
+  - remote: buf.build/protocolbuffers/go:v1.36.6
     out: gen/go
     opt:
       - paths=source_relative
-
-  - plugin: buf.build/grpc/go
+  - remote: buf.build/grpc/go:v1.5.1
     out: gen/go
     opt:
       - paths=source_relative
-
-  # ---------------------------------------------------------------------------
-  # C# — source_relative avoids Build.cs collisions across versions
-  # ---------------------------------------------------------------------------
-  - plugin: buf.build/protocolbuffers/csharp
+  # C#
+  - remote: buf.build/protocolbuffers/csharp:v29.3
     out: gen/csharp
-
-  - plugin: buf.build/grpc/csharp
+  - remote: buf.build/grpc/csharp:v1.69.0
     out: gen/csharp
-
-  # ---------------------------------------------------------------------------
-  # Java — source_relative avoids Build.java collisions across versions
-  # ---------------------------------------------------------------------------
-  - plugin: buf.build/protocolbuffers/java
+  # Java — no paths opt, java_package in protos handles namespacing
+  - remote: buf.build/protocolbuffers/java:v29.3
     out: gen/java
-    opt:
-      - paths=source_relative
-
-  - plugin: buf.build/grpc/java
+  - remote: buf.build/grpc/java:v1.69.0
     out: gen/java
-    opt:
-      - paths=source_relative
-
-  # ---------------------------------------------------------------------------
-  # TypeScript — protobuf-es generates idiomatic TS types
-  # WASM compatible — used by the React/TypeScript UI and future WASM targets
-  #
-  # Output: gen/ts
-  # Import in React: import { Build, BuildSpec } from '../gen/ts/...'
-  #
-  # Install in UI project:
-  #   npm install @bufbuild/protobuf @bufbuild/connect-web
-  # ---------------------------------------------------------------------------
-  - plugin: buf.build/bufbuild/es
-    out: gen/ts
-    opt:
-      - target=ts
-      - import_extension=none
-
-  # gRPC-web transport for the TypeScript client
-  # Enables the React UI to call BuildService, EnvironmentService etc directly
-  # without a REST translation layer
-  - plugin: buf.build/bufbuild/connect-es
+  # TypeScript — protobuf-es v2, messages + service descriptors
+  - remote: buf.build/bufbuild/es:v2.2.5
     out: gen/ts
     opt:
       - target=ts

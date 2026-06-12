@@ -14,7 +14,8 @@ option go_package = "github.com/ntlaletsi70/blanketops-environments-contract/bla
 // -----------------------------------------------------------------------------
 
 message GitRepository {
-  blanketops.environments.common.v1.Metadata metadata = 1;
+  blanketops.common.v1.Metadata metadata = 1;
+
   GitRepositorySpec spec = 2;
   GitRepositoryStatus status = 3;
 }
@@ -115,7 +116,7 @@ message WatchGitRepositoryRequest {
 
 message WatchGitRepositoryResponse {
   GitRepository git_repository = 1;
-  blanketops.environments.common.v1.EventType type = 2;
+  blanketops.common.EventType type = 2;
 }
 
 // -----------------------------------------------------------------------------
