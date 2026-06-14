@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Regenerate Go and TypeScript contracts for v0.2.7 [skip ci]
+
+## [0.2.7] - 2026-06-14
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Update changelog for v0.2.6
+- Sync develop with main after release/v0.2.6
+
+### Support
+
+- *(minor)* Update workflows, buf gen untidy, tidy up, gitignore to ignore .ts
+- *(minor)* Housekeeping, remove generated from gen/
+
 ## [0.2.6] - 2026-06-14
 
 ### ⚙️ Miscellaneous Tasks
