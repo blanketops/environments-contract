@@ -1,67 +1,63 @@
-name: Create Release
+name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: "Release version (e.g. v0.0.9)"
-        required: true
+    push:
+        tags:
+            - "v*"
 
 permissions:
-  contents: write
-  pull-requests: write
+    contents: write
 
 jobs:
-  create:
-    runs-on: self-hosted
+    release:
+        runs-on: self-hosted
 
-    steps:
-      - name: Checkout develop
-        uses: actions/checkout@v4
-        with:
-          ref: develop
-          fetch-depth: 0
-          token: ${{ secrets.GH_PAT }}
+        steps:
+            - name: Checkout tag
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
 
-      - name: Configure git
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
+            - name: Checkout main
+              run: |
+                  git checkout main
+                  git pull origin main
 
-      - name: Create release branch
-        run: |
-          git checkout -b release/${{ github.event.inputs.version }}
-          git push origin release/${{ github.event.inputs.version }}
+            - name: Generate CHANGELOG.md
+              run: git-cliff --config .cliff.toml --output CHANGELOG.md
 
-      - name: Open PR to main
-        env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
-        run: |
-          gh pr create \
-            --base main \
-            --head release/${{ github.event.inputs.version }} \
-            --title "release: ${{ github.event.inputs.version }}" \
-            --body "## Release ${{ github.event.inputs.version }}
+            - name: Commit changelog
+              run: |
+                  git config user.name "github-actions"
+                  git config user.email "actions@github.com"
+                  git add CHANGELOG.md
+                  git commit -m "chore(release): update changelog for ${{ github.ref_name }}" || echo "No changes"
+                  git push origin main
 
-          Release branch cut from \`develop\`. Merge fix PRs into this branch before finalizing.
+            - name: Generate release notes
+              run: git-cliff --config .cliff.toml --latest --output RELEASE_NOTES.md
 
-          **Next step:** once all fixes are merged, run the _Finalize Release_ workflow." \
-          || echo "::warning::PR creation failed — branch release/${{ github.event.inputs.version }} was created successfully. Open the PR manually."
+            - name: Create GitHub Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  body_path: RELEASE_NOTES.md
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Release Summary
-        run: |
-          cat >> $GITHUB_STEP_SUMMARY <<EOF 
-          # 🚀 Release Branch Created 
-          **Version:** \`${{ github.event.inputs.version }}\`
-          ## Completed 
-           - Checked out \`develop\`
-           - Created \`release/${{ github.event.inputs.version }}\` 
-           - Pushed release branch to origin 
-           - Opened (or attempted to open) a PR to \`main\` 
-           ## Release Flow 
-           -  develop → release/${{ github.event.inputs.version }} → main 
-           ## Next Steps 
-           1. Merge any release fixes into the release branch.
-           2. Validate the release candidate .
-           3. Run the **Finalize Release** workflow. 
-          EOF
+            - name: Release Summary
+              run: |
+                  cat >> $GITHUB_STEP_SUMMARY <<EOF
+                  # 📦 GitHub Release Published
+                  **Version:** \`${{ github.ref_name }}\`
+                  ## Completed
+                  - Generated CHANGELOG.md using git-cliff
+                  - Committed changelog updates to main
+                  - Generated release notes
+                  - Published GitHub Release
+                  ## Artifacts
+                  - CHANGELOG.md
+                  - RELEASE_NOTES.md
+                  - GitHub Release
+                  ## Source Tag
+                  \`${{ github.ref_name }}\`
+                  EOF
