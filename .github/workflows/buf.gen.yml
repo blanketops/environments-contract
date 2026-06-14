@@ -21,12 +21,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install mage
-        run: |
-          if ! command -v mage &> /dev/null; then
-            go install github.com/magefile/mage@latest
-          fi
-
       - name: Buf Lint
         id: lint
         run: mage lint
