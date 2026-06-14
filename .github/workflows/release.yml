@@ -1,60 +1,67 @@
-name: Release
+name: Create Release
+
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g. v0.0.9)"
+        required: true
+
 permissions:
   contents: write
+  pull-requests: write
+
 jobs:
-  release:
+  create:
     runs-on: self-hosted
+
     steps:
-      - name: Checkout tag
+      - name: Checkout develop
         uses: actions/checkout@v4
         with:
+          ref: develop
           fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
 
-      - name: Checkout main
+      - name: Configure git
         run: |
-          git checkout main
-          git pull origin main
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
 
-      - name: Generate CHANGELOG.md
-        run: git-cliff --config .cliff.toml --output CHANGELOG.md
-
-      - name: Commit changelog
+      - name: Create release branch
         run: |
-          git add CHANGELOG.md
-          git commit -m "chore(release): update changelog for ${{ github.ref_name }}" || echo "No changes"
-          git push origin main
+          git checkout -b release/${{ github.event.inputs.version }}
+          git push origin release/${{ github.event.inputs.version }}
 
-      - name: Generate release notes
-        run: git-cliff --config .cliff.toml --latest --output RELEASE_NOTES.md
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          body_path: RELEASE_NOTES.md
+      - name: Open PR to main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          gh pr create \
+            --base main \
+            --head release/${{ github.event.inputs.version }} \
+            --title "release: ${{ github.event.inputs.version }}" \
+            --body "## Release ${{ github.event.inputs.version }}
+
+          Release branch cut from \`develop\`. Merge fix PRs into this branch before finalizing.
+
+          **Next step:** once all fixes are merged, run the _Finalize Release_ workflow." \
+          || echo "::warning::PR creation failed — branch release/${{ github.event.inputs.version }} was created successfully. Open the PR manually."
 
       - name: Release Summary
         run: |
-          cat >> $GITHUB_STEP_SUMMARY <<EOF
-          # 📦 GitHub Release Published
-          **Version:** \`${{ github.ref_name }}\`
-          ## Completed
-          - Generated Go and TypeScript contracts via \`mage gen\`
-          - Committed generated contracts to main
-          - Generated CHANGELOG.md using git-cliff
-          - Committed changelog updates to main
-          - Generated release notes
-          - Published GitHub Release
-          ## Artifacts
-          - blanketops/ (Go .pb.go + TypeScript _pb.ts, committed to main)
-          - CHANGELOG.md
-          - RELEASE_NOTES.md
-          - GitHub Release
-          ## Source Tag
-          \`${{ github.ref_name }}\`
+          cat >> $GITHUB_STEP_SUMMARY <<EOF 
+          # 🚀 Release Branch Created 
+          **Version:** \`${{ github.event.inputs.version }}\`
+          ## Completed 
+           - Checked out \`develop\`
+           - Created \`release/${{ github.event.inputs.version }}\` 
+           - Pushed release branch to origin 
+           - Opened (or attempted to open) a PR to \`main\` 
+           ## Release Flow 
+           -  develop → release/${{ github.event.inputs.version }} → main 
+           ## Next Steps 
+           1. Merge any release fixes into the release branch.
+           2. Validate the release candidate .
+           3. Run the **Finalize Release** workflow. 
           EOF
