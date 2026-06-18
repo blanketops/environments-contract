@@ -90,6 +90,7 @@ message BuildSpec {
 
   // How long a completed BuildRun is retained before garbage collection.
   google.protobuf.Duration time_to_live = 8;
+
 }
 
 // -----------------------------------------------------------------------------
