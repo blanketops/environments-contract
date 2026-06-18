@@ -43,28 +43,19 @@ jobs:
         - name: Generate release notes
           run: git-cliff --config .cliff.toml --latest --output RELEASE_NOTES.md
 
-        # - name: Download contracts from latest CI
-        #   uses: dawidd6/action-download-artifact@v21
-        #   with:
-        #       github_token: ${{ secrets.GH_PAT }}
-        #       workflow: generate.yml # The filename of the workflow you pasted
-        #       workflow_conclusion: success
-        #       name: generated-contracts-${{ github.sha }} # Or 'latest' if you manage it that way
-        #       path: ./dist
         - name: Download generated contracts
-          uses: dawidd6/action-download-artifact@v21
+          uses: dawidd6/action-download-artifact@v6
           with:
             github_token: ${{ secrets.GH_PAT }}
-            # Force the action to look at the specific generator workflow
-            workflow: generate.yml 
-            # Crucial: Ensure it searches through recent runs instead of just the current one
+            repo: ntlaletsi70/blanketops-environments-contract
+            workflow: generate.yml
+            # Search for the most recent successful run regardless of SHA
+            # This is much more reliable than trying to match the exact commit SHA
             workflow_search: true
-            # Point to the specific artifact name you uploaded
-            name: generated-contracts-${{ github.sha }}
-            # Ensure it doesn't fail if it's not in the *current* workflow
-            if_no_artifact_found: fail
-            path: ./dist      
-
+            workflow_conclusion: success
+            name: generated-contracts-latest
+            path: ./dist
+  
         - name: Create GitHub Release
           uses: softprops/action-gh-release@v2
           with:
