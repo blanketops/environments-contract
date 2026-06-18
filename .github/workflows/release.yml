@@ -54,16 +54,16 @@ jobs:
         - name: Download generated contracts
           uses: dawidd6/action-download-artifact@v6
           with:
-            # Required: The workflow filename that generated the artifact
-            workflow: generate.yml
-            # Required: The name of the artifact uploaded in that workflow
-            name: generated-contracts-latest
-            # Optional: If downloading from a different repository
-            # repo: ntlaletsi70/blanketops-environments-contract
-            # Optional: Use a token if the repo is private
             github_token: ${{ secrets.GH_PAT }}
-            # Optional: Where to extract the files
-            path: ./dist        
+            # Force the action to look at the specific generator workflow
+            workflow: generate.yml 
+            # Crucial: Ensure it searches through recent runs instead of just the current one
+            workflow_search: true
+            # Point to the specific artifact name you uploaded
+            name: generated-contracts-${{ github.sha }}
+            # Ensure it doesn't fail if it's not in the *current* workflow
+            if_no_artifact_found: fail
+            path: ./dist      
 
         - name: Create GitHub Release
           uses: softprops/action-gh-release@v2
