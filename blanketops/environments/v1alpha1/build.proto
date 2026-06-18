@@ -95,7 +95,7 @@ message BuildSpec {
   // that initiated this build. If provided, observers use this to propagate 
   // event metadata (e.g., Short SHA, Actor) as build tags and provenance 
   // annotations. If omitted, the build is treated as a manual execution.
-  string githubEvent = 9;  string githubEvent = 9;
+  string githubEvent = 9;
 
 }
 
