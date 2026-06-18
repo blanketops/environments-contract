@@ -51,20 +51,7 @@ jobs:
         #       workflow_conclusion: success
         #       name: generated-contracts-${{ github.sha }} # Or 'latest' if you manage it that way
         #       path: ./dist
-        - name: Download generated contracts
-          uses: dawidd6/action-download-artifact@v21
-          with:
-            github_token: ${{ secrets.GH_PAT }}
-            # Force the action to look at the specific generator workflow
-            workflow: generate.yml 
-            # Crucial: Ensure it searches through recent runs instead of just the current one
-            workflow_search: true
-            # Point to the specific artifact name you uploaded
-            name: generated-contracts-${{ github.sha }}
-            # Ensure it doesn't fail if it's not in the *current* workflow
-            if_no_artifact_found: fail
-            path: ./dist      
-
+  
         - name: Create GitHub Release
           uses: softprops/action-gh-release@v2
           with:
