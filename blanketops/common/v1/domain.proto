@@ -20,9 +20,8 @@
 // Domain-specific shared types used by networks.blanketops.dev resources.
 //
 // All enum values are wrapped in a message (DomainPhase, DomainTLSStrategy,
-// DomainTLSStatus) — this preserves the ability to distinguish an explicit
-// zero from an absent field, and is consistent with the RoutePhase /
-// RouteRuntime / RouteTLSStatus wrapper pattern in common/v1/route.proto.
+// DomainTLSStatus) — consistent with the RoutePhase / RouteRuntime /
+// RouteTLSStatus wrapper pattern in common/v1/route.proto.
 //
 // Consumers:
 //   blanketops/networks/v1alpha1/domain.proto
@@ -33,10 +32,10 @@ syntax = "proto3";
 
 package blanketops.common.v1;
 
-option csharp_namespace = "BlanketOps.Common.V1";
-option go_package = "github.com/ntlaletsi70/blanketops-environments-contract/blanketops/common/v1;v1";
+// Options must match every other file in the blanketops.common.v1 package exactly.
+option csharp_namespace = "BlanketOps.Common.v1";
+option go_package = "github.com/ntlaletsi70/blanketops-environments-contract/blanketops/common/v1;commonv1";
 option java_outer_classname = "DomainProto";
-option java_package = "v1.common.blanketops";
 
 // =============================================================================
 // DomainPhase
