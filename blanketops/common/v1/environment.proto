@@ -29,7 +29,6 @@ message EnvironmentPhase {
   }
   EnvironmentPhase phase = 1;
 }
-
 message EnvironmentType {
   enum EnvironmentType {
     ENVIRONMENT_TYPE_UNSPECIFIED = 0;
@@ -43,4 +42,25 @@ message EnvironmentType {
     ENVIRONMENT_TYPE_TESTING = 4;
   }
   EnvironmentType type = 1;
+}
+// =============================================================================
+// Contract
+// =============================================================================
+// SecretStoreProvider identifies the external secrets backend.
+// Drives ESO ClusterSecretStore selection at reconciliation time.
+enum SecretStoreProvider {
+  SECRET_STORE_PROVIDER_UNSPECIFIED = 0;
+  // AWS Secrets Manager / SSM Parameter Store via ESO.
+  SECRET_STORE_PROVIDER_AWS = 1;
+  // HashiCorp Vault via ESO.
+  SECRET_STORE_PROVIDER_VAULT = 2;
+  // GCP Secret Manager via ESO.
+  SECRET_STORE_PROVIDER_GCP = 3;
+  // Azure Key Vault via ESO.
+  SECRET_STORE_PROVIDER_AZURE = 4;
+}
+// SecretStore declares which external secrets backend backs a resource.
+message SecretStore {
+  // Backend provider. Drives ESO ClusterSecretStore selection.
+  SecretStoreProvider provider = 1;
 }
