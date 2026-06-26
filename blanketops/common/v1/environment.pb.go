@@ -33,6 +33,70 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// =============================================================================
+// Contract
+// =============================================================================
+// SecretStoreProvider identifies the external secrets backend.
+// Drives ESO ClusterSecretStore selection at reconciliation time.
+type SecretStoreProvider int32
+
+const (
+	SecretStoreProvider_SECRET_STORE_PROVIDER_UNSPECIFIED SecretStoreProvider = 0
+	// AWS Secrets Manager / SSM Parameter Store via ESO.
+	SecretStoreProvider_SECRET_STORE_PROVIDER_AWS SecretStoreProvider = 1
+	// HashiCorp Vault via ESO.
+	SecretStoreProvider_SECRET_STORE_PROVIDER_VAULT SecretStoreProvider = 2
+	// GCP Secret Manager via ESO.
+	SecretStoreProvider_SECRET_STORE_PROVIDER_GCP SecretStoreProvider = 3
+	// Azure Key Vault via ESO.
+	SecretStoreProvider_SECRET_STORE_PROVIDER_AZURE SecretStoreProvider = 4
+)
+
+// Enum value maps for SecretStoreProvider.
+var (
+	SecretStoreProvider_name = map[int32]string{
+		0: "SECRET_STORE_PROVIDER_UNSPECIFIED",
+		1: "SECRET_STORE_PROVIDER_AWS",
+		2: "SECRET_STORE_PROVIDER_VAULT",
+		3: "SECRET_STORE_PROVIDER_GCP",
+		4: "SECRET_STORE_PROVIDER_AZURE",
+	}
+	SecretStoreProvider_value = map[string]int32{
+		"SECRET_STORE_PROVIDER_UNSPECIFIED": 0,
+		"SECRET_STORE_PROVIDER_AWS":         1,
+		"SECRET_STORE_PROVIDER_VAULT":       2,
+		"SECRET_STORE_PROVIDER_GCP":         3,
+		"SECRET_STORE_PROVIDER_AZURE":       4,
+	}
+)
+
+func (x SecretStoreProvider) Enum() *SecretStoreProvider {
+	p := new(SecretStoreProvider)
+	*p = x
+	return p
+}
+
+func (x SecretStoreProvider) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SecretStoreProvider) Descriptor() protoreflect.EnumDescriptor {
+	return file_blanketops_common_v1_environment_proto_enumTypes[0].Descriptor()
+}
+
+func (SecretStoreProvider) Type() protoreflect.EnumType {
+	return &file_blanketops_common_v1_environment_proto_enumTypes[0]
+}
+
+func (x SecretStoreProvider) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SecretStoreProvider.Descriptor instead.
+func (SecretStoreProvider) EnumDescriptor() ([]byte, []int) {
+	return file_blanketops_common_v1_environment_proto_rawDescGZIP(), []int{0}
+}
+
 type EnvironmentPhase_EnvironmentPhase int32
 
 const (
@@ -76,11 +140,11 @@ func (x EnvironmentPhase_EnvironmentPhase) String() string {
 }
 
 func (EnvironmentPhase_EnvironmentPhase) Descriptor() protoreflect.EnumDescriptor {
-	return file_blanketops_common_v1_environment_proto_enumTypes[0].Descriptor()
+	return file_blanketops_common_v1_environment_proto_enumTypes[1].Descriptor()
 }
 
 func (EnvironmentPhase_EnvironmentPhase) Type() protoreflect.EnumType {
-	return &file_blanketops_common_v1_environment_proto_enumTypes[0]
+	return &file_blanketops_common_v1_environment_proto_enumTypes[1]
 }
 
 func (x EnvironmentPhase_EnvironmentPhase) Number() protoreflect.EnumNumber {
@@ -135,11 +199,11 @@ func (x EnvironmentType_EnvironmentType) String() string {
 }
 
 func (EnvironmentType_EnvironmentType) Descriptor() protoreflect.EnumDescriptor {
-	return file_blanketops_common_v1_environment_proto_enumTypes[1].Descriptor()
+	return file_blanketops_common_v1_environment_proto_enumTypes[2].Descriptor()
 }
 
 func (EnvironmentType_EnvironmentType) Type() protoreflect.EnumType {
-	return &file_blanketops_common_v1_environment_proto_enumTypes[1]
+	return &file_blanketops_common_v1_environment_proto_enumTypes[2]
 }
 
 func (x EnvironmentType_EnvironmentType) Number() protoreflect.EnumNumber {
@@ -239,6 +303,52 @@ func (x *EnvironmentType) GetType() EnvironmentType_EnvironmentType {
 	return EnvironmentType_ENVIRONMENT_TYPE_UNSPECIFIED
 }
 
+// SecretStore declares which external secrets backend backs a resource.
+type SecretStore struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Backend provider. Drives ESO ClusterSecretStore selection.
+	Provider      SecretStoreProvider `protobuf:"varint,1,opt,name=provider,proto3,enum=blanketops.common.v1.SecretStoreProvider" json:"provider,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SecretStore) Reset() {
+	*x = SecretStore{}
+	mi := &file_blanketops_common_v1_environment_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SecretStore) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SecretStore) ProtoMessage() {}
+
+func (x *SecretStore) ProtoReflect() protoreflect.Message {
+	mi := &file_blanketops_common_v1_environment_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SecretStore.ProtoReflect.Descriptor instead.
+func (*SecretStore) Descriptor() ([]byte, []int) {
+	return file_blanketops_common_v1_environment_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *SecretStore) GetProvider() SecretStoreProvider {
+	if x != nil {
+		return x.Provider
+	}
+	return SecretStoreProvider_SECRET_STORE_PROVIDER_UNSPECIFIED
+}
+
 var File_blanketops_common_v1_environment_proto protoreflect.FileDescriptor
 
 const file_blanketops_common_v1_environment_proto_rawDesc = "" +
@@ -259,7 +369,15 @@ const file_blanketops_common_v1_environment_proto_rawDesc = "" +
 	"\x1cENVIRONMENT_TYPE_DEVELOPMENT\x10\x01\x12\x1c\n" +
 	"\x18ENVIRONMENT_TYPE_STAGING\x10\x02\x12\x1f\n" +
 	"\x1bENVIRONMENT_TYPE_PRODUCTION\x10\x03\x12\x1c\n" +
-	"\x18ENVIRONMENT_TYPE_TESTING\x10\x04BnZUgithub.com/ntlaletsi70/blanketops-environments-contract/blanketops/common/v1;commonv1\xaa\x02\x14BlanketOps.Common.v1b\x06proto3"
+	"\x18ENVIRONMENT_TYPE_TESTING\x10\x04\"T\n" +
+	"\vSecretStore\x12E\n" +
+	"\bprovider\x18\x01 \x01(\x0e2).blanketops.common.v1.SecretStoreProviderR\bprovider*\xbc\x01\n" +
+	"\x13SecretStoreProvider\x12%\n" +
+	"!SECRET_STORE_PROVIDER_UNSPECIFIED\x10\x00\x12\x1d\n" +
+	"\x19SECRET_STORE_PROVIDER_AWS\x10\x01\x12\x1f\n" +
+	"\x1bSECRET_STORE_PROVIDER_VAULT\x10\x02\x12\x1d\n" +
+	"\x19SECRET_STORE_PROVIDER_GCP\x10\x03\x12\x1f\n" +
+	"\x1bSECRET_STORE_PROVIDER_AZURE\x10\x04BnZUgithub.com/ntlaletsi70/blanketops-environments-contract/blanketops/common/v1;commonv1\xaa\x02\x14BlanketOps.Common.v1b\x06proto3"
 
 var (
 	file_blanketops_common_v1_environment_proto_rawDescOnce sync.Once
@@ -273,22 +391,25 @@ func file_blanketops_common_v1_environment_proto_rawDescGZIP() []byte {
 	return file_blanketops_common_v1_environment_proto_rawDescData
 }
 
-var file_blanketops_common_v1_environment_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_blanketops_common_v1_environment_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_blanketops_common_v1_environment_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_blanketops_common_v1_environment_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_blanketops_common_v1_environment_proto_goTypes = []any{
-	(EnvironmentPhase_EnvironmentPhase)(0), // 0: blanketops.common.v1.EnvironmentPhase.EnvironmentPhase
-	(EnvironmentType_EnvironmentType)(0),   // 1: blanketops.common.v1.EnvironmentType.EnvironmentType
-	(*EnvironmentPhase)(nil),               // 2: blanketops.common.v1.EnvironmentPhase
-	(*EnvironmentType)(nil),                // 3: blanketops.common.v1.EnvironmentType
+	(SecretStoreProvider)(0),               // 0: blanketops.common.v1.SecretStoreProvider
+	(EnvironmentPhase_EnvironmentPhase)(0), // 1: blanketops.common.v1.EnvironmentPhase.EnvironmentPhase
+	(EnvironmentType_EnvironmentType)(0),   // 2: blanketops.common.v1.EnvironmentType.EnvironmentType
+	(*EnvironmentPhase)(nil),               // 3: blanketops.common.v1.EnvironmentPhase
+	(*EnvironmentType)(nil),                // 4: blanketops.common.v1.EnvironmentType
+	(*SecretStore)(nil),                    // 5: blanketops.common.v1.SecretStore
 }
 var file_blanketops_common_v1_environment_proto_depIdxs = []int32{
-	0, // 0: blanketops.common.v1.EnvironmentPhase.phase:type_name -> blanketops.common.v1.EnvironmentPhase.EnvironmentPhase
-	1, // 1: blanketops.common.v1.EnvironmentType.type:type_name -> blanketops.common.v1.EnvironmentType.EnvironmentType
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	1, // 0: blanketops.common.v1.EnvironmentPhase.phase:type_name -> blanketops.common.v1.EnvironmentPhase.EnvironmentPhase
+	2, // 1: blanketops.common.v1.EnvironmentType.type:type_name -> blanketops.common.v1.EnvironmentType.EnvironmentType
+	0, // 2: blanketops.common.v1.SecretStore.provider:type_name -> blanketops.common.v1.SecretStoreProvider
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_blanketops_common_v1_environment_proto_init() }
@@ -301,8 +422,8 @@ func file_blanketops_common_v1_environment_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_blanketops_common_v1_environment_proto_rawDesc), len(file_blanketops_common_v1_environment_proto_rawDesc)),
-			NumEnums:      2,
-			NumMessages:   2,
+			NumEnums:      3,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

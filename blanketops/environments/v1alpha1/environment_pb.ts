@@ -16,7 +16,7 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import type { EnvironmentPhase, EnvironmentType } from "../../common/v1/environment_pb";
+import type { EnvironmentPhase, EnvironmentType, SecretStore } from "../../common/v1/environment_pb";
 import { file_blanketops_common_v1_environment } from "../../common/v1/environment_pb";
 import type { EventType } from "../../common/v1/event_pb";
 import { file_blanketops_common_v1_event } from "../../common/v1/event_pb";
@@ -30,9 +30,22 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file blanketops/environments/v1alpha1/environment.proto.
  */
 export const file_blanketops_environments_v1alpha1_environment: GenFile = /*@__PURE__*/
-  fileDesc("CjJibGFua2V0b3BzL2Vudmlyb25tZW50cy92MWFscGhhMS9lbnZpcm9ubWVudC5wcm90bxIgYmxhbmtldG9wcy5lbnZpcm9ubWVudHMudjFhbHBoYTEixQEKC0Vudmlyb25tZW50EjAKCG1ldGFkYXRhGAEgASgLMh4uYmxhbmtldG9wcy5jb21tb24udjEuTWV0YWRhdGESPwoEc3BlYxgCIAEoCzIxLmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLkVudmlyb25tZW50U3BlYxJDCgZzdGF0dXMYAyABKAsyMy5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudFN0YXR1cyK1BAoPRW52aXJvbm1lbnRTcGVjEhgKEGFwcGxpY2F0aW9uX25hbWUYASABKAkSDgoGYnJhbmNoGAIgASgJEhEKCWdpdF9vd25lchgDIAEoCRI/ChBlbnZpcm9ubWVudF90eXBlGAQgASgLMiUuYmxhbmtldG9wcy5jb21tb24udjEuRW52aXJvbm1lbnRUeXBlEg8KB3ZlcnNpb24YBSABKAkSEwoLZGVzY3JpcHRpb24YBiABKAkSQgoNc2VydmljZV91bml0cxgHIAMoCzIrLmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLk9iamVjdFJlZhI/CgpkZXBsb3ltZW50GAggASgLMisuYmxhbmtldG9wcy5lbnZpcm9ubWVudHMudjFhbHBoYTEuT2JqZWN0UmVmEjoKBXJvdXRlGAkgASgLMisuYmxhbmtldG9wcy5lbnZpcm9ubWVudHMudjFhbHBoYTEuT2JqZWN0UmVmEjwKB3BhY2thZ2UYCiABKAsyKy5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5PYmplY3RSZWYSOgoFYnVpbGQYCyABKAsyKy5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5PYmplY3RSZWYSQwoOYnVpbGRfdHJpZ2dlcnMYDCADKAsyKy5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5PYmplY3RSZWYiGQoJT2JqZWN0UmVmEgwKBG5hbWUYASABKAki3AEKEUVudmlyb25tZW50U3RhdHVzEjUKBXBoYXNlGAEgASgLMiYuYmxhbmtldG9wcy5jb21tb24udjEuRW52aXJvbm1lbnRQaGFzZRIPCgdtZXNzYWdlGAIgASgJEkoKCmNvbmRpdGlvbnMYAyADKAsyNi5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudENvbmRpdGlvbhIzCg9sYXN0X3VwZGF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIo8BChRFbnZpcm9ubWVudENvbmRpdGlvbhIMCgR0eXBlGAEgASgJEg4KBnN0YXR1cxgCIAEoCRIOCgZyZWFzb24YAyABKAkSDwoHbWVzc2FnZRgEIAEoCRI4ChRsYXN0X3RyYW5zaXRpb25fdGltZRgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiWwoYQ3JlYXRlRW52aXJvbm1lbnRSZXF1ZXN0Ej8KBHNwZWMYASABKAsyMS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudFNwZWMiXwoZQ3JlYXRlRW52aXJvbm1lbnRSZXNwb25zZRJCCgtlbnZpcm9ubWVudBgBIAEoCzItLmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLkVudmlyb25tZW50IiUKFUdldEVudmlyb25tZW50UmVxdWVzdBIMCgRuYW1lGAEgASgJIlwKFkdldEVudmlyb25tZW50UmVzcG9uc2USQgoLZW52aXJvbm1lbnQYASABKAsyLS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudCJeChhVcGRhdGVFbnZpcm9ubWVudFJlcXVlc3QSQgoLZW52aXJvbm1lbnQYASABKAsyLS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudCJfChlVcGRhdGVFbnZpcm9ubWVudFJlc3BvbnNlEkIKC2Vudmlyb25tZW50GAEgASgLMi0uYmxhbmtldG9wcy5lbnZpcm9ubWVudHMudjFhbHBoYTEuRW52aXJvbm1lbnQiNgoXUGF0Y2hFbnZpcm9ubWVudFJlcXVlc3QSDAoEbmFtZRgBIAEoCRINCgVwYXRjaBgCIAEoCSJeChhQYXRjaEVudmlyb25tZW50UmVzcG9uc2USQgoLZW52aXJvbm1lbnQYASABKAsyLS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudCK8AgoXTGlzdEVudmlyb25tZW50c1JlcXVlc3QSOgoFcGhhc2UYASABKAsyJi5ibGFua2V0b3BzLmNvbW1vbi52MS5FbnZpcm9ubWVudFBoYXNlSACIAQESRAoQZW52aXJvbm1lbnRfdHlwZRgCIAEoCzIlLmJsYW5rZXRvcHMuY29tbW9uLnYxLkVudmlyb25tZW50VHlwZUgBiAEBEh0KEGFwcGxpY2F0aW9uX25hbWUYAyABKAlIAogBARIWCglwYWdlX3NpemUYBCABKAVIA4gBARIXCgpwYWdlX3Rva2VuGAUgASgJSASIAQFCCAoGX3BoYXNlQhMKEV9lbnZpcm9ubWVudF90eXBlQhMKEV9hcHBsaWNhdGlvbl9uYW1lQgwKCl9wYWdlX3NpemVCDQoLX3BhZ2VfdG9rZW4ikQEKGExpc3RFbnZpcm9ubWVudHNSZXNwb25zZRJDCgxlbnZpcm9ubWVudHMYASADKAsyLS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudBIcCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAlIAIgBAUISChBfbmV4dF9wYWdlX3Rva2VuIigKGERlbGV0ZUVudmlyb25tZW50UmVxdWVzdBIMCgRuYW1lGAEgASgJIiwKGURlbGV0ZUVudmlyb25tZW50UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCInChdXYXRjaEVudmlyb25tZW50UmVxdWVzdBIMCgRuYW1lGAEgASgJIo0BChhXYXRjaEVudmlyb25tZW50UmVzcG9uc2USQgoLZW52aXJvbm1lbnQYASABKAsyLS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudBItCgR0eXBlGAIgASgOMh8uYmxhbmtldG9wcy5jb21tb24udjEuRXZlbnRUeXBlMu0HChJFbnZpcm9ubWVudFNlcnZpY2USjAEKEUNyZWF0ZUVudmlyb25tZW50EjouYmxhbmtldG9wcy5lbnZpcm9ubWVudHMudjFhbHBoYTEuQ3JlYXRlRW52aXJvbm1lbnRSZXF1ZXN0GjsuYmxhbmtldG9wcy5lbnZpcm9ubWVudHMudjFhbHBoYTEuQ3JlYXRlRW52aXJvbm1lbnRSZXNwb25zZRKDAQoOR2V0RW52aXJvbm1lbnQSNy5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5HZXRFbnZpcm9ubWVudFJlcXVlc3QaOC5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5HZXRFbnZpcm9ubWVudFJlc3BvbnNlEowBChFVcGRhdGVFbnZpcm9ubWVudBI6LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLlVwZGF0ZUVudmlyb25tZW50UmVxdWVzdBo7LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLlVwZGF0ZUVudmlyb25tZW50UmVzcG9uc2USiQEKEFBhdGNoRW52aXJvbm1lbnQSOS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5QYXRjaEVudmlyb25tZW50UmVxdWVzdBo6LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLlBhdGNoRW52aXJvbm1lbnRSZXNwb25zZRKJAQoQTGlzdEVudmlyb25tZW50cxI5LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLkxpc3RFbnZpcm9ubWVudHNSZXF1ZXN0GjouYmxhbmtldG9wcy5lbnZpcm9ubWVudHMudjFhbHBoYTEuTGlzdEVudmlyb25tZW50c1Jlc3BvbnNlEowBChFEZWxldGVFbnZpcm9ubWVudBI6LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLkRlbGV0ZUVudmlyb25tZW50UmVxdWVzdBo7LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLkRlbGV0ZUVudmlyb25tZW50UmVzcG9uc2USiwEKEFdhdGNoRW52aXJvbm1lbnQSOS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5XYXRjaEVudmlyb25tZW50UmVxdWVzdBo6LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLldhdGNoRW52aXJvbm1lbnRSZXNwb25zZTABQroBCiB2MWFscGhhMS5ibGFua2V0b3BzLmVudmlyb25tZW50c0IQRW52aXJvbm1lbnRQcm90b1phZ2l0aHViLmNvbS9udGxhbGV0c2k3MC9ibGFua2V0b3BzLWVudmlyb25tZW50cy1jb250cmFjdC9ibGFua2V0b3BzL2Vudmlyb25tZW50cy92MWFscGhhMTt2MWFscGhhMaoCIEJsYW5rZXRPcHMuRW52aXJvbm1lbnRzLlYxQWxwaGExYgZwcm90bzM", [file_blanketops_common_v1_environment, file_blanketops_common_v1_event, file_blanketops_common_v1_metadata, file_google_protobuf_timestamp]);
+  fileDesc("CjJibGFua2V0b3BzL2Vudmlyb25tZW50cy92MWFscGhhMS9lbnZpcm9ubWVudC5wcm90bxIgYmxhbmtldG9wcy5lbnZpcm9ubWVudHMudjFhbHBoYTEixQEKC0Vudmlyb25tZW50EjAKCG1ldGFkYXRhGAEgASgLMh4uYmxhbmtldG9wcy5jb21tb24udjEuTWV0YWRhdGESPwoEc3BlYxgCIAEoCzIxLmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLkVudmlyb25tZW50U3BlYxJDCgZzdGF0dXMYAyABKAsyMy5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudFN0YXR1cyJOChNFbnZpcm9ubWVudENvbnRyYWN0EjcKDHNlY3JldF9zdG9yZRgBIAEoCzIhLmJsYW5rZXRvcHMuY29tbW9uLnYxLlNlY3JldFN0b3JlIv4ECg9FbnZpcm9ubWVudFNwZWMSGAoQYXBwbGljYXRpb25fbmFtZRgBIAEoCRIOCgZicmFuY2gYAiABKAkSEQoJZ2l0X293bmVyGAMgASgJEj8KEGVudmlyb25tZW50X3R5cGUYBCABKAsyJS5ibGFua2V0b3BzLmNvbW1vbi52MS5FbnZpcm9ubWVudFR5cGUSDwoHdmVyc2lvbhgFIAEoCRITCgtkZXNjcmlwdGlvbhgGIAEoCRJCCg1zZXJ2aWNlX3VuaXRzGAcgAygLMisuYmxhbmtldG9wcy5lbnZpcm9ubWVudHMudjFhbHBoYTEuT2JqZWN0UmVmEj8KCmRlcGxveW1lbnQYCCABKAsyKy5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5PYmplY3RSZWYSOgoFcm91dGUYCSABKAsyKy5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5PYmplY3RSZWYSPAoHcGFja2FnZRgKIAEoCzIrLmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLk9iamVjdFJlZhI6CgVidWlsZBgLIAEoCzIrLmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLk9iamVjdFJlZhJDCg5naXRfcmVwb3NpdG9yeRgMIAEoCzIrLmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLk9iamVjdFJlZhJHCghjb250cmFjdBgNIAEoCzI1LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLkVudmlyb25tZW50Q29udHJhY3QiGQoJT2JqZWN0UmVmEgwKBG5hbWUYASABKAki3AEKEUVudmlyb25tZW50U3RhdHVzEjUKBXBoYXNlGAEgASgLMiYuYmxhbmtldG9wcy5jb21tb24udjEuRW52aXJvbm1lbnRQaGFzZRIPCgdtZXNzYWdlGAIgASgJEkoKCmNvbmRpdGlvbnMYAyADKAsyNi5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudENvbmRpdGlvbhIzCg9sYXN0X3VwZGF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIo8BChRFbnZpcm9ubWVudENvbmRpdGlvbhIMCgR0eXBlGAEgASgJEg4KBnN0YXR1cxgCIAEoCRIOCgZyZWFzb24YAyABKAkSDwoHbWVzc2FnZRgEIAEoCRI4ChRsYXN0X3RyYW5zaXRpb25fdGltZRgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiWwoYQ3JlYXRlRW52aXJvbm1lbnRSZXF1ZXN0Ej8KBHNwZWMYASABKAsyMS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudFNwZWMiXwoZQ3JlYXRlRW52aXJvbm1lbnRSZXNwb25zZRJCCgtlbnZpcm9ubWVudBgBIAEoCzItLmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLkVudmlyb25tZW50IiUKFUdldEVudmlyb25tZW50UmVxdWVzdBIMCgRuYW1lGAEgASgJIlwKFkdldEVudmlyb25tZW50UmVzcG9uc2USQgoLZW52aXJvbm1lbnQYASABKAsyLS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudCJeChhVcGRhdGVFbnZpcm9ubWVudFJlcXVlc3QSQgoLZW52aXJvbm1lbnQYASABKAsyLS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudCJfChlVcGRhdGVFbnZpcm9ubWVudFJlc3BvbnNlEkIKC2Vudmlyb25tZW50GAEgASgLMi0uYmxhbmtldG9wcy5lbnZpcm9ubWVudHMudjFhbHBoYTEuRW52aXJvbm1lbnQiNgoXUGF0Y2hFbnZpcm9ubWVudFJlcXVlc3QSDAoEbmFtZRgBIAEoCRINCgVwYXRjaBgCIAEoCSJeChhQYXRjaEVudmlyb25tZW50UmVzcG9uc2USQgoLZW52aXJvbm1lbnQYASABKAsyLS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudCK8AgoXTGlzdEVudmlyb25tZW50c1JlcXVlc3QSOgoFcGhhc2UYASABKAsyJi5ibGFua2V0b3BzLmNvbW1vbi52MS5FbnZpcm9ubWVudFBoYXNlSACIAQESRAoQZW52aXJvbm1lbnRfdHlwZRgCIAEoCzIlLmJsYW5rZXRvcHMuY29tbW9uLnYxLkVudmlyb25tZW50VHlwZUgBiAEBEh0KEGFwcGxpY2F0aW9uX25hbWUYAyABKAlIAogBARIWCglwYWdlX3NpemUYBCABKAVIA4gBARIXCgpwYWdlX3Rva2VuGAUgASgJSASIAQFCCAoGX3BoYXNlQhMKEV9lbnZpcm9ubWVudF90eXBlQhMKEV9hcHBsaWNhdGlvbl9uYW1lQgwKCl9wYWdlX3NpemVCDQoLX3BhZ2VfdG9rZW4ikQEKGExpc3RFbnZpcm9ubWVudHNSZXNwb25zZRJDCgxlbnZpcm9ubWVudHMYASADKAsyLS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudBIcCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAlIAIgBAUISChBfbmV4dF9wYWdlX3Rva2VuIigKGERlbGV0ZUVudmlyb25tZW50UmVxdWVzdBIMCgRuYW1lGAEgASgJIiwKGURlbGV0ZUVudmlyb25tZW50UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCInChdXYXRjaEVudmlyb25tZW50UmVxdWVzdBIMCgRuYW1lGAEgASgJIo0BChhXYXRjaEVudmlyb25tZW50UmVzcG9uc2USQgoLZW52aXJvbm1lbnQYASABKAsyLS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5FbnZpcm9ubWVudBItCgR0eXBlGAIgASgOMh8uYmxhbmtldG9wcy5jb21tb24udjEuRXZlbnRUeXBlMu0HChJFbnZpcm9ubWVudFNlcnZpY2USjAEKEUNyZWF0ZUVudmlyb25tZW50EjouYmxhbmtldG9wcy5lbnZpcm9ubWVudHMudjFhbHBoYTEuQ3JlYXRlRW52aXJvbm1lbnRSZXF1ZXN0GjsuYmxhbmtldG9wcy5lbnZpcm9ubWVudHMudjFhbHBoYTEuQ3JlYXRlRW52aXJvbm1lbnRSZXNwb25zZRKDAQoOR2V0RW52aXJvbm1lbnQSNy5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5HZXRFbnZpcm9ubWVudFJlcXVlc3QaOC5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5HZXRFbnZpcm9ubWVudFJlc3BvbnNlEowBChFVcGRhdGVFbnZpcm9ubWVudBI6LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLlVwZGF0ZUVudmlyb25tZW50UmVxdWVzdBo7LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLlVwZGF0ZUVudmlyb25tZW50UmVzcG9uc2USiQEKEFBhdGNoRW52aXJvbm1lbnQSOS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5QYXRjaEVudmlyb25tZW50UmVxdWVzdBo6LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLlBhdGNoRW52aXJvbm1lbnRSZXNwb25zZRKJAQoQTGlzdEVudmlyb25tZW50cxI5LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLkxpc3RFbnZpcm9ubWVudHNSZXF1ZXN0GjouYmxhbmtldG9wcy5lbnZpcm9ubWVudHMudjFhbHBoYTEuTGlzdEVudmlyb25tZW50c1Jlc3BvbnNlEowBChFEZWxldGVFbnZpcm9ubWVudBI6LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLkRlbGV0ZUVudmlyb25tZW50UmVxdWVzdBo7LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLkRlbGV0ZUVudmlyb25tZW50UmVzcG9uc2USiwEKEFdhdGNoRW52aXJvbm1lbnQSOS5ibGFua2V0b3BzLmVudmlyb25tZW50cy52MWFscGhhMS5XYXRjaEVudmlyb25tZW50UmVxdWVzdBo6LmJsYW5rZXRvcHMuZW52aXJvbm1lbnRzLnYxYWxwaGExLldhdGNoRW52aXJvbm1lbnRSZXNwb25zZTABQroBCiB2MWFscGhhMS5ibGFua2V0b3BzLmVudmlyb25tZW50c0IQRW52aXJvbm1lbnRQcm90b1phZ2l0aHViLmNvbS9udGxhbGV0c2k3MC9ibGFua2V0b3BzLWVudmlyb25tZW50cy1jb250cmFjdC9ibGFua2V0b3BzL2Vudmlyb25tZW50cy92MWFscGhhMTt2MWFscGhhMaoCIEJsYW5rZXRPcHMuRW52aXJvbm1lbnRzLlYxQWxwaGExYgZwcm90bzM", [file_blanketops_common_v1_environment, file_blanketops_common_v1_event, file_blanketops_common_v1_metadata, file_google_protobuf_timestamp]);
 
 /**
+ * =============================================================================
+ * Environment
+ *
+ * The envelope of the delivery chain: a versioned, isolated execution
+ * context where applications run (ESP-0001). Composes the CRs that make
+ * up an application's delivery — builds, triggers, packages, service
+ * units, deployment, and routing — by reference, and owns them via
+ * ownerReference (cascade delete).
+ * =============================================================================
+ * -----------------------------------------------------------------------------
+ * Resource
+ * -----------------------------------------------------------------------------
+ *
  * @generated from message blanketops.environments.v1alpha1.Environment
  */
 export type Environment = Message<"blanketops.environments.v1alpha1.Environment"> & {
@@ -66,6 +79,36 @@ export const EnvironmentSchema: GenMessage<Environment> = /*@__PURE__*/
   messageDesc(file_blanketops_environments_v1alpha1_environment, 0);
 
 /**
+ * -----------------------------------------------------------------------------
+ * Contract
+ * -----------------------------------------------------------------------------
+ * EnvironmentContract — platform-level bindings declared per environment.
+ * Drives ESO, PKI, and policy enforcement at reconciliation time.
+ *
+ * @generated from message blanketops.environments.v1alpha1.EnvironmentContract
+ */
+export type EnvironmentContract = Message<"blanketops.environments.v1alpha1.EnvironmentContract"> & {
+  /**
+   * External secrets backend for this environment.
+   * SecretStoreProvider and SecretStore are defined in blanketops/common/v1/environment.proto.
+   *
+   * @generated from field: blanketops.common.v1.SecretStore secret_store = 1;
+   */
+  secretStore?: SecretStore | undefined;
+};
+
+/**
+ * Describes the message blanketops.environments.v1alpha1.EnvironmentContract.
+ * Use `create(EnvironmentContractSchema)` to create a new message.
+ */
+export const EnvironmentContractSchema: GenMessage<EnvironmentContract> = /*@__PURE__*/
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 1);
+
+/**
+ * -----------------------------------------------------------------------------
+ * Spec (intent)
+ * -----------------------------------------------------------------------------
+ *
  * @generated from message blanketops.environments.v1alpha1.EnvironmentSpec
  */
 export type EnvironmentSpec = Message<"blanketops.environments.v1alpha1.EnvironmentSpec"> & {
@@ -151,11 +194,19 @@ export type EnvironmentSpec = Message<"blanketops.environments.v1alpha1.Environm
   build?: ObjectRef | undefined;
 
   /**
-   * Build triggers permitted for this environment.
+   * Git repository associated with this environment.
+   * The GitRepository CR owns branch, owner, and clone config.
    *
-   * @generated from field: repeated blanketops.environments.v1alpha1.ObjectRef build_triggers = 12;
+   * @generated from field: blanketops.environments.v1alpha1.ObjectRef git_repository = 12;
    */
-  buildTriggers: ObjectRef[];
+  gitRepository?: ObjectRef | undefined;
+
+  /**
+   * Platform-level bindings — secret store, PKI, policy.
+   *
+   * @generated from field: blanketops.environments.v1alpha1.EnvironmentContract contract = 13;
+   */
+  contract?: EnvironmentContract | undefined;
 };
 
 /**
@@ -163,9 +214,12 @@ export type EnvironmentSpec = Message<"blanketops.environments.v1alpha1.Environm
  * Use `create(EnvironmentSpecSchema)` to create a new message.
  */
 export const EnvironmentSpecSchema: GenMessage<EnvironmentSpec> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 1);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 2);
 
 /**
+ * -----------------------------------------------------------------------------
+ * References (composition, not ownership)
+ * -----------------------------------------------------------------------------
  * Reference to a CR composed into this environment.
  * Resolved in the same namespace as the Environment.
  *
@@ -185,9 +239,13 @@ export type ObjectRef = Message<"blanketops.environments.v1alpha1.ObjectRef"> & 
  * Use `create(ObjectRefSchema)` to create a new message.
  */
 export const ObjectRefSchema: GenMessage<ObjectRef> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 2);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 3);
 
 /**
+ * -----------------------------------------------------------------------------
+ * Status (observed state)
+ * -----------------------------------------------------------------------------
+ *
  * @generated from message blanketops.environments.v1alpha1.EnvironmentStatus
  */
 export type EnvironmentStatus = Message<"blanketops.environments.v1alpha1.EnvironmentStatus"> & {
@@ -226,7 +284,7 @@ export type EnvironmentStatus = Message<"blanketops.environments.v1alpha1.Enviro
  * Use `create(EnvironmentStatusSchema)` to create a new message.
  */
 export const EnvironmentStatusSchema: GenMessage<EnvironmentStatus> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 3);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 4);
 
 /**
  * @generated from message blanketops.environments.v1alpha1.EnvironmentCondition
@@ -273,9 +331,12 @@ export type EnvironmentCondition = Message<"blanketops.environments.v1alpha1.Env
  * Use `create(EnvironmentConditionSchema)` to create a new message.
  */
 export const EnvironmentConditionSchema: GenMessage<EnvironmentCondition> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 4);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 5);
 
 /**
+ * -----------------------------------------------------------------------------
+ * Requests / Responses
+ * -----------------------------------------------------------------------------
  * CreateEnvironment — declare a new Environment.
  * Controller reconciles composed resources on creation.
  *
@@ -295,7 +356,7 @@ export type CreateEnvironmentRequest = Message<"blanketops.environments.v1alpha1
  * Use `create(CreateEnvironmentRequestSchema)` to create a new message.
  */
 export const CreateEnvironmentRequestSchema: GenMessage<CreateEnvironmentRequest> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 5);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 6);
 
 /**
  * @generated from message blanketops.environments.v1alpha1.CreateEnvironmentResponse
@@ -314,7 +375,7 @@ export type CreateEnvironmentResponse = Message<"blanketops.environments.v1alpha
  * Use `create(CreateEnvironmentResponseSchema)` to create a new message.
  */
 export const CreateEnvironmentResponseSchema: GenMessage<CreateEnvironmentResponse> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 6);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 7);
 
 /**
  * GetEnvironment — fetch an Environment by name.
@@ -335,7 +396,7 @@ export type GetEnvironmentRequest = Message<"blanketops.environments.v1alpha1.Ge
  * Use `create(GetEnvironmentRequestSchema)` to create a new message.
  */
 export const GetEnvironmentRequestSchema: GenMessage<GetEnvironmentRequest> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 7);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 8);
 
 /**
  * @generated from message blanketops.environments.v1alpha1.GetEnvironmentResponse
@@ -352,7 +413,7 @@ export type GetEnvironmentResponse = Message<"blanketops.environments.v1alpha1.G
  * Use `create(GetEnvironmentResponseSchema)` to create a new message.
  */
 export const GetEnvironmentResponseSchema: GenMessage<GetEnvironmentResponse> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 8);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 9);
 
 /**
  * UpdateEnvironment — full replace of the Environment spec.
@@ -374,7 +435,7 @@ export type UpdateEnvironmentRequest = Message<"blanketops.environments.v1alpha1
  * Use `create(UpdateEnvironmentRequestSchema)` to create a new message.
  */
 export const UpdateEnvironmentRequestSchema: GenMessage<UpdateEnvironmentRequest> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 9);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 10);
 
 /**
  * @generated from message blanketops.environments.v1alpha1.UpdateEnvironmentResponse
@@ -393,7 +454,7 @@ export type UpdateEnvironmentResponse = Message<"blanketops.environments.v1alpha
  * Use `create(UpdateEnvironmentResponseSchema)` to create a new message.
  */
 export const UpdateEnvironmentResponseSchema: GenMessage<UpdateEnvironmentResponse> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 10);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 11);
 
 /**
  * PatchEnvironment — partial update using JSON merge patch RFC 7396.
@@ -423,7 +484,7 @@ export type PatchEnvironmentRequest = Message<"blanketops.environments.v1alpha1.
  * Use `create(PatchEnvironmentRequestSchema)` to create a new message.
  */
 export const PatchEnvironmentRequestSchema: GenMessage<PatchEnvironmentRequest> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 11);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 12);
 
 /**
  * @generated from message blanketops.environments.v1alpha1.PatchEnvironmentResponse
@@ -442,7 +503,7 @@ export type PatchEnvironmentResponse = Message<"blanketops.environments.v1alpha1
  * Use `create(PatchEnvironmentResponseSchema)` to create a new message.
  */
 export const PatchEnvironmentResponseSchema: GenMessage<PatchEnvironmentResponse> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 12);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 13);
 
 /**
  * ListEnvironments — list Environment CRs with optional filtering and paging.
@@ -492,7 +553,7 @@ export type ListEnvironmentsRequest = Message<"blanketops.environments.v1alpha1.
  * Use `create(ListEnvironmentsRequestSchema)` to create a new message.
  */
 export const ListEnvironmentsRequestSchema: GenMessage<ListEnvironmentsRequest> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 13);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 14);
 
 /**
  * @generated from message blanketops.environments.v1alpha1.ListEnvironmentsResponse
@@ -518,7 +579,7 @@ export type ListEnvironmentsResponse = Message<"blanketops.environments.v1alpha1
  * Use `create(ListEnvironmentsResponseSchema)` to create a new message.
  */
 export const ListEnvironmentsResponseSchema: GenMessage<ListEnvironmentsResponse> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 14);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 15);
 
 /**
  * DeleteEnvironment — delete an Environment CR.
@@ -540,7 +601,7 @@ export type DeleteEnvironmentRequest = Message<"blanketops.environments.v1alpha1
  * Use `create(DeleteEnvironmentRequestSchema)` to create a new message.
  */
 export const DeleteEnvironmentRequestSchema: GenMessage<DeleteEnvironmentRequest> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 15);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 16);
 
 /**
  * @generated from message blanketops.environments.v1alpha1.DeleteEnvironmentResponse
@@ -559,7 +620,7 @@ export type DeleteEnvironmentResponse = Message<"blanketops.environments.v1alpha
  * Use `create(DeleteEnvironmentResponseSchema)` to create a new message.
  */
 export const DeleteEnvironmentResponseSchema: GenMessage<DeleteEnvironmentResponse> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 16);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 17);
 
 /**
  * WatchEnvironment — stream phase transitions for an Environment CR.
@@ -581,7 +642,7 @@ export type WatchEnvironmentRequest = Message<"blanketops.environments.v1alpha1.
  * Use `create(WatchEnvironmentRequestSchema)` to create a new message.
  */
 export const WatchEnvironmentRequestSchema: GenMessage<WatchEnvironmentRequest> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 17);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 18);
 
 /**
  * @generated from message blanketops.environments.v1alpha1.WatchEnvironmentResponse
@@ -607,15 +668,18 @@ export type WatchEnvironmentResponse = Message<"blanketops.environments.v1alpha1
  * Use `create(WatchEnvironmentResponseSchema)` to create a new message.
  */
 export const WatchEnvironmentResponseSchema: GenMessage<WatchEnvironmentResponse> = /*@__PURE__*/
-  messageDesc(file_blanketops_environments_v1alpha1_environment, 18);
+  messageDesc(file_blanketops_environments_v1alpha1_environment, 19);
 
 /**
- * ── CRUD — aligned with BuildService pattern ─────────────────────────────
+ * -----------------------------------------------------------------------------
+ * Service
+ * -----------------------------------------------------------------------------
  *
  * @generated from service blanketops.environments.v1alpha1.EnvironmentService
  */
 export const EnvironmentService: GenService<{
   /**
+   * ── CRUD — aligned with BuildService pattern ─────────────────────────────
    * Declare a new Environment.
    *
    * @generated from rpc blanketops.environments.v1alpha1.EnvironmentService.CreateEnvironment
@@ -676,6 +740,7 @@ export const EnvironmentService: GenService<{
     output: typeof DeleteEnvironmentResponseSchema;
   },
   /**
+   * ── Streaming ────────────────────────────────────────────────────────────
    * Stream phase transitions for an Environment CR.
    * Streams indefinitely — environments have no terminal phase; close client-side.
    *

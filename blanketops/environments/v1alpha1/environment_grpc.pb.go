@@ -43,7 +43,12 @@ const (
 // EnvironmentServiceClient is the client API for EnvironmentService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
 type EnvironmentServiceClient interface {
+	// ── CRUD — aligned with BuildService pattern ─────────────────────────────
 	// Declare a new Environment.
 	CreateEnvironment(ctx context.Context, in *CreateEnvironmentRequest, opts ...grpc.CallOption) (*CreateEnvironmentResponse, error)
 	// Fetch an Environment CR by name.
@@ -56,6 +61,7 @@ type EnvironmentServiceClient interface {
 	ListEnvironments(ctx context.Context, in *ListEnvironmentsRequest, opts ...grpc.CallOption) (*ListEnvironmentsResponse, error)
 	// Delete an Environment CR and cascade-delete owned resources.
 	DeleteEnvironment(ctx context.Context, in *DeleteEnvironmentRequest, opts ...grpc.CallOption) (*DeleteEnvironmentResponse, error)
+	// ── Streaming ────────────────────────────────────────────────────────────
 	// Stream phase transitions for an Environment CR.
 	// Streams indefinitely — environments have no terminal phase; close client-side.
 	WatchEnvironment(ctx context.Context, in *WatchEnvironmentRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchEnvironmentResponse], error)
@@ -151,7 +157,12 @@ type EnvironmentService_WatchEnvironmentClient = grpc.ServerStreamingClient[Watc
 // EnvironmentServiceServer is the server API for EnvironmentService service.
 // All implementations must embed UnimplementedEnvironmentServiceServer
 // for forward compatibility.
+//
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
 type EnvironmentServiceServer interface {
+	// ── CRUD — aligned with BuildService pattern ─────────────────────────────
 	// Declare a new Environment.
 	CreateEnvironment(context.Context, *CreateEnvironmentRequest) (*CreateEnvironmentResponse, error)
 	// Fetch an Environment CR by name.
@@ -164,6 +175,7 @@ type EnvironmentServiceServer interface {
 	ListEnvironments(context.Context, *ListEnvironmentsRequest) (*ListEnvironmentsResponse, error)
 	// Delete an Environment CR and cascade-delete owned resources.
 	DeleteEnvironment(context.Context, *DeleteEnvironmentRequest) (*DeleteEnvironmentResponse, error)
+	// ── Streaming ────────────────────────────────────────────────────────────
 	// Stream phase transitions for an Environment CR.
 	// Streams indefinitely — environments have no terminal phase; close client-side.
 	WatchEnvironment(*WatchEnvironmentRequest, grpc.ServerStreamingServer[WatchEnvironmentResponse]) error
