@@ -1,0 +1,115 @@
+name: Validate & Generate Contracts
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - feature/**
+      - release/**
+      - hotfix/**
+      - bugfix/**
+  pull_request:
+    branches:
+      - main
+      - develop
+jobs:
+  buf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+      - name: Set up Buf
+        uses: bufbuild/buf-setup-action@v1.46.0
+        with:
+          version: '1.50.0'
+      - name: Install Protoc Plugins
+        run: |
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+          npm install -g @bufbuild/protoc-gen-es @bufbuild/protoc-gen-connect-es
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH   
+      - name: Set up Mage
+        uses: magefile/mage-action@v4
+        with:
+          version: latest
+          install-only: true
+      - name: Buf Lint
+        id: lint
+        run: mage lint
+
+      - name: Buf Breaking Check
+        id: breaking
+        # PR-only — pushing to main would compare main against itself.
+        # Allowed to fail pre-v1; surfaced in the summary instead of the job status.
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: buf breaking --against ".git#branch=origin/${{ github.base_ref }}"
+
+      - name: Generate contracts (Go + TypeScript)
+        id: generate
+        run: mage gen
+
+      - name: Upload generated contracts
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-contracts-${{ github.sha }}
+          path: blanketops/
+          retention-days: 7
+          # Upload the full blanketops/ tree — consumers can extract
+          # just the .pb.go or _pb.ts files they need from the artifact.
+
+      - name: CI Summary
+        if: always()
+        run: |
+          # ── outcomes ────────────────────────────────────────────────────
+          lint="${{ steps.lint.outcome }}"
+          breaking="${{ steps.breaking.outcome }}"
+          generate="${{ steps.generate.outcome }}"
+
+          icon() {
+            case "$1" in
+              success) echo "✅ passed" ;;
+              failure) echo "❌ failed" ;;
+              skipped) echo "⏭️ skipped" ;;
+              *)       echo "⚪ $1" ;;
+            esac
+          }
+
+          # pre-v1: breaking failures are informational
+          breaking_label="$(icon "$breaking")"
+          if [ "$breaking" = "failure" ]; then
+            breaking_label="⚠️ breaking changes detected (allowed pre-v1)"
+          fi
+
+          # ── generated file counts ───────────────────────────────────────
+          count() { find "$1" -type f -name "$2" 2>/dev/null | wc -l | tr -d ' '; }
+          go_n=$(count blanketops '*.pb.go')
+          ts_n=$(count blanketops '*_pb.ts')
+          proto_n=$(count blanketops '*.proto')
+          svc_n=$(grep -rh "^service " blanketops --include='*.proto' 2>/dev/null | wc -l | tr -d ' ')
+
+          # ── summary ─────────────────────────────────────────────────────
+          cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          # 📜 Contract Validation & Generation
+          **Ref:** \`${{ github.ref_name }}\` · **Commit:** [\`$(echo "${{ github.sha }}" | cut -c1-7)\`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
+          ## Checks
+          | Check | Result |
+          | --- | --- |
+          | \`buf lint\` | $(icon "$lint") |
+          | \`buf breaking\` | $breaking_label |
+          | \`mage gen\` | $(icon "$generate") |
+          ## Generated
+          | Target | Files |
+          | --- | --- |
+          | Go (\`blanketops/**/*.pb.go\`) | $go_n |
+          | TypeScript (\`blanketops/**/*_pb.ts\`) | $ts_n |
+          *$proto_n proto files · $svc_n services compiled*
+          ## Artifacts
+          📦 [generated-contracts-$(echo "${{ github.sha }}" | cut -c1-7)…](${{ steps.upload.outputs.artifact-url }}) — retained 7 days
+          🔗 [Full run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          EOF

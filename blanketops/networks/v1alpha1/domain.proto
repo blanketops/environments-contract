@@ -1,0 +1,185 @@
+/*
+ * Copyright 2026 The BlanketOps Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// =============================================================================
+// Domain
+//
+// Owns the cert/mapping chain for a host within a BlanketOps Environment.
+//
+// The controller materializes:
+//   platform strategy → DomainClaim + DomainMapping
+//   custom strategy   → Issuer + DomainClaim + DomainMapping + Certificate
+//
+// Owned by a Route CR via ownerReference (cascade delete).
+// Route owns the workload binding (runtime, path, enabled).
+// Domain owns the TLS chain and optional mTLS identity for the host.
+//
+// mTLS:
+//   When spec.mtls.enforced is true, blanketops-proxy sidecars are injected
+//   and blanketK issues identities for all workloads bound to this domain.
+//   The platform wires the sidecar identity — no manual cert management needed.
+//
+// renewBefore:
+//   Applies only to custom strategy. Controls cert-manager's renewal window.
+//   Platform wildcard certs are renewed on the platform schedule regardless.
+//
+// Status refs:
+//   status.certificate_ref  — set by controller on custom strategy; used by
+//                             the Route mediator to gate DomainMapping dispatch
+//                             without deriving the TLS secret name externally.
+//   status.domain_mapping_ref — set once DomainMapping is materialized.
+//
+// APIVersion: networks.blanketops.dev/v1alpha1
+// =============================================================================
+
+syntax = "proto3";
+
+package blanketops.networks.v1alpha1;
+
+import "blanketops/common/v1/domain.proto";
+import "blanketops/common/v1/metadata.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "BlanketOps.Networks.v1Alpha1";
+option go_package = "github.com/blanketops/environments-contract/blanketops/networks/v1alpha1;v1alpha1";
+option java_outer_classname = "DomainProto";
+option java_package = "v1alpha1.networks.blanketops";
+
+// =============================================================================
+// Resource
+// =============================================================================
+
+message Domain {
+  // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
+  blanketops.common.v1.Metadata metadata = 1;
+  // Desired state declared by the operator.
+  DomainSpec spec = 2;
+  // Observed state set by the controller. Never manually edited.
+  DomainStatus status = 3;
+}
+
+// =============================================================================
+// Spec (intent)
+// =============================================================================
+
+message DomainSpec {
+  // Fully qualified domain name this assignment covers.
+  // platform strategy: must match the platform wildcard pattern (e.g. *.dev.domain.co.za)
+  // custom strategy:   client-owned zone, any FQDN.
+  string host = 1;
+
+  // RouteRef is the Route in the same namespace that owns this Domain.
+  // Route owns the workload binding (runtime, path, enabled).
+  // Domain is cascade-deleted when the owning Route is deleted.
+  DomainRouteRef route_ref = 2;
+
+  // TlsStrategy controls which cert provisioning path the controller takes.
+  // platform: platform wildcard cert already covers this host — DomainClaim + DomainMapping only.
+  // custom:   client-owned zone — Issuer + DomainClaim + DomainMapping + Certificate.
+  blanketops.common.v1.DomainTLSStrategy tls_strategy = 3;
+
+  // Mtls configures inter-service mTLS for this domain.
+  // When enforced, blanketops-proxy sidecars are injected and blanketK issues identities.
+  // Absent or not enforced means plain TLS only.
+  DomainMTLS mtls = 4;
+
+  // RenewBefore is the cert renewal window (e.g. "720h").
+  // Applies to custom strategy only — platform wildcard certs use the platform schedule.
+  // Empty string means cert-manager default applies.
+  string renew_before = 5;
+}
+
+// DomainRouteRef identifies the Route CR that owns this Domain.
+// Domain and Route must be in the same namespace.
+message DomainRouteRef {
+  // Name is the Route CR name in the same namespace as this Domain.
+  string name = 1;
+}
+
+// DomainMTLS configures inter-service mTLS for this domain.
+message DomainMTLS {
+  // Enforced controls whether blanketops-proxy + blanketK mTLS is active.
+  // When true, the platform wires sidecar identity automatically.
+  bool enforced = 1;
+}
+
+// DomainObjectRef is a namespaced reference to a Kubernetes resource
+// materialized by the Domain controller (Certificate, DomainMapping).
+// Set in status once the resource is created — never in spec.
+message DomainObjectRef {
+  // Name of the referenced resource.
+  string name = 1;
+  // Namespace of the referenced resource.
+  // For DomainMapping: same namespace as this Domain.
+  // For Certificate:   same namespace as this Domain.
+  string namespace = 2;
+}
+
+// =============================================================================
+// Status (observed state)
+// =============================================================================
+
+message DomainStatus {
+  // Current lifecycle phase. Set by the controller.
+  blanketops.common.v1.DomainPhase phase = 1;
+
+  // Human-readable status message. Populated on failure or provisioning.
+  string message = 2;
+
+  // CertIssued is true once a valid TLS certificate has been issued for this host.
+  // Always true for platform strategy once DomainMapping is active.
+  // Tracks cert-manager issuance for custom strategy.
+  bool cert_issued = 3;
+
+  // TlsStatus is the current TLS provisioning state.
+  blanketops.common.v1.DomainTLSStatus tls_status = 4;
+
+  // Conditions for UI and automation consumers.
+  repeated DomainCondition conditions = 5;
+
+  // LastUpdatedAt is when the controller last wrote to this status.
+  google.protobuf.Timestamp last_updated_at = 6;
+
+  // DomainReady is true when both DomainClaim and DomainMapping are
+  // reconciled and active. Mirrors the DomainMappingReady condition
+  // as a scalar for fast consumer reads.
+  bool domain_ready = 7;
+
+  // CertificateRef is the Certificate resource emitted by the controller.
+  // Set only when tls_strategy is custom — empty for platform strategy.
+  // The Route mediator reads this ref to gate DomainMapping dispatch
+  // on TLS secret existence without deriving the secret name externally.
+  DomainObjectRef certificate_ref = 8;
+
+  // DomainMappingRef is the Knative DomainMapping resource emitted
+  // by the controller. Set once materialized, cleared on deletion.
+  DomainObjectRef domain_mapping_ref = 9;
+}
+
+// =============================================================================
+// Conditions
+// =============================================================================
+
+message DomainCondition {
+  // Condition type. e.g. DomainResolved, CertIssued, MTLSReady, DomainMappingReady
+  string type = 1;
+
+  // Condition status: True, False, or Unknown.
+  string status = 2;
+
+  // Machine-readable reason for the last transition.
+  string reason = 3;
+}

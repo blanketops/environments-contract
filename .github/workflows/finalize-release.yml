@@ -1,0 +1,93 @@
+name: Finalize Release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version to finalize (e.g. v0.0.9)"
+        required: true
+permissions:
+  contents: write
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+      - name: Set up Mage
+        uses: magefile/mage-action@v4
+        with:
+          version: latest
+          install-only: true
+      - name: Set up Buf
+        uses: bufbuild/buf-setup-action@v1.46.0
+        with:
+          version: '1.50.0'    
+      - name: Install Protoc Plugins
+        run: |
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+          npm install -g @bufbuild/protoc-gen-es @bufbuild/protoc-gen-connect-es
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH     
+      - name: Configure git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
+
+      - name: Merge release into main
+        run: |
+          git checkout main
+          git pull origin main
+          git merge --no-ff origin/release/${{ github.event.inputs.version }} \
+            -m "release: merge release/${{ github.event.inputs.version }} into main"
+          git push origin main
+
+      - name: Generate contracts (Go + TypeScript)
+        run: mage gen
+
+      - name: Commit generated contracts
+        run: |
+          git add -f blanketops/
+          git commit -m "chore(release): regenerate Go and TypeScript contracts for ${{ github.event.inputs.version }} [skip ci]" || echo "No changes"
+          git push origin main
+
+      - name: Tag release
+        run: |
+          git tag ${{ github.event.inputs.version }}
+          git push origin ${{ github.event.inputs.version }}
+
+      - name: Merge main back into develop
+        run: |
+          git checkout develop
+          git pull origin develop
+          git merge --no-ff origin/main \
+            -m "chore: sync develop with main after release/${{ github.event.inputs.version }}"
+          git push origin develop
+
+      - name: Delete release branch
+        run: |
+          git push origin --delete release/${{ github.event.inputs.version }}
+
+      - name: Release Summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY <<EOF
+          # 🎉 Release Finalized
+          **Version:** \`${{ github.event.inputs.version }}\`
+          ## Completed
+          - Merged \`release/${{ github.event.inputs.version }}\` into \`main\`
+          - Generated Go and TypeScript contracts via \`mage gen\`
+          - Committed generated contracts to main
+          - Created Git tag \`${{ github.event.inputs.version }}\`
+          - Synced \`main\` back into \`develop\`
+          - Deleted release branch
+          ## Branch Flow
+          \`release/${{ github.event.inputs.version }}\` → \`main\` → \`develop\`
+          ## Release Tag
+          \`${{ github.event.inputs.version }}\`
+          ## Next Steps
+          - Tag push triggers the **Release** workflow for changelog and GitHub Release.
+          EOF

@@ -1,0 +1,57 @@
+/*
+   Copyright 2026 The BlanketOps Authors.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   	http://www.apache.org/licenses/LICENSE-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+syntax = "proto3";
+package blanketops.common.v1;
+option csharp_namespace = "BlanketOps.Common.v1";
+option go_package = "github.com/blanketops/environments-contract/blanketops/common/v1;commonv1";
+
+message BuildTriggerSource {
+  enum BuildTriggerSource {
+    BUILD_TRIGGER_SOURCE_UNSPECIFIED = 0;
+    // GitHub webhook, via the GitHubEvent pipeline.
+    BUILD_TRIGGER_SOURCE_GITHUB = 1;
+    // GitLab webhook (future).
+    BUILD_TRIGGER_SOURCE_GITLAB = 2;
+    // Manual dispatch — operator or CI invoking TriggerBuild.
+    BUILD_TRIGGER_SOURCE_MANUAL = 3;
+  }
+  BuildTriggerSource source = 1;
+}
+
+message BuildTriggerType {
+  enum BuildTriggerType {
+    BUILD_TRIGGER_TYPE_UNSPECIFIED = 0;
+    // A new commit pushed to a repository.
+    BUILD_TRIGGER_TYPE_COMMIT = 1;
+    // A pull request opened or updated.
+    BUILD_TRIGGER_TYPE_PULL_REQUEST = 2;
+    // A manual trigger, e.g. via kubectl or CI.
+    BUILD_TRIGGER_TYPE_MANUAL = 3;
+  }
+  BuildTriggerType type = 1;
+}
+
+message BuildTriggerStatus {
+  enum BuildTriggerStatus {
+    BUILD_TRIGGER_STATUS_UNSPECIFIED = 0;
+    // Trigger has been created but not yet evaluated by the controller.
+    BUILD_TRIGGER_STATUS_PENDING = 1;
+    // Controller has accepted the trigger and fired a BuildRun.
+    BUILD_TRIGGER_STATUS_ACCEPTED = 2;
+    // Controller has rejected the trigger based on policy or duplication.
+    BUILD_TRIGGER_STATUS_REJECTED = 3;
+    // BuildRun has completed; trigger is consumed and awaiting deletion.
+    BUILD_TRIGGER_STATUS_CONSUMED = 4;
+  }
+  BuildTriggerStatus status = 1;
+}
