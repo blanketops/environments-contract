@@ -1,3 +1,56 @@
+## [0.5.0] - 2026-08-18
+
+### 💼 Other
+
+- Bring main into develop (main wins on conflict)
+- Merge release/v0.5.0 into main
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.4.9
+- Use GitHub App token instead of GH_PAT
+- Remove Dockerfile
+## [0.4.9] - 2026-07-12
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.4.8
+- *(release)* Regenerate Go and TypeScript contracts for v0.4.9 [skip ci]
+## [0.4.8] - 2026-07-05
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.4.7
+- *(release)* Regenerate Go and TypeScript contracts for v0.4.8 [skip ci]
+## [0.4.7] - 2026-06-29
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.4.6
+- *(release)* Regenerate Go and TypeScript contracts for v0.4.7 [skip ci]
+## [0.4.6] - 2026-06-28
+
+### 💼 Other
+
+- *(release)* Update route and domain types
+- *(release)* Update route and domain types
+- *(release)* Update route and domain types
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.4.5
+- *(release)* Regenerate Go and TypeScript contracts for v0.4.6 [skip ci]
+## [0.4.5] - 2026-06-27
+
+### 💼 Other
+
+- *(release)* Update environment type
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Update changelog for v0.4.4
+- Sync develop with main after release/v0.4.3
+- *(release)* Regenerate Go and TypeScript contracts for v0.4.5 [skip ci]
 ## [0.4.4] - 2026-06-27
 
 ### ⚙️ Miscellaneous Tasks
@@ -363,3 +416,8 @@
 
 - Ignore generated protobuf artifacts
 ## [0.0.1] - 2026-01-25
+
+### ⚙️ Miscellaneous Tasks
+
+- Use GitHub App token instead of GH_PAT
+- Remove Dockerfile
