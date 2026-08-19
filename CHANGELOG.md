@@ -1,3 +1,9 @@
+## [0.5.1] - 2026-08-19
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Update changelog for v0.5.0
+- *(release)* Regenerate Go and TypeScript contracts
 ## [0.5.0] - 2026-08-18
 
 ### 💼 Other
