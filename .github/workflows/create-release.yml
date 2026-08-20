@@ -36,9 +36,10 @@ jobs:
           owner: blanketops
           repositories: environments-contract
 
-      - name: Checkout
+      - name: Checkout develop
         uses: actions/checkout@v7
         with:
+          ref: develop
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
 
@@ -49,7 +50,6 @@ jobs:
 
       - name: Create release branch
         run: |
-          git pull --force
           git checkout -b release/${{ github.event.inputs.version }}
           git push origin release/${{ github.event.inputs.version }}
 
