@@ -1,3 +1,12 @@
+## [0.5.2] - 2026-08-19
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Update changelog for v0.5.1
+- Sync develop with main after release/v0.5.0
+- *(release)* Regenerate Go and TypeScript contracts
+- Add dependabot.yml (github-actions only)
+- Bring dependabot.yml into main (Dependabot reads config from default branch)
 ## [0.5.1] - 2026-08-19
 
 ### ⚙️ Miscellaneous Tasks
