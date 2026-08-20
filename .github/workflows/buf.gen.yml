@@ -54,7 +54,7 @@ jobs:
 
       - name: Upload generated contracts
         id: upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: generated-contracts-${{ github.sha }}
           path: blanketops/
