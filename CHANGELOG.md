@@ -1,3 +1,14 @@
+## [0.5.3] - 2026-08-20
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Update changelog for v0.5.2
+- Drop unnecessary App-token auth from buf.gen.yml
+- *(ci)* Bump bufbuild/buf-setup-action from 1.46.0 to 1.50.0
+- *(ci)* Bump actions/create-github-app-token from 2 to 3
+- *(ci)* Bump actions/upload-artifact from 4 to 7
+- *(ci)* Bump actions/checkout from 4 to 7
+- *(ci)* Bump softprops/action-gh-release from 2 to 3
 ## [0.5.2] - 2026-08-19
 
 ### ⚙️ Miscellaneous Tasks
