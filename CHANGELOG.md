@@ -1,3 +1,18 @@
+## [0.5.4] - 2026-08-21
+
+### 🐛 Bug Fixes
+
+- Declare protobuf/grpc as direct dependencies in go.mod
+- *(ci)* Checkout develop explicitly in create-release
+
+### 💼 Other
+
+- Merge release/v0.5.4 into main
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Update changelog for v0.5.3
+- Sync develop with main after release/v0.5.3
 ## [0.5.3] - 2026-08-20
 
 ### ⚙️ Miscellaneous Tasks
