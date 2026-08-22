@@ -20,7 +20,6 @@ option csharp_namespace = "BlanketOps.Environments.V1Alpha1";
 option go_package = "github.com/blanketops/environments-contract/blanketops/environments/v1alpha1;v1alpha1";
 option java_outer_classname = "EnvironmentProto";
 option java_package = "v1alpha1.blanketops.environments";
-// =============================================================================
 // Environment
 //
 // The envelope of the delivery chain: a versioned, isolated execution
@@ -28,10 +27,8 @@ option java_package = "v1alpha1.blanketops.environments";
 // up an application's delivery — builds, packages, service units,
 // deployment, and routing — by reference, and owns them via ownerReference
 // (cascade delete).
-// =============================================================================
-// -----------------------------------------------------------------------------
+//
 // Resource
-// -----------------------------------------------------------------------------
 message Environment {
   // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
   blanketops.common.v1.Metadata metadata = 1;
@@ -40,9 +37,7 @@ message Environment {
   // Observed state set by the controller. Never manually edited.
   EnvironmentStatus status = 3;
 }
-// -----------------------------------------------------------------------------
 // Contract
-// -----------------------------------------------------------------------------
 // EnvironmentContract — platform-level bindings declared per environment.
 // Drives ESO ClusterSecretStore selection at reconciliation time.
 // Each composed CR owns its own credential secrets — this declares only
@@ -55,9 +50,7 @@ message EnvironmentContract {
   // Each CR manages its own credential secrets independently.
   blanketops.common.v1.SecretStore secret_store = 1;
 }
-// -----------------------------------------------------------------------------
 // Spec (intent)
-// -----------------------------------------------------------------------------
 message EnvironmentSpec {
   // Human-readable application identifier.
   // e.g. for-kaniko-app
@@ -94,18 +87,14 @@ message EnvironmentSpec {
   // The GitHubEvent CR owns webhook event routing and Argo Events config.
   ObjectRef git_hub_event = 14;
 }
-// -----------------------------------------------------------------------------
 // References (composition, not ownership)
-// -----------------------------------------------------------------------------
 // Reference to a CR composed into this environment.
 // Resolved in the same namespace as the Environment.
 message ObjectRef {
   // Name of the referenced CR.
   string name = 1;
 }
-// -----------------------------------------------------------------------------
 // Status (observed state)
-// -----------------------------------------------------------------------------
 message EnvironmentStatus {
   // Current aggregate phase. Set by the controller.
   blanketops.common.v1.EnvironmentPhase phase = 1;
@@ -129,9 +118,7 @@ message EnvironmentCondition {
   // When the condition last changed status.
   google.protobuf.Timestamp last_transition_time = 5;
 }
-// -----------------------------------------------------------------------------
 // Requests / Responses
-// -----------------------------------------------------------------------------
 message CreateEnvironmentRequest {
   // Desired spec for the new Environment.
   EnvironmentSpec spec = 1;
@@ -203,9 +190,7 @@ message WatchEnvironmentResponse {
   // The type of change that triggered this event.
   blanketops.common.v1.EventType type = 2;
 }
-// -----------------------------------------------------------------------------
 // Service
-// -----------------------------------------------------------------------------
 service EnvironmentService {
   // ── CRUD — aligned with BuildService pattern ─────────────────────────────
   // Declare a new Environment.
