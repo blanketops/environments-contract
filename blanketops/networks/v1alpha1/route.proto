@@ -32,21 +32,17 @@ option java_package = "v1alpha1.networks.blanketops";
 //   No ServiceUnit status lookup required.
 // =============================================================================
 
-// -----------------------------------------------------------------------------
 // ServiceUnitRef
 //
 // Reference to a ServiceUnit CR in the same namespace as this Route.
 // The controller resolves the materialised ksvc or K8s service by convention:
 //   ksvc name == service_unit_ref.name
-// -----------------------------------------------------------------------------
 message ServiceUnitRef {
   // Name of the ServiceUnit CR in this namespace.
   string name = 1;
 }
 
-// -----------------------------------------------------------------------------
 // Resource
-// -----------------------------------------------------------------------------
 message Route {
   // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
   blanketops.common.v1.Metadata metadata = 1;
@@ -56,9 +52,7 @@ message Route {
   RouteStatus status = 3;
 }
 
-// -----------------------------------------------------------------------------
 // Spec (intent)
-// -----------------------------------------------------------------------------
 message RouteSpec {
   // Fully qualified domain name to serve.
   // e.g. app.dev.blanketops.online
@@ -88,9 +82,7 @@ message RouteSpec {
   ServiceUnitRef service_unit_ref = 6;
 }
 
-// -----------------------------------------------------------------------------
 // Status (observed state)
-// -----------------------------------------------------------------------------
 message RouteStatus {
   // Current lifecycle phase. Set by the controller.
   blanketops.common.v1.RoutePhase phase = 1;
@@ -112,9 +104,7 @@ message RouteStatus {
   google.protobuf.Timestamp last_updated_at = 6;
 }
 
-// -----------------------------------------------------------------------------
 // Conditions
-// -----------------------------------------------------------------------------
 message RouteCondition {
   // Condition type. e.g. RouteResolved, TLSReady, RuntimeReady
   string type = 1;
@@ -227,9 +217,7 @@ message WatchRouteResponse {
   blanketops.common.v1.EventType type = 2;
 }
 
-// -----------------------------------------------------------------------------
 // Service
-// -----------------------------------------------------------------------------
 service RouteService {
   // ── CRUD — aligned with BuildService pattern ─────────────────────────────
 

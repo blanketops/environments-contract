@@ -37,11 +37,9 @@ option csharp_namespace = "BlanketOps.Common.v1";
 option go_package = "github.com/blanketops/environments-contract/blanketops/common/v1;commonv1";
 option java_outer_classname = "DomainProto";
 
-// =============================================================================
 // DomainPhase
 //
 // Lifecycle phase of a Domain CR. Set exclusively by the controller.
-// =============================================================================
 message DomainPhase {
   enum DomainPhase {
     // Unset — should never appear in a reconciled CR.
@@ -67,7 +65,6 @@ message DomainPhase {
   DomainPhase phase = 1;
 }
 
-// =============================================================================
 // DomainTLSStrategy
 //
 // Controls which cert provisioning path the Domain controller takes.
@@ -79,7 +76,6 @@ message DomainPhase {
 //   custom   — Client-owned zone (e.g. client-a.co.za). Controller emits
 //              Issuer + DomainClaim + DomainMapping + Certificate. HTTP01
 //              ACME challenge via the nginx solver in the tenant namespace.
-// =============================================================================
 message DomainTLSStrategy {
   enum DomainTLSStrategy {
     DOMAIN_TLS_STRATEGY_UNSPECIFIED = 0;
@@ -97,11 +93,9 @@ message DomainTLSStrategy {
   DomainTLSStrategy strategy = 1;
 }
 
-// =============================================================================
 // DomainTLSStatus
 //
 // Observed TLS provisioning state for a Domain. Set by the controller.
-// =============================================================================
 message DomainTLSStatus {
   enum DomainTLSStatus {
     DOMAIN_TLS_STATUS_UNSPECIFIED = 0;

@@ -23,7 +23,6 @@ option go_package = "github.com/blanketops/environments-contract/blanketops/even
 option java_outer_classname = "GitHubEventProto";
 option java_package = "v1beta1.blanketops.events";
 
-// =============================================================================
 // GitHubEvent
 //
 // User-facing record of a Git provider event observed by the platform.
@@ -32,10 +31,8 @@ option java_package = "v1beta1.blanketops.events";
 // auditable); GitHubEvent is the user-facing surface.
 // Pipeline chain:
 //   GitRepository → GitHubEvent → Build → SupplyChain → Package → Deployment
-// =============================================================================
-// -----------------------------------------------------------------------------
+//
 // Resource
-// -----------------------------------------------------------------------------
 message GitHubEvent {
   // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
   blanketops.common.v1.Metadata metadata = 1;
@@ -45,9 +42,7 @@ message GitHubEvent {
   GitHubEventStatus status = 3;
 }
 
-// -----------------------------------------------------------------------------
 // Spec (observed event)
-// -----------------------------------------------------------------------------
 message GitHubEventSpec {
   // Repository the event originated from — owner/name.
   // e.g. ntlaletsi70/blanketops-environments-contract
@@ -71,9 +66,7 @@ message GitHubEventSpec {
   string webhook_secret_ref = 8;
 }
 
-// -----------------------------------------------------------------------------
 // Status (observed state)
-// -----------------------------------------------------------------------------
 message GitHubEventStatus {
   // Whether the event passed signature verification and contract match.
   bool accepted = 1;
@@ -88,9 +81,7 @@ message GitHubEventStatus {
   google.protobuf.Timestamp processed_at = 5;
 }
 
-// -----------------------------------------------------------------------------
 // Requests / Responses
-// -----------------------------------------------------------------------------
 // CreateGitHubEvent — record a new event.
 // Primary path for MANUAL dispatch; webhook deliveries arrive via
 // platform-generated GitHubPayload, not this RPC.
@@ -161,9 +152,7 @@ message WatchGitHubEventResponse {
   blanketops.common.v1.EventType type = 2;
 }
 
-// -----------------------------------------------------------------------------
 // Service
-// -----------------------------------------------------------------------------
 service GitHubEventService {
   // ── CRD surface — events are immutable, no Update/Patch ─────────────────
   // Record a new event. Primary path for MANUAL dispatch.

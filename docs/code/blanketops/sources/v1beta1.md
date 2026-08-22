@@ -1,0 +1,450 @@
+# Protocol Documentation
+<a name="top"></a>
+
+## Table of Contents
+
+- [blanketops/sources/v1beta1/githubrepository.proto](#blanketops_sources_v1beta1_githubrepository-proto)
+    - [CreateGitRepositoryRequest](#blanketops-sources-v1beta1-CreateGitRepositoryRequest)
+    - [CreateGitRepositoryResponse](#blanketops-sources-v1beta1-CreateGitRepositoryResponse)
+    - [DeleteGitRepositoryRequest](#blanketops-sources-v1beta1-DeleteGitRepositoryRequest)
+    - [DeleteGitRepositoryResponse](#blanketops-sources-v1beta1-DeleteGitRepositoryResponse)
+    - [GetGitRepositoryRequest](#blanketops-sources-v1beta1-GetGitRepositoryRequest)
+    - [GetGitRepositoryResponse](#blanketops-sources-v1beta1-GetGitRepositoryResponse)
+    - [GitRepository](#blanketops-sources-v1beta1-GitRepository)
+    - [GitRepositoryRef](#blanketops-sources-v1beta1-GitRepositoryRef)
+    - [GitRepositorySpec](#blanketops-sources-v1beta1-GitRepositorySpec)
+    - [GitRepositoryStatus](#blanketops-sources-v1beta1-GitRepositoryStatus)
+    - [GitRepositoryWebhook](#blanketops-sources-v1beta1-GitRepositoryWebhook)
+    - [ListGitRepositoriesRequest](#blanketops-sources-v1beta1-ListGitRepositoriesRequest)
+    - [ListGitRepositoriesResponse](#blanketops-sources-v1beta1-ListGitRepositoriesResponse)
+    - [PatchGitRepositoryRequest](#blanketops-sources-v1beta1-PatchGitRepositoryRequest)
+    - [PatchGitRepositoryResponse](#blanketops-sources-v1beta1-PatchGitRepositoryResponse)
+    - [SyncGitRepositoryRequest](#blanketops-sources-v1beta1-SyncGitRepositoryRequest)
+    - [SyncGitRepositoryResponse](#blanketops-sources-v1beta1-SyncGitRepositoryResponse)
+    - [UpdateGitRepositoryRequest](#blanketops-sources-v1beta1-UpdateGitRepositoryRequest)
+    - [UpdateGitRepositoryResponse](#blanketops-sources-v1beta1-UpdateGitRepositoryResponse)
+    - [WatchGitRepositoryRequest](#blanketops-sources-v1beta1-WatchGitRepositoryRequest)
+    - [WatchGitRepositoryResponse](#blanketops-sources-v1beta1-WatchGitRepositoryResponse)
+  
+    - [GitRepositoryService](#blanketops-sources-v1beta1-GitRepositoryService)
+  
+- [Scalar Value Types](#scalar-value-types)
+
+
+
+<a name="blanketops_sources_v1beta1_githubrepository-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## blanketops/sources/v1beta1/githubrepository.proto
+Copyright 2026 The BlanketOps Authors.
+Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
+<a name="blanketops-sources-v1beta1-CreateGitRepositoryRequest"></a>
+
+### CreateGitRepositoryRequest
+Requests / Responses
+CreateGitRepository — declare a new GitRepository intent.
+Controller registers provider webhooks on reconciliation.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| spec | [GitRepositorySpec](#blanketops-sources-v1beta1-GitRepositorySpec) |  | Desired spec for the new GitRepository. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-CreateGitRepositoryResponse"></a>
+
+### CreateGitRepositoryResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| git_repository | [GitRepository](#blanketops-sources-v1beta1-GitRepository) |  | The created GitRepository including generated metadata and initial status. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-DeleteGitRepositoryRequest"></a>
+
+### DeleteGitRepositoryRequest
+DeleteGitRepository — delete a GitRepository CR.
+The controller deregisters provider webhooks before removal.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  | Name of the GitRepository CR to delete. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-DeleteGitRepositoryResponse"></a>
+
+### DeleteGitRepositoryResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| success | [bool](#bool) |  | True if the GitRepository was successfully deleted. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-GetGitRepositoryRequest"></a>
+
+### GetGitRepositoryRequest
+GetGitRepository — fetch a GitRepository by name.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  | Name of the GitRepository CR to fetch. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-GetGitRepositoryResponse"></a>
+
+### GetGitRepositoryResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| git_repository | [GitRepository](#blanketops-sources-v1beta1-GitRepository) |  |  |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-GitRepository"></a>
+
+### GitRepository
+GitRepository
+
+Declares a source repository the platform is permitted to observe.
+The controller registers provider webhooks on reconciliation and emits
+GitHubPayload resources for matching events.
+Head of the pipeline chain:
+  GitRepository → GitHubEvent → Build → SupplyChain → Package → Deployment
+
+Supported providers:
+  github      — webhook registration via GitHub App
+  gitlab      — webhook registration via project hooks
+  bitbucket   — webhook registration via repository hooks
+  generic-git — poll-only, no webhook registration
+
+Resource
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| metadata | [blanketops.common.v1.Metadata](#blanketops-common-v1-Metadata) |  | Standard BlanketOps metadata (name, namespace, labels, ownerRef). |
+| spec | [GitRepositorySpec](#blanketops-sources-v1beta1-GitRepositorySpec) |  | Desired state declared by the operator. |
+| status | [GitRepositoryStatus](#blanketops-sources-v1beta1-GitRepositoryStatus) |  | Observed state set by the controller. Never manually edited. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-GitRepositoryRef"></a>
+
+### GitRepositoryRef
+Repository identity
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| owner | [string](#string) |  | Repository owner — user or organization on the provider. e.g. ntlaletsi70 |
+| name | [string](#string) |  | Repository name without the owner prefix. e.g. blanketops-environments-contract |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-GitRepositorySpec"></a>
+
+### GitRepositorySpec
+Spec (intent)
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| provider | [blanketops.common.v1.GitProvider](#blanketops-common-v1-GitProvider) |  | Source provider hosting the repository. |
+| repository | [GitRepositoryRef](#blanketops-sources-v1beta1-GitRepositoryRef) |  | Repository identity — owner and name on the provider. |
+| webhooks | [GitRepositoryWebhook](#blanketops-sources-v1beta1-GitRepositoryWebhook) | repeated | Webhook subscriptions — events this repository is allowed to emit into the platform. At least one webhook must be specified. |
+| credentials_secret | [string](#string) |  | Name of the Kubernetes Secret containing provider credentials used for webhook registration. Sourced from the environment SecretStore via ExternalSecret. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-GitRepositoryStatus"></a>
+
+### GitRepositoryStatus
+Status (observed state)
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| ready | [bool](#bool) |  | Whether the repository is registered and ready to emit events. |
+| reason | [string](#string) |  | Human-readable reason if not ready. Populated on failure. |
+| last_updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | Last time the repository status changed. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-GitRepositoryWebhook"></a>
+
+### GitRepositoryWebhook
+Webhooks
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| events | [blanketops.common.v1.GitEventType](#blanketops-common-v1-GitEventType) | repeated | Events to subscribe to on the provider. e.g. push, pull_request, release, tag |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-ListGitRepositoriesRequest"></a>
+
+### ListGitRepositoriesRequest
+ListGitRepositories — list GitRepository CRs with optional filtering and paging.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| provider | [blanketops.common.v1.GitProvider](#blanketops-common-v1-GitProvider) | optional | Filter by source provider. |
+| owner | [string](#string) | optional | Filter by repository owner. |
+| ready | [bool](#bool) | optional | Filter by readiness. |
+| page_size | [int32](#int32) | optional |  |
+| page_token | [string](#string) | optional | Token from a previous ListGitRepositoriesResponse.next_page_token. Omit for the first request. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-ListGitRepositoriesResponse"></a>
+
+### ListGitRepositoriesResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| git_repositories | [GitRepository](#blanketops-sources-v1beta1-GitRepository) | repeated | The list of GitRepository CRs matching the request filters. |
+| next_page_token | [string](#string) | optional | Token to retrieve the next page. Empty if no more results. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-PatchGitRepositoryRequest"></a>
+
+### PatchGitRepositoryRequest
+PatchGitRepository — partial update using JSON merge patch RFC 7396.
+Only specified fields are updated — others left unchanged.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  | Name of the GitRepository CR to patch. |
+| patch | [string](#string) |  | JSON merge patch document — RFC 7396. e.g. {&#34;spec&#34;:{&#34;webhooks&#34;:[{&#34;events&#34;:[&#34;GIT_EVENT_TYPE_PUSH&#34;]}]}} |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-PatchGitRepositoryResponse"></a>
+
+### PatchGitRepositoryResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| git_repository | [GitRepository](#blanketops-sources-v1beta1-GitRepository) |  | The patched GitRepository as observed by the controller. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-SyncGitRepositoryRequest"></a>
+
+### SyncGitRepositoryRequest
+SyncGitRepository — force webhook re-registration against the provider.
+Source-specific RPC — no equivalent in OrganizationService.
+Useful after provider-side hook deletion or credential rotation.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  | Name of the GitRepository CR to sync. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-SyncGitRepositoryResponse"></a>
+
+### SyncGitRepositoryResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| git_repository | [GitRepository](#blanketops-sources-v1beta1-GitRepository) |  | The GitRepository CR after the sync was applied. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-UpdateGitRepositoryRequest"></a>
+
+### UpdateGitRepositoryRequest
+UpdateGitRepository — full replace of the GitRepository spec.
+Equivalent to kubectl apply — all fields replaced.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| git_repository | [GitRepository](#blanketops-sources-v1beta1-GitRepository) |  | Full GitRepository object including metadata and desired spec. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-UpdateGitRepositoryResponse"></a>
+
+### UpdateGitRepositoryResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| git_repository | [GitRepository](#blanketops-sources-v1beta1-GitRepository) |  | The updated GitRepository as observed by the controller. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-WatchGitRepositoryRequest"></a>
+
+### WatchGitRepositoryRequest
+WatchGitRepository — stream state transitions for a GitRepository CR.
+Delivers an event for every controller reconciliation loop.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  | Name of the GitRepository CR to watch. |
+
+
+
+
+
+
+<a name="blanketops-sources-v1beta1-WatchGitRepositoryResponse"></a>
+
+### WatchGitRepositoryResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| git_repository | [GitRepository](#blanketops-sources-v1beta1-GitRepository) |  | Current state of the GitRepository at this point in the stream. |
+| type | [blanketops.common.v1.EventType](#blanketops-common-v1-EventType) |  | The type of change that triggered this event. |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+
+<a name="blanketops-sources-v1beta1-GitRepositoryService"></a>
+
+### GitRepositoryService
+Service
+
+── CRUD — aligned with OrganizationService pattern ─────────────────────
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| CreateGitRepository | [CreateGitRepositoryRequest](#blanketops-sources-v1beta1-CreateGitRepositoryRequest) | [CreateGitRepositoryResponse](#blanketops-sources-v1beta1-CreateGitRepositoryResponse) | Declare a new GitRepository intent. Controller registers provider webhooks on reconciliation. |
+| GetGitRepository | [GetGitRepositoryRequest](#blanketops-sources-v1beta1-GetGitRepositoryRequest) | [GetGitRepositoryResponse](#blanketops-sources-v1beta1-GetGitRepositoryResponse) | Fetch a GitRepository CR by name. |
+| UpdateGitRepository | [UpdateGitRepositoryRequest](#blanketops-sources-v1beta1-UpdateGitRepositoryRequest) | [UpdateGitRepositoryResponse](#blanketops-sources-v1beta1-UpdateGitRepositoryResponse) | Full replace of a GitRepository spec. |
+| PatchGitRepository | [PatchGitRepositoryRequest](#blanketops-sources-v1beta1-PatchGitRepositoryRequest) | [PatchGitRepositoryResponse](#blanketops-sources-v1beta1-PatchGitRepositoryResponse) | Partial update via JSON merge patch RFC 7396. |
+| ListGitRepositories | [ListGitRepositoriesRequest](#blanketops-sources-v1beta1-ListGitRepositoriesRequest) | [ListGitRepositoriesResponse](#blanketops-sources-v1beta1-ListGitRepositoriesResponse) | List GitRepository CRs with optional provider/owner/ready filter and paging. |
+| DeleteGitRepository | [DeleteGitRepositoryRequest](#blanketops-sources-v1beta1-DeleteGitRepositoryRequest) | [DeleteGitRepositoryResponse](#blanketops-sources-v1beta1-DeleteGitRepositoryResponse) | Delete a GitRepository CR and deregister its provider webhooks. |
+| SyncGitRepository | [SyncGitRepositoryRequest](#blanketops-sources-v1beta1-SyncGitRepositoryRequest) | [SyncGitRepositoryResponse](#blanketops-sources-v1beta1-SyncGitRepositoryResponse) | Force webhook re-registration against the provider. Useful after provider-side hook deletion or credential rotation. |
+| WatchGitRepository | [WatchGitRepositoryRequest](#blanketops-sources-v1beta1-WatchGitRepositoryRequest) | [WatchGitRepositoryResponse](#blanketops-sources-v1beta1-WatchGitRepositoryResponse) stream |  |
+
+ 
+
+
+
+## Scalar Value Types
+
+| .proto Type | Notes | C++ | Java | Python | Go | C# | PHP | Ruby |
+| ----------- | ----- | --- | ---- | ------ | -- | -- | --- | ---- |
+| <a name="double" /> double |  | double | double | float | float64 | double | float | Float |
+| <a name="float" /> float |  | float | float | float | float32 | float | float | Float |
+| <a name="int32" /> int32 | Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint32 instead. | int32 | int | int | int32 | int | integer | Bignum or Fixnum (as required) |
+| <a name="int64" /> int64 | Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint64 instead. | int64 | long | int/long | int64 | long | integer/string | Bignum |
+| <a name="uint32" /> uint32 | Uses variable-length encoding. | uint32 | int | int/long | uint32 | uint | integer | Bignum or Fixnum (as required) |
+| <a name="uint64" /> uint64 | Uses variable-length encoding. | uint64 | long | int/long | uint64 | ulong | integer/string | Bignum or Fixnum (as required) |
+| <a name="sint32" /> sint32 | Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int32s. | int32 | int | int | int32 | int | integer | Bignum or Fixnum (as required) |
+| <a name="sint64" /> sint64 | Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int64s. | int64 | long | int/long | int64 | long | integer/string | Bignum |
+| <a name="fixed32" /> fixed32 | Always four bytes. More efficient than uint32 if values are often greater than 2^28. | uint32 | int | int | uint32 | uint | integer | Bignum or Fixnum (as required) |
+| <a name="fixed64" /> fixed64 | Always eight bytes. More efficient than uint64 if values are often greater than 2^56. | uint64 | long | int/long | uint64 | ulong | integer/string | Bignum |
+| <a name="sfixed32" /> sfixed32 | Always four bytes. | int32 | int | int | int32 | int | integer | Bignum or Fixnum (as required) |
+| <a name="sfixed64" /> sfixed64 | Always eight bytes. | int64 | long | int/long | int64 | long | integer/string | Bignum |
+| <a name="bool" /> bool |  | bool | boolean | boolean | bool | bool | boolean | TrueClass/FalseClass |
+| <a name="string" /> string | A string must always contain UTF-8 encoded or 7-bit ASCII text. | string | String | str/unicode | string | string | string | String (UTF-8) |
+| <a name="bytes" /> bytes | May contain any arbitrary sequence of bytes. | string | ByteString | str | []byte | ByteString | string | String (ASCII-8BIT) |
+

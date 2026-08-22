@@ -19,6 +19,7 @@ limitations under the License.
 //
 //	mage lint     — lint proto files with buf
 //	mage gen      — generate Go and TypeScript from protos
+//	mage docs     — generate per-package Markdown docs from proto comments
 //	mage verify   — lint + gen
 //	mage clean    — remove generated .pb.go and _pb.ts files from blanketops/
 //	mage bundle   — verify + build OCI contract bundle
@@ -30,6 +31,7 @@ import (
 	"compress/gzip"
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -71,6 +73,63 @@ func Gen() error {
 	}
 	success("Gen complete")
 	return nil
+}
+
+// Docs generates per-package Markdown documentation from proto comments via
+// protoc-gen-doc, mirroring the docs/code/ convention gomarkdoc produces in
+// the sibling environments and environments-controller repos: one file per
+// proto package directory (e.g. docs/code/blanketops/networks/v1alpha1.md),
+// not one combined file for the whole tree. Requires protoc-gen-doc on PATH
+// (go install github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc).
+func Docs() error {
+	step("Generating contract docs...")
+
+	dirs, err := protoPackageDirs("blanketops")
+	if err != nil {
+		fail("Docs failed")
+		return err
+	}
+
+	for _, dir := range dirs {
+		outDir := filepath.Join("docs", "code", filepath.Dir(dir))
+		outFile := filepath.Base(dir) + ".md"
+		if err := os.MkdirAll(outDir, 0755); err != nil {
+			fail("Docs failed")
+			return err
+		}
+		tmpl := fmt.Sprintf(
+			`{"version":"v2","plugins":[{"local":"protoc-gen-doc","out":%q,"opt":["markdown,%s"]}]}`,
+			outDir, outFile,
+		)
+		if err := sh.RunV("buf", "generate", "--template", tmpl, "--path", dir); err != nil {
+			fail("Docs failed")
+			return err
+		}
+	}
+
+	success("Docs complete")
+	return nil
+}
+
+// protoPackageDirs returns every directory under root that directly
+// contains at least one .proto file, sorted for deterministic generation
+// order (filepath.WalkDir already walks lexically).
+func protoPackageDirs(root string) ([]string, error) {
+	var dirs []string
+	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		if err != nil || !d.IsDir() {
+			return err
+		}
+		matches, globErr := filepath.Glob(filepath.Join(path, "*.proto"))
+		if globErr != nil {
+			return globErr
+		}
+		if len(matches) > 0 {
+			dirs = append(dirs, path)
+		}
+		return nil
+	})
+	return dirs, err
 }
 
 // Verify runs lint then gen — the full contract validation and generation gate.
