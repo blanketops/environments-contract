@@ -1,3 +1,18 @@
+## [0.5.5] - 2026-08-23
+
+### 🚀 Features
+
+- Generate per-package contract docs, aligned with docs/code/ convention
+
+### 💼 Other
+
+- Merge release/v0.5.5 into main
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Update changelog for v0.5.4
+- Sync develop with main after release/v0.5.4
+- *(release)* Regenerate Go and TypeScript contracts for v0.5.5 [skip ci]
 ## [0.5.4] - 2026-08-21
 
 ### 🐛 Bug Fixes
