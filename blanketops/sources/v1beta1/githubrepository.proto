@@ -23,7 +23,6 @@ option go_package = "github.com/blanketops/environments-contract/blanketops/sour
 option java_outer_classname = "GitRepositoryProto";
 option java_package = "v1beta1.blanketops.sources";
 
-// =============================================================================
 // GitRepository
 //
 // Declares a source repository the platform is permitted to observe.
@@ -37,10 +36,8 @@ option java_package = "v1beta1.blanketops.sources";
 //   gitlab      — webhook registration via project hooks
 //   bitbucket   — webhook registration via repository hooks
 //   generic-git — poll-only, no webhook registration
-// =============================================================================
-// -----------------------------------------------------------------------------
+//
 // Resource
-// -----------------------------------------------------------------------------
 message GitRepository {
   // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
   blanketops.common.v1.Metadata metadata = 1;
@@ -50,9 +47,7 @@ message GitRepository {
   GitRepositoryStatus status = 3;
 }
 
-// -----------------------------------------------------------------------------
 // Spec (intent)
-// -----------------------------------------------------------------------------
 message GitRepositorySpec {
   // Source provider hosting the repository.
   blanketops.common.v1.GitProvider provider = 1;
@@ -70,9 +65,7 @@ message GitRepositorySpec {
   string credentials_secret = 4;
 }
 
-// -----------------------------------------------------------------------------
 // Repository identity
-// -----------------------------------------------------------------------------
 message GitRepositoryRef {
   // Repository owner — user or organization on the provider.
   // e.g. ntlaletsi70
@@ -82,18 +75,14 @@ message GitRepositoryRef {
   string name = 2;
 }
 
-// -----------------------------------------------------------------------------
 // Webhooks
-// -----------------------------------------------------------------------------
 message GitRepositoryWebhook {
   // Events to subscribe to on the provider.
   // e.g. push, pull_request, release, tag
   repeated blanketops.common.v1.GitEventType events = 1;
 }
 
-// -----------------------------------------------------------------------------
 // Status (observed state)
-// -----------------------------------------------------------------------------
 message GitRepositoryStatus {
   // Whether the repository is registered and ready to emit events.
   bool ready = 1;
@@ -103,9 +92,7 @@ message GitRepositoryStatus {
   google.protobuf.Timestamp last_updated_at = 3;
 }
 
-// -----------------------------------------------------------------------------
 // Requests / Responses
-// -----------------------------------------------------------------------------
 // CreateGitRepository — declare a new GitRepository intent.
 // Controller registers provider webhooks on reconciliation.
 message CreateGitRepositoryRequest {
@@ -212,9 +199,7 @@ message WatchGitRepositoryResponse {
   blanketops.common.v1.EventType type = 2;
 }
 
-// -----------------------------------------------------------------------------
 // Service
-// -----------------------------------------------------------------------------
 service GitRepositoryService {
   // ── CRUD — aligned with OrganizationService pattern ─────────────────────
 

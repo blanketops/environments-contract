@@ -18,9 +18,7 @@ package blanketops.common.v1;
 option csharp_namespace = "BlanketOps.Common.v1";
 option go_package = "github.com/blanketops/environments-contract/blanketops/common/v1;commonv1";
 
-// -----------------------------------------------------------------------------
 // Event Type (SHARED)
-// -----------------------------------------------------------------------------
 enum EventType {
   EVENT_TYPE_UNSPECIFIED = 0;
   EVENT_TYPE_ADDED = 1;

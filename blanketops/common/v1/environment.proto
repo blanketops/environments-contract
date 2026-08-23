@@ -43,9 +43,7 @@ message EnvironmentType {
   }
   EnvironmentType type = 1;
 }
-// =============================================================================
 // Contract
-// =============================================================================
 // SecretStoreProvider identifies the external secrets backend.
 // Drives ESO ClusterSecretStore selection at reconciliation time.
 message SecretStoreProvider {

@@ -75,6 +75,18 @@ jobs:
           git commit -m "chore(release): regenerate Go and TypeScript contracts for ${{ github.event.inputs.version }} [skip ci]" || echo "No changes"
           git push origin main
 
+      - name: Install protoc-gen-doc
+        run: go install github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@latest
+
+      - name: Generate contract docs
+        run: mage docs
+
+      - name: Commit generated docs
+        run: |
+          git add -f docs/
+          git commit -m "docs(release): regenerate contract docs for ${{ github.event.inputs.version }} [skip ci]" || echo "No changes"
+          git push origin main
+
       - name: Tag release
         run: |
           git tag ${{ github.event.inputs.version }}
