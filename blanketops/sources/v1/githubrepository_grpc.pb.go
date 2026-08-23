@@ -45,9 +45,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// -----------------------------------------------------------------------------
 // Service
-// -----------------------------------------------------------------------------
 type GitRepositoryServiceClient interface {
 	// Declare a new GitRepository intent.
 	// Controller registers provider webhooks on reconciliation.
@@ -169,9 +167,7 @@ type GitRepositoryService_WatchGitRepositoryClient = grpc.ServerStreamingClient[
 // All implementations must embed UnimplementedGitRepositoryServiceServer
 // for forward compatibility.
 //
-// -----------------------------------------------------------------------------
 // Service
-// -----------------------------------------------------------------------------
 type GitRepositoryServiceServer interface {
 	// Declare a new GitRepository intent.
 	// Controller registers provider webhooks on reconciliation.

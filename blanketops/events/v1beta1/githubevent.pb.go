@@ -35,7 +35,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// =============================================================================
 // GitHubEvent
 //
 // User-facing record of a Git provider event observed by the platform.
@@ -46,10 +45,7 @@ const (
 //
 //	GitRepository → GitHubEvent → Build → SupplyChain → Package → Deployment
 //
-// =============================================================================
-// -----------------------------------------------------------------------------
 // Resource
-// -----------------------------------------------------------------------------
 type GitHubEvent struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Standard BlanketOps metadata (name, namespace, labels, ownerRef).
@@ -113,9 +109,7 @@ func (x *GitHubEvent) GetStatus() *GitHubEventStatus {
 	return nil
 }
 
-// -----------------------------------------------------------------------------
 // Spec (observed event)
-// -----------------------------------------------------------------------------
 type GitHubEventSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Repository the event originated from — owner/name.
@@ -228,9 +222,7 @@ func (x *GitHubEventSpec) GetWebhookSecretRef() string {
 	return ""
 }
 
-// -----------------------------------------------------------------------------
 // Status (observed state)
-// -----------------------------------------------------------------------------
 type GitHubEventStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Whether the event passed signature verification and contract match.
@@ -313,9 +305,7 @@ func (x *GitHubEventStatus) GetProcessedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-// -----------------------------------------------------------------------------
 // Requests / Responses
-// -----------------------------------------------------------------------------
 // CreateGitHubEvent — record a new event.
 // Primary path for MANUAL dispatch; webhook deliveries arrive via
 // platform-generated GitHubPayload, not this RPC.

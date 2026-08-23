@@ -147,9 +147,7 @@ export const EnvironmentType_EnvironmentTypeSchema: GenEnum<EnvironmentType_Envi
   enumDesc(file_blanketops_common_v1_environment, 1, 0);
 
 /**
- * =============================================================================
  * Contract
- * =============================================================================
  * SecretStoreProvider identifies the external secrets backend.
  * Drives ESO ClusterSecretStore selection at reconciliation time.
  *

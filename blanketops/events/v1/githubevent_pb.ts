@@ -33,7 +33,6 @@ export const file_blanketops_events_v1_githubevent: GenFile = /*@__PURE__*/
   fileDesc("CiZibGFua2V0b3BzL2V2ZW50cy92MS9naXRodWJldmVudC5wcm90bxIUYmxhbmtldG9wcy5ldmVudHMudjEirQEKC0dpdEh1YkV2ZW50EjAKCG1ldGFkYXRhGAEgASgLMh4uYmxhbmtldG9wcy5jb21tb24udjEuTWV0YWRhdGESMwoEc3BlYxgCIAEoCzIlLmJsYW5rZXRvcHMuZXZlbnRzLnYxLkdpdEh1YkV2ZW50U3BlYxI3CgZzdGF0dXMYAyABKAsyJy5ibGFua2V0b3BzLmV2ZW50cy52MS5HaXRIdWJFdmVudFN0YXR1cyLvAQoPR2l0SHViRXZlbnRTcGVjEhIKCnJlcG9zaXRvcnkYASABKAkSOQoKZXZlbnRfdHlwZRgCIAEoCzIlLmJsYW5rZXRvcHMuY29tbW9uLnYxLkdpdEh1YkV2ZW50VHlwZRILCgNyZWYYAyABKAkSEgoKY29tbWl0X3NoYRgEIAEoCRINCgVhY3RvchgFIAEoCRIQCghldmVudF9pZBgGIAEoCRIvCgtvY2N1cnJlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASGgoSd2ViaG9va19zZWNyZXRfcmVmGAggASgJIpEBChFHaXRIdWJFdmVudFN0YXR1cxIQCghhY2NlcHRlZBgBIAEoCBIRCgl0cmlnZ2VyZWQYAiABKAgSFQoNdHJpZ2dlcmVkX3JlZhgDIAEoCRIOCgZyZWFzb24YBCABKAkSMAoMcHJvY2Vzc2VkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCJPChhDcmVhdGVHaXRIdWJFdmVudFJlcXVlc3QSMwoEc3BlYxgBIAEoCzIlLmJsYW5rZXRvcHMuZXZlbnRzLnYxLkdpdEh1YkV2ZW50U3BlYyJUChlDcmVhdGVHaXRIdWJFdmVudFJlc3BvbnNlEjcKDGdpdGh1Yl9ldmVudBgBIAEoCzIhLmJsYW5rZXRvcHMuZXZlbnRzLnYxLkdpdEh1YkV2ZW50IiUKFUdldEdpdEh1YkV2ZW50UmVxdWVzdBIMCgRuYW1lGAEgASgJIlEKFkdldEdpdEh1YkV2ZW50UmVzcG9uc2USNwoMZ2l0aHViX2V2ZW50GAEgASgLMiEuYmxhbmtldG9wcy5ldmVudHMudjEuR2l0SHViRXZlbnQihAIKF0xpc3RHaXRIdWJFdmVudHNSZXF1ZXN0EhcKCnJlcG9zaXRvcnkYASABKAlIAIgBARI+CgpldmVudF90eXBlGAIgASgLMiUuYmxhbmtldG9wcy5jb21tb24udjEuR2l0SHViRXZlbnRUeXBlSAGIAQESFgoJdHJpZ2dlcmVkGAMgASgISAKIAQESFgoJcGFnZV9zaXplGAQgASgFSAOIAQESFwoKcGFnZV90b2tlbhgFIAEoCUgEiAEBQg0KC19yZXBvc2l0b3J5Qg0KC19ldmVudF90eXBlQgwKCl90cmlnZ2VyZWRCDAoKX3BhZ2Vfc2l6ZUINCgtfcGFnZV90b2tlbiKGAQoYTGlzdEdpdEh1YkV2ZW50c1Jlc3BvbnNlEjgKDWdpdGh1Yl9ldmVudHMYASADKAsyIS5ibGFua2V0b3BzLmV2ZW50cy52MS5HaXRIdWJFdmVudBIcCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAlIAIgBAUISChBfbmV4dF9wYWdlX3Rva2VuIigKGERlbGV0ZUdpdEh1YkV2ZW50UmVxdWVzdBIMCgRuYW1lGAEgASgJIiwKGURlbGV0ZUdpdEh1YkV2ZW50UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCI/ChdXYXRjaEdpdEh1YkV2ZW50UmVxdWVzdBIMCgRuYW1lGAEgASgJEhYKDmxhYmVsX3NlbGVjdG9yGAIgASgJIoIBChhXYXRjaEdpdEh1YkV2ZW50UmVzcG9uc2USNwoMZ2l0aHViX2V2ZW50GAEgASgLMiEuYmxhbmtldG9wcy5ldmVudHMudjEuR2l0SHViRXZlbnQSLQoEdHlwZRgCIAEoDjIfLmJsYW5rZXRvcHMuY29tbW9uLnYxLkV2ZW50VHlwZTLVBAoSR2l0SHViRXZlbnRTZXJ2aWNlEnQKEUNyZWF0ZUdpdEh1YkV2ZW50Ei4uYmxhbmtldG9wcy5ldmVudHMudjEuQ3JlYXRlR2l0SHViRXZlbnRSZXF1ZXN0Gi8uYmxhbmtldG9wcy5ldmVudHMudjEuQ3JlYXRlR2l0SHViRXZlbnRSZXNwb25zZRJrCg5HZXRHaXRIdWJFdmVudBIrLmJsYW5rZXRvcHMuZXZlbnRzLnYxLkdldEdpdEh1YkV2ZW50UmVxdWVzdBosLmJsYW5rZXRvcHMuZXZlbnRzLnYxLkdldEdpdEh1YkV2ZW50UmVzcG9uc2UScQoQTGlzdEdpdEh1YkV2ZW50cxItLmJsYW5rZXRvcHMuZXZlbnRzLnYxLkxpc3RHaXRIdWJFdmVudHNSZXF1ZXN0Gi4uYmxhbmtldG9wcy5ldmVudHMudjEuTGlzdEdpdEh1YkV2ZW50c1Jlc3BvbnNlEnQKEURlbGV0ZUdpdEh1YkV2ZW50Ei4uYmxhbmtldG9wcy5ldmVudHMudjEuRGVsZXRlR2l0SHViRXZlbnRSZXF1ZXN0Gi8uYmxhbmtldG9wcy5ldmVudHMudjEuRGVsZXRlR2l0SHViRXZlbnRSZXNwb25zZRJzChBXYXRjaEdpdEh1YkV2ZW50Ei0uYmxhbmtldG9wcy5ldmVudHMudjEuV2F0Y2hHaXRIdWJFdmVudFJlcXVlc3QaLi5ibGFua2V0b3BzLmV2ZW50cy52MS5XYXRjaEdpdEh1YkV2ZW50UmVzcG9uc2UwAUKEAQoUdjEuYmxhbmtldG9wcy5ldmVudHNCEEdpdEh1YkV2ZW50UHJvdG9aQ2dpdGh1Yi5jb20vYmxhbmtldG9wcy9lbnZpcm9ubWVudHMtY29udHJhY3QvYmxhbmtldG9wcy9ldmVudHMvdjE7djGqAhRCbGFua2V0T3BzLkV2ZW50cy5WMWIGcHJvdG8z", [file_blanketops_common_v1_event, file_blanketops_common_v1_githubevent, file_blanketops_common_v1_metadata, file_google_protobuf_timestamp]);
 
 /**
- * =============================================================================
  * GitHubEvent
  *
  * User-facing record of a Git provider event observed by the platform.
@@ -42,10 +41,8 @@ export const file_blanketops_events_v1_githubevent: GenFile = /*@__PURE__*/
  * auditable); GitHubEvent is the user-facing surface.
  * Pipeline chain:
  *   GitRepository → GitHubEvent → Build → SupplyChain → Package → Deployment
- * =============================================================================
- * -----------------------------------------------------------------------------
+ *
  * Resource
- * -----------------------------------------------------------------------------
  *
  * @generated from message blanketops.events.v1.GitHubEvent
  */
@@ -80,9 +77,7 @@ export const GitHubEventSchema: GenMessage<GitHubEvent> = /*@__PURE__*/
   messageDesc(file_blanketops_events_v1_githubevent, 0);
 
 /**
- * -----------------------------------------------------------------------------
  * Spec (observed event)
- * -----------------------------------------------------------------------------
  *
  * @generated from message blanketops.events.v1.GitHubEventSpec
  */
@@ -156,9 +151,7 @@ export const GitHubEventSpecSchema: GenMessage<GitHubEventSpec> = /*@__PURE__*/
   messageDesc(file_blanketops_events_v1_githubevent, 1);
 
 /**
- * -----------------------------------------------------------------------------
  * Status (observed state)
- * -----------------------------------------------------------------------------
  *
  * @generated from message blanketops.events.v1.GitHubEventStatus
  */
@@ -208,9 +201,7 @@ export const GitHubEventStatusSchema: GenMessage<GitHubEventStatus> = /*@__PURE_
   messageDesc(file_blanketops_events_v1_githubevent, 2);
 
 /**
- * -----------------------------------------------------------------------------
  * Requests / Responses
- * -----------------------------------------------------------------------------
  * CreateGitHubEvent — record a new event.
  * Primary path for MANUAL dispatch; webhook deliveries arrive via
  * platform-generated GitHubPayload, not this RPC.
@@ -465,9 +456,7 @@ export const WatchGitHubEventResponseSchema: GenMessage<WatchGitHubEventResponse
   messageDesc(file_blanketops_events_v1_githubevent, 12);
 
 /**
- * -----------------------------------------------------------------------------
  * Service
- * -----------------------------------------------------------------------------
  *
  * @generated from service blanketops.events.v1.GitHubEventService
  */
