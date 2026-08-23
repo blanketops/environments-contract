@@ -225,11 +225,9 @@ func (DomainTLSStatus_DomainTLSStatus) EnumDescriptor() ([]byte, []int) {
 	return file_blanketops_common_v1_domain_proto_rawDescGZIP(), []int{2, 0}
 }
 
-// =============================================================================
 // DomainPhase
 //
 // Lifecycle phase of a Domain CR. Set exclusively by the controller.
-// =============================================================================
 type DomainPhase struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// phase is the current lifecycle value.
@@ -275,7 +273,6 @@ func (x *DomainPhase) GetPhase() DomainPhase_DomainPhase {
 	return DomainPhase_DOMAIN_PHASE_UNSPECIFIED
 }
 
-// =============================================================================
 // DomainTLSStrategy
 //
 // Controls which cert provisioning path the Domain controller takes.
@@ -287,8 +284,6 @@ func (x *DomainPhase) GetPhase() DomainPhase_DomainPhase {
 //	custom   — Client-owned zone (e.g. client-a.co.za). Controller emits
 //	           Issuer + DomainClaim + DomainMapping + Certificate. HTTP01
 //	           ACME challenge via the nginx solver in the tenant namespace.
-//
-// =============================================================================
 type DomainTLSStrategy struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// strategy is the selected TLS provisioning path.
@@ -334,11 +329,9 @@ func (x *DomainTLSStrategy) GetStrategy() DomainTLSStrategy_DomainTLSStrategy {
 	return DomainTLSStrategy_DOMAIN_TLS_STRATEGY_UNSPECIFIED
 }
 
-// =============================================================================
 // DomainTLSStatus
 //
 // Observed TLS provisioning state for a Domain. Set by the controller.
-// =============================================================================
 type DomainTLSStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// status is the current TLS provisioning state.

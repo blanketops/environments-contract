@@ -298,9 +298,7 @@ func (x *EnvironmentType) GetType() EnvironmentType_EnvironmentType {
 	return EnvironmentType_ENVIRONMENT_TYPE_UNSPECIFIED
 }
 
-// =============================================================================
 // Contract
-// =============================================================================
 // SecretStoreProvider identifies the external secrets backend.
 // Drives ESO ClusterSecretStore selection at reconciliation time.
 type SecretStoreProvider struct {

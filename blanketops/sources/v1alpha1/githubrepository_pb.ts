@@ -33,7 +33,6 @@ export const file_blanketops_sources_v1alpha1_githubrepository: GenFile = /*@__P
   fileDesc("CjJibGFua2V0b3BzL3NvdXJjZXMvdjFhbHBoYTEvZ2l0aHVicmVwb3NpdG9yeS5wcm90bxIbYmxhbmtldG9wcy5zb3VyY2VzLnYxYWxwaGExIsEBCg1HaXRSZXBvc2l0b3J5EjAKCG1ldGFkYXRhGAEgASgLMh4uYmxhbmtldG9wcy5jb21tb24udjEuTWV0YWRhdGESPAoEc3BlYxgCIAEoCzIuLmJsYW5rZXRvcHMuc291cmNlcy52MWFscGhhMS5HaXRSZXBvc2l0b3J5U3BlYxJACgZzdGF0dXMYAyABKAsyMC5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuR2l0UmVwb3NpdG9yeVN0YXR1cyLsAQoRR2l0UmVwb3NpdG9yeVNwZWMSMwoIcHJvdmlkZXIYASABKAsyIS5ibGFua2V0b3BzLmNvbW1vbi52MS5HaXRQcm92aWRlchJBCgpyZXBvc2l0b3J5GAIgASgLMi0uYmxhbmtldG9wcy5zb3VyY2VzLnYxYWxwaGExLkdpdFJlcG9zaXRvcnlSZWYSQwoId2ViaG9va3MYAyADKAsyMS5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuR2l0UmVwb3NpdG9yeVdlYmhvb2sSGgoSY3JlZGVudGlhbHNfc2VjcmV0GAQgASgJIi8KEEdpdFJlcG9zaXRvcnlSZWYSDQoFb3duZXIYASABKAkSDAoEbmFtZRgCIAEoCSJKChRHaXRSZXBvc2l0b3J5V2ViaG9vaxIyCgZldmVudHMYASADKAsyIi5ibGFua2V0b3BzLmNvbW1vbi52MS5HaXRFdmVudFR5cGUiaQoTR2l0UmVwb3NpdG9yeVN0YXR1cxINCgVyZWFkeRgBIAEoCBIOCgZyZWFzb24YAiABKAkSMwoPbGFzdF91cGRhdGVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCJaChpDcmVhdGVHaXRSZXBvc2l0b3J5UmVxdWVzdBI8CgRzcGVjGAEgASgLMi4uYmxhbmtldG9wcy5zb3VyY2VzLnYxYWxwaGExLkdpdFJlcG9zaXRvcnlTcGVjImEKG0NyZWF0ZUdpdFJlcG9zaXRvcnlSZXNwb25zZRJCCg5naXRfcmVwb3NpdG9yeRgBIAEoCzIqLmJsYW5rZXRvcHMuc291cmNlcy52MWFscGhhMS5HaXRSZXBvc2l0b3J5IicKF0dldEdpdFJlcG9zaXRvcnlSZXF1ZXN0EgwKBG5hbWUYASABKAkiXgoYR2V0R2l0UmVwb3NpdG9yeVJlc3BvbnNlEkIKDmdpdF9yZXBvc2l0b3J5GAEgASgLMiouYmxhbmtldG9wcy5zb3VyY2VzLnYxYWxwaGExLkdpdFJlcG9zaXRvcnkiYAoaVXBkYXRlR2l0UmVwb3NpdG9yeVJlcXVlc3QSQgoOZ2l0X3JlcG9zaXRvcnkYASABKAsyKi5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuR2l0UmVwb3NpdG9yeSJhChtVcGRhdGVHaXRSZXBvc2l0b3J5UmVzcG9uc2USQgoOZ2l0X3JlcG9zaXRvcnkYASABKAsyKi5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuR2l0UmVwb3NpdG9yeSI4ChlQYXRjaEdpdFJlcG9zaXRvcnlSZXF1ZXN0EgwKBG5hbWUYASABKAkSDQoFcGF0Y2gYAiABKAkiYAoaUGF0Y2hHaXRSZXBvc2l0b3J5UmVzcG9uc2USQgoOZ2l0X3JlcG9zaXRvcnkYASABKAsyKi5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuR2l0UmVwb3NpdG9yeSLtAQoaTGlzdEdpdFJlcG9zaXRvcmllc1JlcXVlc3QSOAoIcHJvdmlkZXIYASABKAsyIS5ibGFua2V0b3BzLmNvbW1vbi52MS5HaXRQcm92aWRlckgAiAEBEhIKBW93bmVyGAIgASgJSAGIAQESEgoFcmVhZHkYAyABKAhIAogBARIWCglwYWdlX3NpemUYBCABKAVIA4gBARIXCgpwYWdlX3Rva2VuGAUgASgJSASIAQFCCwoJX3Byb3ZpZGVyQggKBl9vd25lckIICgZfcmVhZHlCDAoKX3BhZ2Vfc2l6ZUINCgtfcGFnZV90b2tlbiKVAQobTGlzdEdpdFJlcG9zaXRvcmllc1Jlc3BvbnNlEkQKEGdpdF9yZXBvc2l0b3JpZXMYASADKAsyKi5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuR2l0UmVwb3NpdG9yeRIcCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAlIAIgBAUISChBfbmV4dF9wYWdlX3Rva2VuIioKGkRlbGV0ZUdpdFJlcG9zaXRvcnlSZXF1ZXN0EgwKBG5hbWUYASABKAkiLgobRGVsZXRlR2l0UmVwb3NpdG9yeVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiKAoYU3luY0dpdFJlcG9zaXRvcnlSZXF1ZXN0EgwKBG5hbWUYASABKAkiXwoZU3luY0dpdFJlcG9zaXRvcnlSZXNwb25zZRJCCg5naXRfcmVwb3NpdG9yeRgBIAEoCzIqLmJsYW5rZXRvcHMuc291cmNlcy52MWFscGhhMS5HaXRSZXBvc2l0b3J5IikKGVdhdGNoR2l0UmVwb3NpdG9yeVJlcXVlc3QSDAoEbmFtZRgBIAEoCSKPAQoaV2F0Y2hHaXRSZXBvc2l0b3J5UmVzcG9uc2USQgoOZ2l0X3JlcG9zaXRvcnkYASABKAsyKi5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuR2l0UmVwb3NpdG9yeRItCgR0eXBlGAIgASgOMh8uYmxhbmtldG9wcy5jb21tb24udjEuRXZlbnRUeXBlMtoIChRHaXRSZXBvc2l0b3J5U2VydmljZRKIAQoTQ3JlYXRlR2l0UmVwb3NpdG9yeRI3LmJsYW5rZXRvcHMuc291cmNlcy52MWFscGhhMS5DcmVhdGVHaXRSZXBvc2l0b3J5UmVxdWVzdBo4LmJsYW5rZXRvcHMuc291cmNlcy52MWFscGhhMS5DcmVhdGVHaXRSZXBvc2l0b3J5UmVzcG9uc2USfwoQR2V0R2l0UmVwb3NpdG9yeRI0LmJsYW5rZXRvcHMuc291cmNlcy52MWFscGhhMS5HZXRHaXRSZXBvc2l0b3J5UmVxdWVzdBo1LmJsYW5rZXRvcHMuc291cmNlcy52MWFscGhhMS5HZXRHaXRSZXBvc2l0b3J5UmVzcG9uc2USiAEKE1VwZGF0ZUdpdFJlcG9zaXRvcnkSNy5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuVXBkYXRlR2l0UmVwb3NpdG9yeVJlcXVlc3QaOC5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuVXBkYXRlR2l0UmVwb3NpdG9yeVJlc3BvbnNlEoUBChJQYXRjaEdpdFJlcG9zaXRvcnkSNi5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuUGF0Y2hHaXRSZXBvc2l0b3J5UmVxdWVzdBo3LmJsYW5rZXRvcHMuc291cmNlcy52MWFscGhhMS5QYXRjaEdpdFJlcG9zaXRvcnlSZXNwb25zZRKIAQoTTGlzdEdpdFJlcG9zaXRvcmllcxI3LmJsYW5rZXRvcHMuc291cmNlcy52MWFscGhhMS5MaXN0R2l0UmVwb3NpdG9yaWVzUmVxdWVzdBo4LmJsYW5rZXRvcHMuc291cmNlcy52MWFscGhhMS5MaXN0R2l0UmVwb3NpdG9yaWVzUmVzcG9uc2USiAEKE0RlbGV0ZUdpdFJlcG9zaXRvcnkSNy5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuRGVsZXRlR2l0UmVwb3NpdG9yeVJlcXVlc3QaOC5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuRGVsZXRlR2l0UmVwb3NpdG9yeVJlc3BvbnNlEoIBChFTeW5jR2l0UmVwb3NpdG9yeRI1LmJsYW5rZXRvcHMuc291cmNlcy52MWFscGhhMS5TeW5jR2l0UmVwb3NpdG9yeVJlcXVlc3QaNi5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuU3luY0dpdFJlcG9zaXRvcnlSZXNwb25zZRKHAQoSV2F0Y2hHaXRSZXBvc2l0b3J5EjYuYmxhbmtldG9wcy5zb3VyY2VzLnYxYWxwaGExLldhdGNoR2l0UmVwb3NpdG9yeVJlcXVlc3QaNy5ibGFua2V0b3BzLnNvdXJjZXMudjFhbHBoYTEuV2F0Y2hHaXRSZXBvc2l0b3J5UmVzcG9uc2UwAUKhAQobdjFhbHBoYTEuYmxhbmtldG9wcy5zb3VyY2VzQhJHaXRSZXBvc2l0b3J5UHJvdG9aUGdpdGh1Yi5jb20vYmxhbmtldG9wcy9lbnZpcm9ubWVudHMtY29udHJhY3QvYmxhbmtldG9wcy9zb3VyY2VzL3YxYWxwaGExO3YxYWxwaGExqgIbQmxhbmtldE9wcy5Tb3VyY2VzLlYxYWxwaGExYgZwcm90bzM", [file_blanketops_common_v1_event, file_blanketops_common_v1_gitrepository, file_blanketops_common_v1_metadata, file_google_protobuf_timestamp]);
 
 /**
- * =============================================================================
  * GitRepository
  *
  * Declares a source repository the platform is permitted to observe.
@@ -47,10 +46,8 @@ export const file_blanketops_sources_v1alpha1_githubrepository: GenFile = /*@__P
  *   gitlab      — webhook registration via project hooks
  *   bitbucket   — webhook registration via repository hooks
  *   generic-git — poll-only, no webhook registration
- * =============================================================================
- * -----------------------------------------------------------------------------
+ *
  * Resource
- * -----------------------------------------------------------------------------
  *
  * @generated from message blanketops.sources.v1alpha1.GitRepository
  */
@@ -85,9 +82,7 @@ export const GitRepositorySchema: GenMessage<GitRepository> = /*@__PURE__*/
   messageDesc(file_blanketops_sources_v1alpha1_githubrepository, 0);
 
 /**
- * -----------------------------------------------------------------------------
  * Spec (intent)
- * -----------------------------------------------------------------------------
  *
  * @generated from message blanketops.sources.v1alpha1.GitRepositorySpec
  */
@@ -132,9 +127,7 @@ export const GitRepositorySpecSchema: GenMessage<GitRepositorySpec> = /*@__PURE_
   messageDesc(file_blanketops_sources_v1alpha1_githubrepository, 1);
 
 /**
- * -----------------------------------------------------------------------------
  * Repository identity
- * -----------------------------------------------------------------------------
  *
  * @generated from message blanketops.sources.v1alpha1.GitRepositoryRef
  */
@@ -164,9 +157,7 @@ export const GitRepositoryRefSchema: GenMessage<GitRepositoryRef> = /*@__PURE__*
   messageDesc(file_blanketops_sources_v1alpha1_githubrepository, 2);
 
 /**
- * -----------------------------------------------------------------------------
  * Webhooks
- * -----------------------------------------------------------------------------
  *
  * @generated from message blanketops.sources.v1alpha1.GitRepositoryWebhook
  */
@@ -188,9 +179,7 @@ export const GitRepositoryWebhookSchema: GenMessage<GitRepositoryWebhook> = /*@_
   messageDesc(file_blanketops_sources_v1alpha1_githubrepository, 3);
 
 /**
- * -----------------------------------------------------------------------------
  * Status (observed state)
- * -----------------------------------------------------------------------------
  *
  * @generated from message blanketops.sources.v1alpha1.GitRepositoryStatus
  */
@@ -225,9 +214,7 @@ export const GitRepositoryStatusSchema: GenMessage<GitRepositoryStatus> = /*@__P
   messageDesc(file_blanketops_sources_v1alpha1_githubrepository, 4);
 
 /**
- * -----------------------------------------------------------------------------
  * Requests / Responses
- * -----------------------------------------------------------------------------
  * CreateGitRepository — declare a new GitRepository intent.
  * Controller registers provider webhooks on reconciliation.
  *
@@ -602,9 +589,7 @@ export const WatchGitRepositoryResponseSchema: GenMessage<WatchGitRepositoryResp
   messageDesc(file_blanketops_sources_v1alpha1_githubrepository, 20);
 
 /**
- * -----------------------------------------------------------------------------
  * Service
- * -----------------------------------------------------------------------------
  *
  * ── CRUD — aligned with OrganizationService pattern ─────────────────────
  *

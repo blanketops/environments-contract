@@ -42,9 +42,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// -----------------------------------------------------------------------------
 // Service
-// -----------------------------------------------------------------------------
 type GitHubEventServiceClient interface {
 	// ── CRD surface — events are immutable, no Update/Patch ─────────────────
 	// Record a new event. Primary path for MANUAL dispatch.
@@ -131,9 +129,7 @@ type GitHubEventService_WatchGitHubEventClient = grpc.ServerStreamingClient[Watc
 // All implementations must embed UnimplementedGitHubEventServiceServer
 // for forward compatibility.
 //
-// -----------------------------------------------------------------------------
 // Service
-// -----------------------------------------------------------------------------
 type GitHubEventServiceServer interface {
 	// ── CRD surface — events are immutable, no Update/Patch ─────────────────
 	// Record a new event. Primary path for MANUAL dispatch.

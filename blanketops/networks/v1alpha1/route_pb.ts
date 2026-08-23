@@ -21,13 +21,11 @@ export const file_blanketops_networks_v1alpha1_route: GenFile = /*@__PURE__*/
   fileDesc("CihibGFua2V0b3BzL25ldHdvcmtzL3YxYWxwaGExL3JvdXRlLnByb3RvEhxibGFua2V0b3BzLm5ldHdvcmtzLnYxYWxwaGExIh4KDlNlcnZpY2VVbml0UmVmEgwKBG5hbWUYASABKAkiqwEKBVJvdXRlEjAKCG1ldGFkYXRhGAEgASgLMh4uYmxhbmtldG9wcy5jb21tb24udjEuTWV0YWRhdGESNQoEc3BlYxgCIAEoCzInLmJsYW5rZXRvcHMubmV0d29ya3MudjFhbHBoYTEuUm91dGVTcGVjEjkKBnN0YXR1cxgDIAEoCzIpLmJsYW5rZXRvcHMubmV0d29ya3MudjFhbHBoYTEuUm91dGVTdGF0dXMiygEKCVJvdXRlU3BlYxIMCgRob3N0GAEgASgJEg8KB2VuYWJsZWQYAiABKAgSDAoEcGF0aBgDIAEoCRITCgt0bHNfZW5hYmxlZBgEIAEoCBIzCgdydW50aW1lGAUgASgLMiIuYmxhbmtldG9wcy5jb21tb24udjEuUm91dGVSdW50aW1lEkYKEHNlcnZpY2VfdW5pdF9yZWYYBiABKAsyLC5ibGFua2V0b3BzLm5ldHdvcmtzLnYxYWxwaGExLlNlcnZpY2VVbml0UmVmIpoCCgtSb3V0ZVN0YXR1cxIvCgVwaGFzZRgBIAEoCzIgLmJsYW5rZXRvcHMuY29tbW9uLnYxLlJvdXRlUGhhc2USDwoHbWVzc2FnZRgCIAEoCRIYChByZXNvbHZlZF9hZGRyZXNzGAMgASgJEjgKCnRsc19zdGF0dXMYBCABKAsyJC5ibGFua2V0b3BzLmNvbW1vbi52MS5Sb3V0ZVRMU1N0YXR1cxJACgpjb25kaXRpb25zGAUgAygLMiwuYmxhbmtldG9wcy5uZXR3b3Jrcy52MWFscGhhMS5Sb3V0ZUNvbmRpdGlvbhIzCg9sYXN0X3VwZGF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIokBCg5Sb3V0ZUNvbmRpdGlvbhIMCgR0eXBlGAEgASgJEg4KBnN0YXR1cxgCIAEoCRIOCgZyZWFzb24YAyABKAkSDwoHbWVzc2FnZRgEIAEoCRI4ChRsYXN0X3RyYW5zaXRpb25fdGltZRgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiSwoSQ3JlYXRlUm91dGVSZXF1ZXN0EjUKBHNwZWMYASABKAsyJy5ibGFua2V0b3BzLm5ldHdvcmtzLnYxYWxwaGExLlJvdXRlU3BlYyJJChNDcmVhdGVSb3V0ZVJlc3BvbnNlEjIKBXJvdXRlGAEgASgLMiMuYmxhbmtldG9wcy5uZXR3b3Jrcy52MWFscGhhMS5Sb3V0ZSIfCg9HZXRSb3V0ZVJlcXVlc3QSDAoEbmFtZRgBIAEoCSJGChBHZXRSb3V0ZVJlc3BvbnNlEjIKBXJvdXRlGAEgASgLMiMuYmxhbmtldG9wcy5uZXR3b3Jrcy52MWFscGhhMS5Sb3V0ZSJIChJVcGRhdGVSb3V0ZVJlcXVlc3QSMgoFcm91dGUYASABKAsyIy5ibGFua2V0b3BzLm5ldHdvcmtzLnYxYWxwaGExLlJvdXRlIkkKE1VwZGF0ZVJvdXRlUmVzcG9uc2USMgoFcm91dGUYASABKAsyIy5ibGFua2V0b3BzLm5ldHdvcmtzLnYxYWxwaGExLlJvdXRlIjAKEVBhdGNoUm91dGVSZXF1ZXN0EgwKBG5hbWUYASABKAkSDQoFcGF0Y2gYAiABKAkiSAoSUGF0Y2hSb3V0ZVJlc3BvbnNlEjIKBXJvdXRlGAEgASgLMiMuYmxhbmtldG9wcy5uZXR3b3Jrcy52MWFscGhhMS5Sb3V0ZSKDAgoRTGlzdFJvdXRlc1JlcXVlc3QSNAoFcGhhc2UYASABKAsyIC5ibGFua2V0b3BzLmNvbW1vbi52MS5Sb3V0ZVBoYXNlSACIAQESOAoHcnVudGltZRgCIAEoCzIiLmJsYW5rZXRvcHMuY29tbW9uLnYxLlJvdXRlUnVudGltZUgBiAEBEhEKBGhvc3QYAyABKAlIAogBARIWCglwYWdlX3NpemUYBCABKAVIA4gBARIXCgpwYWdlX3Rva2VuGAUgASgJSASIAQFCCAoGX3BoYXNlQgoKCF9ydW50aW1lQgcKBV9ob3N0QgwKCl9wYWdlX3NpemVCDQoLX3BhZ2VfdG9rZW4iewoSTGlzdFJvdXRlc1Jlc3BvbnNlEjMKBnJvdXRlcxgBIAMoCzIjLmJsYW5rZXRvcHMubmV0d29ya3MudjFhbHBoYTEuUm91dGUSHAoPbmV4dF9wYWdlX3Rva2VuGAIgASgJSACIAQFCEgoQX25leHRfcGFnZV90b2tlbiIiChJEZWxldGVSb3V0ZVJlcXVlc3QSDAoEbmFtZRgBIAEoCSImChNEZWxldGVSb3V0ZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiIQoRV2F0Y2hSb3V0ZVJlcXVlc3QSDAoEbmFtZRgBIAEoCSJ3ChJXYXRjaFJvdXRlUmVzcG9uc2USMgoFcm91dGUYASABKAsyIy5ibGFua2V0b3BzLm5ldHdvcmtzLnYxYWxwaGExLlJvdXRlEi0KBHR5cGUYAiABKA4yHy5ibGFua2V0b3BzLmNvbW1vbi52MS5FdmVudFR5cGUyqgYKDFJvdXRlU2VydmljZRJyCgtDcmVhdGVSb3V0ZRIwLmJsYW5rZXRvcHMubmV0d29ya3MudjFhbHBoYTEuQ3JlYXRlUm91dGVSZXF1ZXN0GjEuYmxhbmtldG9wcy5uZXR3b3Jrcy52MWFscGhhMS5DcmVhdGVSb3V0ZVJlc3BvbnNlEmkKCEdldFJvdXRlEi0uYmxhbmtldG9wcy5uZXR3b3Jrcy52MWFscGhhMS5HZXRSb3V0ZVJlcXVlc3QaLi5ibGFua2V0b3BzLm5ldHdvcmtzLnYxYWxwaGExLkdldFJvdXRlUmVzcG9uc2UScgoLVXBkYXRlUm91dGUSMC5ibGFua2V0b3BzLm5ldHdvcmtzLnYxYWxwaGExLlVwZGF0ZVJvdXRlUmVxdWVzdBoxLmJsYW5rZXRvcHMubmV0d29ya3MudjFhbHBoYTEuVXBkYXRlUm91dGVSZXNwb25zZRJvCgpQYXRjaFJvdXRlEi8uYmxhbmtldG9wcy5uZXR3b3Jrcy52MWFscGhhMS5QYXRjaFJvdXRlUmVxdWVzdBowLmJsYW5rZXRvcHMubmV0d29ya3MudjFhbHBoYTEuUGF0Y2hSb3V0ZVJlc3BvbnNlEm8KCkxpc3RSb3V0ZXMSLy5ibGFua2V0b3BzLm5ldHdvcmtzLnYxYWxwaGExLkxpc3RSb3V0ZXNSZXF1ZXN0GjAuYmxhbmtldG9wcy5uZXR3b3Jrcy52MWFscGhhMS5MaXN0Um91dGVzUmVzcG9uc2UScgoLRGVsZXRlUm91dGUSMC5ibGFua2V0b3BzLm5ldHdvcmtzLnYxYWxwaGExLkRlbGV0ZVJvdXRlUmVxdWVzdBoxLmJsYW5rZXRvcHMubmV0d29ya3MudjFhbHBoYTEuRGVsZXRlUm91dGVSZXNwb25zZRJxCgpXYXRjaFJvdXRlEi8uYmxhbmtldG9wcy5uZXR3b3Jrcy52MWFscGhhMS5XYXRjaFJvdXRlUmVxdWVzdBowLmJsYW5rZXRvcHMubmV0d29ya3MudjFhbHBoYTEuV2F0Y2hSb3V0ZVJlc3BvbnNlMAFCnAEKHHYxYWxwaGExLm5ldHdvcmtzLmJsYW5rZXRvcHNCClJvdXRlUHJvdG9aUWdpdGh1Yi5jb20vYmxhbmtldG9wcy9lbnZpcm9ubWVudHMtY29udHJhY3QvYmxhbmtldG9wcy9uZXR3b3Jrcy92MWFscGhhMTt2MWFscGhhMaoCHEJsYW5rZXRPcHMuTmV0d29ya3MudjFBbHBoYTFiBnByb3RvMw", [file_blanketops_common_v1_event, file_blanketops_common_v1_metadata, file_blanketops_common_v1_route, file_google_protobuf_timestamp]);
 
 /**
- * -----------------------------------------------------------------------------
  * ServiceUnitRef
  *
  * Reference to a ServiceUnit CR in the same namespace as this Route.
  * The controller resolves the materialised ksvc or K8s service by convention:
  *   ksvc name == service_unit_ref.name
- * -----------------------------------------------------------------------------
  *
  * @generated from message blanketops.networks.v1alpha1.ServiceUnitRef
  */
@@ -48,9 +46,7 @@ export const ServiceUnitRefSchema: GenMessage<ServiceUnitRef> = /*@__PURE__*/
   messageDesc(file_blanketops_networks_v1alpha1_route, 0);
 
 /**
- * -----------------------------------------------------------------------------
  * Resource
- * -----------------------------------------------------------------------------
  *
  * @generated from message blanketops.networks.v1alpha1.Route
  */
@@ -85,9 +81,7 @@ export const RouteSchema: GenMessage<Route> = /*@__PURE__*/
   messageDesc(file_blanketops_networks_v1alpha1_route, 1);
 
 /**
- * -----------------------------------------------------------------------------
  * Spec (intent)
- * -----------------------------------------------------------------------------
  *
  * @generated from message blanketops.networks.v1alpha1.RouteSpec
  */
@@ -152,9 +146,7 @@ export const RouteSpecSchema: GenMessage<RouteSpec> = /*@__PURE__*/
   messageDesc(file_blanketops_networks_v1alpha1_route, 2);
 
 /**
- * -----------------------------------------------------------------------------
  * Status (observed state)
- * -----------------------------------------------------------------------------
  *
  * @generated from message blanketops.networks.v1alpha1.RouteStatus
  */
@@ -211,9 +203,7 @@ export const RouteStatusSchema: GenMessage<RouteStatus> = /*@__PURE__*/
   messageDesc(file_blanketops_networks_v1alpha1_route, 3);
 
 /**
- * -----------------------------------------------------------------------------
  * Conditions
- * -----------------------------------------------------------------------------
  *
  * @generated from message blanketops.networks.v1alpha1.RouteCondition
  */
@@ -597,9 +587,7 @@ export const WatchRouteResponseSchema: GenMessage<WatchRouteResponse> = /*@__PUR
   messageDesc(file_blanketops_networks_v1alpha1_route, 18);
 
 /**
- * -----------------------------------------------------------------------------
  * Service
- * -----------------------------------------------------------------------------
  *
  * ── CRUD — aligned with BuildService pattern ─────────────────────────────
  *

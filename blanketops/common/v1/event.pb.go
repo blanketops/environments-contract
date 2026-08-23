@@ -33,9 +33,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// -----------------------------------------------------------------------------
 // Event Type (SHARED)
-// -----------------------------------------------------------------------------
 type EventType int32
 
 const (

@@ -24,9 +24,7 @@ export const file_blanketops_common_v1_event: GenFile = /*@__PURE__*/
   fileDesc("CiBibGFua2V0b3BzL2NvbW1vbi92MS9ldmVudC5wcm90bxIUYmxhbmtldG9wcy5jb21tb24udjEqbgoJRXZlbnRUeXBlEhoKFkVWRU5UX1RZUEVfVU5TUEVDSUZJRUQQABIUChBFVkVOVF9UWVBFX0FEREVEEAESFwoTRVZFTlRfVFlQRV9NT0RJRklFRBACEhYKEkVWRU5UX1RZUEVfREVMRVRFRBADQmJaSWdpdGh1Yi5jb20vYmxhbmtldG9wcy9lbnZpcm9ubWVudHMtY29udHJhY3QvYmxhbmtldG9wcy9jb21tb24vdjE7Y29tbW9udjGqAhRCbGFua2V0T3BzLkNvbW1vbi52MWIGcHJvdG8z");
 
 /**
- * -----------------------------------------------------------------------------
  * Event Type (SHARED)
- * -----------------------------------------------------------------------------
  *
  * @generated from enum blanketops.common.v1.EventType
  */

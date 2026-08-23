@@ -44,9 +44,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// -----------------------------------------------------------------------------
 // Service
-// -----------------------------------------------------------------------------
 type EnvironmentServiceClient interface {
 	// ── CRUD — aligned with BuildService pattern ─────────────────────────────
 	// Declare a new Environment.
@@ -158,9 +156,7 @@ type EnvironmentService_WatchEnvironmentClient = grpc.ServerStreamingClient[Watc
 // All implementations must embed UnimplementedEnvironmentServiceServer
 // for forward compatibility.
 //
-// -----------------------------------------------------------------------------
 // Service
-// -----------------------------------------------------------------------------
 type EnvironmentServiceServer interface {
 	// ── CRUD — aligned with BuildService pattern ─────────────────────────────
 	// Declare a new Environment.

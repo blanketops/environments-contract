@@ -35,7 +35,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// =============================================================================
 // GitRepository
 //
 // Declares a source repository the platform is permitted to observe.
@@ -52,10 +51,7 @@ const (
 //	bitbucket   — webhook registration via repository hooks
 //	generic-git — poll-only, no webhook registration
 //
-// =============================================================================
-// -----------------------------------------------------------------------------
 // Resource
-// -----------------------------------------------------------------------------
 type GitRepository struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Standard BlanketOps metadata (name, namespace, labels, ownerRef).
@@ -119,9 +115,7 @@ func (x *GitRepository) GetStatus() *GitRepositoryStatus {
 	return nil
 }
 
-// -----------------------------------------------------------------------------
 // Spec (intent)
-// -----------------------------------------------------------------------------
 type GitRepositorySpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Source provider hosting the repository.
@@ -197,9 +191,7 @@ func (x *GitRepositorySpec) GetCredentialsSecret() string {
 	return ""
 }
 
-// -----------------------------------------------------------------------------
 // Repository identity
-// -----------------------------------------------------------------------------
 type GitRepositoryRef struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Repository owner — user or organization on the provider.
@@ -256,9 +248,7 @@ func (x *GitRepositoryRef) GetName() string {
 	return ""
 }
 
-// -----------------------------------------------------------------------------
 // Webhooks
-// -----------------------------------------------------------------------------
 type GitRepositoryWebhook struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Events to subscribe to on the provider.
@@ -305,9 +295,7 @@ func (x *GitRepositoryWebhook) GetEvents() []*v1.GitEventType {
 	return nil
 }
 
-// -----------------------------------------------------------------------------
 // Status (observed state)
-// -----------------------------------------------------------------------------
 type GitRepositoryStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Whether the repository is registered and ready to emit events.
@@ -371,9 +359,7 @@ func (x *GitRepositoryStatus) GetLastUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-// -----------------------------------------------------------------------------
 // Requests / Responses
-// -----------------------------------------------------------------------------
 // CreateGitRepository — declare a new GitRepository intent.
 // Controller registers provider webhooks on reconciliation.
 type CreateGitRepositoryRequest struct {

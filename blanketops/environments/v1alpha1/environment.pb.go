@@ -35,7 +35,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// =============================================================================
 // Environment
 //
 // The envelope of the delivery chain: a versioned, isolated execution
@@ -43,10 +42,8 @@ const (
 // up an application's delivery — builds, packages, service units,
 // deployment, and routing — by reference, and owns them via ownerReference
 // (cascade delete).
-// =============================================================================
-// -----------------------------------------------------------------------------
+//
 // Resource
-// -----------------------------------------------------------------------------
 type Environment struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Standard BlanketOps metadata (name, namespace, labels, ownerRef).
@@ -110,9 +107,7 @@ func (x *Environment) GetStatus() *EnvironmentStatus {
 	return nil
 }
 
-// -----------------------------------------------------------------------------
 // Contract
-// -----------------------------------------------------------------------------
 // EnvironmentContract — platform-level bindings declared per environment.
 // Drives ESO ClusterSecretStore selection at reconciliation time.
 // Each composed CR owns its own credential secrets — this declares only
@@ -166,9 +161,7 @@ func (x *EnvironmentContract) GetSecretStore() *v1.SecretStore {
 	return nil
 }
 
-// -----------------------------------------------------------------------------
 // Spec (intent)
-// -----------------------------------------------------------------------------
 type EnvironmentSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Human-readable application identifier.
@@ -337,9 +330,7 @@ func (x *EnvironmentSpec) GetGitHubEvent() *ObjectRef {
 	return nil
 }
 
-// -----------------------------------------------------------------------------
 // References (composition, not ownership)
-// -----------------------------------------------------------------------------
 // Reference to a CR composed into this environment.
 // Resolved in the same namespace as the Environment.
 type ObjectRef struct {
@@ -387,9 +378,7 @@ func (x *ObjectRef) GetName() string {
 	return ""
 }
 
-// -----------------------------------------------------------------------------
 // Status (observed state)
-// -----------------------------------------------------------------------------
 type EnvironmentStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Current aggregate phase. Set by the controller.
@@ -544,9 +533,7 @@ func (x *EnvironmentCondition) GetLastTransitionTime() *timestamppb.Timestamp {
 	return nil
 }
 
-// -----------------------------------------------------------------------------
 // Requests / Responses
-// -----------------------------------------------------------------------------
 type CreateEnvironmentRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Desired spec for the new Environment.

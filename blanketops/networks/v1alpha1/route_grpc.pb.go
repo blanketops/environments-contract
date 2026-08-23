@@ -32,9 +32,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// -----------------------------------------------------------------------------
 // Service
-// -----------------------------------------------------------------------------
 type RouteServiceClient interface {
 	// Declare a new Route intent.
 	// Controller materializes the runtime resource on reconciliation.
@@ -145,9 +143,7 @@ type RouteService_WatchRouteClient = grpc.ServerStreamingClient[WatchRouteRespon
 // All implementations must embed UnimplementedRouteServiceServer
 // for forward compatibility.
 //
-// -----------------------------------------------------------------------------
 // Service
-// -----------------------------------------------------------------------------
 type RouteServiceServer interface {
 	// Declare a new Route intent.
 	// Controller materializes the runtime resource on reconciliation.

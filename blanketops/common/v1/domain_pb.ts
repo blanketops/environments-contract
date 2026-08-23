@@ -42,11 +42,9 @@ export const file_blanketops_common_v1_domain: GenFile = /*@__PURE__*/
   fileDesc("CiFibGFua2V0b3BzL2NvbW1vbi92MS9kb21haW4ucHJvdG8SFGJsYW5rZXRvcHMuY29tbW9uLnYxIuMBCgtEb21haW5QaGFzZRI8CgVwaGFzZRgBIAEoDjItLmJsYW5rZXRvcHMuY29tbW9uLnYxLkRvbWFpblBoYXNlLkRvbWFpblBoYXNlIpUBCgtEb21haW5QaGFzZRIcChhET01BSU5fUEhBU0VfVU5TUEVDSUZJRUQQABIYChRET01BSU5fUEhBU0VfUEVORElORxABEh0KGURPTUFJTl9QSEFTRV9QUk9WSVNJT05JTkcQAhIWChJET01BSU5fUEhBU0VfUkVBRFkQAxIXChNET01BSU5fUEhBU0VfRkFJTEVEEAQi3AEKEURvbWFpblRMU1N0cmF0ZWd5EksKCHN0cmF0ZWd5GAEgASgOMjkuYmxhbmtldG9wcy5jb21tb24udjEuRG9tYWluVExTU3RyYXRlZ3kuRG9tYWluVExTU3RyYXRlZ3kiegoRRG9tYWluVExTU3RyYXRlZ3kSIwofRE9NQUlOX1RMU19TVFJBVEVHWV9VTlNQRUNJRklFRBAAEiAKHERPTUFJTl9UTFNfU1RSQVRFR1lfUExBVEZPUk0QARIeChpET01BSU5fVExTX1NUUkFURUdZX0NVU1RPTRACIo8CCg9Eb21haW5UTFNTdGF0dXMSRQoGc3RhdHVzGAEgASgOMjUuYmxhbmtldG9wcy5jb21tb24udjEuRG9tYWluVExTU3RhdHVzLkRvbWFpblRMU1N0YXR1cyK0AQoPRG9tYWluVExTU3RhdHVzEiEKHURPTUFJTl9UTFNfU1RBVFVTX1VOU1BFQ0lGSUVEEAASHgoaRE9NQUlOX1RMU19TVEFUVVNfRElTQUJMRUQQARIiCh5ET01BSU5fVExTX1NUQVRVU19QUk9WSVNJT05JTkcQAhIcChhET01BSU5fVExTX1NUQVRVU19BQ1RJVkUQAxIcChhET01BSU5fVExTX1NUQVRVU19GQUlMRUQQBEJvQgtEb21haW5Qcm90b1pJZ2l0aHViLmNvbS9ibGFua2V0b3BzL2Vudmlyb25tZW50cy1jb250cmFjdC9ibGFua2V0b3BzL2NvbW1vbi92MTtjb21tb252MaoCFEJsYW5rZXRPcHMuQ29tbW9uLnYxYgZwcm90bzM");
 
 /**
- * =============================================================================
  * DomainPhase
  *
  * Lifecycle phase of a Domain CR. Set exclusively by the controller.
- * =============================================================================
  *
  * @generated from message blanketops.common.v1.DomainPhase
  */
@@ -116,7 +114,6 @@ export const DomainPhase_DomainPhaseSchema: GenEnum<DomainPhase_DomainPhase> = /
   enumDesc(file_blanketops_common_v1_domain, 0, 0);
 
 /**
- * =============================================================================
  * DomainTLSStrategy
  *
  * Controls which cert provisioning path the Domain controller takes.
@@ -128,7 +125,6 @@ export const DomainPhase_DomainPhaseSchema: GenEnum<DomainPhase_DomainPhase> = /
  *   custom   — Client-owned zone (e.g. client-a.co.za). Controller emits
  *              Issuer + DomainClaim + DomainMapping + Certificate. HTTP01
  *              ACME challenge via the nginx solver in the tenant namespace.
- * =============================================================================
  *
  * @generated from message blanketops.common.v1.DomainTLSStrategy
  */
@@ -181,11 +177,9 @@ export const DomainTLSStrategy_DomainTLSStrategySchema: GenEnum<DomainTLSStrateg
   enumDesc(file_blanketops_common_v1_domain, 1, 0);
 
 /**
- * =============================================================================
  * DomainTLSStatus
  *
  * Observed TLS provisioning state for a Domain. Set by the controller.
- * =============================================================================
  *
  * @generated from message blanketops.common.v1.DomainTLSStatus
  */

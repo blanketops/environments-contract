@@ -23,15 +23,12 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// -----------------------------------------------------------------------------
 // ServiceUnitRef
 //
 // Reference to a ServiceUnit CR in the same namespace as this Route.
 // The controller resolves the materialised ksvc or K8s service by convention:
 //
 //	ksvc name == service_unit_ref.name
-//
-// -----------------------------------------------------------------------------
 type ServiceUnitRef struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Name of the ServiceUnit CR in this namespace.
@@ -77,9 +74,7 @@ func (x *ServiceUnitRef) GetName() string {
 	return ""
 }
 
-// -----------------------------------------------------------------------------
 // Resource
-// -----------------------------------------------------------------------------
 type Route struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Standard BlanketOps metadata (name, namespace, labels, ownerRef).
@@ -143,9 +138,7 @@ func (x *Route) GetStatus() *RouteStatus {
 	return nil
 }
 
-// -----------------------------------------------------------------------------
 // Spec (intent)
-// -----------------------------------------------------------------------------
 type RouteSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Fully qualified domain name to serve.
@@ -247,9 +240,7 @@ func (x *RouteSpec) GetServiceUnitRef() *ServiceUnitRef {
 	return nil
 }
 
-// -----------------------------------------------------------------------------
 // Status (observed state)
-// -----------------------------------------------------------------------------
 type RouteStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Current lifecycle phase. Set by the controller.
@@ -341,9 +332,7 @@ func (x *RouteStatus) GetLastUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-// -----------------------------------------------------------------------------
 // Conditions
-// -----------------------------------------------------------------------------
 type RouteCondition struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Condition type. e.g. RouteResolved, TLSReady, RuntimeReady
