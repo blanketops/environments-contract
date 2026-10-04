@@ -10,6 +10,7 @@ This repository contains `versioned protobuf schemas` that describe:
 - build and deployment workflows.
 - routing and service units.
 - external events and sources.
+- secure supply chains — image builds, signatures and admission policy.
 
 These contracts are the source of truth for how BlanketOps components communicate and reason about environments.
 
@@ -32,10 +33,12 @@ blanketops/
 │ ├── v1beta1/
 │ ├── v1/
 │ 
-└── sources/
-  ├── v1alpha1/
-  ├── v1beta1/
-  └── v1/
+├── sources/
+│ ├── v1alpha1/
+│ ├── v1beta1/
+│ └── v1/
+└── supplychain/
+  └── v1alpha1/
 ```
 
 Each API group:

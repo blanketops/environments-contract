@@ -1,0 +1,246 @@
+/*
+   Copyright 2026 The BlanketOps Authors.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   	http://www.apache.org/licenses/LICENSE-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package blanketops.supplychain.v1alpha1;
+
+import "blanketops/common/v1/event.proto";
+import "blanketops/common/v1/metadata.proto";
+import "blanketops/common/v1/supplychain.proto";
+import "blanketops/supplychain/v1alpha1/types.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "BlanketOps.SupplyChain.V1Alpha1";
+option go_package = "github.com/blanketops/environments-contract/blanketops/supplychain/v1alpha1;v1alpha1";
+option java_outer_classname = "ImageBuildProto";
+option java_package = "v1alpha1.blanketops.supplychain";
+
+// =============================================================================
+// ImageBuild
+//
+// A single execution of a SupplyChain pipeline. Created by the SupplyChain
+// controller for every accepted event, or manually to trigger a build
+// against a specific SupplyChain.
+// The controller emits a Tekton PipelineRun on reconciliation and, once it
+// reaches a terminal state, an ImageBuildResult and an ImageSignature.
+// Owned by a SupplyChain CR via ownerReference (cascade delete).
+//
+// APIVersion: supplychain.blanketops.dev/v1alpha1
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Resource
+// -----------------------------------------------------------------------------
+
+message ImageBuild {
+  // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
+  blanketops.common.v1.Metadata metadata = 1;
+
+  // Desired state. Immutable once the PipelineRun has started.
+  ImageBuildSpec spec = 2;
+
+  // Observed state set by the controller. Never manually edited.
+  ImageBuildStatus status = 3;
+}
+
+// -----------------------------------------------------------------------------
+// Spec (intent)
+// -----------------------------------------------------------------------------
+
+message ImageBuildSpec {
+  // The SupplyChain that owns this build.
+  LocalObjectRef supply_chain_ref = 1;
+
+  // The git reference to build from.
+  GitRef git_ref = 2;
+
+  // Overrides the SupplyChain tag strategy for this specific build.
+  string image_tag = 3;
+}
+
+// GitRef defines the git source for a build.
+message GitRef {
+  // Git repository URL.
+  // SSH format: git@github.com:<owner>/<repo>.git
+  string url = 1;
+
+  // Git revision — branch, tag, or SHA.
+  // Empty means main.
+  string revision = 2;
+
+  // Exact commit SHA. Populated by the controller after clone.
+  string sha = 3;
+}
+
+// -----------------------------------------------------------------------------
+// Status (observed state)
+// -----------------------------------------------------------------------------
+
+message ImageBuildStatus {
+  // Overall build phase. Set by the controller.
+  blanketops.common.v1.ImageBuildPhase phase = 1;
+
+  // Conditions for UI and automation consumers.
+  // e.g. Available, Progressing, Degraded
+  repeated Condition conditions = 2;
+
+  // Status of each pipeline step, in execution order.
+  repeated ImageBuildStep steps = 3;
+
+  // Name of the Tekton PipelineRun driving this build.
+  // Use this to fetch full build logs and step details.
+  string pipeline_run_ref = 4;
+
+  // Fully qualified image reference produced by this build.
+  // e.g. ghcr.io/nkanyezisolutions/for-kaniko-app:abc1234
+  string image_ref = 5;
+
+  // sha256 digest of the built image.
+  string image_digest = 6;
+
+  // When the build began.
+  google.protobuf.Timestamp start_time = 7;
+
+  // When the build finished (success or failure).
+  google.protobuf.Timestamp completion_time = 8;
+
+  // Principal identity from the Fulcio certificate the image was signed with.
+  string signed_by = 9;
+
+  // PEM-encoded Fulcio ephemeral certificate used for signing.
+  string signing_cert_pem = 10;
+}
+
+// ImageBuildStep tracks an individual pipeline step.
+message ImageBuildStep {
+  // Step name.
+  // e.g. git-clone, buildpacks, sonarqube, trivy, sign, attest
+  string name = 1;
+
+  // Step phase.
+  blanketops.common.v1.ImageBuildStepPhase phase = 2;
+
+  // Human-readable detail about the step outcome.
+  string message = 3;
+
+  // When this step started.
+  google.protobuf.Timestamp start_time = 4;
+
+  // When this step finished.
+  google.protobuf.Timestamp completion_time = 5;
+}
+
+// -----------------------------------------------------------------------------
+// Requests / Responses
+// -----------------------------------------------------------------------------
+
+// CreateImageBuild — trigger a build against an existing SupplyChain.
+// Controller emits a Tekton PipelineRun on reconciliation.
+message CreateImageBuildRequest {
+  // Desired spec for the new ImageBuild.
+  ImageBuildSpec spec = 1;
+}
+
+message CreateImageBuildResponse {
+  // The created ImageBuild including generated metadata and initial status.
+  ImageBuild image_build = 1;
+}
+
+// GetImageBuild — fetch an ImageBuild by name.
+message GetImageBuildRequest {
+  // Name of the ImageBuild CR to fetch.
+  string name = 1;
+}
+
+message GetImageBuildResponse {
+  ImageBuild image_build = 1;
+}
+
+// ListImageBuilds — list ImageBuild CRs with optional filtering and paging.
+message ListImageBuildsRequest {
+  // Filter by current build phase.
+  optional blanketops.common.v1.ImageBuildPhase phase = 1;
+
+  // Filter by the owning SupplyChain name.
+  optional string supply_chain = 2;
+
+  // Maximum number of results to return. Server may return fewer.
+  optional int32 page_size = 3;
+
+  // Token from a previous ListImageBuildsResponse.next_page_token.
+  // Omit for the first request.
+  optional string page_token = 4;
+}
+
+message ListImageBuildsResponse {
+  // The list of ImageBuild CRs matching the request filters.
+  repeated ImageBuild image_builds = 1;
+
+  // Token to retrieve the next page. Empty if no more results.
+  optional string next_page_token = 2;
+}
+
+// DeleteImageBuild — delete an ImageBuild CR.
+// The controller garbage-collects the PipelineRun, the ImageBuildResult and
+// the ImageSignature owned by this build. The pushed image is not removed.
+message DeleteImageBuildRequest {
+  // Name of the ImageBuild CR to delete.
+  string name = 1;
+}
+
+message DeleteImageBuildResponse {
+  // True if the ImageBuild was successfully deleted.
+  bool success = 1;
+}
+
+// WatchImageBuild — stream phase transitions for an ImageBuild CR.
+// Delivers an event for every controller reconciliation loop.
+message WatchImageBuildRequest {
+  // Name of the ImageBuild CR to watch.
+  string name = 1;
+}
+
+message WatchImageBuildResponse {
+  // Current state of the ImageBuild at this point in the stream.
+  ImageBuild image_build = 1;
+
+  // The type of change that triggered this event.
+  blanketops.common.v1.EventType type = 2;
+}
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
+// ImageBuilds are executions — there is no Update or Patch. To build again,
+// create a new ImageBuild.
+service ImageBuildService {
+  // Trigger a build against an existing SupplyChain.
+  rpc CreateImageBuild(CreateImageBuildRequest) returns (CreateImageBuildResponse);
+
+  // Fetch an ImageBuild CR by name.
+  rpc GetImageBuild(GetImageBuildRequest) returns (GetImageBuildResponse);
+
+  // List ImageBuild CRs with optional phase/supply-chain filter and paging.
+  rpc ListImageBuilds(ListImageBuildsRequest) returns (ListImageBuildsResponse);
+
+  // Delete an ImageBuild CR and its owned PipelineRun, result and signature.
+  rpc DeleteImageBuild(DeleteImageBuildRequest) returns (DeleteImageBuildResponse);
+
+  // ── Streaming ────────────────────────────────────────────────────────────
+
+  // Stream phase transitions for an ImageBuild CR.
+  // Closes when the build reaches a terminal phase (SUCCEEDED, FAILED).
+  rpc WatchImageBuild(WatchImageBuildRequest) returns (stream WatchImageBuildResponse);
+}

@@ -1,0 +1,397 @@
+/*
+   Copyright 2026 The BlanketOps Authors.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   	http://www.apache.org/licenses/LICENSE-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package blanketops.supplychain.v1alpha1;
+
+import "blanketops/common/v1/event.proto";
+import "blanketops/common/v1/metadata.proto";
+import "blanketops/common/v1/supplychain.proto";
+import "blanketops/supplychain/v1alpha1/types.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "BlanketOps.SupplyChain.V1Alpha1";
+option go_package = "github.com/blanketops/environments-contract/blanketops/supplychain/v1alpha1;v1alpha1";
+option java_outer_classname = "SupplyChainPolicyProto";
+option java_package = "v1alpha1.blanketops.supplychain";
+
+// =============================================================================
+// SupplyChainPolicy
+//
+// The admission side of a SupplyChain. One SupplyChainPolicy renders a
+// sigstore policy-controller TrustRoot and the ClusterImagePolicies that only
+// admit images the referenced SupplyChain signed keylessly and attested as
+// authorized.
+//
+// Only spec.supply_chain_ref is required. The image repository, the Fulcio
+// and CT log endpoints and the trust anchors come from the referenced
+// SupplyChain and the sigstore trust anchor ConfigMap. Signers and the trust
+// root default to what the SupplyChain signs with, and can be stated to pin
+// them, to accept more than one signer, or to trust a different sigstore.
+// Status reports what was resolved.
+//
+// APIVersion: supplychain.blanketops.dev/v1alpha1
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Resource
+// -----------------------------------------------------------------------------
+
+message SupplyChainPolicy {
+  // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
+  blanketops.common.v1.Metadata metadata = 1;
+
+  // Desired state declared by the operator.
+  SupplyChainPolicySpec spec = 2;
+
+  // Observed state set by the controller. Never manually edited.
+  SupplyChainPolicyStatus status = 3;
+}
+
+// -----------------------------------------------------------------------------
+// Spec (intent)
+// -----------------------------------------------------------------------------
+
+message SupplyChainPolicySpec {
+  // The SupplyChain whose images this policy admits. Required.
+  LocalObjectRef supply_chain_ref = 1;
+
+  // What happens to a workload whose image fails verification.
+  // Unset means enforce.
+  blanketops.common.v1.SupplyChainPolicyMode mode = 2;
+
+  // ServiceAccount this policy is rendered on behalf of. Before anything is
+  // rendered it must pass three SubjectAccessReviews: it can read the
+  // SupplyChain (scope), it may declare policy for it (intent), and it may
+  // produce the admission policies (output).
+  // Empty means supply-chain-policy-runner.
+  string service_account_name = 3;
+
+  // Keyless identities whose signature and authorization attestation are
+  // accepted — any one of them is enough. At most 16.
+  // Empty means the SupplyChain's ServiceAccount, the identity the pipeline
+  // signs with.
+  repeated PolicySigner signers = 4;
+
+  // The sigstore instance signatures and attestations are verified against.
+  // Each part defaults to the SupplyChain's signing endpoints and to the
+  // sigstore trust anchor ConfigMap in the policy's namespace.
+  PolicyTrustRoot trust_root = 5;
+}
+
+// -----------------------------------------------------------------------------
+// Signers
+// -----------------------------------------------------------------------------
+
+// PolicySigner is one keyless identity allowed to sign.
+message PolicySigner {
+  // Exactly one identity form must be set.
+  oneof identity {
+    // A ServiceAccount in the policy's namespace. Shorthand for the subject
+    // Fulcio issues to that ServiceAccount.
+    string service_account_name = 1;
+
+    // The exact subject of the Fulcio certificate, for signers that are not
+    // a ServiceAccount in this namespace.
+    string subject = 2;
+  }
+
+  // OIDC issuer that vouched for the signer.
+  // Empty means the cluster's ServiceAccount token issuer.
+  string issuer = 3;
+}
+
+// SignerIdentity is a signer as it appears in a Fulcio certificate.
+message SignerIdentity {
+  // OIDC issuer in the certificate.
+  string issuer = 1;
+
+  // Subject in the certificate.
+  string subject = 2;
+}
+
+// -----------------------------------------------------------------------------
+// Trust root
+// -----------------------------------------------------------------------------
+
+// PolicyTrustRoot states the three authorities a signature is checked against.
+message PolicyTrustRoot {
+  // The certificate authority. Its PEM is the CA certificate chain.
+  TrustedAuthority fulcio = 1;
+
+  // The signature transparency log. Its PEM is the log's public key.
+  TrustedAuthority rekor = 2;
+
+  // The certificate transparency log. Its PEM is the log's public key.
+  TrustedAuthority ct_log = 3;
+}
+
+// TrustedAuthority is one sigstore service and the key material that
+// identifies it.
+message TrustedAuthority {
+  // Service endpoint.
+  // Empty means the matching endpoint in the SupplyChain's signing spec.
+  string url = 1;
+
+  // The PEM that identifies the service.
+  // Absent means the matching key of the sigstore trust anchor ConfigMap.
+  ConfigMapKeyRef pem_ref = 2;
+}
+
+// ConfigMapKeyRef selects a key of a ConfigMap in the policy's namespace.
+message ConfigMapKeyRef {
+  // Name of the ConfigMap.
+  string name = 1;
+
+  // Key within the ConfigMap.
+  string key = 2;
+}
+
+// TrustAnchorFingerprints identify the key material a policy trusts, so it
+// can be compared with what the sigstore services are actually using.
+message TrustAnchorFingerprints {
+  // SHA-256 of the Fulcio root certificate.
+  string fulcio_root = 1;
+
+  // SHA-256 of the Rekor public key.
+  string rekor_key = 2;
+
+  // SHA-256 of the CT log public key.
+  string ct_log_key = 3;
+}
+
+// -----------------------------------------------------------------------------
+// Authorization
+// -----------------------------------------------------------------------------
+
+// AuthorizationProof is the API server's answer to one SubjectAccessReview.
+message AuthorizationProof {
+  // Identity that was reviewed.
+  string principal = 1;
+
+  // API group of the resource.
+  string group = 2;
+
+  // Resource the action targets.
+  string resource = 3;
+
+  // The action.
+  string verb = 4;
+
+  // The API server's verdict.
+  bool allowed = 5;
+
+  // The API server's explanation, if it gave one.
+  string reason = 6;
+
+  // When the review was performed.
+  google.protobuf.Timestamp evaluated_at = 7;
+}
+
+// PolicyAuthorization holds the three proofs of the policy's ServiceAccount.
+message PolicyAuthorization {
+  // The ServiceAccount can read the SupplyChain it sets policy for.
+  AuthorizationProof scope = 1;
+
+  // The ServiceAccount may declare admission policy for it.
+  AuthorizationProof intent = 2;
+
+  // The ServiceAccount may produce the admission policies.
+  AuthorizationProof output = 3;
+}
+
+// -----------------------------------------------------------------------------
+// Status (observed state)
+// -----------------------------------------------------------------------------
+
+message SupplyChainPolicyStatus {
+  // Conditions for UI and automation consumers.
+  // Ready: the TrustRoot and ClusterImagePolicies are in sync with the
+  // SupplyChain.
+  repeated Condition conditions = 1;
+
+  // Generation last reconciled.
+  int64 observed_generation = 2;
+
+  // Name of the managed policy.sigstore.dev TrustRoot.
+  string trust_root = 3;
+
+  // Names of the managed policy.sigstore.dev ClusterImagePolicies. An image
+  // must satisfy all of them: one requires the keyless signature, the other
+  // the authorization attestation.
+  repeated string cluster_image_policies = 4;
+
+  // Image globs the ClusterImagePolicies apply to.
+  repeated string images = 5;
+
+  // Outcome of the three SubjectAccessReviews for the policy's
+  // ServiceAccount, as of the last reconcile.
+  PolicyAuthorization authorization = 6;
+
+  // Identities the policy accepts, as resolved from the spec and the
+  // SupplyChain.
+  repeated SignerIdentity signers = 7;
+
+  // Certificate authority the signers' certificates must chain to.
+  string fulcio_url = 8;
+
+  // Transparency log signatures and attestations must be recorded in.
+  string rekor_url = 9;
+
+  // Certificate transparency log the signers' certificates must carry a
+  // proof from.
+  string ct_log_url = 10;
+
+  // Fingerprints of the key material in the rendered TrustRoot.
+  TrustAnchorFingerprints trust_anchors = 11;
+}
+
+// -----------------------------------------------------------------------------
+// Requests / Responses
+// -----------------------------------------------------------------------------
+
+// CreateSupplyChainPolicy — declare a new SupplyChainPolicy.
+// Controller renders the TrustRoot and ClusterImagePolicies on reconciliation.
+message CreateSupplyChainPolicyRequest {
+  // Desired spec for the new SupplyChainPolicy.
+  SupplyChainPolicySpec spec = 1;
+}
+
+message CreateSupplyChainPolicyResponse {
+  // The created SupplyChainPolicy including generated metadata and initial status.
+  SupplyChainPolicy supply_chain_policy = 1;
+}
+
+// GetSupplyChainPolicy — fetch a SupplyChainPolicy by name.
+message GetSupplyChainPolicyRequest {
+  // Name of the SupplyChainPolicy CR to fetch.
+  string name = 1;
+}
+
+message GetSupplyChainPolicyResponse {
+  SupplyChainPolicy supply_chain_policy = 1;
+}
+
+// UpdateSupplyChainPolicy — full replace of the SupplyChainPolicy spec.
+// Equivalent to kubectl apply — all fields replaced.
+message UpdateSupplyChainPolicyRequest {
+  // Full SupplyChainPolicy object including metadata and desired spec.
+  SupplyChainPolicy supply_chain_policy = 1;
+}
+
+message UpdateSupplyChainPolicyResponse {
+  // The updated SupplyChainPolicy as observed by the controller.
+  SupplyChainPolicy supply_chain_policy = 1;
+}
+
+// PatchSupplyChainPolicy — partial update using JSON merge patch RFC 7396.
+// Only specified fields are updated — others left unchanged.
+message PatchSupplyChainPolicyRequest {
+  // Name of the SupplyChainPolicy CR to patch.
+  string name = 1;
+
+  // JSON merge patch document — RFC 7396.
+  // e.g. {"spec":{"mode":"warn"}}
+  string patch = 2;
+}
+
+message PatchSupplyChainPolicyResponse {
+  // The patched SupplyChainPolicy as observed by the controller.
+  SupplyChainPolicy supply_chain_policy = 1;
+}
+
+// ListSupplyChainPolicies — list SupplyChainPolicy CRs with optional
+// filtering and paging.
+message ListSupplyChainPoliciesRequest {
+  // Filter by the referenced SupplyChain name.
+  optional string supply_chain = 1;
+
+  // Filter by admission mode.
+  optional blanketops.common.v1.SupplyChainPolicyMode mode = 2;
+
+  // Maximum number of results to return. Server may return fewer.
+  optional int32 page_size = 3;
+
+  // Token from a previous ListSupplyChainPoliciesResponse.next_page_token.
+  // Omit for the first request.
+  optional string page_token = 4;
+}
+
+message ListSupplyChainPoliciesResponse {
+  // The list of SupplyChainPolicy CRs matching the request filters.
+  repeated SupplyChainPolicy supply_chain_policies = 1;
+
+  // Token to retrieve the next page. Empty if no more results.
+  optional string next_page_token = 2;
+}
+
+// DeleteSupplyChainPolicy — delete a SupplyChainPolicy CR.
+// The controller garbage-collects the TrustRoot and ClusterImagePolicies it
+// rendered. Images of the SupplyChain are no longer verified at admission.
+message DeleteSupplyChainPolicyRequest {
+  // Name of the SupplyChainPolicy CR to delete.
+  string name = 1;
+}
+
+message DeleteSupplyChainPolicyResponse {
+  // True if the SupplyChainPolicy was successfully deleted.
+  bool success = 1;
+}
+
+// WatchSupplyChainPolicy — stream changes to a SupplyChainPolicy CR.
+// Delivers an event for every controller reconciliation loop.
+message WatchSupplyChainPolicyRequest {
+  // Name of the SupplyChainPolicy CR to watch.
+  string name = 1;
+}
+
+message WatchSupplyChainPolicyResponse {
+  // Current state of the SupplyChainPolicy at this point in the stream.
+  SupplyChainPolicy supply_chain_policy = 1;
+
+  // The type of change that triggered this event.
+  blanketops.common.v1.EventType type = 2;
+}
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
+service SupplyChainPolicyService {
+  // ── CRUD — aligned with BuildService pattern ─────────────────────────────
+
+  // Declare a new SupplyChainPolicy.
+  rpc CreateSupplyChainPolicy(CreateSupplyChainPolicyRequest) returns (CreateSupplyChainPolicyResponse);
+
+  // Fetch a SupplyChainPolicy CR by name.
+  rpc GetSupplyChainPolicy(GetSupplyChainPolicyRequest) returns (GetSupplyChainPolicyResponse);
+
+  // Full replace of a SupplyChainPolicy spec.
+  rpc UpdateSupplyChainPolicy(UpdateSupplyChainPolicyRequest) returns (UpdateSupplyChainPolicyResponse);
+
+  // Partial update via JSON merge patch RFC 7396.
+  rpc PatchSupplyChainPolicy(PatchSupplyChainPolicyRequest) returns (PatchSupplyChainPolicyResponse);
+
+  // List SupplyChainPolicy CRs with optional supply-chain/mode filter and paging.
+  rpc ListSupplyChainPolicies(ListSupplyChainPoliciesRequest) returns (ListSupplyChainPoliciesResponse);
+
+  // Delete a SupplyChainPolicy CR and its rendered admission policies.
+  rpc DeleteSupplyChainPolicy(DeleteSupplyChainPolicyRequest) returns (DeleteSupplyChainPolicyResponse);
+
+  // ── Streaming ────────────────────────────────────────────────────────────
+
+  // Stream changes to a SupplyChainPolicy CR.
+  // Streams indefinitely — policies have no terminal phase; close client-side.
+  rpc WatchSupplyChainPolicy(WatchSupplyChainPolicyRequest) returns (stream WatchSupplyChainPolicyResponse);
+}

@@ -1,0 +1,214 @@
+/*
+ * Copyright 2026 The BlanketOps Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// =============================================================================
+// blanketops/common/v1/supplychain.proto
+//
+// Supply-chain shared types used by supplychain.blanketops.dev resources.
+//
+// All enum values are wrapped in a message — consistent with the wrapper
+// pattern in common/v1/domain.proto and common/v1/route.proto.
+//
+// Consumers:
+//   blanketops/supplychain/v1alpha1/supplychain.proto
+//   blanketops/supplychain/v1alpha1/supplychainpolicy.proto
+//   blanketops/supplychain/v1alpha1/imagebuild.proto
+//   blanketops/supplychain/v1alpha1/imagebuildresult.proto
+//   blanketops/supplychain/v1alpha1/imagesignature.proto
+// =============================================================================
+
+syntax = "proto3";
+
+package blanketops.common.v1;
+
+// Options must match every other file in the blanketops.common.v1 package exactly.
+option csharp_namespace = "BlanketOps.Common.v1";
+option go_package = "github.com/blanketops/environments-contract/blanketops/common/v1;commonv1";
+option java_outer_classname = "SupplyChainProto";
+
+// =============================================================================
+// SupplyChainPhase
+//
+// Lifecycle phase of a SupplyChain CR. Set exclusively by the controller.
+// =============================================================================
+message SupplyChainPhase {
+  enum SupplyChainPhase {
+    // Unset — should never appear in a reconciled CR.
+    SUPPLY_CHAIN_PHASE_UNSPECIFIED = 0;
+
+    // Pipeline, triggers and signing configuration are materialized.
+    // The supply chain accepts ImageBuilds.
+    SUPPLY_CHAIN_PHASE_READY = 1;
+
+    // Some owned resources are not in their desired state.
+    // Builds may still run but a step or trigger is impaired.
+    SUPPLY_CHAIN_PHASE_DEGRADED = 2;
+
+    // The supply chain could not be reconciled. No builds are accepted.
+    SUPPLY_CHAIN_PHASE_ERROR = 3;
+  }
+
+  // phase is the current lifecycle value.
+  SupplyChainPhase phase = 1;
+}
+
+// =============================================================================
+// ImageTagStrategy
+//
+// How the tag of a built image is derived.
+// =============================================================================
+message ImageTagStrategy {
+  enum ImageTagStrategy {
+    // Unset — the controller applies git-sha.
+    IMAGE_TAG_STRATEGY_UNSPECIFIED = 0;
+
+    // Tag is the commit SHA the image was built from.
+    IMAGE_TAG_STRATEGY_GIT_SHA = 1;
+
+    // Tag is the semantic version of the release being built.
+    IMAGE_TAG_STRATEGY_SEMVER = 2;
+
+    // Tag is always "latest".
+    IMAGE_TAG_STRATEGY_LATEST = 3;
+  }
+
+  // strategy is the selected tag derivation.
+  ImageTagStrategy strategy = 1;
+}
+
+// =============================================================================
+// SupplyChainPolicyMode
+//
+// What happens to a workload whose image fails verification at admission.
+// =============================================================================
+message SupplyChainPolicyMode {
+  enum SupplyChainPolicyMode {
+    // Unset — the controller applies enforce.
+    SUPPLY_CHAIN_POLICY_MODE_UNSPECIFIED = 0;
+
+    // The workload is rejected.
+    SUPPLY_CHAIN_POLICY_MODE_ENFORCE = 1;
+
+    // The workload is admitted with a warning.
+    SUPPLY_CHAIN_POLICY_MODE_WARN = 2;
+  }
+
+  // mode is the selected admission behaviour.
+  SupplyChainPolicyMode mode = 1;
+}
+
+// =============================================================================
+// ImageBuildPhase
+//
+// Overall phase of an ImageBuild — a single execution of a SupplyChain
+// pipeline. Set exclusively by the controller.
+// =============================================================================
+message ImageBuildPhase {
+  enum ImageBuildPhase {
+    IMAGE_BUILD_PHASE_UNSPECIFIED = 0;
+
+    // Accepted, PipelineRun not started yet.
+    IMAGE_BUILD_PHASE_PENDING = 1;
+
+    // The PipelineRun is executing.
+    IMAGE_BUILD_PHASE_RUNNING = 2;
+
+    // All enabled steps completed. Image is pushed, signed and attested.
+    IMAGE_BUILD_PHASE_SUCCEEDED = 3;
+
+    // A step failed. Check status.steps for the failing step.
+    IMAGE_BUILD_PHASE_FAILED = 4;
+  }
+
+  // phase is the current lifecycle value.
+  ImageBuildPhase phase = 1;
+}
+
+// =============================================================================
+// ImageBuildStepPhase
+//
+// Phase of one pipeline step within an ImageBuild.
+// =============================================================================
+message ImageBuildStepPhase {
+  enum ImageBuildStepPhase {
+    IMAGE_BUILD_STEP_PHASE_UNSPECIFIED = 0;
+
+    // The step has not started.
+    IMAGE_BUILD_STEP_PHASE_PENDING = 1;
+
+    // The step is executing.
+    IMAGE_BUILD_STEP_PHASE_RUNNING = 2;
+
+    // The step completed successfully.
+    IMAGE_BUILD_STEP_PHASE_SUCCEEDED = 3;
+
+    // The step failed.
+    IMAGE_BUILD_STEP_PHASE_FAILED = 4;
+
+    // The step is disabled on the SupplyChain, or an earlier step failed.
+    IMAGE_BUILD_STEP_PHASE_SKIPPED = 5;
+  }
+
+  // phase is the current step value.
+  ImageBuildStepPhase phase = 1;
+}
+
+// =============================================================================
+// ImageBuildResultPhase
+//
+// Terminal phase recorded on an ImageBuildResult.
+// =============================================================================
+message ImageBuildResultPhase {
+  enum ImageBuildResultPhase {
+    IMAGE_BUILD_RESULT_PHASE_UNSPECIFIED = 0;
+
+    // The PipelineRun completed successfully.
+    IMAGE_BUILD_RESULT_PHASE_SUCCEEDED = 1;
+
+    // The PipelineRun failed.
+    IMAGE_BUILD_RESULT_PHASE_FAILED = 2;
+
+    // The PipelineRun ended but its outcome could not be determined,
+    // e.g. it was pruned before results were collected.
+    IMAGE_BUILD_RESULT_PHASE_UNKNOWN = 3;
+  }
+
+  // phase is the terminal value.
+  ImageBuildResultPhase phase = 1;
+}
+
+// =============================================================================
+// ImageSignaturePhase
+//
+// Signing phase of an ImageSignature. Set exclusively by the controller.
+// =============================================================================
+message ImageSignaturePhase {
+  enum ImageSignaturePhase {
+    IMAGE_SIGNATURE_PHASE_UNSPECIFIED = 0;
+
+    // The signature has not been recorded yet.
+    IMAGE_SIGNATURE_PHASE_PENDING = 1;
+
+    // The image is signed and the signature is in the transparency log.
+    IMAGE_SIGNATURE_PHASE_SIGNED = 2;
+
+    // Signing failed.
+    IMAGE_SIGNATURE_PHASE_FAILED = 3;
+  }
+
+  // phase is the current signing value.
+  ImageSignaturePhase phase = 1;
+}
