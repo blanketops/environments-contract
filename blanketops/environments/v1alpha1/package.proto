@@ -97,6 +97,16 @@ message PackageRepository {
   // Name of the Kubernetes Secret containing repository credentials.
   // Sourced from the environment SecretStore via ExternalSecret.
   string credentials_secret = 2;
+
+  // Git ref of the package repository to apply — branch, tag, or commit SHA.
+  // Required to fetch: the repository is not fetched without one.
+  // A branch is written with its remote, e.g. origin/main.
+  string ref = 3;
+
+  // Path inside the repository that holds the package definitions.
+  // Only this directory is applied. Empty means the repository root.
+  // e.g. manifests
+  string path = 4;
 }
 
 message StateRepository {
