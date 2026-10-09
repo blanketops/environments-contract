@@ -1512,6 +1512,8 @@ ListPackages — list Package CRs with optional filtering and paging.
 | ----- | ---- | ----- | ----------- |
 | url | [string](#string) |  | SSH or HTTPS URL of the package repository. SSH format: git@github.com:&lt;owner&gt;/&lt;repo&gt;.git |
 | credentials_secret | [string](#string) |  | Name of the Kubernetes Secret containing repository credentials. Sourced from the environment SecretStore via ExternalSecret. |
+| ref | [string](#string) |  | Git ref of the package repository to apply — branch, tag, or commit SHA. Required to fetch: the repository is not fetched without one. A branch is written with its remote, e.g. origin/main. |
+| path | [string](#string) |  | Path inside the repository that holds the package definitions. Only this directory is applied. Empty means the repository root. e.g. manifests |
 
 
 
