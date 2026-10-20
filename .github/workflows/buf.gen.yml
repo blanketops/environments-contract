@@ -42,6 +42,7 @@ jobs:
       - name: Upload generated contracts
         id: upload
         uses: actions/upload-artifact@v7
+        continue-on-error: true
         with:
           name: generated-contracts-${{ github.sha }}
           path: blanketops/
