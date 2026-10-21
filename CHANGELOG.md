@@ -1,3 +1,44 @@
+## [0.5.7] - 2026-10-21
+
+### 🐛 Bug Fixes
+
+- Use the verbatim Apache-2.0 license text
+
+### 💼 Other
+
+- Merge release/v0.5.7 into main
+
+### ⚙️ Miscellaneous Tasks
+
+- *(dependabot)* Open dependency PRs against main
+- Do not fail a job when the artifact upload is refused
+- Sync develop with main after release/v0.5.6
+- *(release)* Make the workflows' commits verified
+- Sync develop with main
+- Land bot writes to main through pull requests
+- Sync develop with main
+## [0.5.6] - 2026-10-09
+
+### 🚀 Features
+
+- *(environments)* Add ref and path to PackageRepository
+
+### 💼 Other
+
+- Merge release/v0.5.6 into main
+
+### 📚 Documentation
+
+- *(release)* Regenerate contract docs for v0.5.6 [skip ci]
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Update changelog for v0.5.5
+- Run workflows on zenith self-hosted runners
+- Sync develop with main after release/v0.5.5
+- Sync develop with main after manual v0.5.5 changelog fix
+- Run workflows on zenith self-hosted runners
+- *(release)* Regenerate Go and TypeScript contracts for v0.5.6 [skip ci]
 ## [0.5.5] - 2026-08-23
 
 ### 🚀 Features
