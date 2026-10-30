@@ -64,4 +64,7 @@ message SecretStoreProvider {
 message SecretStore {
   // Backend provider. Drives ESO ClusterSecretStore selection.
   SecretStoreProvider provider = 1;
+  // Optional override for the SecretStore name.
+  // If empty, the platform default for the provider is used.
+  string store_name = 2;
 }

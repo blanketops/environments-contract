@@ -349,7 +349,10 @@ func (x *SecretStoreProvider) GetSecretStoreProvider() SecretStoreProvider_Secre
 type SecretStore struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Backend provider. Drives ESO ClusterSecretStore selection.
-	Provider      *SecretStoreProvider `protobuf:"bytes,1,opt,name=provider,proto3" json:"provider,omitempty"`
+	Provider *SecretStoreProvider `protobuf:"bytes,1,opt,name=provider,proto3" json:"provider,omitempty"`
+	// Optional override for the SecretStore name.
+	// If empty, the platform default for the provider is used.
+	StoreName     string `protobuf:"bytes,2,opt,name=store_name,json=storeName,proto3" json:"store_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -391,6 +394,13 @@ func (x *SecretStore) GetProvider() *SecretStoreProvider {
 	return nil
 }
 
+func (x *SecretStore) GetStoreName() string {
+	if x != nil {
+		return x.StoreName
+	}
+	return ""
+}
+
 var File_blanketops_common_v1_environment_proto protoreflect.FileDescriptor
 
 const file_blanketops_common_v1_environment_proto_rawDesc = "" +
@@ -419,9 +429,11 @@ const file_blanketops_common_v1_environment_proto_rawDesc = "" +
 	"\x19SECRET_STORE_PROVIDER_AWS\x10\x01\x12\x1f\n" +
 	"\x1bSECRET_STORE_PROVIDER_VAULT\x10\x02\x12\x1d\n" +
 	"\x19SECRET_STORE_PROVIDER_GCP\x10\x03\x12\x1f\n" +
-	"\x1bSECRET_STORE_PROVIDER_AZURE\x10\x04\"T\n" +
+	"\x1bSECRET_STORE_PROVIDER_AZURE\x10\x04\"s\n" +
 	"\vSecretStore\x12E\n" +
-	"\bprovider\x18\x01 \x01(\v2).blanketops.common.v1.SecretStoreProviderR\bproviderBbZIgithub.com/blanketops/environments-contract/blanketops/common/v1;commonv1\xaa\x02\x14BlanketOps.Common.v1b\x06proto3"
+	"\bprovider\x18\x01 \x01(\v2).blanketops.common.v1.SecretStoreProviderR\bprovider\x12\x1d\n" +
+	"\n" +
+	"store_name\x18\x02 \x01(\tR\tstoreNameBbZIgithub.com/blanketops/environments-contract/blanketops/common/v1;commonv1\xaa\x02\x14BlanketOps.Common.v1b\x06proto3"
 
 var (
 	file_blanketops_common_v1_environment_proto_rawDescOnce sync.Once

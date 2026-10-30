@@ -98,6 +98,62 @@ func (x *Environment) GetStatus() *EnvironmentStatus {
 	return nil
 }
 
+type SecretStore struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The provider type for the secret store.
+	// e.g. "vault", "aws", "azure", "fake"
+	Provider string `protobuf:"bytes,1,opt,name=provider,proto3" json:"provider,omitempty"`
+	// Reference to the underlying SecretStore CR name.
+	// If empty, the controller uses the default backend for the provider.
+	StoreName     string `protobuf:"bytes,2,opt,name=store_name,json=storeName,proto3" json:"store_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SecretStore) Reset() {
+	*x = SecretStore{}
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SecretStore) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SecretStore) ProtoMessage() {}
+
+func (x *SecretStore) ProtoReflect() protoreflect.Message {
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SecretStore.ProtoReflect.Descriptor instead.
+func (*SecretStore) Descriptor() ([]byte, []int) {
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *SecretStore) GetProvider() string {
+	if x != nil {
+		return x.Provider
+	}
+	return ""
+}
+
+func (x *SecretStore) GetStoreName() string {
+	if x != nil {
+		return x.StoreName
+	}
+	return ""
+}
+
 type EnvironmentSpec struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Human-readable application identifier.
@@ -128,13 +184,15 @@ type EnvironmentSpec struct {
 	Build *ObjectRef `protobuf:"bytes,11,opt,name=build,proto3" json:"build,omitempty"`
 	// Build triggers permitted for this environment.
 	BuildTriggers []*ObjectRef `protobuf:"bytes,12,rep,name=build_triggers,json=buildTriggers,proto3" json:"build_triggers,omitempty"`
+	// The secret store configuration for this environment.
+	SecretStore   *SecretStore `protobuf:"bytes,13,opt,name=secret_store,json=secretStore,proto3" json:"secret_store,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *EnvironmentSpec) Reset() {
 	*x = EnvironmentSpec{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[1]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -146,7 +204,7 @@ func (x *EnvironmentSpec) String() string {
 func (*EnvironmentSpec) ProtoMessage() {}
 
 func (x *EnvironmentSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[1]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -159,7 +217,7 @@ func (x *EnvironmentSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EnvironmentSpec.ProtoReflect.Descriptor instead.
 func (*EnvironmentSpec) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{1}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *EnvironmentSpec) GetApplicationName() string {
@@ -246,6 +304,13 @@ func (x *EnvironmentSpec) GetBuildTriggers() []*ObjectRef {
 	return nil
 }
 
+func (x *EnvironmentSpec) GetSecretStore() *SecretStore {
+	if x != nil {
+		return x.SecretStore
+	}
+	return nil
+}
+
 // Reference to a CR composed into this environment.
 // Resolved in the same namespace as the Environment.
 type ObjectRef struct {
@@ -258,7 +323,7 @@ type ObjectRef struct {
 
 func (x *ObjectRef) Reset() {
 	*x = ObjectRef{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[2]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -270,7 +335,7 @@ func (x *ObjectRef) String() string {
 func (*ObjectRef) ProtoMessage() {}
 
 func (x *ObjectRef) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[2]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -283,7 +348,7 @@ func (x *ObjectRef) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ObjectRef.ProtoReflect.Descriptor instead.
 func (*ObjectRef) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{2}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ObjectRef) GetName() string {
@@ -310,7 +375,7 @@ type EnvironmentStatus struct {
 
 func (x *EnvironmentStatus) Reset() {
 	*x = EnvironmentStatus{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[3]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -322,7 +387,7 @@ func (x *EnvironmentStatus) String() string {
 func (*EnvironmentStatus) ProtoMessage() {}
 
 func (x *EnvironmentStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[3]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -335,7 +400,7 @@ func (x *EnvironmentStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EnvironmentStatus.ProtoReflect.Descriptor instead.
 func (*EnvironmentStatus) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{3}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *EnvironmentStatus) GetPhase() *v1.EnvironmentPhase {
@@ -384,7 +449,7 @@ type EnvironmentCondition struct {
 
 func (x *EnvironmentCondition) Reset() {
 	*x = EnvironmentCondition{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[4]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -396,7 +461,7 @@ func (x *EnvironmentCondition) String() string {
 func (*EnvironmentCondition) ProtoMessage() {}
 
 func (x *EnvironmentCondition) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[4]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -409,7 +474,7 @@ func (x *EnvironmentCondition) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EnvironmentCondition.ProtoReflect.Descriptor instead.
 func (*EnvironmentCondition) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{4}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *EnvironmentCondition) GetType() string {
@@ -459,7 +524,7 @@ type CreateEnvironmentRequest struct {
 
 func (x *CreateEnvironmentRequest) Reset() {
 	*x = CreateEnvironmentRequest{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[5]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -471,7 +536,7 @@ func (x *CreateEnvironmentRequest) String() string {
 func (*CreateEnvironmentRequest) ProtoMessage() {}
 
 func (x *CreateEnvironmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[5]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -484,7 +549,7 @@ func (x *CreateEnvironmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateEnvironmentRequest.ProtoReflect.Descriptor instead.
 func (*CreateEnvironmentRequest) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{5}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreateEnvironmentRequest) GetSpec() *EnvironmentSpec {
@@ -504,7 +569,7 @@ type CreateEnvironmentResponse struct {
 
 func (x *CreateEnvironmentResponse) Reset() {
 	*x = CreateEnvironmentResponse{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[6]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -516,7 +581,7 @@ func (x *CreateEnvironmentResponse) String() string {
 func (*CreateEnvironmentResponse) ProtoMessage() {}
 
 func (x *CreateEnvironmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[6]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -529,7 +594,7 @@ func (x *CreateEnvironmentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateEnvironmentResponse.ProtoReflect.Descriptor instead.
 func (*CreateEnvironmentResponse) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{6}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *CreateEnvironmentResponse) GetEnvironment() *Environment {
@@ -550,7 +615,7 @@ type GetEnvironmentRequest struct {
 
 func (x *GetEnvironmentRequest) Reset() {
 	*x = GetEnvironmentRequest{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[7]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -562,7 +627,7 @@ func (x *GetEnvironmentRequest) String() string {
 func (*GetEnvironmentRequest) ProtoMessage() {}
 
 func (x *GetEnvironmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[7]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -575,7 +640,7 @@ func (x *GetEnvironmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetEnvironmentRequest.ProtoReflect.Descriptor instead.
 func (*GetEnvironmentRequest) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{7}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *GetEnvironmentRequest) GetName() string {
@@ -594,7 +659,7 @@ type GetEnvironmentResponse struct {
 
 func (x *GetEnvironmentResponse) Reset() {
 	*x = GetEnvironmentResponse{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[8]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -606,7 +671,7 @@ func (x *GetEnvironmentResponse) String() string {
 func (*GetEnvironmentResponse) ProtoMessage() {}
 
 func (x *GetEnvironmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[8]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -619,7 +684,7 @@ func (x *GetEnvironmentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetEnvironmentResponse.ProtoReflect.Descriptor instead.
 func (*GetEnvironmentResponse) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{8}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *GetEnvironmentResponse) GetEnvironment() *Environment {
@@ -641,7 +706,7 @@ type UpdateEnvironmentRequest struct {
 
 func (x *UpdateEnvironmentRequest) Reset() {
 	*x = UpdateEnvironmentRequest{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[9]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -653,7 +718,7 @@ func (x *UpdateEnvironmentRequest) String() string {
 func (*UpdateEnvironmentRequest) ProtoMessage() {}
 
 func (x *UpdateEnvironmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[9]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -666,7 +731,7 @@ func (x *UpdateEnvironmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateEnvironmentRequest.ProtoReflect.Descriptor instead.
 func (*UpdateEnvironmentRequest) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{9}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *UpdateEnvironmentRequest) GetEnvironment() *Environment {
@@ -686,7 +751,7 @@ type UpdateEnvironmentResponse struct {
 
 func (x *UpdateEnvironmentResponse) Reset() {
 	*x = UpdateEnvironmentResponse{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[10]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -698,7 +763,7 @@ func (x *UpdateEnvironmentResponse) String() string {
 func (*UpdateEnvironmentResponse) ProtoMessage() {}
 
 func (x *UpdateEnvironmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[10]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -711,7 +776,7 @@ func (x *UpdateEnvironmentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateEnvironmentResponse.ProtoReflect.Descriptor instead.
 func (*UpdateEnvironmentResponse) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{10}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *UpdateEnvironmentResponse) GetEnvironment() *Environment {
@@ -736,7 +801,7 @@ type PatchEnvironmentRequest struct {
 
 func (x *PatchEnvironmentRequest) Reset() {
 	*x = PatchEnvironmentRequest{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[11]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -748,7 +813,7 @@ func (x *PatchEnvironmentRequest) String() string {
 func (*PatchEnvironmentRequest) ProtoMessage() {}
 
 func (x *PatchEnvironmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[11]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -761,7 +826,7 @@ func (x *PatchEnvironmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PatchEnvironmentRequest.ProtoReflect.Descriptor instead.
 func (*PatchEnvironmentRequest) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{11}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *PatchEnvironmentRequest) GetName() string {
@@ -788,7 +853,7 @@ type PatchEnvironmentResponse struct {
 
 func (x *PatchEnvironmentResponse) Reset() {
 	*x = PatchEnvironmentResponse{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[12]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -800,7 +865,7 @@ func (x *PatchEnvironmentResponse) String() string {
 func (*PatchEnvironmentResponse) ProtoMessage() {}
 
 func (x *PatchEnvironmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[12]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -813,7 +878,7 @@ func (x *PatchEnvironmentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PatchEnvironmentResponse.ProtoReflect.Descriptor instead.
 func (*PatchEnvironmentResponse) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{12}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *PatchEnvironmentResponse) GetEnvironment() *Environment {
@@ -843,7 +908,7 @@ type ListEnvironmentsRequest struct {
 
 func (x *ListEnvironmentsRequest) Reset() {
 	*x = ListEnvironmentsRequest{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[13]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -855,7 +920,7 @@ func (x *ListEnvironmentsRequest) String() string {
 func (*ListEnvironmentsRequest) ProtoMessage() {}
 
 func (x *ListEnvironmentsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[13]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -868,7 +933,7 @@ func (x *ListEnvironmentsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEnvironmentsRequest.ProtoReflect.Descriptor instead.
 func (*ListEnvironmentsRequest) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{13}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListEnvironmentsRequest) GetPhase() *v1.EnvironmentPhase {
@@ -918,7 +983,7 @@ type ListEnvironmentsResponse struct {
 
 func (x *ListEnvironmentsResponse) Reset() {
 	*x = ListEnvironmentsResponse{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[14]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -930,7 +995,7 @@ func (x *ListEnvironmentsResponse) String() string {
 func (*ListEnvironmentsResponse) ProtoMessage() {}
 
 func (x *ListEnvironmentsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[14]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -943,7 +1008,7 @@ func (x *ListEnvironmentsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEnvironmentsResponse.ProtoReflect.Descriptor instead.
 func (*ListEnvironmentsResponse) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{14}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ListEnvironmentsResponse) GetEnvironments() []*Environment {
@@ -972,7 +1037,7 @@ type DeleteEnvironmentRequest struct {
 
 func (x *DeleteEnvironmentRequest) Reset() {
 	*x = DeleteEnvironmentRequest{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[15]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -984,7 +1049,7 @@ func (x *DeleteEnvironmentRequest) String() string {
 func (*DeleteEnvironmentRequest) ProtoMessage() {}
 
 func (x *DeleteEnvironmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[15]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -997,7 +1062,7 @@ func (x *DeleteEnvironmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteEnvironmentRequest.ProtoReflect.Descriptor instead.
 func (*DeleteEnvironmentRequest) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{15}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *DeleteEnvironmentRequest) GetName() string {
@@ -1017,7 +1082,7 @@ type DeleteEnvironmentResponse struct {
 
 func (x *DeleteEnvironmentResponse) Reset() {
 	*x = DeleteEnvironmentResponse{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[16]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1029,7 +1094,7 @@ func (x *DeleteEnvironmentResponse) String() string {
 func (*DeleteEnvironmentResponse) ProtoMessage() {}
 
 func (x *DeleteEnvironmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[16]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1042,7 +1107,7 @@ func (x *DeleteEnvironmentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteEnvironmentResponse.ProtoReflect.Descriptor instead.
 func (*DeleteEnvironmentResponse) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{16}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *DeleteEnvironmentResponse) GetSuccess() bool {
@@ -1064,7 +1129,7 @@ type WatchEnvironmentRequest struct {
 
 func (x *WatchEnvironmentRequest) Reset() {
 	*x = WatchEnvironmentRequest{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[17]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1076,7 +1141,7 @@ func (x *WatchEnvironmentRequest) String() string {
 func (*WatchEnvironmentRequest) ProtoMessage() {}
 
 func (x *WatchEnvironmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[17]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1089,7 +1154,7 @@ func (x *WatchEnvironmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WatchEnvironmentRequest.ProtoReflect.Descriptor instead.
 func (*WatchEnvironmentRequest) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{17}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *WatchEnvironmentRequest) GetName() string {
@@ -1111,7 +1176,7 @@ type WatchEnvironmentResponse struct {
 
 func (x *WatchEnvironmentResponse) Reset() {
 	*x = WatchEnvironmentResponse{}
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[18]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1123,7 +1188,7 @@ func (x *WatchEnvironmentResponse) String() string {
 func (*WatchEnvironmentResponse) ProtoMessage() {}
 
 func (x *WatchEnvironmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[18]
+	mi := &file_blanketops_environments_v1_environment_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1136,7 +1201,7 @@ func (x *WatchEnvironmentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WatchEnvironmentResponse.ProtoReflect.Descriptor instead.
 func (*WatchEnvironmentResponse) Descriptor() ([]byte, []int) {
-	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{18}
+	return file_blanketops_environments_v1_environment_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *WatchEnvironmentResponse) GetEnvironment() *Environment {
@@ -1161,7 +1226,11 @@ const file_blanketops_environments_v1_environment_proto_rawDesc = "" +
 	"\vEnvironment\x12:\n" +
 	"\bmetadata\x18\x01 \x01(\v2\x1e.blanketops.common.v1.MetadataR\bmetadata\x12?\n" +
 	"\x04spec\x18\x02 \x01(\v2+.blanketops.environments.v1.EnvironmentSpecR\x04spec\x12E\n" +
-	"\x06status\x18\x03 \x01(\v2-.blanketops.environments.v1.EnvironmentStatusR\x06status\"\x9b\x05\n" +
+	"\x06status\x18\x03 \x01(\v2-.blanketops.environments.v1.EnvironmentStatusR\x06status\"H\n" +
+	"\vSecretStore\x12\x1a\n" +
+	"\bprovider\x18\x01 \x01(\tR\bprovider\x12\x1d\n" +
+	"\n" +
+	"store_name\x18\x02 \x01(\tR\tstoreName\"\xe7\x05\n" +
 	"\x0fEnvironmentSpec\x12)\n" +
 	"\x10application_name\x18\x01 \x01(\tR\x0fapplicationName\x12\x16\n" +
 	"\x06branch\x18\x02 \x01(\tR\x06branch\x12\x1b\n" +
@@ -1177,7 +1246,8 @@ const file_blanketops_environments_v1_environment_proto_rawDesc = "" +
 	"\apackage\x18\n" +
 	" \x01(\v2%.blanketops.environments.v1.ObjectRefR\apackage\x12;\n" +
 	"\x05build\x18\v \x01(\v2%.blanketops.environments.v1.ObjectRefR\x05build\x12L\n" +
-	"\x0ebuild_triggers\x18\f \x03(\v2%.blanketops.environments.v1.ObjectRefR\rbuildTriggers\"\x1f\n" +
+	"\x0ebuild_triggers\x18\f \x03(\v2%.blanketops.environments.v1.ObjectRefR\rbuildTriggers\x12J\n" +
+	"\fsecret_store\x18\r \x01(\v2'.blanketops.environments.v1.SecretStoreR\vsecretStore\"\x1f\n" +
 	"\tObjectRef\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\"\x81\x02\n" +
 	"\x11EnvironmentStatus\x12<\n" +
@@ -1258,78 +1328,80 @@ func file_blanketops_environments_v1_environment_proto_rawDescGZIP() []byte {
 	return file_blanketops_environments_v1_environment_proto_rawDescData
 }
 
-var file_blanketops_environments_v1_environment_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
+var file_blanketops_environments_v1_environment_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_blanketops_environments_v1_environment_proto_goTypes = []any{
 	(*Environment)(nil),               // 0: blanketops.environments.v1.Environment
-	(*EnvironmentSpec)(nil),           // 1: blanketops.environments.v1.EnvironmentSpec
-	(*ObjectRef)(nil),                 // 2: blanketops.environments.v1.ObjectRef
-	(*EnvironmentStatus)(nil),         // 3: blanketops.environments.v1.EnvironmentStatus
-	(*EnvironmentCondition)(nil),      // 4: blanketops.environments.v1.EnvironmentCondition
-	(*CreateEnvironmentRequest)(nil),  // 5: blanketops.environments.v1.CreateEnvironmentRequest
-	(*CreateEnvironmentResponse)(nil), // 6: blanketops.environments.v1.CreateEnvironmentResponse
-	(*GetEnvironmentRequest)(nil),     // 7: blanketops.environments.v1.GetEnvironmentRequest
-	(*GetEnvironmentResponse)(nil),    // 8: blanketops.environments.v1.GetEnvironmentResponse
-	(*UpdateEnvironmentRequest)(nil),  // 9: blanketops.environments.v1.UpdateEnvironmentRequest
-	(*UpdateEnvironmentResponse)(nil), // 10: blanketops.environments.v1.UpdateEnvironmentResponse
-	(*PatchEnvironmentRequest)(nil),   // 11: blanketops.environments.v1.PatchEnvironmentRequest
-	(*PatchEnvironmentResponse)(nil),  // 12: blanketops.environments.v1.PatchEnvironmentResponse
-	(*ListEnvironmentsRequest)(nil),   // 13: blanketops.environments.v1.ListEnvironmentsRequest
-	(*ListEnvironmentsResponse)(nil),  // 14: blanketops.environments.v1.ListEnvironmentsResponse
-	(*DeleteEnvironmentRequest)(nil),  // 15: blanketops.environments.v1.DeleteEnvironmentRequest
-	(*DeleteEnvironmentResponse)(nil), // 16: blanketops.environments.v1.DeleteEnvironmentResponse
-	(*WatchEnvironmentRequest)(nil),   // 17: blanketops.environments.v1.WatchEnvironmentRequest
-	(*WatchEnvironmentResponse)(nil),  // 18: blanketops.environments.v1.WatchEnvironmentResponse
-	(*v1.Metadata)(nil),               // 19: blanketops.common.v1.Metadata
-	(*v1.EnvironmentType)(nil),        // 20: blanketops.common.v1.EnvironmentType
-	(*v1.EnvironmentPhase)(nil),       // 21: blanketops.common.v1.EnvironmentPhase
-	(*timestamppb.Timestamp)(nil),     // 22: google.protobuf.Timestamp
-	(v1.EventType)(0),                 // 23: blanketops.common.v1.EventType
+	(*SecretStore)(nil),               // 1: blanketops.environments.v1.SecretStore
+	(*EnvironmentSpec)(nil),           // 2: blanketops.environments.v1.EnvironmentSpec
+	(*ObjectRef)(nil),                 // 3: blanketops.environments.v1.ObjectRef
+	(*EnvironmentStatus)(nil),         // 4: blanketops.environments.v1.EnvironmentStatus
+	(*EnvironmentCondition)(nil),      // 5: blanketops.environments.v1.EnvironmentCondition
+	(*CreateEnvironmentRequest)(nil),  // 6: blanketops.environments.v1.CreateEnvironmentRequest
+	(*CreateEnvironmentResponse)(nil), // 7: blanketops.environments.v1.CreateEnvironmentResponse
+	(*GetEnvironmentRequest)(nil),     // 8: blanketops.environments.v1.GetEnvironmentRequest
+	(*GetEnvironmentResponse)(nil),    // 9: blanketops.environments.v1.GetEnvironmentResponse
+	(*UpdateEnvironmentRequest)(nil),  // 10: blanketops.environments.v1.UpdateEnvironmentRequest
+	(*UpdateEnvironmentResponse)(nil), // 11: blanketops.environments.v1.UpdateEnvironmentResponse
+	(*PatchEnvironmentRequest)(nil),   // 12: blanketops.environments.v1.PatchEnvironmentRequest
+	(*PatchEnvironmentResponse)(nil),  // 13: blanketops.environments.v1.PatchEnvironmentResponse
+	(*ListEnvironmentsRequest)(nil),   // 14: blanketops.environments.v1.ListEnvironmentsRequest
+	(*ListEnvironmentsResponse)(nil),  // 15: blanketops.environments.v1.ListEnvironmentsResponse
+	(*DeleteEnvironmentRequest)(nil),  // 16: blanketops.environments.v1.DeleteEnvironmentRequest
+	(*DeleteEnvironmentResponse)(nil), // 17: blanketops.environments.v1.DeleteEnvironmentResponse
+	(*WatchEnvironmentRequest)(nil),   // 18: blanketops.environments.v1.WatchEnvironmentRequest
+	(*WatchEnvironmentResponse)(nil),  // 19: blanketops.environments.v1.WatchEnvironmentResponse
+	(*v1.Metadata)(nil),               // 20: blanketops.common.v1.Metadata
+	(*v1.EnvironmentType)(nil),        // 21: blanketops.common.v1.EnvironmentType
+	(*v1.EnvironmentPhase)(nil),       // 22: blanketops.common.v1.EnvironmentPhase
+	(*timestamppb.Timestamp)(nil),     // 23: google.protobuf.Timestamp
+	(v1.EventType)(0),                 // 24: blanketops.common.v1.EventType
 }
 var file_blanketops_environments_v1_environment_proto_depIdxs = []int32{
-	19, // 0: blanketops.environments.v1.Environment.metadata:type_name -> blanketops.common.v1.Metadata
-	1,  // 1: blanketops.environments.v1.Environment.spec:type_name -> blanketops.environments.v1.EnvironmentSpec
-	3,  // 2: blanketops.environments.v1.Environment.status:type_name -> blanketops.environments.v1.EnvironmentStatus
-	20, // 3: blanketops.environments.v1.EnvironmentSpec.environment_type:type_name -> blanketops.common.v1.EnvironmentType
-	2,  // 4: blanketops.environments.v1.EnvironmentSpec.service_units:type_name -> blanketops.environments.v1.ObjectRef
-	2,  // 5: blanketops.environments.v1.EnvironmentSpec.deployment:type_name -> blanketops.environments.v1.ObjectRef
-	2,  // 6: blanketops.environments.v1.EnvironmentSpec.route:type_name -> blanketops.environments.v1.ObjectRef
-	2,  // 7: blanketops.environments.v1.EnvironmentSpec.package:type_name -> blanketops.environments.v1.ObjectRef
-	2,  // 8: blanketops.environments.v1.EnvironmentSpec.build:type_name -> blanketops.environments.v1.ObjectRef
-	2,  // 9: blanketops.environments.v1.EnvironmentSpec.build_triggers:type_name -> blanketops.environments.v1.ObjectRef
-	21, // 10: blanketops.environments.v1.EnvironmentStatus.phase:type_name -> blanketops.common.v1.EnvironmentPhase
-	4,  // 11: blanketops.environments.v1.EnvironmentStatus.conditions:type_name -> blanketops.environments.v1.EnvironmentCondition
-	22, // 12: blanketops.environments.v1.EnvironmentStatus.last_updated_at:type_name -> google.protobuf.Timestamp
-	22, // 13: blanketops.environments.v1.EnvironmentCondition.last_transition_time:type_name -> google.protobuf.Timestamp
-	1,  // 14: blanketops.environments.v1.CreateEnvironmentRequest.spec:type_name -> blanketops.environments.v1.EnvironmentSpec
-	0,  // 15: blanketops.environments.v1.CreateEnvironmentResponse.environment:type_name -> blanketops.environments.v1.Environment
-	0,  // 16: blanketops.environments.v1.GetEnvironmentResponse.environment:type_name -> blanketops.environments.v1.Environment
-	0,  // 17: blanketops.environments.v1.UpdateEnvironmentRequest.environment:type_name -> blanketops.environments.v1.Environment
-	0,  // 18: blanketops.environments.v1.UpdateEnvironmentResponse.environment:type_name -> blanketops.environments.v1.Environment
-	0,  // 19: blanketops.environments.v1.PatchEnvironmentResponse.environment:type_name -> blanketops.environments.v1.Environment
-	21, // 20: blanketops.environments.v1.ListEnvironmentsRequest.phase:type_name -> blanketops.common.v1.EnvironmentPhase
-	20, // 21: blanketops.environments.v1.ListEnvironmentsRequest.environment_type:type_name -> blanketops.common.v1.EnvironmentType
-	0,  // 22: blanketops.environments.v1.ListEnvironmentsResponse.environments:type_name -> blanketops.environments.v1.Environment
-	0,  // 23: blanketops.environments.v1.WatchEnvironmentResponse.environment:type_name -> blanketops.environments.v1.Environment
-	23, // 24: blanketops.environments.v1.WatchEnvironmentResponse.type:type_name -> blanketops.common.v1.EventType
-	5,  // 25: blanketops.environments.v1.EnvironmentService.CreateEnvironment:input_type -> blanketops.environments.v1.CreateEnvironmentRequest
-	7,  // 26: blanketops.environments.v1.EnvironmentService.GetEnvironment:input_type -> blanketops.environments.v1.GetEnvironmentRequest
-	9,  // 27: blanketops.environments.v1.EnvironmentService.UpdateEnvironment:input_type -> blanketops.environments.v1.UpdateEnvironmentRequest
-	11, // 28: blanketops.environments.v1.EnvironmentService.PatchEnvironment:input_type -> blanketops.environments.v1.PatchEnvironmentRequest
-	13, // 29: blanketops.environments.v1.EnvironmentService.ListEnvironments:input_type -> blanketops.environments.v1.ListEnvironmentsRequest
-	15, // 30: blanketops.environments.v1.EnvironmentService.DeleteEnvironment:input_type -> blanketops.environments.v1.DeleteEnvironmentRequest
-	17, // 31: blanketops.environments.v1.EnvironmentService.WatchEnvironment:input_type -> blanketops.environments.v1.WatchEnvironmentRequest
-	6,  // 32: blanketops.environments.v1.EnvironmentService.CreateEnvironment:output_type -> blanketops.environments.v1.CreateEnvironmentResponse
-	8,  // 33: blanketops.environments.v1.EnvironmentService.GetEnvironment:output_type -> blanketops.environments.v1.GetEnvironmentResponse
-	10, // 34: blanketops.environments.v1.EnvironmentService.UpdateEnvironment:output_type -> blanketops.environments.v1.UpdateEnvironmentResponse
-	12, // 35: blanketops.environments.v1.EnvironmentService.PatchEnvironment:output_type -> blanketops.environments.v1.PatchEnvironmentResponse
-	14, // 36: blanketops.environments.v1.EnvironmentService.ListEnvironments:output_type -> blanketops.environments.v1.ListEnvironmentsResponse
-	16, // 37: blanketops.environments.v1.EnvironmentService.DeleteEnvironment:output_type -> blanketops.environments.v1.DeleteEnvironmentResponse
-	18, // 38: blanketops.environments.v1.EnvironmentService.WatchEnvironment:output_type -> blanketops.environments.v1.WatchEnvironmentResponse
-	32, // [32:39] is the sub-list for method output_type
-	25, // [25:32] is the sub-list for method input_type
-	25, // [25:25] is the sub-list for extension type_name
-	25, // [25:25] is the sub-list for extension extendee
-	0,  // [0:25] is the sub-list for field type_name
+	20, // 0: blanketops.environments.v1.Environment.metadata:type_name -> blanketops.common.v1.Metadata
+	2,  // 1: blanketops.environments.v1.Environment.spec:type_name -> blanketops.environments.v1.EnvironmentSpec
+	4,  // 2: blanketops.environments.v1.Environment.status:type_name -> blanketops.environments.v1.EnvironmentStatus
+	21, // 3: blanketops.environments.v1.EnvironmentSpec.environment_type:type_name -> blanketops.common.v1.EnvironmentType
+	3,  // 4: blanketops.environments.v1.EnvironmentSpec.service_units:type_name -> blanketops.environments.v1.ObjectRef
+	3,  // 5: blanketops.environments.v1.EnvironmentSpec.deployment:type_name -> blanketops.environments.v1.ObjectRef
+	3,  // 6: blanketops.environments.v1.EnvironmentSpec.route:type_name -> blanketops.environments.v1.ObjectRef
+	3,  // 7: blanketops.environments.v1.EnvironmentSpec.package:type_name -> blanketops.environments.v1.ObjectRef
+	3,  // 8: blanketops.environments.v1.EnvironmentSpec.build:type_name -> blanketops.environments.v1.ObjectRef
+	3,  // 9: blanketops.environments.v1.EnvironmentSpec.build_triggers:type_name -> blanketops.environments.v1.ObjectRef
+	1,  // 10: blanketops.environments.v1.EnvironmentSpec.secret_store:type_name -> blanketops.environments.v1.SecretStore
+	22, // 11: blanketops.environments.v1.EnvironmentStatus.phase:type_name -> blanketops.common.v1.EnvironmentPhase
+	5,  // 12: blanketops.environments.v1.EnvironmentStatus.conditions:type_name -> blanketops.environments.v1.EnvironmentCondition
+	23, // 13: blanketops.environments.v1.EnvironmentStatus.last_updated_at:type_name -> google.protobuf.Timestamp
+	23, // 14: blanketops.environments.v1.EnvironmentCondition.last_transition_time:type_name -> google.protobuf.Timestamp
+	2,  // 15: blanketops.environments.v1.CreateEnvironmentRequest.spec:type_name -> blanketops.environments.v1.EnvironmentSpec
+	0,  // 16: blanketops.environments.v1.CreateEnvironmentResponse.environment:type_name -> blanketops.environments.v1.Environment
+	0,  // 17: blanketops.environments.v1.GetEnvironmentResponse.environment:type_name -> blanketops.environments.v1.Environment
+	0,  // 18: blanketops.environments.v1.UpdateEnvironmentRequest.environment:type_name -> blanketops.environments.v1.Environment
+	0,  // 19: blanketops.environments.v1.UpdateEnvironmentResponse.environment:type_name -> blanketops.environments.v1.Environment
+	0,  // 20: blanketops.environments.v1.PatchEnvironmentResponse.environment:type_name -> blanketops.environments.v1.Environment
+	22, // 21: blanketops.environments.v1.ListEnvironmentsRequest.phase:type_name -> blanketops.common.v1.EnvironmentPhase
+	21, // 22: blanketops.environments.v1.ListEnvironmentsRequest.environment_type:type_name -> blanketops.common.v1.EnvironmentType
+	0,  // 23: blanketops.environments.v1.ListEnvironmentsResponse.environments:type_name -> blanketops.environments.v1.Environment
+	0,  // 24: blanketops.environments.v1.WatchEnvironmentResponse.environment:type_name -> blanketops.environments.v1.Environment
+	24, // 25: blanketops.environments.v1.WatchEnvironmentResponse.type:type_name -> blanketops.common.v1.EventType
+	6,  // 26: blanketops.environments.v1.EnvironmentService.CreateEnvironment:input_type -> blanketops.environments.v1.CreateEnvironmentRequest
+	8,  // 27: blanketops.environments.v1.EnvironmentService.GetEnvironment:input_type -> blanketops.environments.v1.GetEnvironmentRequest
+	10, // 28: blanketops.environments.v1.EnvironmentService.UpdateEnvironment:input_type -> blanketops.environments.v1.UpdateEnvironmentRequest
+	12, // 29: blanketops.environments.v1.EnvironmentService.PatchEnvironment:input_type -> blanketops.environments.v1.PatchEnvironmentRequest
+	14, // 30: blanketops.environments.v1.EnvironmentService.ListEnvironments:input_type -> blanketops.environments.v1.ListEnvironmentsRequest
+	16, // 31: blanketops.environments.v1.EnvironmentService.DeleteEnvironment:input_type -> blanketops.environments.v1.DeleteEnvironmentRequest
+	18, // 32: blanketops.environments.v1.EnvironmentService.WatchEnvironment:input_type -> blanketops.environments.v1.WatchEnvironmentRequest
+	7,  // 33: blanketops.environments.v1.EnvironmentService.CreateEnvironment:output_type -> blanketops.environments.v1.CreateEnvironmentResponse
+	9,  // 34: blanketops.environments.v1.EnvironmentService.GetEnvironment:output_type -> blanketops.environments.v1.GetEnvironmentResponse
+	11, // 35: blanketops.environments.v1.EnvironmentService.UpdateEnvironment:output_type -> blanketops.environments.v1.UpdateEnvironmentResponse
+	13, // 36: blanketops.environments.v1.EnvironmentService.PatchEnvironment:output_type -> blanketops.environments.v1.PatchEnvironmentResponse
+	15, // 37: blanketops.environments.v1.EnvironmentService.ListEnvironments:output_type -> blanketops.environments.v1.ListEnvironmentsResponse
+	17, // 38: blanketops.environments.v1.EnvironmentService.DeleteEnvironment:output_type -> blanketops.environments.v1.DeleteEnvironmentResponse
+	19, // 39: blanketops.environments.v1.EnvironmentService.WatchEnvironment:output_type -> blanketops.environments.v1.WatchEnvironmentResponse
+	33, // [33:40] is the sub-list for method output_type
+	26, // [26:33] is the sub-list for method input_type
+	26, // [26:26] is the sub-list for extension type_name
+	26, // [26:26] is the sub-list for extension extendee
+	0,  // [0:26] is the sub-list for field type_name
 }
 
 func init() { file_blanketops_environments_v1_environment_proto_init() }
@@ -1337,15 +1409,15 @@ func file_blanketops_environments_v1_environment_proto_init() {
 	if File_blanketops_environments_v1_environment_proto != nil {
 		return
 	}
-	file_blanketops_environments_v1_environment_proto_msgTypes[13].OneofWrappers = []any{}
 	file_blanketops_environments_v1_environment_proto_msgTypes[14].OneofWrappers = []any{}
+	file_blanketops_environments_v1_environment_proto_msgTypes[15].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_blanketops_environments_v1_environment_proto_rawDesc), len(file_blanketops_environments_v1_environment_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   19,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -17,11 +17,3 @@ plugins:
     out: .
     opt:
       - paths=source_relative
-
-  # TypeScript — protobuf-es v2, messages + service descriptors.
-  # Generated alongside protos for consistent import resolution.
-  - local: protoc-gen-es
-    out: .
-    opt:
-      - target=ts
-      - import_extension=none
