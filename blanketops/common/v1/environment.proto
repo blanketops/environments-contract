@@ -64,4 +64,7 @@ message SecretStoreProvider {
 message SecretStore {
   // Backend provider. Drives ESO ClusterSecretStore selection.
   SecretStoreProvider provider = 1;
+  // Name of the backing store (the ESO ClusterSecretStore). Optional; when
+  // empty the provider's default store is used.
+  string store_name = 2;
 }
