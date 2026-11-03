@@ -1,3 +1,20 @@
+## [0.5.8] - 2026-11-03
+
+### 🚀 Features
+
+- *(proto)* Add store_name to SecretStore
+
+### 📚 Documentation
+
+- *(release)* Regenerate contract docs for v0.5.8 [skip ci] (#154)
+
+### ⚙️ Miscellaneous Tasks
+
+- *(finalize)* Continue when the release pull request is already merged
+- Run the releaser in the release workflows
+- *(ci)* Bump blanketops/environments-bots from 0.0.2 to 0.0.3
+- Sync develop with main after release/v0.5.7
+- Sync develop with main
 ## [0.5.7] - 2026-10-21
 
 ### 🐛 Bug Fixes
@@ -17,6 +34,7 @@
 - Sync develop with main
 - Land bot writes to main through pull requests
 - Sync develop with main
+- *(release)* Update changelog for v0.5.7 (#146)
 ## [0.5.6] - 2026-10-09
 
 ### 🚀 Features
