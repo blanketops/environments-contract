@@ -7,8 +7,6 @@ permissions:
     contents: write
 jobs:
     release:
-      # Zenith self-hosted pool. buf, mage, git-cliff and the protoc plugins are
-      # baked into the runner toolchain image — no per-job tool setup.
       runs-on: self-hosted
       steps:
         - name: Generate GitHub App token
