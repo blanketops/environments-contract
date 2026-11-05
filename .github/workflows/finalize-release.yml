@@ -97,41 +97,6 @@ jobs:
           client-id: ${{ vars.DEVELOPER_CLIENT_ID }}
           private-key: ${{ secrets.DEVELOPER_APP_PRIVATE_KEY }}
           owner: blanketops
-          repositories: environments-bots
-
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-          token: ${{ steps.app-token.outputs.token }}
-
-      # The scripts come from the release branch, which is what is being
-      # released, or from main for one cut before they existed. They are
-      # copied out of the checkout because the steps below move it.
-      #
-      # main's `protect` ruleset takes changes only through a pull request
-      # and the App is not a bypass actor: the release branch is merged
-      # through its pull request (api-merge-pr.sh) and every file change
-      # lands through a pull request of its own (api-pr.sh).
-      - name: Stage the API helpers
-        run: |
-          for script in api-commit.sh api-merge.sh api-merge-pr.sh api-pr.sh; do
-            git show "origin/release/${VERSION}:hack/${script}" > "${RUNNER_TEMP}/${script}" 2>/dev/null \
-              || git show "origin/main:hack/${script}" > "${RUNNER_TEMP}/${script}"
-            chmod +x "${RUNNER_TEMP}/${script}"
-          done
-
-      # The releaser (cmd/releaser), as the Releaser App, checks before
-      # anything is merged: one open Release issue, nothing still open into
-      # release/<version> or in the version's milestone, no tag yet. It is
-      # built from the release branch being finalized.
-      - name: Generate Releaser App token
-        id: releaser-token
-        uses: actions/create-github-app-token@v3
-        with:
-          client-id: ${{ secrets.DEVELOPER_APP_ID }}
-          private-key: ${{ secrets.DEVELOPER_APP_PRIVATE_KEY }}
-          owner: blanketops
           repositories: ${{ github.event.repository.name }}
 
       - name: Download and verify the releaser binary
@@ -151,78 +116,6 @@ jobs:
           chmod +x "${RUNNER_TEMP}/releaser-linux-amd64"
 
       - name: Releaser verify
-        env:
-          GH_TOKEN: ${{ steps.releaser-token.outputs.token }}
-        run: '"${RUNNER_TEMP}/releaser-linux-amd64" verify -release "${VERSION}"'
-
-      # A release pull request merged by hand leaves nothing to merge: the
-      # release branch is then not ahead of main, and opening a pull request
-      # for an empty difference fails (HTTP 422). The steps after this one
-      # still run on main as merged.
-      - name: Merge release into main
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |
-          ahead=$(curl -sS --fail-with-body \
-              -H "Authorization: Bearer ${GH_TOKEN}" \
-              -H "Accept: application/vnd.github+json" \
-              "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/compare/main...release/${VERSION}" \
-            | jq -r '.ahead_by')
-          if [ "$ahead" = "0" ]; then
-            echo "::notice::release/${VERSION} is already in main (its pull request was merged); nothing to merge"
-            git fetch --quiet origin main
-            git checkout --quiet --detach origin/main
-            exit 0
-          fi
-          "${RUNNER_TEMP}/api-merge-pr.sh" main "release/${VERSION}" \
-            "release: merge release/${VERSION} into main"
-
-      - name: Install gomarkdoc
-        run: |
-          go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
-          # go install drops the binary in GOPATH/bin, which is not on PATH on
-          # the self-hosted runner (code-docs.yml gets this for free via
-          # setup-go). Put it on PATH so the next step can find gomarkdoc.
-          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
-
-      - name: Generate code docs
-        run: |
-          mkdir -p docs/code
-          gomarkdoc --output 'docs/code/{{.Dir}}.md' ./...
-
-      - name: Download and verify the releaser binary
-        env:
-          GH_TOKEN: ${{ steps.releaser-token.outputs.token }}
-          # The releaser binary is a bots artifact: pin it to the bots release,
-          # separate from the version being cut (passed to `releaser cut` below).
-          RELEASER_VERSION: v0.1.0
-        run: |
-          "${RUNNER_TEMP}/api-pr.sh" main "release/${VERSION}-docs" \
-            "docs: auto-generate code documentation [skip ci]" docs/code
-          git fetch --quiet origin main
-          git checkout --quiet --detach origin/main
-
-      # git-cliff is baked into the runner image (zenith-runner-toolchain).
-      - name: git-cliff version
-        run: git-cliff --version
-
-      # --tag renders the commits since the last release under this version:
-      # the tag itself is only created after this file is committed.
-      - name: Generate CHANGELOG.md
-        run: git-cliff --config .cliff.toml --tag "${VERSION}" --output CHANGELOG.md
-
-      - name: Commit changelog
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |
-          "${RUNNER_TEMP}/api-pr.sh" main "release/${VERSION}-changelog" \
-            "chore(release): update changelog for ${VERSION}" CHANGELOG.md
-          git fetch --quiet origin main
-          git checkout --quiet --detach origin/main
-
-      # On the changelog commit, not the [skip ci] docs commit before it. See
-      # the header: a tag on a [skip ci] commit starts no workflow.
-      - name: Tag release
         env:
           GH_TOKEN: ${{ steps.releaser-token.outputs.token }}
         run: '"${RUNNER_TEMP}/releaser-linux-amd64" verify -release "${VERSION}"'
@@ -297,25 +190,9 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          sha=$(git rev-parse HEAD)
-          jq -n --arg ref "refs/tags/${VERSION}" --arg sha "$sha" '{ref: $ref, sha: $sha}' \
-            | curl -sS --fail-with-body -X POST \
-                -H "Authorization: bearer ${GH_TOKEN}" \
-                -H "Accept: application/vnd.github+json" \
-                --data-binary @- \
-                "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/git/refs" >/dev/null
-          echo "Tagged ${sha} as ${VERSION}"
-          echo "tag_sha=${sha}" >> "$GITHUB_OUTPUT"
-
-      - name: Merge main back into develop
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |
           "${RUNNER_TEMP}/api-merge.sh" develop main \
             "chore: sync develop with main after release/${VERSION}"
 
-      # A branch rule may forbid deleting release branches. The release is
-      # complete either way, so a refusal is reported, not failed on.
       - name: Delete release branch
         id: delete-branch
         env:
