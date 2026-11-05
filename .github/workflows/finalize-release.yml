@@ -116,12 +116,9 @@ jobs:
           chmod +x "${RUNNER_TEMP}/releaser-linux-amd64"
 
       - name: Releaser verify
-        uses: blanketops/environments-bots/.github/actions/releaser@v0.0.7
-        with:
-          command: verify
-          release: ${{ github.event.inputs.version }}
-          client-id: ${{ secrets.RELEASER_APP_ID }}
-          private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
+        env:
+          GH_TOKEN: ${{ steps.releaser-token.outputs.token }}
+        run: '"${RUNNER_TEMP}/releaser-linux-amd64" verify -release "${VERSION}"'
 
       - name: Merge release into main
         env:
@@ -230,6 +227,7 @@ jobs:
           ## Branch Flow
 
           release/${{ github.event.inputs.version }} → main → develop
+
           ## Next Steps
 
           - Creating the tag triggers the **Release** workflow, which builds and signs the binaries and publishes the GitHub Release.
