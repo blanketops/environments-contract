@@ -37,13 +37,12 @@ jobs:
     runs-on: self-hosted
 
     steps:
-<<<<<<< Updated upstream
       - uses: blanketops/environments-bots/.github/actions/releaser@v0.0.3
         with:
           command: plan
           app-id: ${{ secrets.RELEASER_APP_ID }}
           private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
-=======
+          
       - name: Generate Releaser App token
         id: releaser-token
         uses: actions/create-github-app-token@v3
@@ -73,4 +72,3 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.releaser-token.outputs.token }}
         run: '"${RUNNER_TEMP}/releaser-linux-amd64" plan -ref develop -project blanketops/1'
->>>>>>> Stashed changes

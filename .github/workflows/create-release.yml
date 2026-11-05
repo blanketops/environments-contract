@@ -46,14 +46,13 @@ jobs:
     runs-on: self-hosted
 
     steps:
-<<<<<<< Updated upstream
-      - uses: blanketops/environments-bots/.github/actions/releaser@v0.0.3
+      - uses: blanketops/environments-bots/.github/actions/releaser@v0.0.7
         with:
           command: cut
           release: ${{ github.event.inputs.version }}
           app-id: ${{ secrets.RELEASER_APP_ID }}
           private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
-=======
+
       - name: Generate Releaser App token
         id: releaser-token
         uses: actions/create-github-app-token@v3
@@ -87,4 +86,3 @@ jobs:
           VERSION: ${{ github.event.inputs.version }}
         run: |
           "${RUNNER_TEMP}/releaser-linux-amd64" cut -ref develop -project blanketops/1 ${VERSION:+-release "$VERSION"}
->>>>>>> Stashed changes

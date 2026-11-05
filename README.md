@@ -15,29 +15,6 @@ These contracts are the source of truth for how BlanketOps components communicat
 
 ---
 
-## Repository Structure
-
-```tree
-blanketops/
-├── environments/
-│ ├── v1alpha1/
-│ ├── v1beta1/
-│ └── v1/
-├── events/
-│ ├── v1alpha1/
-│ ├── v1beta1/
-│ └── v1/
-└── networks/
-│ ├── v1alpha1/
-│ ├── v1beta1/
-│ ├── v1/
-│ 
-└── sources/
-  ├── v1alpha1/
-  ├── v1beta1/
-  └── v1/
-```
-
 Each API group:
 
 - is versioned explicitly.
@@ -78,28 +55,3 @@ Generated Go code is committed intentionally to:
 - simplify downstream consumption.
 - avoid forcing consumers to run codegen.
 
-## Tooling
-
-Common tasks are exposed via the Makefile.
-
-Typical workflows include:
-
-- validating protobuf definitions.
-- regenerating Go bindings.
-- ensuring schema consistency.
-
-Refer to:
-
-```Magefile
-mage help
-```
-
-for available targets.
-
-### Consumers
-
-This repository is consumed by:
-
-- BlanketOps operators and controllers.
-- Internal policy and resolution engines.
-- Tooling that requires a stable environment contract.
