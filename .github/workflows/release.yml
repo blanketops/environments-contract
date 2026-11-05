@@ -1,11 +1,27 @@
+# =============================================================================
+# release.yml — Publish GitHub Release
+#
+# Triggers on version tags (v*). Generates contracts (buf gen via mage),
+# changelog (git-cliff), and publishes a GitHub Release with artifacts attached.
+#
+# Assets attached to the release:
+#   - generated-contracts-<tag>.tar.gz  (Go .pb.go + TypeScript _pb.ts)
+#   - RELEASE_NOTES.md                   (git-cliff output for this version)
+#
+# Note: This repo does not generate CRDs — that is handled by environments repo.
+#==============================================================================
 name: Release
+
 on:
-    push:
-        tags:
-            - "v*"
+  push:
+    tags:
+      - "v*"
+
 permissions:
-    contents: write
+  contents: write
+
 jobs:
+<<<<<<< Updated upstream
     release:
       # Zenith self-hosted pool. buf, mage, git-cliff and the protoc plugins are
       # baked into the runner toolchain image — no per-job tool setup.
@@ -19,69 +35,60 @@ jobs:
             private-key: ${{ secrets.APP_PRIVATE_KEY }}
             owner: blanketops
             repositories: environments-contract
+=======
+  release:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+>>>>>>> Stashed changes
 
-        - name: Checkout
-          uses: actions/checkout@v7
-          with:
-            fetch-depth: 0
-            token: ${{ steps.app-token.outputs.token }}
+      - name: Generate contracts (Go + TypeScript)
+        run: mage gen
 
-        - name: Checkout main
-          run: |
-              git checkout main
-              git pull origin main
+      - name: Package generated contracts
+        run: |
+          tar -czf "generated-contracts-${{ github.ref_name }}.tar.gz" -C blanketops .
 
-        # CHANGELOG.md is generated and committed by finalize-release.yml,
-        # before the tag is created. This workflow only reads it: it makes no
-        # commit of its own.
-        - name: Generate release notes
-          run: git-cliff --config .cliff.toml --latest --output RELEASE_NOTES.md
+      - name: Generate release notes
+        run: git-cliff --config .cliff.toml --latest --output RELEASE_NOTES.md
 
-        # - name: Download generated contracts
-        #   uses: dawidd6/action-download-artifact@v6
-        #   with:
-        #     github_token: ${{ secrets.GH_PAT }}
-        #     repo: ntlaletsi70/blanketops-environments-contract
-        #     workflow: generate.yml
-        #     # Search for the most recent successful run regardless of SHA
-        #     # This is much more reliable than trying to match the exact commit SHA
-        #     workflow_search: true
-        #     workflow_conclusion: success
-        #     name: generated-contracts-latest
-        #     path: ./dist
-  
-        - name: Create GitHub Release
-          uses: softprops/action-gh-release@v3
-          with:
-            body_path: RELEASE_NOTES.md
-          env:
-            GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          body_path: RELEASE_NOTES.md
+          files: generated-contracts-${{ github.ref_name }}.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Release Summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY <<EOF
+          # 📦 GitHub Release Published
 
-        - name: Release Summary
-          run: |
-              cat >> $GITHUB_STEP_SUMMARY <<EOF
-              # 📦 GitHub Release Published
+          **Version:** \`${{ github.ref_name }}\`
 
-              **Version:** \`${{ github.ref_name }}\`
+          ## Completed
 
-              ## Completed
+          - Generated contracts (Go + TypeScript) via mage gen
+          - Generated release notes via git-cliff
+          - Published GitHub Release with assets
 
-              - Generated CHANGELOG.md using git-cliff
-              - Committed changelog updates to main
-              - Generated release notes
-              - Published GitHub Release
+          ## Artifacts
 
-              ## Artifacts
+          - generated-contracts-${{ github.ref_name }}.tar.gz (Go .pb.go + TypeScript _pb.ts)
+          - RELEASE_NOTES.md (attached to release body)
+          - GitHub Release
 
-              - CHANGELOG.md
-              - RELEASE_NOTES.md
-              - GitHub Release
+          ## Source Tag
 
-               ## Source Tag
+          \`${{ github.ref_name }}\`
 
-               \`${{ github.ref_name }}\`
+          EOF
 
+<<<<<<< Updated upstream
               EOF
 
         # The releaser (blanketops/environments-bots, as the Releaser App)
@@ -97,3 +104,13 @@ jobs:
             release: ${{ github.ref_name }}
             app-id: ${{ secrets.RELEASER_APP_ID }}
             private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
+=======
+      - name: Releaser complete
+        if: always()
+        uses: blanketops/environments-bots/.github/actions/releaser@v0.1.0
+        with:
+          command: complete
+          release: ${{ github.ref_name }}
+          app-id: ${{ secrets.DEVELOPER_APP_ID }}
+          private-key: ${{ secrets.DEVELOPER_APP_PRIVATE_KEY }}
+>>>>>>> Stashed changes
