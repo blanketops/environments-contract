@@ -21,21 +21,6 @@ permissions:
   contents: write
 
 jobs:
-<<<<<<< Updated upstream
-    release:
-      # Zenith self-hosted pool. buf, mage, git-cliff and the protoc plugins are
-      # baked into the runner toolchain image — no per-job tool setup.
-      runs-on: self-hosted
-      steps:
-        - name: Generate GitHub App token
-          id: app-token
-          uses: actions/create-github-app-token@v3
-          with:
-            app-id: ${{ secrets.APP_ID }}
-            private-key: ${{ secrets.APP_PRIVATE_KEY }}
-            owner: blanketops
-            repositories: environments-contract
-=======
   release:
     runs-on: self-hosted
     steps:
@@ -43,7 +28,6 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
->>>>>>> Stashed changes
 
       - name: Generate contracts (Go + TypeScript)
         run: mage gen
@@ -88,23 +72,6 @@ jobs:
 
           EOF
 
-<<<<<<< Updated upstream
-              EOF
-
-        # The releaser (blanketops/environments-bots, as the Releaser App)
-        # attaches the tag and the published release to the Release issue,
-        # closes it and sets it to Done. It runs even when a step above
-        # failed: it then finds no published release, says so on the issue,
-        # and leaves it open.
-        - name: Releaser complete
-          if: always()
-          uses: blanketops/environments-bots/.github/actions/releaser@v0.0.3
-          with:
-            command: complete
-            release: ${{ github.ref_name }}
-            app-id: ${{ secrets.RELEASER_APP_ID }}
-            private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
-=======
       - name: Releaser complete
         if: always()
         uses: blanketops/environments-bots/.github/actions/releaser@v0.1.0
@@ -113,4 +80,3 @@ jobs:
           release: ${{ github.ref_name }}
           app-id: ${{ secrets.DEVELOPER_APP_ID }}
           private-key: ${{ secrets.DEVELOPER_APP_PRIVATE_KEY }}
->>>>>>> Stashed changes
