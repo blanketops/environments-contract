@@ -98,10 +98,6 @@ jobs:
             chmod +x "${RUNNER_TEMP}/${script}"
           done
 
-      # The releaser (cmd/releaser), as the Releaser App, checks before
-      # anything is merged: one open Release issue, nothing still open into
-      # release/<version> or in the version's milestone, no tag yet. It is
-      # built from the release branch being finalized.
       - name: Generate Releaser App token
         id: releaser-token
         uses: actions/create-github-app-token@v3
@@ -128,14 +124,13 @@ jobs:
           chmod +x "${RUNNER_TEMP}/releaser-linux-amd64"
 
       - name: Releaser verify
-        env:
-          GH_TOKEN: ${{ steps.releaser-token.outputs.token }}
-        run: '"${RUNNER_TEMP}/releaser-linux-amd64" verify -release "${VERSION}"'
+        uses: blanketops/environments-bots/.github/actions/releaser@v0.0.7
+        with:
+          command: verify
+          release: ${{ github.event.inputs.version }}
+          client-id: ${{ secrets.RELEASER_APP_ID }}
+          private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
 
-      # A release pull request merged by hand leaves nothing to merge: the
-      # release branch is then not ahead of main, and opening a pull request
-      # for an empty difference fails (HTTP 422). The steps after this one
-      # still run on main as merged.
       - name: Merge release into main
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
@@ -253,7 +248,6 @@ jobs:
           ## Branch Flow
 
           release/${{ github.event.inputs.version }} → main → develop
-
           ## Next Steps
 
           - Creating the tag triggers the **Release** workflow, which builds and signs the binaries and publishes the GitHub Release.
