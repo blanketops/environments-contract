@@ -2,7 +2,8 @@
 # release.yml — Publish GitHub Release
 #
 # Triggers on version tags (v*). Generates contracts (buf gen via mage),
-# changelog (git-cliff), and publishes a GitHub Release with artifacts attached.
+# changelog (git-cliff), publishes contract bundle to OCI registry, and
+# publishes a GitHub Release with artifacts attached.
 #
 # Assets attached to the release:
 #   - generated-contracts-<tag>.tar.gz  (Go .pb.go + TypeScript _pb.ts)
@@ -39,6 +40,21 @@ jobs:
       - name: Generate release notes
         run: git-cliff --config .cliff.toml --latest --output RELEASE_NOTES.md
 
+      - name: Install ORAS
+        run: |
+          if ! command -v oras >/dev/null 2>&1; then
+            curl -fsSL "https://github.com/oras-project/oras/releases/download/v1.2.0/oras_1.2.0_linux_amd64.tar.gz" \
+              | tar -xz -C /usr/local/bin oras
+          fi
+          oras version
+
+      - name: Publish contract bundle to OCI registry
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ github.ref_name }}
+        run: |
+          mage publish
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
@@ -58,6 +74,7 @@ jobs:
 
           - Generated contracts (Go + TypeScript) via mage gen
           - Generated release notes via git-cliff
+          - Published contract bundle to OCI registry
           - Published GitHub Release with assets
 
           ## Artifacts
