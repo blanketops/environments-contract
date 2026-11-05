@@ -1,3 +1,12 @@
+# ====================================================================================
+# buf.gen.yml — Validate & Generate Contracts
+#
+# Runs on every push and PR to main/develop/feature/release/hotfix/bugfix branches.
+# Lints protobuf files with buf, checks for breaking changes (PR only, non-blocking
+# pre-v1), and generates Go + TypeScript contracts via mage.
+#
+# Artifacts: generated contracts uploaded for 7 days (Go .pb.go, TypeScript _pb.ts).
+# ====================================================================================
 name: Validate & Generate Contracts
 on:
   push:
@@ -14,10 +23,7 @@ on:
       - develop
 jobs:
   buf:
-    # Zenith self-hosted pool. buf, mage, git-cliff and the protoc plugins are
-    # baked into the runner toolchain image — no per-job tool setup.
     runs-on: self-hosted
-
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -29,8 +35,6 @@ jobs:
 
       - name: Buf Breaking Check
         id: breaking
-        # PR-only — pushing to main would compare main against itself.
-        # Allowed to fail pre-v1; surfaced in the summary instead of the job status.
         if: github.event_name == 'pull_request'
         continue-on-error: true
         run: buf breaking --against ".git#branch=origin/${{ github.base_ref }}"
@@ -38,17 +42,6 @@ jobs:
       - name: Generate contracts (Go + TypeScript)
         id: generate
         run: mage gen
-
-      - name: Upload generated contracts
-        id: upload
-        uses: actions/upload-artifact@v7
-        continue-on-error: true
-        with:
-          name: generated-contracts-${{ github.sha }}
-          path: blanketops/
-          retention-days: 7
-          # Upload the full blanketops/ tree — consumers can extract
-          # just the .pb.go or _pb.ts files they need from the artifact.
 
       - name: CI Summary
         if: always()
@@ -96,7 +89,3 @@ jobs:
           | Go (\`blanketops/**/*.pb.go\`) | $go_n |
           | TypeScript (\`blanketops/**/*_pb.ts\`) | $ts_n |
           *$proto_n proto files · $svc_n services compiled*
-          ## Artifacts
-          📦 [generated-contracts-$(echo "${{ github.sha }}" | cut -c1-7)…](${{ steps.upload.outputs.artifact-url }}) — retained 7 days
-          🔗 [Full run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          EOF
