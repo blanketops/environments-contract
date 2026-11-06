@@ -1,3 +1,12 @@
+## [0.6.0] - 2026-11-06
+
+### 💼 Other
+
+- Merge release/v0.6.0 into main
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.5.9
 ## [0.5.9] - 2026-11-06
 
 ### 💼 Other
@@ -34,6 +43,7 @@
 - *(ci)* Update actions
 - *(release)* Update changelog for v0.5.9 (#181)
 - Sync develop with main after release/v0.5.9
+- *(release)* Update changelog for v0.5.9 (#184)
 ## [0.5.8] - 2026-11-03
 
 ### 🚀 Features
