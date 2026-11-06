@@ -64,14 +64,7 @@ jobs:
               | tar -xz -C /usr/local/bin oras
           fi
           oras version
-
-      - name: Publish contract bundle to OCI registry
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ github.ref_name }}
-        run: |
-          mage publish
-
+          
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
@@ -91,7 +84,6 @@ jobs:
 
           - Generated contracts (Go + TypeScript) via mage gen
           - Generated release notes via git-cliff
-          - Published contract bundle to OCI registry
           - Published GitHub Release with assets
 
           ## Artifacts
