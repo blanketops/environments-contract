@@ -1,3 +1,8 @@
+## [0.6.1] - 2026-11-06
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.6.0
 ## [0.6.0] - 2026-11-06
 
 ### 💼 Other
@@ -7,6 +12,7 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Sync develop with main after release/v0.5.9
+- *(release)* Update changelog for v0.6.0 (#186)
 ## [0.5.9] - 2026-11-06
 
 ### 💼 Other
