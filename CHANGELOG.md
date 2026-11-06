@@ -1,3 +1,35 @@
+## [0.5.9] - 2026-11-06
+
+### 💼 Other
+
+- *(deps)* Bump environments-bots releaser to v0.0.7
+- *(deps)* Bump environments-bots releaser to v0.0.7
+- *(deps)* Update open-pr.yml to use pre-built binary
+- *(deps)* Bump developer binary to v0.1.0
+
+### 📚 Documentation
+
+- Standardize open-pr.yml header comments
+- Standardize open-pr.yml header comments
+- Remove open-pr.yml - Developer App not installed on this repo
+- Update create-github-app-token to use client-id
+- Auto-generate code documentation [skip ci] (#180)
+
+### ⚙️ Miscellaneous Tasks
+
+- *(ci)* Update actions
+- *(ci)* Update actions
+- Sync develop with main after release/v0.5.8
+- *(ci)* Update bots versions
+- *(ci)* Update bots versions
+- *(ci)* Update bots versions
+- *(release)* Add ORAS install step for OCI registry publish
+- *(ci)* Update actions
+- *(ci)* Update actions
+- *(ci)* Update actions
+- *(ci)* Update actions
+- *(ci)* Update actions
+- *(ci)* Update actions
 ## [0.5.8] - 2026-11-03
 
 ### 🚀 Features
@@ -15,6 +47,7 @@
 - *(ci)* Bump blanketops/environments-bots from 0.0.2 to 0.0.3
 - Sync develop with main after release/v0.5.7
 - Sync develop with main
+- *(release)* Update changelog for v0.5.8 (#155)
 ## [0.5.7] - 2026-10-21
 
 ### 🐛 Bug Fixes
