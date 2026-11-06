@@ -6,6 +6,7 @@
 - *(deps)* Bump environments-bots releaser to v0.0.7
 - *(deps)* Update open-pr.yml to use pre-built binary
 - *(deps)* Bump developer binary to v0.1.0
+- Merge release/v0.5.9 into main
 
 ### 📚 Documentation
 
@@ -30,6 +31,9 @@
 - *(ci)* Update actions
 - *(ci)* Update actions
 - *(ci)* Update actions
+- *(ci)* Update actions
+- *(release)* Update changelog for v0.5.9 (#181)
+- Sync develop with main after release/v0.5.9
 ## [0.5.8] - 2026-11-03
 
 ### 🚀 Features
