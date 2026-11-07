@@ -1,0 +1,329 @@
+/*
+   Copyright 2026 The BlanketOps Authors.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   	http://www.apache.org/licenses/LICENSE-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package blanketops.supplychain.v1alpha1;
+
+import "blanketops/common/v1/event.proto";
+import "blanketops/common/v1/metadata.proto";
+import "blanketops/common/v1/supplychain.proto";
+import "blanketops/supplychain/v1alpha1/types.proto";
+
+option csharp_namespace = "BlanketOps.SupplyChain.V1Alpha1";
+option go_package = "github.com/blanketops/environments-contract/blanketops/supplychain/v1alpha1;v1alpha1";
+option java_outer_classname = "SupplyChainProto";
+option java_package = "v1alpha1.blanketops.supplychain";
+
+// =============================================================================
+// SupplyChain
+//
+// Declares the secure build pipeline bound to one source repository:
+// build → static analysis → vulnerability scan → sign → attest.
+// The controller materializes the Tekton pipeline and triggers, and creates
+// an ImageBuild for every accepted event.
+// One SupplyChain per repository.
+// Pipeline chain:
+//   GitRepository → GitHubEvent → Build → SupplyChain → Package → Deployment
+//
+// APIVersion: supplychain.blanketops.dev/v1alpha1
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Resource
+// -----------------------------------------------------------------------------
+
+message SupplyChain {
+  // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
+  blanketops.common.v1.Metadata metadata = 1;
+
+  // Desired state declared by the operator.
+  SupplyChainSpec spec = 2;
+
+  // Observed state set by the controller. Never manually edited.
+  SupplyChainStatus status = 3;
+}
+
+// -----------------------------------------------------------------------------
+// Spec (intent)
+// -----------------------------------------------------------------------------
+
+message SupplyChainSpec {
+  // Repository this supply chain is bound to, in owner/name format.
+  // e.g. nkanyezisolutions/for-kaniko-app
+  string repository = 1;
+
+  // How the container image is built and where it is pushed.
+  SupplyChainImage image = 2;
+
+  // Which pipeline steps are enabled and their configuration.
+  SupplyChainSteps steps = 3;
+
+  // Sigstore signing configuration.
+  // Absent means the public Sigstore instance is used.
+  SupplyChainSigning signing = 4;
+
+  // Kubernetes ServiceAccount the pipeline runs as. This is also the
+  // identity images are signed with.
+  // Empty means "default".
+  string service_account_name = 5;
+
+  // Public hostname for the event listener ingress.
+  // e.g. hooks.dev.domain.co.za
+  string webhook_host = 6;
+}
+
+// -----------------------------------------------------------------------------
+// Image
+// -----------------------------------------------------------------------------
+
+message SupplyChainImage {
+  // Image registry to push to.
+  // e.g. ghcr.io | docker.io | ttl.sh
+  string registry = 1;
+
+  // Image name without the tag.
+  // e.g. nkanyezisolutions/for-kaniko-app
+  string name = 2;
+
+  // How the tag of the built image is derived.
+  blanketops.common.v1.ImageTagStrategy tag_strategy = 3;
+
+  // Cloud Native Buildpacks builder image.
+  // Empty means paketobuildpacks/builder-jammy-base.
+  string builder_image = 4;
+
+  // Name of the Kubernetes Secret containing git SSH credentials.
+  // Sourced from the environment SecretStore via ExternalSecret.
+  string clone_secret = 5;
+
+  // Name of the Kubernetes Secret containing registry credentials.
+  // Must be of type kubernetes.io/dockerconfigjson.
+  string registry_secret = 6;
+}
+
+// -----------------------------------------------------------------------------
+// Steps
+// -----------------------------------------------------------------------------
+
+// SupplyChainSteps enables or disables individual pipeline steps.
+// Boolean steps are optional so that unset is distinguishable from false —
+// an unset step is enabled.
+message SupplyChainSteps {
+  // Build the image with Cloud Native Buildpacks.
+  optional bool buildpacks = 1;
+
+  // Static analysis via SonarQube. Absent means the step is skipped.
+  SupplyChainSonarQube sonar_qube = 2;
+
+  // Scan the image for vulnerabilities with Trivy.
+  optional bool trivy = 3;
+
+  // Sign the image with Cosign + Sigstore.
+  optional bool sign = 4;
+
+  // Attest build provenance via Tekton Chains.
+  optional bool attest = 5;
+}
+
+message SupplyChainSonarQube {
+  // Whether the step runs. Unset means enabled.
+  optional bool enabled = 1;
+
+  // SonarQube server endpoint.
+  string server_url = 2;
+
+  // Name of the Kubernetes Secret containing the SonarQube token.
+  string token_secret_ref = 3;
+
+  // SonarQube project key — alphanumeric, '-', '_', '.', ':' only.
+  string project_key = 4;
+}
+
+// -----------------------------------------------------------------------------
+// Signing
+// -----------------------------------------------------------------------------
+
+// SupplyChainSigning configures keyless signing (Cosign + Fulcio + Rekor).
+// Every empty endpoint falls back to the public Sigstore instance.
+message SupplyChainSigning {
+  // Fulcio certificate authority endpoint.
+  // Empty means https://fulcio.sigstore.dev
+  string fulcio_url = 1;
+
+  // Rekor transparency log endpoint.
+  // Empty means https://rekor.sigstore.dev
+  string rekor_url = 2;
+
+  // Certificate transparency log Fulcio writes to.
+  // Empty means https://ctfe.sigstore.dev
+  string ct_log_url = 3;
+
+  // OIDC issuer for keyless signing.
+  // Empty means https://oauth2.sigstore.dev/auth
+  string oidc_issuer = 4;
+}
+
+// -----------------------------------------------------------------------------
+// Status (observed state)
+// -----------------------------------------------------------------------------
+
+message SupplyChainStatus {
+  // Current lifecycle phase. Set by the controller.
+  blanketops.common.v1.SupplyChainPhase phase = 1;
+
+  // Conditions for UI and automation consumers.
+  // e.g. Available, Progressing, Degraded
+  repeated Condition conditions = 2;
+
+  // Name of the most recent ImageBuild created for this supply chain.
+  string last_image_build = 3;
+}
+
+// -----------------------------------------------------------------------------
+// Requests / Responses
+// -----------------------------------------------------------------------------
+
+// CreateSupplyChain — declare a new SupplyChain.
+// Controller materializes the pipeline and triggers on reconciliation.
+message CreateSupplyChainRequest {
+  // Desired spec for the new SupplyChain.
+  SupplyChainSpec spec = 1;
+}
+
+message CreateSupplyChainResponse {
+  // The created SupplyChain including generated metadata and initial status.
+  SupplyChain supply_chain = 1;
+}
+
+// GetSupplyChain — fetch a SupplyChain by name.
+message GetSupplyChainRequest {
+  // Name of the SupplyChain CR to fetch.
+  string name = 1;
+}
+
+message GetSupplyChainResponse {
+  SupplyChain supply_chain = 1;
+}
+
+// UpdateSupplyChain — full replace of the SupplyChain spec.
+// Equivalent to kubectl apply — all fields replaced.
+message UpdateSupplyChainRequest {
+  // Full SupplyChain object including metadata and desired spec.
+  SupplyChain supply_chain = 1;
+}
+
+message UpdateSupplyChainResponse {
+  // The updated SupplyChain as observed by the controller.
+  SupplyChain supply_chain = 1;
+}
+
+// PatchSupplyChain — partial update using JSON merge patch RFC 7396.
+// Only specified fields are updated — others left unchanged.
+message PatchSupplyChainRequest {
+  // Name of the SupplyChain CR to patch.
+  string name = 1;
+
+  // JSON merge patch document — RFC 7396.
+  // e.g. {"spec":{"steps":{"trivy":false}}}
+  string patch = 2;
+}
+
+message PatchSupplyChainResponse {
+  // The patched SupplyChain as observed by the controller.
+  SupplyChain supply_chain = 1;
+}
+
+// ListSupplyChains — list SupplyChain CRs with optional filtering and paging.
+message ListSupplyChainsRequest {
+  // Filter by current lifecycle phase.
+  optional blanketops.common.v1.SupplyChainPhase phase = 1;
+
+  // Filter by bound repository, in owner/name format.
+  optional string repository = 2;
+
+  // Maximum number of results to return. Server may return fewer.
+  optional int32 page_size = 3;
+
+  // Token from a previous ListSupplyChainsResponse.next_page_token.
+  // Omit for the first request.
+  optional string page_token = 4;
+}
+
+message ListSupplyChainsResponse {
+  // The list of SupplyChain CRs matching the request filters.
+  repeated SupplyChain supply_chains = 1;
+
+  // Token to retrieve the next page. Empty if no more results.
+  optional string next_page_token = 2;
+}
+
+// DeleteSupplyChain — delete a SupplyChain CR.
+// The controller garbage-collects the pipeline, triggers and all ImageBuilds
+// owned by this supply chain. Pushed images are not removed.
+message DeleteSupplyChainRequest {
+  // Name of the SupplyChain CR to delete.
+  string name = 1;
+}
+
+message DeleteSupplyChainResponse {
+  // True if the SupplyChain was successfully deleted.
+  bool success = 1;
+}
+
+// WatchSupplyChain — stream phase transitions for a SupplyChain CR.
+// Delivers an event for every controller reconciliation loop.
+message WatchSupplyChainRequest {
+  // Name of the SupplyChain CR to watch.
+  string name = 1;
+}
+
+message WatchSupplyChainResponse {
+  // Current state of the SupplyChain at this point in the stream.
+  SupplyChain supply_chain = 1;
+
+  // The type of change that triggered this event.
+  blanketops.common.v1.EventType type = 2;
+}
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
+service SupplyChainService {
+  // ── CRUD — aligned with BuildService pattern ─────────────────────────────
+
+  // Declare a new SupplyChain.
+  rpc CreateSupplyChain(CreateSupplyChainRequest) returns (CreateSupplyChainResponse);
+
+  // Fetch a SupplyChain CR by name.
+  rpc GetSupplyChain(GetSupplyChainRequest) returns (GetSupplyChainResponse);
+
+  // Full replace of a SupplyChain spec.
+  rpc UpdateSupplyChain(UpdateSupplyChainRequest) returns (UpdateSupplyChainResponse);
+
+  // Partial update via JSON merge patch RFC 7396.
+  rpc PatchSupplyChain(PatchSupplyChainRequest) returns (PatchSupplyChainResponse);
+
+  // List SupplyChain CRs with optional phase/repository filter and paging.
+  rpc ListSupplyChains(ListSupplyChainsRequest) returns (ListSupplyChainsResponse);
+
+  // Delete a SupplyChain CR and its owned pipeline resources.
+  rpc DeleteSupplyChain(DeleteSupplyChainRequest) returns (DeleteSupplyChainResponse);
+
+  // ── Streaming ────────────────────────────────────────────────────────────
+
+  // Stream phase transitions for a SupplyChain CR.
+  // Streams indefinitely — supply chains have no terminal phase; close client-side.
+  rpc WatchSupplyChain(WatchSupplyChainRequest) returns (stream WatchSupplyChainResponse);
+}

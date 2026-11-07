@@ -350,8 +350,8 @@ type SecretStore struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Backend provider. Drives ESO ClusterSecretStore selection.
 	Provider *SecretStoreProvider `protobuf:"bytes,1,opt,name=provider,proto3" json:"provider,omitempty"`
-	// Name of the backing store (the ESO ClusterSecretStore). Optional; when
-	// empty the provider's default store is used.
+	// Optional override for the SecretStore name.
+	// If empty, the platform default for the provider is used.
 	StoreName     string `protobuf:"bytes,2,opt,name=store_name,json=storeName,proto3" json:"store_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

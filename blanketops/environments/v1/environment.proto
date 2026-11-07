@@ -51,6 +51,20 @@ message Environment {
 }
 
 // -----------------------------------------------------------------------------
+// Secret Store Configuration
+// -----------------------------------------------------------------------------
+
+message SecretStore {
+  // The provider type for the secret store.
+  // e.g. "vault", "aws", "azure", "fake"
+  string provider = 1;
+
+  // Reference to the underlying SecretStore CR name.
+  // If empty, the controller uses the default backend for the provider.
+  string store_name = 2;
+}
+
+// -----------------------------------------------------------------------------
 // Spec (intent)
 // -----------------------------------------------------------------------------
 
@@ -94,6 +108,9 @@ message EnvironmentSpec {
 
   // Build triggers permitted for this environment.
   repeated ObjectRef build_triggers = 12;
+
+  // The secret store configuration for this environment.
+  SecretStore secret_store = 13;
 }
 
 // -----------------------------------------------------------------------------
