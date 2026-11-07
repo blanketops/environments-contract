@@ -2,13 +2,11 @@
 # release.yml — Publish Secure GitHub Release & Contract Artifacts
 #
 # Triggers on version tags (v*). Generates contracts (buf gen via mage),
-# changelog (git-cliff), SBOMs, cryptographically signs via Sigstore/Cosign,
-# issues GitHub build attestations, and publishes directly to GitHub Releases
-# via the baked-in GitHub CLI (`gh`).
+# changelog (git-cliff), SBOMs (without hitting artifact storage quotas),
+# cryptographically signs via Sigstore/Cosign, issues GitHub build attestations,
+# and publishes directly to GitHub Releases via the baked-in GitHub CLI (`gh`).
 # =============================================================================
-
 name: Release
-
 on:
   push:
     tags:
@@ -57,6 +55,10 @@ jobs:
         with:
           artifact-name: sbom-${{ github.ref_name }}.spdx.json
           output-file: sbom-${{ github.ref_name }}.spdx.json
+          path: .
+          format: spdx-json
+          upload-artifact: false       # Bypasses GitHub internal artifact storage quota limits
+          upload-release-assets: false # Assets are attached directly via gh below
 
       - name: Sign Artifacts with Sigstore Cosign (Keyless)
         run: |
@@ -100,7 +102,7 @@ jobs:
 
           ## Supply Chain Security & Verification
           - **Contracts Generated:** `generated-contracts-${{ github.ref_name }}.tar.gz`
-          - **SBOM Generated:** `sbom-${{ github.ref_name }}.spdx.json`
+          - **SBOM Generated:** `sbom-${{ github.ref_name }}.spdx.json` (Quota-safe local build)
           - **Sigstore Signatures:** Attached (`.sig` files) via keyless OIDC signing
           - **GitHub Provenance:** Native build attestations generated and verified
           - **Direct Upload:** Handled via baked-in GitHub CLI (`gh`)
