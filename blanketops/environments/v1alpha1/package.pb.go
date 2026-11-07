@@ -219,8 +219,16 @@ type PackageRepository struct {
 	// Name of the Kubernetes Secret containing repository credentials.
 	// Sourced from the environment SecretStore via ExternalSecret.
 	CredentialsSecret string `protobuf:"bytes,2,opt,name=credentials_secret,json=credentialsSecret,proto3" json:"credentials_secret,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// Git ref of the package repository to apply — branch, tag, or commit SHA.
+	// Required to fetch: the repository is not fetched without one.
+	// A branch is written with its remote, e.g. origin/main.
+	Ref string `protobuf:"bytes,3,opt,name=ref,proto3" json:"ref,omitempty"`
+	// Path inside the repository that holds the package definitions.
+	// Only this directory is applied. Empty means the repository root.
+	// e.g. manifests
+	Path          string `protobuf:"bytes,4,opt,name=path,proto3" json:"path,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PackageRepository) Reset() {
@@ -263,6 +271,20 @@ func (x *PackageRepository) GetUrl() string {
 func (x *PackageRepository) GetCredentialsSecret() string {
 	if x != nil {
 		return x.CredentialsSecret
+	}
+	return ""
+}
+
+func (x *PackageRepository) GetRef() string {
+	if x != nil {
+		return x.Ref
+	}
+	return ""
+}
+
+func (x *PackageRepository) GetPath() string {
+	if x != nil {
+		return x.Path
 	}
 	return ""
 }
@@ -1274,10 +1296,12 @@ const file_blanketops_environments_v1alpha1_package_proto_rawDesc = "" +
 	"repository\x18\x06 \x01(\v23.blanketops.environments.v1alpha1.PackageRepositoryR\n" +
 	"repository\x12!\n" +
 	"\fdiff_enabled\x18\a \x01(\bR\vdiffEnabled\x12\\\n" +
-	"\x10state_repository\x18\b \x01(\v21.blanketops.environments.v1alpha1.StateRepositoryR\x0fstateRepository\"T\n" +
+	"\x10state_repository\x18\b \x01(\v21.blanketops.environments.v1alpha1.StateRepositoryR\x0fstateRepository\"z\n" +
 	"\x11PackageRepository\x12\x10\n" +
 	"\x03url\x18\x01 \x01(\tR\x03url\x12-\n" +
-	"\x12credentials_secret\x18\x02 \x01(\tR\x11credentialsSecret\"\x88\x01\n" +
+	"\x12credentials_secret\x18\x02 \x01(\tR\x11credentialsSecret\x12\x10\n" +
+	"\x03ref\x18\x03 \x01(\tR\x03ref\x12\x12\n" +
+	"\x04path\x18\x04 \x01(\tR\x04path\"\x88\x01\n" +
 	"\x0fStateRepository\x12\x10\n" +
 	"\x03url\x18\x01 \x01(\tR\x03url\x12\x10\n" +
 	"\x03ref\x18\x02 \x01(\tR\x03ref\x12!\n" +

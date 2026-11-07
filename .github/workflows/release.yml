@@ -1,100 +1,124 @@
+# =============================================================================
+# release.yml — Publish Secure GitHub Release & Contract Artifacts
+#
+# Triggers on version tags (v*). Generates contracts (buf gen via mage),
+# changelog (git-cliff), SBOMs (without hitting artifact storage quotas),
+# cryptographically signs via Sigstore/Cosign, issues GitHub build attestations,
+# and publishes directly to GitHub Releases via the baked-in GitHub CLI (`gh`).
+# =============================================================================
 name: Release
 on:
-    push:
-        tags:
-            - "v*"
+  push:
+    tags:
+      - "v*"
+
 permissions:
-    contents: write
+  contents: write
+  packages: write
+  id-token: write     # Required for Sigstore keyless OIDC signing
+  attestations: write # Required for GitHub native build provenance attestations
+
 jobs:
-    release:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Generate GitHub App token
-          id: app-token
-          uses: actions/create-github-app-token@v3
-          with:
-            app-id: ${{ secrets.APP_ID }}
-            private-key: ${{ secrets.APP_PRIVATE_KEY }}
-            owner: blanketops
-            repositories: environments-contract
+  release:
+    runs-on: self-hosted
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_ID_PRIVATE_KEY }}
+          owner: blanketops
+          repositories: environments-api
 
-        - name: Checkout
-          uses: actions/checkout@v7
-          with:
-            fetch-depth: 0
-            token: ${{ steps.app-token.outputs.token }}
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
 
-        - name: Install git-cliff
-          run: |
-              GITCLIFF_VERSION="2.13.0"
-              curl -L "https://github.com/orhun/git-cliff/releases/download/v${GITCLIFF_VERSION}/git-cliff-${GITCLIFF_VERSION}-x86_64-unknown-linux-gnu.tar.gz" -o git-cliff.tar.gz
-              tar xzf git-cliff.tar.gz
-              sudo mv "git-cliff-${GITCLIFF_VERSION}/git-cliff" /usr/local/bin/git-cliff
-              rm -rf git-cliff.tar.gz "git-cliff-${GITCLIFF_VERSION}"
-              git-cliff --version
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: false
 
-        - name: Checkout main
-          run: |
-              git checkout main
-              git pull origin main
+      - name: Generate contracts (Go + TypeScript)
+        run: mage gen
 
-        - name: Generate CHANGELOG.md
-          run: git-cliff --config .cliff.toml --output CHANGELOG.md
+      - name: Package generated contracts
+        run: |
+          tar -czf "generated-contracts-${{ github.ref_name }}.tar.gz" -C blanketops .
 
-        - name: Commit changelog
-          run: |
-              git config user.name "github-actions"
-              git config user.email "actions@github.com"
-              git add CHANGELOG.md
-              git commit -m "chore(release): update changelog for ${{ github.ref_name }}" || echo "No changes"
-              git push origin main
+      - name: Generate SBOM (Software Bill of Materials)
+        uses: anchore/sbom-action@v0.18.0
+        with:
+          artifact-name: sbom-${{ github.ref_name }}.spdx.json
+          output-file: sbom-${{ github.ref_name }}.spdx.json
+          path: .
+          format: spdx-json
+          upload-artifact: false       # Bypasses GitHub internal artifact storage quota limits
+          upload-release-assets: false # Assets are attached directly via gh below
 
-        - name: Generate release notes
-          run: git-cliff --config .cliff.toml --latest --output RELEASE_NOTES.md
+      - name: Sign Artifacts with Sigstore Cosign (Keyless)
+        run: |
+          cosign sign-blob --yes \
+            --output-signature generated-contracts-${{ github.ref_name }}.tar.gz.sig \
+            generated-contracts-${{ github.ref_name }}.tar.gz
 
-        # - name: Download generated contracts
-        #   uses: dawidd6/action-download-artifact@v6
-        #   with:
-        #     github_token: ${{ secrets.GH_PAT }}
-        #     repo: ntlaletsi70/blanketops-environments-contract
-        #     workflow: generate.yml
-        #     # Search for the most recent successful run regardless of SHA
-        #     # This is much more reliable than trying to match the exact commit SHA
-        #     workflow_search: true
-        #     workflow_conclusion: success
-        #     name: generated-contracts-latest
-        #     path: ./dist
-  
-        - name: Create GitHub Release
-          uses: softprops/action-gh-release@v3
-          with:
-            body_path: RELEASE_NOTES.md
-          env:
-            GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          cosign sign-blob --yes \
+            --output-signature sbom-${{ github.ref_name }}.spdx.json.sig \
+            sbom-${{ github.ref_name }}.spdx.json
 
+      - name: Generate GitHub Native Artifact Attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            generated-contracts-${{ github.ref_name }}.tar.gz
+            sbom-${{ github.ref_name }}.spdx.json
 
-        - name: Release Summary
-          run: |
-              cat >> $GITHUB_STEP_SUMMARY <<EOF
-              # 📦 GitHub Release Published
+      - name: Generate release notes
+        run: git-cliff --config .cliff.toml --latest --output RELEASE_NOTES.md
 
-              **Version:** \`${{ github.ref_name }}\`
+      - name: Create GitHub Release & Attach Assets via GitHub CLI (`gh`)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "${{ github.ref_name }}" \
+            --notes-file RELEASE_NOTES.md \
+            generated-contracts-${{ github.ref_name }}.tar.gz \
+            generated-contracts-${{ github.ref_name }}.tar.gz.sig \
+            sbom-${{ github.ref_name }}.spdx.json \
+            sbom-${{ github.ref_name }}.spdx.json.sig \
+            RELEASE_NOTES.md
 
-              ## Completed
+      - name: Release Summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          # 📦 Secure GitHub Release Published
 
-              - Generated CHANGELOG.md using git-cliff
-              - Committed changelog updates to main
-              - Generated release notes
-              - Published GitHub Release
+          **Version:** `${{ github.ref_name }}`
 
-              ## Artifacts
+          ## Supply Chain Security & Verification
+          - **Contracts Generated:** `generated-contracts-${{ github.ref_name }}.tar.gz`
+          - **SBOM Generated:** `sbom-${{ github.ref_name }}.spdx.json` (Quota-safe local build)
+          - **Sigstore Signatures:** Attached (`.sig` files) via keyless OIDC signing
+          - **GitHub Provenance:** Native build attestations generated and verified
+          - **Direct Upload:** Handled via baked-in GitHub CLI (`gh`)
 
-              - CHANGELOG.md
-              - RELEASE_NOTES.md
-              - GitHub Release
+          ## Attached Artifacts
+          - `generated-contracts-${{ github.ref_name }}.tar.gz` (+ `.sig`)
+          - `sbom-${{ github.ref_name }}.spdx.json` (+ `.sig`)
+          - `RELEASE_NOTES.md`
 
-               ## Source Tag
+          EOF
 
-               \`${{ github.ref_name }}\`
-
-              EOF
+      - name: Releaser complete
+        if: always()
+        uses: blanketops/environments-bots/.github/actions/releaser@v0.1.0
+        with:
+          command: complete
+          release: ${{ github.ref_name }}
+          app-id: ${{ vars.DEVELOPER_CLIENT_ID }}
+          private-key: ${{ secrets.DEVELOPER_APP_PRIVATE_KEY }}

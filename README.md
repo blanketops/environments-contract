@@ -81,28 +81,6 @@ Generated Go code is committed intentionally to:
 - simplify downstream consumption.
 - avoid forcing consumers to run codegen.
 
-## Tooling
+## License
 
-Common tasks are exposed via the Makefile.
-
-Typical workflows include:
-
-- validating protobuf definitions.
-- regenerating Go bindings.
-- ensuring schema consistency.
-
-Refer to:
-
-```Magefile
-mage help
-```
-
-for available targets.
-
-### Consumers
-
-This repository is consumed by:
-
-- BlanketOps operators and controllers.
-- Internal policy and resolution engines.
-- Tooling that requires a stable environment contract.
+Apache License 2.0 — see [LICENSE](LICENSE) for details.

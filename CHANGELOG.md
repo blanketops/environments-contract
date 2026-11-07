@@ -1,3 +1,146 @@
+## [0.6.4] - 2026-11-07
+
+### 💼 Other
+
+- Merge release/v0.6.4 into main
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.6.3
+## [0.6.3] - 2026-11-07
+
+### 💼 Other
+
+- Merge release/v0.6.3 into main
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.6.2
+- *(release)* Update changelog for v0.6.3 (#196)
+## [0.6.2] - 2026-11-07
+
+### 💼 Other
+
+- Merge release/v0.6.2 into main
+
+### ⚙️ Miscellaneous Tasks
+
+- *(ci)* Update actions
+- Sync develop with main after release/v0.6.1
+- *(release)* Update changelog for v0.6.2 (#193)
+## [0.6.1] - 2026-11-06
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.6.0
+- *(release)* Update changelog for v0.6.1 (#190)
+## [0.6.0] - 2026-11-06
+
+### 💼 Other
+
+- Merge release/v0.6.0 into main
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.5.9
+- *(release)* Update changelog for v0.6.0 (#186)
+## [0.5.9] - 2026-11-06
+
+### 💼 Other
+
+- *(deps)* Bump environments-bots releaser to v0.0.7
+- *(deps)* Bump environments-bots releaser to v0.0.7
+- *(deps)* Update open-pr.yml to use pre-built binary
+- *(deps)* Bump developer binary to v0.1.0
+- Merge release/v0.5.9 into main
+
+### 📚 Documentation
+
+- Standardize open-pr.yml header comments
+- Standardize open-pr.yml header comments
+- Remove open-pr.yml - Developer App not installed on this repo
+- Update create-github-app-token to use client-id
+- Auto-generate code documentation [skip ci] (#180)
+
+### ⚙️ Miscellaneous Tasks
+
+- *(ci)* Update actions
+- *(ci)* Update actions
+- Sync develop with main after release/v0.5.8
+- *(ci)* Update bots versions
+- *(ci)* Update bots versions
+- *(ci)* Update bots versions
+- *(release)* Add ORAS install step for OCI registry publish
+- *(ci)* Update actions
+- *(ci)* Update actions
+- *(ci)* Update actions
+- *(ci)* Update actions
+- *(ci)* Update actions
+- *(ci)* Update actions
+- *(ci)* Update actions
+- *(release)* Update changelog for v0.5.9 (#181)
+- Sync develop with main after release/v0.5.9
+- *(release)* Update changelog for v0.5.9 (#184)
+## [0.5.8] - 2026-11-03
+
+### 🚀 Features
+
+- *(proto)* Add store_name to SecretStore
+
+### 📚 Documentation
+
+- *(release)* Regenerate contract docs for v0.5.8 [skip ci] (#154)
+
+### ⚙️ Miscellaneous Tasks
+
+- *(finalize)* Continue when the release pull request is already merged
+- Run the releaser in the release workflows
+- *(ci)* Bump blanketops/environments-bots from 0.0.2 to 0.0.3
+- Sync develop with main after release/v0.5.7
+- Sync develop with main
+- *(release)* Update changelog for v0.5.8 (#155)
+## [0.5.7] - 2026-10-21
+
+### 🐛 Bug Fixes
+
+- Use the verbatim Apache-2.0 license text
+
+### 💼 Other
+
+- Merge release/v0.5.7 into main
+
+### ⚙️ Miscellaneous Tasks
+
+- *(dependabot)* Open dependency PRs against main
+- Do not fail a job when the artifact upload is refused
+- Sync develop with main after release/v0.5.6
+- *(release)* Make the workflows' commits verified
+- Sync develop with main
+- Land bot writes to main through pull requests
+- Sync develop with main
+- *(release)* Update changelog for v0.5.7 (#146)
+## [0.5.6] - 2026-10-09
+
+### 🚀 Features
+
+- *(environments)* Add ref and path to PackageRepository
+
+### 💼 Other
+
+- Merge release/v0.5.6 into main
+
+### 📚 Documentation
+
+- *(release)* Regenerate contract docs for v0.5.6 [skip ci]
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Update changelog for v0.5.5
+- Run workflows on zenith self-hosted runners
+- Sync develop with main after release/v0.5.5
+- Sync develop with main after manual v0.5.5 changelog fix
+- Run workflows on zenith self-hosted runners
+- *(release)* Regenerate Go and TypeScript contracts for v0.5.6 [skip ci]
 ## [0.5.5] - 2026-08-23
 
 ### 🚀 Features

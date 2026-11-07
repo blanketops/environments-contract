@@ -1,2140 +1,11332 @@
-# Protocol Documentation
-<a name="top"></a>
-
-## Table of Contents
-
-- [blanketops/environments/v1alpha1/build.proto](#blanketops_environments_v1alpha1_build-proto)
-    - [Build](#blanketops-environments-v1alpha1-Build)
-    - [BuildPolicy](#blanketops-environments-v1alpha1-BuildPolicy)
-    - [BuildSpec](#blanketops-environments-v1alpha1-BuildSpec)
-    - [BuildStatus](#blanketops-environments-v1alpha1-BuildStatus)
-    - [BuildStrategy](#blanketops-environments-v1alpha1-BuildStrategy)
-    - [BuildTriggerPolicy](#blanketops-environments-v1alpha1-BuildTriggerPolicy)
-    - [CreateBuildRequest](#blanketops-environments-v1alpha1-CreateBuildRequest)
-    - [CreateBuildResponse](#blanketops-environments-v1alpha1-CreateBuildResponse)
-    - [DeleteBuildRequest](#blanketops-environments-v1alpha1-DeleteBuildRequest)
-    - [DeleteBuildResponse](#blanketops-environments-v1alpha1-DeleteBuildResponse)
-    - [GetBuildRequest](#blanketops-environments-v1alpha1-GetBuildRequest)
-    - [GetBuildResponse](#blanketops-environments-v1alpha1-GetBuildResponse)
-    - [GitSource](#blanketops-environments-v1alpha1-GitSource)
-    - [ListBuildsRequest](#blanketops-environments-v1alpha1-ListBuildsRequest)
-    - [ListBuildsResponse](#blanketops-environments-v1alpha1-ListBuildsResponse)
-    - [Param](#blanketops-environments-v1alpha1-Param)
-    - [PatchBuildRequest](#blanketops-environments-v1alpha1-PatchBuildRequest)
-    - [PatchBuildResponse](#blanketops-environments-v1alpha1-PatchBuildResponse)
-    - [RetryPolicy](#blanketops-environments-v1alpha1-RetryPolicy)
-    - [ServiceAccount](#blanketops-environments-v1alpha1-ServiceAccount)
-    - [TriggerBuildRequest](#blanketops-environments-v1alpha1-TriggerBuildRequest)
-    - [TriggerBuildResponse](#blanketops-environments-v1alpha1-TriggerBuildResponse)
-    - [UpdateBuildRequest](#blanketops-environments-v1alpha1-UpdateBuildRequest)
-    - [UpdateBuildResponse](#blanketops-environments-v1alpha1-UpdateBuildResponse)
-    - [WatchBuildRequest](#blanketops-environments-v1alpha1-WatchBuildRequest)
-    - [WatchBuildResponse](#blanketops-environments-v1alpha1-WatchBuildResponse)
-  
-    - [BuildService](#blanketops-environments-v1alpha1-BuildService)
-  
-- [blanketops/environments/v1alpha1/deployment.proto](#blanketops_environments_v1alpha1_deployment-proto)
-    - [CreateDeploymentRequest](#blanketops-environments-v1alpha1-CreateDeploymentRequest)
-    - [CreateDeploymentResponse](#blanketops-environments-v1alpha1-CreateDeploymentResponse)
-    - [DeleteDeploymentRequest](#blanketops-environments-v1alpha1-DeleteDeploymentRequest)
-    - [DeleteDeploymentResponse](#blanketops-environments-v1alpha1-DeleteDeploymentResponse)
-    - [Deployment](#blanketops-environments-v1alpha1-Deployment)
-    - [DeploymentSpec](#blanketops-environments-v1alpha1-DeploymentSpec)
-    - [DeploymentStatus](#blanketops-environments-v1alpha1-DeploymentStatus)
-    - [GetDeploymentRequest](#blanketops-environments-v1alpha1-GetDeploymentRequest)
-    - [GetDeploymentResponse](#blanketops-environments-v1alpha1-GetDeploymentResponse)
-    - [ListDeploymentsRequest](#blanketops-environments-v1alpha1-ListDeploymentsRequest)
-    - [ListDeploymentsResponse](#blanketops-environments-v1alpha1-ListDeploymentsResponse)
-    - [ManifestsRepo](#blanketops-environments-v1alpha1-ManifestsRepo)
-    - [PatchDeploymentRequest](#blanketops-environments-v1alpha1-PatchDeploymentRequest)
-    - [PatchDeploymentResponse](#blanketops-environments-v1alpha1-PatchDeploymentResponse)
-    - [ServiceUnitDeploymentStatus](#blanketops-environments-v1alpha1-ServiceUnitDeploymentStatus)
-    - [UpdateDeploymentRequest](#blanketops-environments-v1alpha1-UpdateDeploymentRequest)
-    - [UpdateDeploymentResponse](#blanketops-environments-v1alpha1-UpdateDeploymentResponse)
-    - [WatchDeploymentRequest](#blanketops-environments-v1alpha1-WatchDeploymentRequest)
-    - [WatchDeploymentResponse](#blanketops-environments-v1alpha1-WatchDeploymentResponse)
-  
-    - [DeploymentService](#blanketops-environments-v1alpha1-DeploymentService)
-  
-- [blanketops/environments/v1alpha1/environment.proto](#blanketops_environments_v1alpha1_environment-proto)
-    - [CreateEnvironmentRequest](#blanketops-environments-v1alpha1-CreateEnvironmentRequest)
-    - [CreateEnvironmentResponse](#blanketops-environments-v1alpha1-CreateEnvironmentResponse)
-    - [DeleteEnvironmentRequest](#blanketops-environments-v1alpha1-DeleteEnvironmentRequest)
-    - [DeleteEnvironmentResponse](#blanketops-environments-v1alpha1-DeleteEnvironmentResponse)
-    - [Environment](#blanketops-environments-v1alpha1-Environment)
-    - [EnvironmentCondition](#blanketops-environments-v1alpha1-EnvironmentCondition)
-    - [EnvironmentContract](#blanketops-environments-v1alpha1-EnvironmentContract)
-    - [EnvironmentSpec](#blanketops-environments-v1alpha1-EnvironmentSpec)
-    - [EnvironmentStatus](#blanketops-environments-v1alpha1-EnvironmentStatus)
-    - [GetEnvironmentRequest](#blanketops-environments-v1alpha1-GetEnvironmentRequest)
-    - [GetEnvironmentResponse](#blanketops-environments-v1alpha1-GetEnvironmentResponse)
-    - [ListEnvironmentsRequest](#blanketops-environments-v1alpha1-ListEnvironmentsRequest)
-    - [ListEnvironmentsResponse](#blanketops-environments-v1alpha1-ListEnvironmentsResponse)
-    - [ObjectRef](#blanketops-environments-v1alpha1-ObjectRef)
-    - [PatchEnvironmentRequest](#blanketops-environments-v1alpha1-PatchEnvironmentRequest)
-    - [PatchEnvironmentResponse](#blanketops-environments-v1alpha1-PatchEnvironmentResponse)
-    - [UpdateEnvironmentRequest](#blanketops-environments-v1alpha1-UpdateEnvironmentRequest)
-    - [UpdateEnvironmentResponse](#blanketops-environments-v1alpha1-UpdateEnvironmentResponse)
-    - [WatchEnvironmentRequest](#blanketops-environments-v1alpha1-WatchEnvironmentRequest)
-    - [WatchEnvironmentResponse](#blanketops-environments-v1alpha1-WatchEnvironmentResponse)
-  
-    - [EnvironmentService](#blanketops-environments-v1alpha1-EnvironmentService)
-  
-- [blanketops/environments/v1alpha1/package.proto](#blanketops_environments_v1alpha1_package-proto)
-    - [CreatePackageRequest](#blanketops-environments-v1alpha1-CreatePackageRequest)
-    - [CreatePackageResponse](#blanketops-environments-v1alpha1-CreatePackageResponse)
-    - [DeletePackageRequest](#blanketops-environments-v1alpha1-DeletePackageRequest)
-    - [DeletePackageResponse](#blanketops-environments-v1alpha1-DeletePackageResponse)
-    - [GetPackageRequest](#blanketops-environments-v1alpha1-GetPackageRequest)
-    - [GetPackageResponse](#blanketops-environments-v1alpha1-GetPackageResponse)
-    - [ListPackagesRequest](#blanketops-environments-v1alpha1-ListPackagesRequest)
-    - [ListPackagesResponse](#blanketops-environments-v1alpha1-ListPackagesResponse)
-    - [Maintainer](#blanketops-environments-v1alpha1-Maintainer)
-    - [Package](#blanketops-environments-v1alpha1-Package)
-    - [PackageRepository](#blanketops-environments-v1alpha1-PackageRepository)
-    - [PackageSpec](#blanketops-environments-v1alpha1-PackageSpec)
-    - [PackageState](#blanketops-environments-v1alpha1-PackageState)
-    - [PackageStatus](#blanketops-environments-v1alpha1-PackageStatus)
-    - [PatchPackageRequest](#blanketops-environments-v1alpha1-PatchPackageRequest)
-    - [PatchPackageResponse](#blanketops-environments-v1alpha1-PatchPackageResponse)
-    - [StateRepository](#blanketops-environments-v1alpha1-StateRepository)
-    - [UpdatePackageRequest](#blanketops-environments-v1alpha1-UpdatePackageRequest)
-    - [UpdatePackageResponse](#blanketops-environments-v1alpha1-UpdatePackageResponse)
-    - [WatchPackageRequest](#blanketops-environments-v1alpha1-WatchPackageRequest)
-    - [WatchPackageResponse](#blanketops-environments-v1alpha1-WatchPackageResponse)
-  
-    - [PackageService](#blanketops-environments-v1alpha1-PackageService)
-  
-- [blanketops/environments/v1alpha1/serviceunit.proto](#blanketops_environments_v1alpha1_serviceunit-proto)
-    - [BuildReference](#blanketops-environments-v1alpha1-BuildReference)
-    - [BuildResolutionStatus](#blanketops-environments-v1alpha1-BuildResolutionStatus)
-    - [CreateServiceUnitRequest](#blanketops-environments-v1alpha1-CreateServiceUnitRequest)
-    - [CreateServiceUnitResponse](#blanketops-environments-v1alpha1-CreateServiceUnitResponse)
-    - [DeleteServiceUnitRequest](#blanketops-environments-v1alpha1-DeleteServiceUnitRequest)
-    - [DeleteServiceUnitResponse](#blanketops-environments-v1alpha1-DeleteServiceUnitResponse)
-    - [GetServiceUnitRequest](#blanketops-environments-v1alpha1-GetServiceUnitRequest)
-    - [GetServiceUnitResponse](#blanketops-environments-v1alpha1-GetServiceUnitResponse)
-    - [ListServiceUnitsRequest](#blanketops-environments-v1alpha1-ListServiceUnitsRequest)
-    - [ListServiceUnitsResponse](#blanketops-environments-v1alpha1-ListServiceUnitsResponse)
-    - [PatchServiceUnitRequest](#blanketops-environments-v1alpha1-PatchServiceUnitRequest)
-    - [PatchServiceUnitResponse](#blanketops-environments-v1alpha1-PatchServiceUnitResponse)
-    - [RouteReference](#blanketops-environments-v1alpha1-RouteReference)
-    - [ServiceUnit](#blanketops-environments-v1alpha1-ServiceUnit)
-    - [ServiceUnitCondition](#blanketops-environments-v1alpha1-ServiceUnitCondition)
-    - [ServiceUnitSpec](#blanketops-environments-v1alpha1-ServiceUnitSpec)
-    - [ServiceUnitStatus](#blanketops-environments-v1alpha1-ServiceUnitStatus)
-    - [UpdateServiceUnitRequest](#blanketops-environments-v1alpha1-UpdateServiceUnitRequest)
-    - [UpdateServiceUnitResponse](#blanketops-environments-v1alpha1-UpdateServiceUnitResponse)
-    - [WatchServiceUnitRequest](#blanketops-environments-v1alpha1-WatchServiceUnitRequest)
-    - [WatchServiceUnitResponse](#blanketops-environments-v1alpha1-WatchServiceUnitResponse)
-    - [WorkloadReference](#blanketops-environments-v1alpha1-WorkloadReference)
-  
-    - [ServiceUnitService](#blanketops-environments-v1alpha1-ServiceUnitService)
-  
-- [Scalar Value Types](#scalar-value-types)
+<!-- Code generated by gomarkdoc. DO NOT EDIT -->
+
+# v1alpha1
+
+```go
+import "github.com/blanketops/environments-contract/blanketops/environments/v1alpha1"
+```
+
+## Index
+
+- [Constants](<#constants>)
+- [Variables](<#variables>)
+- [func RegisterBuildServiceServer\(s grpc.ServiceRegistrar, srv BuildServiceServer\)](<#RegisterBuildServiceServer>)
+- [func RegisterDeploymentServiceServer\(s grpc.ServiceRegistrar, srv DeploymentServiceServer\)](<#RegisterDeploymentServiceServer>)
+- [func RegisterEnvironmentServiceServer\(s grpc.ServiceRegistrar, srv EnvironmentServiceServer\)](<#RegisterEnvironmentServiceServer>)
+- [func RegisterPackageServiceServer\(s grpc.ServiceRegistrar, srv PackageServiceServer\)](<#RegisterPackageServiceServer>)
+- [func RegisterServiceUnitServiceServer\(s grpc.ServiceRegistrar, srv ServiceUnitServiceServer\)](<#RegisterServiceUnitServiceServer>)
+- [type Build](<#Build>)
+  - [func \(\*Build\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#Build.Descriptor>)
+  - [func \(x \*Build\) GetMetadata\(\) \*v1.Metadata](<#Build.GetMetadata>)
+  - [func \(x \*Build\) GetSpec\(\) \*BuildSpec](<#Build.GetSpec>)
+  - [func \(x \*Build\) GetStatus\(\) \*BuildStatus](<#Build.GetStatus>)
+  - [func \(\*Build\) ProtoMessage\(\)](<#Build.ProtoMessage>)
+  - [func \(x \*Build\) ProtoReflect\(\) protoreflect.Message](<#Build.ProtoReflect>)
+  - [func \(x \*Build\) Reset\(\)](<#Build.Reset>)
+  - [func \(x \*Build\) String\(\) string](<#Build.String>)
+- [type BuildPolicy](<#BuildPolicy>)
+  - [func \(\*BuildPolicy\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#BuildPolicy.Descriptor>)
+  - [func \(x \*BuildPolicy\) GetAllowedTriggers\(\) \[\]\*BuildTriggerPolicy](<#BuildPolicy.GetAllowedTriggers>)
+  - [func \(x \*BuildPolicy\) GetRetry\(\) \*RetryPolicy](<#BuildPolicy.GetRetry>)
+  - [func \(\*BuildPolicy\) ProtoMessage\(\)](<#BuildPolicy.ProtoMessage>)
+  - [func \(x \*BuildPolicy\) ProtoReflect\(\) protoreflect.Message](<#BuildPolicy.ProtoReflect>)
+  - [func \(x \*BuildPolicy\) Reset\(\)](<#BuildPolicy.Reset>)
+  - [func \(x \*BuildPolicy\) String\(\) string](<#BuildPolicy.String>)
+- [type BuildReference](<#BuildReference>)
+  - [func \(\*BuildReference\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#BuildReference.Descriptor>)
+  - [func \(x \*BuildReference\) GetName\(\) string](<#BuildReference.GetName>)
+  - [func \(x \*BuildReference\) GetNamespace\(\) string](<#BuildReference.GetNamespace>)
+  - [func \(\*BuildReference\) ProtoMessage\(\)](<#BuildReference.ProtoMessage>)
+  - [func \(x \*BuildReference\) ProtoReflect\(\) protoreflect.Message](<#BuildReference.ProtoReflect>)
+  - [func \(x \*BuildReference\) Reset\(\)](<#BuildReference.Reset>)
+  - [func \(x \*BuildReference\) String\(\) string](<#BuildReference.String>)
+- [type BuildResolutionStatus](<#BuildResolutionStatus>)
+  - [func \(\*BuildResolutionStatus\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#BuildResolutionStatus.Descriptor>)
+  - [func \(x \*BuildResolutionStatus\) GetError\(\) string](<#BuildResolutionStatus.GetError>)
+  - [func \(x \*BuildResolutionStatus\) GetImage\(\) string](<#BuildResolutionStatus.GetImage>)
+  - [func \(x \*BuildResolutionStatus\) GetLastTransitionTime\(\) \*timestamppb.Timestamp](<#BuildResolutionStatus.GetLastTransitionTime>)
+  - [func \(x \*BuildResolutionStatus\) GetName\(\) string](<#BuildResolutionStatus.GetName>)
+  - [func \(x \*BuildResolutionStatus\) GetPhase\(\) \*v1.ServiceUnitDeploymentPhase](<#BuildResolutionStatus.GetPhase>)
+  - [func \(\*BuildResolutionStatus\) ProtoMessage\(\)](<#BuildResolutionStatus.ProtoMessage>)
+  - [func \(x \*BuildResolutionStatus\) ProtoReflect\(\) protoreflect.Message](<#BuildResolutionStatus.ProtoReflect>)
+  - [func \(x \*BuildResolutionStatus\) Reset\(\)](<#BuildResolutionStatus.Reset>)
+  - [func \(x \*BuildResolutionStatus\) String\(\) string](<#BuildResolutionStatus.String>)
+- [type BuildServiceClient](<#BuildServiceClient>)
+  - [func NewBuildServiceClient\(cc grpc.ClientConnInterface\) BuildServiceClient](<#NewBuildServiceClient>)
+- [type BuildServiceServer](<#BuildServiceServer>)
+- [type BuildService\_WatchBuildClient](<#BuildService_WatchBuildClient>)
+- [type BuildService\_WatchBuildServer](<#BuildService_WatchBuildServer>)
+- [type BuildSpec](<#BuildSpec>)
+  - [func \(\*BuildSpec\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#BuildSpec.Descriptor>)
+  - [func \(x \*BuildSpec\) GetGithubEvent\(\) string](<#BuildSpec.GetGithubEvent>)
+  - [func \(x \*BuildSpec\) GetImage\(\) string](<#BuildSpec.GetImage>)
+  - [func \(x \*BuildSpec\) GetParams\(\) \[\]\*Param](<#BuildSpec.GetParams>)
+  - [func \(x \*BuildSpec\) GetPolicy\(\) \*BuildPolicy](<#BuildSpec.GetPolicy>)
+  - [func \(x \*BuildSpec\) GetServiceAccount\(\) \*ServiceAccount](<#BuildSpec.GetServiceAccount>)
+  - [func \(x \*BuildSpec\) GetSource\(\) \*GitSource](<#BuildSpec.GetSource>)
+  - [func \(x \*BuildSpec\) GetStrategy\(\) \*BuildStrategy](<#BuildSpec.GetStrategy>)
+  - [func \(x \*BuildSpec\) GetTimeToLive\(\) \*durationpb.Duration](<#BuildSpec.GetTimeToLive>)
+  - [func \(x \*BuildSpec\) GetTimeout\(\) \*durationpb.Duration](<#BuildSpec.GetTimeout>)
+  - [func \(\*BuildSpec\) ProtoMessage\(\)](<#BuildSpec.ProtoMessage>)
+  - [func \(x \*BuildSpec\) ProtoReflect\(\) protoreflect.Message](<#BuildSpec.ProtoReflect>)
+  - [func \(x \*BuildSpec\) Reset\(\)](<#BuildSpec.Reset>)
+  - [func \(x \*BuildSpec\) String\(\) string](<#BuildSpec.String>)
+- [type BuildStatus](<#BuildStatus>)
+  - [func \(\*BuildStatus\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#BuildStatus.Descriptor>)
+  - [func \(x \*BuildStatus\) GetCompletionTime\(\) \*timestamppb.Timestamp](<#BuildStatus.GetCompletionTime>)
+  - [func \(x \*BuildStatus\) GetExecutionRef\(\) string](<#BuildStatus.GetExecutionRef>)
+  - [func \(x \*BuildStatus\) GetImage\(\) string](<#BuildStatus.GetImage>)
+  - [func \(x \*BuildStatus\) GetMessage\(\) string](<#BuildStatus.GetMessage>)
+  - [func \(x \*BuildStatus\) GetPhase\(\) \*v1.BuildStatusPhase](<#BuildStatus.GetPhase>)
+  - [func \(x \*BuildStatus\) GetStartTime\(\) \*timestamppb.Timestamp](<#BuildStatus.GetStartTime>)
+  - [func \(\*BuildStatus\) ProtoMessage\(\)](<#BuildStatus.ProtoMessage>)
+  - [func \(x \*BuildStatus\) ProtoReflect\(\) protoreflect.Message](<#BuildStatus.ProtoReflect>)
+  - [func \(x \*BuildStatus\) Reset\(\)](<#BuildStatus.Reset>)
+  - [func \(x \*BuildStatus\) String\(\) string](<#BuildStatus.String>)
+- [type BuildStrategy](<#BuildStrategy>)
+  - [func \(\*BuildStrategy\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#BuildStrategy.Descriptor>)
+  - [func \(x \*BuildStrategy\) GetKind\(\) \*v1.BuildStrategyKind](<#BuildStrategy.GetKind>)
+  - [func \(x \*BuildStrategy\) GetName\(\) string](<#BuildStrategy.GetName>)
+  - [func \(\*BuildStrategy\) ProtoMessage\(\)](<#BuildStrategy.ProtoMessage>)
+  - [func \(x \*BuildStrategy\) ProtoReflect\(\) protoreflect.Message](<#BuildStrategy.ProtoReflect>)
+  - [func \(x \*BuildStrategy\) Reset\(\)](<#BuildStrategy.Reset>)
+  - [func \(x \*BuildStrategy\) String\(\) string](<#BuildStrategy.String>)
+- [type BuildTriggerPolicy](<#BuildTriggerPolicy>)
+  - [func \(\*BuildTriggerPolicy\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#BuildTriggerPolicy.Descriptor>)
+  - [func \(x \*BuildTriggerPolicy\) GetType\(\) \*v1.BuildTriggerType](<#BuildTriggerPolicy.GetType>)
+  - [func \(\*BuildTriggerPolicy\) ProtoMessage\(\)](<#BuildTriggerPolicy.ProtoMessage>)
+  - [func \(x \*BuildTriggerPolicy\) ProtoReflect\(\) protoreflect.Message](<#BuildTriggerPolicy.ProtoReflect>)
+  - [func \(x \*BuildTriggerPolicy\) Reset\(\)](<#BuildTriggerPolicy.Reset>)
+  - [func \(x \*BuildTriggerPolicy\) String\(\) string](<#BuildTriggerPolicy.String>)
+- [type CreateBuildRequest](<#CreateBuildRequest>)
+  - [func \(\*CreateBuildRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#CreateBuildRequest.Descriptor>)
+  - [func \(x \*CreateBuildRequest\) GetSpec\(\) \*BuildSpec](<#CreateBuildRequest.GetSpec>)
+  - [func \(\*CreateBuildRequest\) ProtoMessage\(\)](<#CreateBuildRequest.ProtoMessage>)
+  - [func \(x \*CreateBuildRequest\) ProtoReflect\(\) protoreflect.Message](<#CreateBuildRequest.ProtoReflect>)
+  - [func \(x \*CreateBuildRequest\) Reset\(\)](<#CreateBuildRequest.Reset>)
+  - [func \(x \*CreateBuildRequest\) String\(\) string](<#CreateBuildRequest.String>)
+- [type CreateBuildResponse](<#CreateBuildResponse>)
+  - [func \(\*CreateBuildResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#CreateBuildResponse.Descriptor>)
+  - [func \(x \*CreateBuildResponse\) GetBuild\(\) \*Build](<#CreateBuildResponse.GetBuild>)
+  - [func \(\*CreateBuildResponse\) ProtoMessage\(\)](<#CreateBuildResponse.ProtoMessage>)
+  - [func \(x \*CreateBuildResponse\) ProtoReflect\(\) protoreflect.Message](<#CreateBuildResponse.ProtoReflect>)
+  - [func \(x \*CreateBuildResponse\) Reset\(\)](<#CreateBuildResponse.Reset>)
+  - [func \(x \*CreateBuildResponse\) String\(\) string](<#CreateBuildResponse.String>)
+- [type CreateDeploymentRequest](<#CreateDeploymentRequest>)
+  - [func \(\*CreateDeploymentRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#CreateDeploymentRequest.Descriptor>)
+  - [func \(x \*CreateDeploymentRequest\) GetSpec\(\) \*DeploymentSpec](<#CreateDeploymentRequest.GetSpec>)
+  - [func \(\*CreateDeploymentRequest\) ProtoMessage\(\)](<#CreateDeploymentRequest.ProtoMessage>)
+  - [func \(x \*CreateDeploymentRequest\) ProtoReflect\(\) protoreflect.Message](<#CreateDeploymentRequest.ProtoReflect>)
+  - [func \(x \*CreateDeploymentRequest\) Reset\(\)](<#CreateDeploymentRequest.Reset>)
+  - [func \(x \*CreateDeploymentRequest\) String\(\) string](<#CreateDeploymentRequest.String>)
+- [type CreateDeploymentResponse](<#CreateDeploymentResponse>)
+  - [func \(\*CreateDeploymentResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#CreateDeploymentResponse.Descriptor>)
+  - [func \(x \*CreateDeploymentResponse\) GetDeployment\(\) \*Deployment](<#CreateDeploymentResponse.GetDeployment>)
+  - [func \(\*CreateDeploymentResponse\) ProtoMessage\(\)](<#CreateDeploymentResponse.ProtoMessage>)
+  - [func \(x \*CreateDeploymentResponse\) ProtoReflect\(\) protoreflect.Message](<#CreateDeploymentResponse.ProtoReflect>)
+  - [func \(x \*CreateDeploymentResponse\) Reset\(\)](<#CreateDeploymentResponse.Reset>)
+  - [func \(x \*CreateDeploymentResponse\) String\(\) string](<#CreateDeploymentResponse.String>)
+- [type CreateEnvironmentRequest](<#CreateEnvironmentRequest>)
+  - [func \(\*CreateEnvironmentRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#CreateEnvironmentRequest.Descriptor>)
+  - [func \(x \*CreateEnvironmentRequest\) GetSpec\(\) \*EnvironmentSpec](<#CreateEnvironmentRequest.GetSpec>)
+  - [func \(\*CreateEnvironmentRequest\) ProtoMessage\(\)](<#CreateEnvironmentRequest.ProtoMessage>)
+  - [func \(x \*CreateEnvironmentRequest\) ProtoReflect\(\) protoreflect.Message](<#CreateEnvironmentRequest.ProtoReflect>)
+  - [func \(x \*CreateEnvironmentRequest\) Reset\(\)](<#CreateEnvironmentRequest.Reset>)
+  - [func \(x \*CreateEnvironmentRequest\) String\(\) string](<#CreateEnvironmentRequest.String>)
+- [type CreateEnvironmentResponse](<#CreateEnvironmentResponse>)
+  - [func \(\*CreateEnvironmentResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#CreateEnvironmentResponse.Descriptor>)
+  - [func \(x \*CreateEnvironmentResponse\) GetEnvironment\(\) \*Environment](<#CreateEnvironmentResponse.GetEnvironment>)
+  - [func \(\*CreateEnvironmentResponse\) ProtoMessage\(\)](<#CreateEnvironmentResponse.ProtoMessage>)
+  - [func \(x \*CreateEnvironmentResponse\) ProtoReflect\(\) protoreflect.Message](<#CreateEnvironmentResponse.ProtoReflect>)
+  - [func \(x \*CreateEnvironmentResponse\) Reset\(\)](<#CreateEnvironmentResponse.Reset>)
+  - [func \(x \*CreateEnvironmentResponse\) String\(\) string](<#CreateEnvironmentResponse.String>)
+- [type CreatePackageRequest](<#CreatePackageRequest>)
+  - [func \(\*CreatePackageRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#CreatePackageRequest.Descriptor>)
+  - [func \(x \*CreatePackageRequest\) GetSpec\(\) \*PackageSpec](<#CreatePackageRequest.GetSpec>)
+  - [func \(\*CreatePackageRequest\) ProtoMessage\(\)](<#CreatePackageRequest.ProtoMessage>)
+  - [func \(x \*CreatePackageRequest\) ProtoReflect\(\) protoreflect.Message](<#CreatePackageRequest.ProtoReflect>)
+  - [func \(x \*CreatePackageRequest\) Reset\(\)](<#CreatePackageRequest.Reset>)
+  - [func \(x \*CreatePackageRequest\) String\(\) string](<#CreatePackageRequest.String>)
+- [type CreatePackageResponse](<#CreatePackageResponse>)
+  - [func \(\*CreatePackageResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#CreatePackageResponse.Descriptor>)
+  - [func \(x \*CreatePackageResponse\) GetPackage\(\) \*Package](<#CreatePackageResponse.GetPackage>)
+  - [func \(\*CreatePackageResponse\) ProtoMessage\(\)](<#CreatePackageResponse.ProtoMessage>)
+  - [func \(x \*CreatePackageResponse\) ProtoReflect\(\) protoreflect.Message](<#CreatePackageResponse.ProtoReflect>)
+  - [func \(x \*CreatePackageResponse\) Reset\(\)](<#CreatePackageResponse.Reset>)
+  - [func \(x \*CreatePackageResponse\) String\(\) string](<#CreatePackageResponse.String>)
+- [type CreateServiceUnitRequest](<#CreateServiceUnitRequest>)
+  - [func \(\*CreateServiceUnitRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#CreateServiceUnitRequest.Descriptor>)
+  - [func \(x \*CreateServiceUnitRequest\) GetSpec\(\) \*ServiceUnitSpec](<#CreateServiceUnitRequest.GetSpec>)
+  - [func \(\*CreateServiceUnitRequest\) ProtoMessage\(\)](<#CreateServiceUnitRequest.ProtoMessage>)
+  - [func \(x \*CreateServiceUnitRequest\) ProtoReflect\(\) protoreflect.Message](<#CreateServiceUnitRequest.ProtoReflect>)
+  - [func \(x \*CreateServiceUnitRequest\) Reset\(\)](<#CreateServiceUnitRequest.Reset>)
+  - [func \(x \*CreateServiceUnitRequest\) String\(\) string](<#CreateServiceUnitRequest.String>)
+- [type CreateServiceUnitResponse](<#CreateServiceUnitResponse>)
+  - [func \(\*CreateServiceUnitResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#CreateServiceUnitResponse.Descriptor>)
+  - [func \(x \*CreateServiceUnitResponse\) GetServiceUnit\(\) \*ServiceUnit](<#CreateServiceUnitResponse.GetServiceUnit>)
+  - [func \(\*CreateServiceUnitResponse\) ProtoMessage\(\)](<#CreateServiceUnitResponse.ProtoMessage>)
+  - [func \(x \*CreateServiceUnitResponse\) ProtoReflect\(\) protoreflect.Message](<#CreateServiceUnitResponse.ProtoReflect>)
+  - [func \(x \*CreateServiceUnitResponse\) Reset\(\)](<#CreateServiceUnitResponse.Reset>)
+  - [func \(x \*CreateServiceUnitResponse\) String\(\) string](<#CreateServiceUnitResponse.String>)
+- [type DeleteBuildRequest](<#DeleteBuildRequest>)
+  - [func \(\*DeleteBuildRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#DeleteBuildRequest.Descriptor>)
+  - [func \(x \*DeleteBuildRequest\) GetName\(\) string](<#DeleteBuildRequest.GetName>)
+  - [func \(\*DeleteBuildRequest\) ProtoMessage\(\)](<#DeleteBuildRequest.ProtoMessage>)
+  - [func \(x \*DeleteBuildRequest\) ProtoReflect\(\) protoreflect.Message](<#DeleteBuildRequest.ProtoReflect>)
+  - [func \(x \*DeleteBuildRequest\) Reset\(\)](<#DeleteBuildRequest.Reset>)
+  - [func \(x \*DeleteBuildRequest\) String\(\) string](<#DeleteBuildRequest.String>)
+- [type DeleteBuildResponse](<#DeleteBuildResponse>)
+  - [func \(\*DeleteBuildResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#DeleteBuildResponse.Descriptor>)
+  - [func \(x \*DeleteBuildResponse\) GetSuccess\(\) bool](<#DeleteBuildResponse.GetSuccess>)
+  - [func \(\*DeleteBuildResponse\) ProtoMessage\(\)](<#DeleteBuildResponse.ProtoMessage>)
+  - [func \(x \*DeleteBuildResponse\) ProtoReflect\(\) protoreflect.Message](<#DeleteBuildResponse.ProtoReflect>)
+  - [func \(x \*DeleteBuildResponse\) Reset\(\)](<#DeleteBuildResponse.Reset>)
+  - [func \(x \*DeleteBuildResponse\) String\(\) string](<#DeleteBuildResponse.String>)
+- [type DeleteDeploymentRequest](<#DeleteDeploymentRequest>)
+  - [func \(\*DeleteDeploymentRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#DeleteDeploymentRequest.Descriptor>)
+  - [func \(x \*DeleteDeploymentRequest\) GetName\(\) string](<#DeleteDeploymentRequest.GetName>)
+  - [func \(\*DeleteDeploymentRequest\) ProtoMessage\(\)](<#DeleteDeploymentRequest.ProtoMessage>)
+  - [func \(x \*DeleteDeploymentRequest\) ProtoReflect\(\) protoreflect.Message](<#DeleteDeploymentRequest.ProtoReflect>)
+  - [func \(x \*DeleteDeploymentRequest\) Reset\(\)](<#DeleteDeploymentRequest.Reset>)
+  - [func \(x \*DeleteDeploymentRequest\) String\(\) string](<#DeleteDeploymentRequest.String>)
+- [type DeleteDeploymentResponse](<#DeleteDeploymentResponse>)
+  - [func \(\*DeleteDeploymentResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#DeleteDeploymentResponse.Descriptor>)
+  - [func \(x \*DeleteDeploymentResponse\) GetSuccess\(\) bool](<#DeleteDeploymentResponse.GetSuccess>)
+  - [func \(\*DeleteDeploymentResponse\) ProtoMessage\(\)](<#DeleteDeploymentResponse.ProtoMessage>)
+  - [func \(x \*DeleteDeploymentResponse\) ProtoReflect\(\) protoreflect.Message](<#DeleteDeploymentResponse.ProtoReflect>)
+  - [func \(x \*DeleteDeploymentResponse\) Reset\(\)](<#DeleteDeploymentResponse.Reset>)
+  - [func \(x \*DeleteDeploymentResponse\) String\(\) string](<#DeleteDeploymentResponse.String>)
+- [type DeleteEnvironmentRequest](<#DeleteEnvironmentRequest>)
+  - [func \(\*DeleteEnvironmentRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#DeleteEnvironmentRequest.Descriptor>)
+  - [func \(x \*DeleteEnvironmentRequest\) GetName\(\) string](<#DeleteEnvironmentRequest.GetName>)
+  - [func \(\*DeleteEnvironmentRequest\) ProtoMessage\(\)](<#DeleteEnvironmentRequest.ProtoMessage>)
+  - [func \(x \*DeleteEnvironmentRequest\) ProtoReflect\(\) protoreflect.Message](<#DeleteEnvironmentRequest.ProtoReflect>)
+  - [func \(x \*DeleteEnvironmentRequest\) Reset\(\)](<#DeleteEnvironmentRequest.Reset>)
+  - [func \(x \*DeleteEnvironmentRequest\) String\(\) string](<#DeleteEnvironmentRequest.String>)
+- [type DeleteEnvironmentResponse](<#DeleteEnvironmentResponse>)
+  - [func \(\*DeleteEnvironmentResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#DeleteEnvironmentResponse.Descriptor>)
+  - [func \(x \*DeleteEnvironmentResponse\) GetSuccess\(\) bool](<#DeleteEnvironmentResponse.GetSuccess>)
+  - [func \(\*DeleteEnvironmentResponse\) ProtoMessage\(\)](<#DeleteEnvironmentResponse.ProtoMessage>)
+  - [func \(x \*DeleteEnvironmentResponse\) ProtoReflect\(\) protoreflect.Message](<#DeleteEnvironmentResponse.ProtoReflect>)
+  - [func \(x \*DeleteEnvironmentResponse\) Reset\(\)](<#DeleteEnvironmentResponse.Reset>)
+  - [func \(x \*DeleteEnvironmentResponse\) String\(\) string](<#DeleteEnvironmentResponse.String>)
+- [type DeletePackageRequest](<#DeletePackageRequest>)
+  - [func \(\*DeletePackageRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#DeletePackageRequest.Descriptor>)
+  - [func \(x \*DeletePackageRequest\) GetName\(\) string](<#DeletePackageRequest.GetName>)
+  - [func \(\*DeletePackageRequest\) ProtoMessage\(\)](<#DeletePackageRequest.ProtoMessage>)
+  - [func \(x \*DeletePackageRequest\) ProtoReflect\(\) protoreflect.Message](<#DeletePackageRequest.ProtoReflect>)
+  - [func \(x \*DeletePackageRequest\) Reset\(\)](<#DeletePackageRequest.Reset>)
+  - [func \(x \*DeletePackageRequest\) String\(\) string](<#DeletePackageRequest.String>)
+- [type DeletePackageResponse](<#DeletePackageResponse>)
+  - [func \(\*DeletePackageResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#DeletePackageResponse.Descriptor>)
+  - [func \(x \*DeletePackageResponse\) GetSuccess\(\) bool](<#DeletePackageResponse.GetSuccess>)
+  - [func \(\*DeletePackageResponse\) ProtoMessage\(\)](<#DeletePackageResponse.ProtoMessage>)
+  - [func \(x \*DeletePackageResponse\) ProtoReflect\(\) protoreflect.Message](<#DeletePackageResponse.ProtoReflect>)
+  - [func \(x \*DeletePackageResponse\) Reset\(\)](<#DeletePackageResponse.Reset>)
+  - [func \(x \*DeletePackageResponse\) String\(\) string](<#DeletePackageResponse.String>)
+- [type DeleteServiceUnitRequest](<#DeleteServiceUnitRequest>)
+  - [func \(\*DeleteServiceUnitRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#DeleteServiceUnitRequest.Descriptor>)
+  - [func \(x \*DeleteServiceUnitRequest\) GetName\(\) string](<#DeleteServiceUnitRequest.GetName>)
+  - [func \(\*DeleteServiceUnitRequest\) ProtoMessage\(\)](<#DeleteServiceUnitRequest.ProtoMessage>)
+  - [func \(x \*DeleteServiceUnitRequest\) ProtoReflect\(\) protoreflect.Message](<#DeleteServiceUnitRequest.ProtoReflect>)
+  - [func \(x \*DeleteServiceUnitRequest\) Reset\(\)](<#DeleteServiceUnitRequest.Reset>)
+  - [func \(x \*DeleteServiceUnitRequest\) String\(\) string](<#DeleteServiceUnitRequest.String>)
+- [type DeleteServiceUnitResponse](<#DeleteServiceUnitResponse>)
+  - [func \(\*DeleteServiceUnitResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#DeleteServiceUnitResponse.Descriptor>)
+  - [func \(x \*DeleteServiceUnitResponse\) GetSuccess\(\) bool](<#DeleteServiceUnitResponse.GetSuccess>)
+  - [func \(\*DeleteServiceUnitResponse\) ProtoMessage\(\)](<#DeleteServiceUnitResponse.ProtoMessage>)
+  - [func \(x \*DeleteServiceUnitResponse\) ProtoReflect\(\) protoreflect.Message](<#DeleteServiceUnitResponse.ProtoReflect>)
+  - [func \(x \*DeleteServiceUnitResponse\) Reset\(\)](<#DeleteServiceUnitResponse.Reset>)
+  - [func \(x \*DeleteServiceUnitResponse\) String\(\) string](<#DeleteServiceUnitResponse.String>)
+- [type Deployment](<#Deployment>)
+  - [func \(\*Deployment\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#Deployment.Descriptor>)
+  - [func \(x \*Deployment\) GetMetadata\(\) \*v1.Metadata](<#Deployment.GetMetadata>)
+  - [func \(x \*Deployment\) GetSpec\(\) \*DeploymentSpec](<#Deployment.GetSpec>)
+  - [func \(x \*Deployment\) GetStatus\(\) \*DeploymentStatus](<#Deployment.GetStatus>)
+  - [func \(\*Deployment\) ProtoMessage\(\)](<#Deployment.ProtoMessage>)
+  - [func \(x \*Deployment\) ProtoReflect\(\) protoreflect.Message](<#Deployment.ProtoReflect>)
+  - [func \(x \*Deployment\) Reset\(\)](<#Deployment.Reset>)
+  - [func \(x \*Deployment\) String\(\) string](<#Deployment.String>)
+- [type DeploymentServiceClient](<#DeploymentServiceClient>)
+  - [func NewDeploymentServiceClient\(cc grpc.ClientConnInterface\) DeploymentServiceClient](<#NewDeploymentServiceClient>)
+- [type DeploymentServiceServer](<#DeploymentServiceServer>)
+- [type DeploymentService\_WatchDeploymentClient](<#DeploymentService_WatchDeploymentClient>)
+- [type DeploymentService\_WatchDeploymentServer](<#DeploymentService_WatchDeploymentServer>)
+- [type DeploymentSpec](<#DeploymentSpec>)
+  - [func \(\*DeploymentSpec\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#DeploymentSpec.Descriptor>)
+  - [func \(x \*DeploymentSpec\) GetImageAutomation\(\) bool](<#DeploymentSpec.GetImageAutomation>)
+  - [func \(x \*DeploymentSpec\) GetManifestsRepo\(\) \*ManifestsRepo](<#DeploymentSpec.GetManifestsRepo>)
+  - [func \(x \*DeploymentSpec\) GetReconciliationStrategy\(\) \*v1.ReconciliationStrategy](<#DeploymentSpec.GetReconciliationStrategy>)
+  - [func \(x \*DeploymentSpec\) GetRuntime\(\) \*v1.DeploymentRuntime](<#DeploymentSpec.GetRuntime>)
+  - [func \(x \*DeploymentSpec\) GetServiceUnits\(\) \[\]string](<#DeploymentSpec.GetServiceUnits>)
+  - [func \(\*DeploymentSpec\) ProtoMessage\(\)](<#DeploymentSpec.ProtoMessage>)
+  - [func \(x \*DeploymentSpec\) ProtoReflect\(\) protoreflect.Message](<#DeploymentSpec.ProtoReflect>)
+  - [func \(x \*DeploymentSpec\) Reset\(\)](<#DeploymentSpec.Reset>)
+  - [func \(x \*DeploymentSpec\) String\(\) string](<#DeploymentSpec.String>)
+- [type DeploymentStatus](<#DeploymentStatus>)
+  - [func \(\*DeploymentStatus\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#DeploymentStatus.Descriptor>)
+  - [func \(x \*DeploymentStatus\) GetLastUpdatedAt\(\) \*timestamppb.Timestamp](<#DeploymentStatus.GetLastUpdatedAt>)
+  - [func \(x \*DeploymentStatus\) GetMessage\(\) string](<#DeploymentStatus.GetMessage>)
+  - [func \(x \*DeploymentStatus\) GetPhase\(\) \*v1.DeploymentPhase](<#DeploymentStatus.GetPhase>)
+  - [func \(x \*DeploymentStatus\) GetRuntime\(\) \*v1.DeploymentRuntime](<#DeploymentStatus.GetRuntime>)
+  - [func \(x \*DeploymentStatus\) GetServiceUnitStatuses\(\) \[\]\*ServiceUnitDeploymentStatus](<#DeploymentStatus.GetServiceUnitStatuses>)
+  - [func \(x \*DeploymentStatus\) GetStrategy\(\) \*v1.DeploymentStrategy](<#DeploymentStatus.GetStrategy>)
+  - [func \(\*DeploymentStatus\) ProtoMessage\(\)](<#DeploymentStatus.ProtoMessage>)
+  - [func \(x \*DeploymentStatus\) ProtoReflect\(\) protoreflect.Message](<#DeploymentStatus.ProtoReflect>)
+  - [func \(x \*DeploymentStatus\) Reset\(\)](<#DeploymentStatus.Reset>)
+  - [func \(x \*DeploymentStatus\) String\(\) string](<#DeploymentStatus.String>)
+- [type Environment](<#Environment>)
+  - [func \(\*Environment\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#Environment.Descriptor>)
+  - [func \(x \*Environment\) GetMetadata\(\) \*v1.Metadata](<#Environment.GetMetadata>)
+  - [func \(x \*Environment\) GetSpec\(\) \*EnvironmentSpec](<#Environment.GetSpec>)
+  - [func \(x \*Environment\) GetStatus\(\) \*EnvironmentStatus](<#Environment.GetStatus>)
+  - [func \(\*Environment\) ProtoMessage\(\)](<#Environment.ProtoMessage>)
+  - [func \(x \*Environment\) ProtoReflect\(\) protoreflect.Message](<#Environment.ProtoReflect>)
+  - [func \(x \*Environment\) Reset\(\)](<#Environment.Reset>)
+  - [func \(x \*Environment\) String\(\) string](<#Environment.String>)
+- [type EnvironmentCondition](<#EnvironmentCondition>)
+  - [func \(\*EnvironmentCondition\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#EnvironmentCondition.Descriptor>)
+  - [func \(x \*EnvironmentCondition\) GetLastTransitionTime\(\) \*timestamppb.Timestamp](<#EnvironmentCondition.GetLastTransitionTime>)
+  - [func \(x \*EnvironmentCondition\) GetMessage\(\) string](<#EnvironmentCondition.GetMessage>)
+  - [func \(x \*EnvironmentCondition\) GetReason\(\) string](<#EnvironmentCondition.GetReason>)
+  - [func \(x \*EnvironmentCondition\) GetStatus\(\) string](<#EnvironmentCondition.GetStatus>)
+  - [func \(x \*EnvironmentCondition\) GetType\(\) string](<#EnvironmentCondition.GetType>)
+  - [func \(\*EnvironmentCondition\) ProtoMessage\(\)](<#EnvironmentCondition.ProtoMessage>)
+  - [func \(x \*EnvironmentCondition\) ProtoReflect\(\) protoreflect.Message](<#EnvironmentCondition.ProtoReflect>)
+  - [func \(x \*EnvironmentCondition\) Reset\(\)](<#EnvironmentCondition.Reset>)
+  - [func \(x \*EnvironmentCondition\) String\(\) string](<#EnvironmentCondition.String>)
+- [type EnvironmentContract](<#EnvironmentContract>)
+  - [func \(\*EnvironmentContract\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#EnvironmentContract.Descriptor>)
+  - [func \(x \*EnvironmentContract\) GetSecretStore\(\) \*v1.SecretStore](<#EnvironmentContract.GetSecretStore>)
+  - [func \(\*EnvironmentContract\) ProtoMessage\(\)](<#EnvironmentContract.ProtoMessage>)
+  - [func \(x \*EnvironmentContract\) ProtoReflect\(\) protoreflect.Message](<#EnvironmentContract.ProtoReflect>)
+  - [func \(x \*EnvironmentContract\) Reset\(\)](<#EnvironmentContract.Reset>)
+  - [func \(x \*EnvironmentContract\) String\(\) string](<#EnvironmentContract.String>)
+- [type EnvironmentServiceClient](<#EnvironmentServiceClient>)
+  - [func NewEnvironmentServiceClient\(cc grpc.ClientConnInterface\) EnvironmentServiceClient](<#NewEnvironmentServiceClient>)
+- [type EnvironmentServiceServer](<#EnvironmentServiceServer>)
+- [type EnvironmentService\_WatchEnvironmentClient](<#EnvironmentService_WatchEnvironmentClient>)
+- [type EnvironmentService\_WatchEnvironmentServer](<#EnvironmentService_WatchEnvironmentServer>)
+- [type EnvironmentSpec](<#EnvironmentSpec>)
+  - [func \(\*EnvironmentSpec\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#EnvironmentSpec.Descriptor>)
+  - [func \(x \*EnvironmentSpec\) GetApplicationName\(\) string](<#EnvironmentSpec.GetApplicationName>)
+  - [func \(x \*EnvironmentSpec\) GetBranch\(\) string](<#EnvironmentSpec.GetBranch>)
+  - [func \(x \*EnvironmentSpec\) GetBuild\(\) \*ObjectRef](<#EnvironmentSpec.GetBuild>)
+  - [func \(x \*EnvironmentSpec\) GetContract\(\) \*EnvironmentContract](<#EnvironmentSpec.GetContract>)
+  - [func \(x \*EnvironmentSpec\) GetDeployment\(\) \*ObjectRef](<#EnvironmentSpec.GetDeployment>)
+  - [func \(x \*EnvironmentSpec\) GetDescription\(\) string](<#EnvironmentSpec.GetDescription>)
+  - [func \(x \*EnvironmentSpec\) GetEnvironmentType\(\) \*v1.EnvironmentType](<#EnvironmentSpec.GetEnvironmentType>)
+  - [func \(x \*EnvironmentSpec\) GetGitHubEvent\(\) \*ObjectRef](<#EnvironmentSpec.GetGitHubEvent>)
+  - [func \(x \*EnvironmentSpec\) GetGitOwner\(\) string](<#EnvironmentSpec.GetGitOwner>)
+  - [func \(x \*EnvironmentSpec\) GetGitRepository\(\) \*ObjectRef](<#EnvironmentSpec.GetGitRepository>)
+  - [func \(x \*EnvironmentSpec\) GetPackage\(\) \*ObjectRef](<#EnvironmentSpec.GetPackage>)
+  - [func \(x \*EnvironmentSpec\) GetRoute\(\) \*ObjectRef](<#EnvironmentSpec.GetRoute>)
+  - [func \(x \*EnvironmentSpec\) GetServiceUnits\(\) \[\]\*ObjectRef](<#EnvironmentSpec.GetServiceUnits>)
+  - [func \(x \*EnvironmentSpec\) GetVersion\(\) string](<#EnvironmentSpec.GetVersion>)
+  - [func \(\*EnvironmentSpec\) ProtoMessage\(\)](<#EnvironmentSpec.ProtoMessage>)
+  - [func \(x \*EnvironmentSpec\) ProtoReflect\(\) protoreflect.Message](<#EnvironmentSpec.ProtoReflect>)
+  - [func \(x \*EnvironmentSpec\) Reset\(\)](<#EnvironmentSpec.Reset>)
+  - [func \(x \*EnvironmentSpec\) String\(\) string](<#EnvironmentSpec.String>)
+- [type EnvironmentStatus](<#EnvironmentStatus>)
+  - [func \(\*EnvironmentStatus\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#EnvironmentStatus.Descriptor>)
+  - [func \(x \*EnvironmentStatus\) GetConditions\(\) \[\]\*EnvironmentCondition](<#EnvironmentStatus.GetConditions>)
+  - [func \(x \*EnvironmentStatus\) GetLastUpdatedAt\(\) \*timestamppb.Timestamp](<#EnvironmentStatus.GetLastUpdatedAt>)
+  - [func \(x \*EnvironmentStatus\) GetMessage\(\) string](<#EnvironmentStatus.GetMessage>)
+  - [func \(x \*EnvironmentStatus\) GetPhase\(\) \*v1.EnvironmentPhase](<#EnvironmentStatus.GetPhase>)
+  - [func \(\*EnvironmentStatus\) ProtoMessage\(\)](<#EnvironmentStatus.ProtoMessage>)
+  - [func \(x \*EnvironmentStatus\) ProtoReflect\(\) protoreflect.Message](<#EnvironmentStatus.ProtoReflect>)
+  - [func \(x \*EnvironmentStatus\) Reset\(\)](<#EnvironmentStatus.Reset>)
+  - [func \(x \*EnvironmentStatus\) String\(\) string](<#EnvironmentStatus.String>)
+- [type GetBuildRequest](<#GetBuildRequest>)
+  - [func \(\*GetBuildRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#GetBuildRequest.Descriptor>)
+  - [func \(x \*GetBuildRequest\) GetName\(\) string](<#GetBuildRequest.GetName>)
+  - [func \(\*GetBuildRequest\) ProtoMessage\(\)](<#GetBuildRequest.ProtoMessage>)
+  - [func \(x \*GetBuildRequest\) ProtoReflect\(\) protoreflect.Message](<#GetBuildRequest.ProtoReflect>)
+  - [func \(x \*GetBuildRequest\) Reset\(\)](<#GetBuildRequest.Reset>)
+  - [func \(x \*GetBuildRequest\) String\(\) string](<#GetBuildRequest.String>)
+- [type GetBuildResponse](<#GetBuildResponse>)
+  - [func \(\*GetBuildResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#GetBuildResponse.Descriptor>)
+  - [func \(x \*GetBuildResponse\) GetBuild\(\) \*Build](<#GetBuildResponse.GetBuild>)
+  - [func \(\*GetBuildResponse\) ProtoMessage\(\)](<#GetBuildResponse.ProtoMessage>)
+  - [func \(x \*GetBuildResponse\) ProtoReflect\(\) protoreflect.Message](<#GetBuildResponse.ProtoReflect>)
+  - [func \(x \*GetBuildResponse\) Reset\(\)](<#GetBuildResponse.Reset>)
+  - [func \(x \*GetBuildResponse\) String\(\) string](<#GetBuildResponse.String>)
+- [type GetDeploymentRequest](<#GetDeploymentRequest>)
+  - [func \(\*GetDeploymentRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#GetDeploymentRequest.Descriptor>)
+  - [func \(x \*GetDeploymentRequest\) GetName\(\) string](<#GetDeploymentRequest.GetName>)
+  - [func \(\*GetDeploymentRequest\) ProtoMessage\(\)](<#GetDeploymentRequest.ProtoMessage>)
+  - [func \(x \*GetDeploymentRequest\) ProtoReflect\(\) protoreflect.Message](<#GetDeploymentRequest.ProtoReflect>)
+  - [func \(x \*GetDeploymentRequest\) Reset\(\)](<#GetDeploymentRequest.Reset>)
+  - [func \(x \*GetDeploymentRequest\) String\(\) string](<#GetDeploymentRequest.String>)
+- [type GetDeploymentResponse](<#GetDeploymentResponse>)
+  - [func \(\*GetDeploymentResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#GetDeploymentResponse.Descriptor>)
+  - [func \(x \*GetDeploymentResponse\) GetDeployment\(\) \*Deployment](<#GetDeploymentResponse.GetDeployment>)
+  - [func \(\*GetDeploymentResponse\) ProtoMessage\(\)](<#GetDeploymentResponse.ProtoMessage>)
+  - [func \(x \*GetDeploymentResponse\) ProtoReflect\(\) protoreflect.Message](<#GetDeploymentResponse.ProtoReflect>)
+  - [func \(x \*GetDeploymentResponse\) Reset\(\)](<#GetDeploymentResponse.Reset>)
+  - [func \(x \*GetDeploymentResponse\) String\(\) string](<#GetDeploymentResponse.String>)
+- [type GetEnvironmentRequest](<#GetEnvironmentRequest>)
+  - [func \(\*GetEnvironmentRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#GetEnvironmentRequest.Descriptor>)
+  - [func \(x \*GetEnvironmentRequest\) GetName\(\) string](<#GetEnvironmentRequest.GetName>)
+  - [func \(\*GetEnvironmentRequest\) ProtoMessage\(\)](<#GetEnvironmentRequest.ProtoMessage>)
+  - [func \(x \*GetEnvironmentRequest\) ProtoReflect\(\) protoreflect.Message](<#GetEnvironmentRequest.ProtoReflect>)
+  - [func \(x \*GetEnvironmentRequest\) Reset\(\)](<#GetEnvironmentRequest.Reset>)
+  - [func \(x \*GetEnvironmentRequest\) String\(\) string](<#GetEnvironmentRequest.String>)
+- [type GetEnvironmentResponse](<#GetEnvironmentResponse>)
+  - [func \(\*GetEnvironmentResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#GetEnvironmentResponse.Descriptor>)
+  - [func \(x \*GetEnvironmentResponse\) GetEnvironment\(\) \*Environment](<#GetEnvironmentResponse.GetEnvironment>)
+  - [func \(\*GetEnvironmentResponse\) ProtoMessage\(\)](<#GetEnvironmentResponse.ProtoMessage>)
+  - [func \(x \*GetEnvironmentResponse\) ProtoReflect\(\) protoreflect.Message](<#GetEnvironmentResponse.ProtoReflect>)
+  - [func \(x \*GetEnvironmentResponse\) Reset\(\)](<#GetEnvironmentResponse.Reset>)
+  - [func \(x \*GetEnvironmentResponse\) String\(\) string](<#GetEnvironmentResponse.String>)
+- [type GetPackageRequest](<#GetPackageRequest>)
+  - [func \(\*GetPackageRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#GetPackageRequest.Descriptor>)
+  - [func \(x \*GetPackageRequest\) GetName\(\) string](<#GetPackageRequest.GetName>)
+  - [func \(\*GetPackageRequest\) ProtoMessage\(\)](<#GetPackageRequest.ProtoMessage>)
+  - [func \(x \*GetPackageRequest\) ProtoReflect\(\) protoreflect.Message](<#GetPackageRequest.ProtoReflect>)
+  - [func \(x \*GetPackageRequest\) Reset\(\)](<#GetPackageRequest.Reset>)
+  - [func \(x \*GetPackageRequest\) String\(\) string](<#GetPackageRequest.String>)
+- [type GetPackageResponse](<#GetPackageResponse>)
+  - [func \(\*GetPackageResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#GetPackageResponse.Descriptor>)
+  - [func \(x \*GetPackageResponse\) GetPackage\(\) \*Package](<#GetPackageResponse.GetPackage>)
+  - [func \(\*GetPackageResponse\) ProtoMessage\(\)](<#GetPackageResponse.ProtoMessage>)
+  - [func \(x \*GetPackageResponse\) ProtoReflect\(\) protoreflect.Message](<#GetPackageResponse.ProtoReflect>)
+  - [func \(x \*GetPackageResponse\) Reset\(\)](<#GetPackageResponse.Reset>)
+  - [func \(x \*GetPackageResponse\) String\(\) string](<#GetPackageResponse.String>)
+- [type GetServiceUnitRequest](<#GetServiceUnitRequest>)
+  - [func \(\*GetServiceUnitRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#GetServiceUnitRequest.Descriptor>)
+  - [func \(x \*GetServiceUnitRequest\) GetName\(\) string](<#GetServiceUnitRequest.GetName>)
+  - [func \(\*GetServiceUnitRequest\) ProtoMessage\(\)](<#GetServiceUnitRequest.ProtoMessage>)
+  - [func \(x \*GetServiceUnitRequest\) ProtoReflect\(\) protoreflect.Message](<#GetServiceUnitRequest.ProtoReflect>)
+  - [func \(x \*GetServiceUnitRequest\) Reset\(\)](<#GetServiceUnitRequest.Reset>)
+  - [func \(x \*GetServiceUnitRequest\) String\(\) string](<#GetServiceUnitRequest.String>)
+- [type GetServiceUnitResponse](<#GetServiceUnitResponse>)
+  - [func \(\*GetServiceUnitResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#GetServiceUnitResponse.Descriptor>)
+  - [func \(x \*GetServiceUnitResponse\) GetServiceUnit\(\) \*ServiceUnit](<#GetServiceUnitResponse.GetServiceUnit>)
+  - [func \(\*GetServiceUnitResponse\) ProtoMessage\(\)](<#GetServiceUnitResponse.ProtoMessage>)
+  - [func \(x \*GetServiceUnitResponse\) ProtoReflect\(\) protoreflect.Message](<#GetServiceUnitResponse.ProtoReflect>)
+  - [func \(x \*GetServiceUnitResponse\) Reset\(\)](<#GetServiceUnitResponse.Reset>)
+  - [func \(x \*GetServiceUnitResponse\) String\(\) string](<#GetServiceUnitResponse.String>)
+- [type GitSource](<#GitSource>)
+  - [func \(\*GitSource\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#GitSource.Descriptor>)
+  - [func \(x \*GitSource\) GetCloneSecret\(\) string](<#GitSource.GetCloneSecret>)
+  - [func \(x \*GitSource\) GetContextDir\(\) string](<#GitSource.GetContextDir>)
+  - [func \(x \*GitSource\) GetDepth\(\) uint32](<#GitSource.GetDepth>)
+  - [func \(x \*GitSource\) GetRevision\(\) string](<#GitSource.GetRevision>)
+  - [func \(x \*GitSource\) GetSslVerify\(\) bool](<#GitSource.GetSslVerify>)
+  - [func \(x \*GitSource\) GetUrl\(\) string](<#GitSource.GetUrl>)
+  - [func \(\*GitSource\) ProtoMessage\(\)](<#GitSource.ProtoMessage>)
+  - [func \(x \*GitSource\) ProtoReflect\(\) protoreflect.Message](<#GitSource.ProtoReflect>)
+  - [func \(x \*GitSource\) Reset\(\)](<#GitSource.Reset>)
+  - [func \(x \*GitSource\) String\(\) string](<#GitSource.String>)
+- [type ListBuildsRequest](<#ListBuildsRequest>)
+  - [func \(\*ListBuildsRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ListBuildsRequest.Descriptor>)
+  - [func \(x \*ListBuildsRequest\) GetPageSize\(\) int32](<#ListBuildsRequest.GetPageSize>)
+  - [func \(x \*ListBuildsRequest\) GetPageToken\(\) string](<#ListBuildsRequest.GetPageToken>)
+  - [func \(x \*ListBuildsRequest\) GetPhase\(\) \*v1.BuildStatusPhase](<#ListBuildsRequest.GetPhase>)
+  - [func \(x \*ListBuildsRequest\) GetStrategy\(\) string](<#ListBuildsRequest.GetStrategy>)
+  - [func \(\*ListBuildsRequest\) ProtoMessage\(\)](<#ListBuildsRequest.ProtoMessage>)
+  - [func \(x \*ListBuildsRequest\) ProtoReflect\(\) protoreflect.Message](<#ListBuildsRequest.ProtoReflect>)
+  - [func \(x \*ListBuildsRequest\) Reset\(\)](<#ListBuildsRequest.Reset>)
+  - [func \(x \*ListBuildsRequest\) String\(\) string](<#ListBuildsRequest.String>)
+- [type ListBuildsResponse](<#ListBuildsResponse>)
+  - [func \(\*ListBuildsResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ListBuildsResponse.Descriptor>)
+  - [func \(x \*ListBuildsResponse\) GetBuilds\(\) \[\]\*Build](<#ListBuildsResponse.GetBuilds>)
+  - [func \(x \*ListBuildsResponse\) GetNextPageToken\(\) string](<#ListBuildsResponse.GetNextPageToken>)
+  - [func \(\*ListBuildsResponse\) ProtoMessage\(\)](<#ListBuildsResponse.ProtoMessage>)
+  - [func \(x \*ListBuildsResponse\) ProtoReflect\(\) protoreflect.Message](<#ListBuildsResponse.ProtoReflect>)
+  - [func \(x \*ListBuildsResponse\) Reset\(\)](<#ListBuildsResponse.Reset>)
+  - [func \(x \*ListBuildsResponse\) String\(\) string](<#ListBuildsResponse.String>)
+- [type ListDeploymentsRequest](<#ListDeploymentsRequest>)
+  - [func \(\*ListDeploymentsRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ListDeploymentsRequest.Descriptor>)
+  - [func \(x \*ListDeploymentsRequest\) GetPageSize\(\) int32](<#ListDeploymentsRequest.GetPageSize>)
+  - [func \(x \*ListDeploymentsRequest\) GetPageToken\(\) string](<#ListDeploymentsRequest.GetPageToken>)
+  - [func \(x \*ListDeploymentsRequest\) GetPhase\(\) \*v1.DeploymentPhase](<#ListDeploymentsRequest.GetPhase>)
+  - [func \(x \*ListDeploymentsRequest\) GetRuntime\(\) \*v1.DeploymentRuntime](<#ListDeploymentsRequest.GetRuntime>)
+  - [func \(\*ListDeploymentsRequest\) ProtoMessage\(\)](<#ListDeploymentsRequest.ProtoMessage>)
+  - [func \(x \*ListDeploymentsRequest\) ProtoReflect\(\) protoreflect.Message](<#ListDeploymentsRequest.ProtoReflect>)
+  - [func \(x \*ListDeploymentsRequest\) Reset\(\)](<#ListDeploymentsRequest.Reset>)
+  - [func \(x \*ListDeploymentsRequest\) String\(\) string](<#ListDeploymentsRequest.String>)
+- [type ListDeploymentsResponse](<#ListDeploymentsResponse>)
+  - [func \(\*ListDeploymentsResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ListDeploymentsResponse.Descriptor>)
+  - [func \(x \*ListDeploymentsResponse\) GetDeployments\(\) \[\]\*Deployment](<#ListDeploymentsResponse.GetDeployments>)
+  - [func \(x \*ListDeploymentsResponse\) GetNextPageToken\(\) string](<#ListDeploymentsResponse.GetNextPageToken>)
+  - [func \(\*ListDeploymentsResponse\) ProtoMessage\(\)](<#ListDeploymentsResponse.ProtoMessage>)
+  - [func \(x \*ListDeploymentsResponse\) ProtoReflect\(\) protoreflect.Message](<#ListDeploymentsResponse.ProtoReflect>)
+  - [func \(x \*ListDeploymentsResponse\) Reset\(\)](<#ListDeploymentsResponse.Reset>)
+  - [func \(x \*ListDeploymentsResponse\) String\(\) string](<#ListDeploymentsResponse.String>)
+- [type ListEnvironmentsRequest](<#ListEnvironmentsRequest>)
+  - [func \(\*ListEnvironmentsRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ListEnvironmentsRequest.Descriptor>)
+  - [func \(x \*ListEnvironmentsRequest\) GetApplicationName\(\) string](<#ListEnvironmentsRequest.GetApplicationName>)
+  - [func \(x \*ListEnvironmentsRequest\) GetEnvironmentType\(\) \*v1.EnvironmentType](<#ListEnvironmentsRequest.GetEnvironmentType>)
+  - [func \(x \*ListEnvironmentsRequest\) GetPageSize\(\) int32](<#ListEnvironmentsRequest.GetPageSize>)
+  - [func \(x \*ListEnvironmentsRequest\) GetPageToken\(\) string](<#ListEnvironmentsRequest.GetPageToken>)
+  - [func \(x \*ListEnvironmentsRequest\) GetPhase\(\) \*v1.EnvironmentPhase](<#ListEnvironmentsRequest.GetPhase>)
+  - [func \(\*ListEnvironmentsRequest\) ProtoMessage\(\)](<#ListEnvironmentsRequest.ProtoMessage>)
+  - [func \(x \*ListEnvironmentsRequest\) ProtoReflect\(\) protoreflect.Message](<#ListEnvironmentsRequest.ProtoReflect>)
+  - [func \(x \*ListEnvironmentsRequest\) Reset\(\)](<#ListEnvironmentsRequest.Reset>)
+  - [func \(x \*ListEnvironmentsRequest\) String\(\) string](<#ListEnvironmentsRequest.String>)
+- [type ListEnvironmentsResponse](<#ListEnvironmentsResponse>)
+  - [func \(\*ListEnvironmentsResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ListEnvironmentsResponse.Descriptor>)
+  - [func \(x \*ListEnvironmentsResponse\) GetEnvironments\(\) \[\]\*Environment](<#ListEnvironmentsResponse.GetEnvironments>)
+  - [func \(x \*ListEnvironmentsResponse\) GetNextPageToken\(\) string](<#ListEnvironmentsResponse.GetNextPageToken>)
+  - [func \(\*ListEnvironmentsResponse\) ProtoMessage\(\)](<#ListEnvironmentsResponse.ProtoMessage>)
+  - [func \(x \*ListEnvironmentsResponse\) ProtoReflect\(\) protoreflect.Message](<#ListEnvironmentsResponse.ProtoReflect>)
+  - [func \(x \*ListEnvironmentsResponse\) Reset\(\)](<#ListEnvironmentsResponse.Reset>)
+  - [func \(x \*ListEnvironmentsResponse\) String\(\) string](<#ListEnvironmentsResponse.String>)
+- [type ListPackagesRequest](<#ListPackagesRequest>)
+  - [func \(\*ListPackagesRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ListPackagesRequest.Descriptor>)
+  - [func \(x \*ListPackagesRequest\) GetEnabled\(\) bool](<#ListPackagesRequest.GetEnabled>)
+  - [func \(x \*ListPackagesRequest\) GetName\(\) string](<#ListPackagesRequest.GetName>)
+  - [func \(x \*ListPackagesRequest\) GetPageSize\(\) int32](<#ListPackagesRequest.GetPageSize>)
+  - [func \(x \*ListPackagesRequest\) GetPageToken\(\) string](<#ListPackagesRequest.GetPageToken>)
+  - [func \(x \*ListPackagesRequest\) GetPhase\(\) \*v1.PackagePhase](<#ListPackagesRequest.GetPhase>)
+  - [func \(\*ListPackagesRequest\) ProtoMessage\(\)](<#ListPackagesRequest.ProtoMessage>)
+  - [func \(x \*ListPackagesRequest\) ProtoReflect\(\) protoreflect.Message](<#ListPackagesRequest.ProtoReflect>)
+  - [func \(x \*ListPackagesRequest\) Reset\(\)](<#ListPackagesRequest.Reset>)
+  - [func \(x \*ListPackagesRequest\) String\(\) string](<#ListPackagesRequest.String>)
+- [type ListPackagesResponse](<#ListPackagesResponse>)
+  - [func \(\*ListPackagesResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ListPackagesResponse.Descriptor>)
+  - [func \(x \*ListPackagesResponse\) GetNextPageToken\(\) string](<#ListPackagesResponse.GetNextPageToken>)
+  - [func \(x \*ListPackagesResponse\) GetPackages\(\) \[\]\*Package](<#ListPackagesResponse.GetPackages>)
+  - [func \(\*ListPackagesResponse\) ProtoMessage\(\)](<#ListPackagesResponse.ProtoMessage>)
+  - [func \(x \*ListPackagesResponse\) ProtoReflect\(\) protoreflect.Message](<#ListPackagesResponse.ProtoReflect>)
+  - [func \(x \*ListPackagesResponse\) Reset\(\)](<#ListPackagesResponse.Reset>)
+  - [func \(x \*ListPackagesResponse\) String\(\) string](<#ListPackagesResponse.String>)
+- [type ListServiceUnitsRequest](<#ListServiceUnitsRequest>)
+  - [func \(\*ListServiceUnitsRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ListServiceUnitsRequest.Descriptor>)
+  - [func \(x \*ListServiceUnitsRequest\) GetAppType\(\) string](<#ListServiceUnitsRequest.GetAppType>)
+  - [func \(x \*ListServiceUnitsRequest\) GetPageSize\(\) int32](<#ListServiceUnitsRequest.GetPageSize>)
+  - [func \(x \*ListServiceUnitsRequest\) GetPageToken\(\) string](<#ListServiceUnitsRequest.GetPageToken>)
+  - [func \(x \*ListServiceUnitsRequest\) GetPhase\(\) \*v1.ServiceUnitDeploymentPhase](<#ListServiceUnitsRequest.GetPhase>)
+  - [func \(x \*ListServiceUnitsRequest\) GetType\(\) \*v1.ServiceUnitType](<#ListServiceUnitsRequest.GetType>)
+  - [func \(\*ListServiceUnitsRequest\) ProtoMessage\(\)](<#ListServiceUnitsRequest.ProtoMessage>)
+  - [func \(x \*ListServiceUnitsRequest\) ProtoReflect\(\) protoreflect.Message](<#ListServiceUnitsRequest.ProtoReflect>)
+  - [func \(x \*ListServiceUnitsRequest\) Reset\(\)](<#ListServiceUnitsRequest.Reset>)
+  - [func \(x \*ListServiceUnitsRequest\) String\(\) string](<#ListServiceUnitsRequest.String>)
+- [type ListServiceUnitsResponse](<#ListServiceUnitsResponse>)
+  - [func \(\*ListServiceUnitsResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ListServiceUnitsResponse.Descriptor>)
+  - [func \(x \*ListServiceUnitsResponse\) GetNextPageToken\(\) string](<#ListServiceUnitsResponse.GetNextPageToken>)
+  - [func \(x \*ListServiceUnitsResponse\) GetServiceUnits\(\) \[\]\*ServiceUnit](<#ListServiceUnitsResponse.GetServiceUnits>)
+  - [func \(\*ListServiceUnitsResponse\) ProtoMessage\(\)](<#ListServiceUnitsResponse.ProtoMessage>)
+  - [func \(x \*ListServiceUnitsResponse\) ProtoReflect\(\) protoreflect.Message](<#ListServiceUnitsResponse.ProtoReflect>)
+  - [func \(x \*ListServiceUnitsResponse\) Reset\(\)](<#ListServiceUnitsResponse.Reset>)
+  - [func \(x \*ListServiceUnitsResponse\) String\(\) string](<#ListServiceUnitsResponse.String>)
+- [type Maintainer](<#Maintainer>)
+  - [func \(\*Maintainer\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#Maintainer.Descriptor>)
+  - [func \(x \*Maintainer\) GetEmail\(\) string](<#Maintainer.GetEmail>)
+  - [func \(x \*Maintainer\) GetName\(\) string](<#Maintainer.GetName>)
+  - [func \(\*Maintainer\) ProtoMessage\(\)](<#Maintainer.ProtoMessage>)
+  - [func \(x \*Maintainer\) ProtoReflect\(\) protoreflect.Message](<#Maintainer.ProtoReflect>)
+  - [func \(x \*Maintainer\) Reset\(\)](<#Maintainer.Reset>)
+  - [func \(x \*Maintainer\) String\(\) string](<#Maintainer.String>)
+- [type ManifestsRepo](<#ManifestsRepo>)
+  - [func \(\*ManifestsRepo\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ManifestsRepo.Descriptor>)
+  - [func \(x \*ManifestsRepo\) GetCloneSecret\(\) string](<#ManifestsRepo.GetCloneSecret>)
+  - [func \(x \*ManifestsRepo\) GetPath\(\) string](<#ManifestsRepo.GetPath>)
+  - [func \(x \*ManifestsRepo\) GetRef\(\) string](<#ManifestsRepo.GetRef>)
+  - [func \(x \*ManifestsRepo\) GetStrategy\(\) string](<#ManifestsRepo.GetStrategy>)
+  - [func \(x \*ManifestsRepo\) GetUrl\(\) string](<#ManifestsRepo.GetUrl>)
+  - [func \(\*ManifestsRepo\) ProtoMessage\(\)](<#ManifestsRepo.ProtoMessage>)
+  - [func \(x \*ManifestsRepo\) ProtoReflect\(\) protoreflect.Message](<#ManifestsRepo.ProtoReflect>)
+  - [func \(x \*ManifestsRepo\) Reset\(\)](<#ManifestsRepo.Reset>)
+  - [func \(x \*ManifestsRepo\) String\(\) string](<#ManifestsRepo.String>)
+- [type ObjectRef](<#ObjectRef>)
+  - [func \(\*ObjectRef\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ObjectRef.Descriptor>)
+  - [func \(x \*ObjectRef\) GetName\(\) string](<#ObjectRef.GetName>)
+  - [func \(\*ObjectRef\) ProtoMessage\(\)](<#ObjectRef.ProtoMessage>)
+  - [func \(x \*ObjectRef\) ProtoReflect\(\) protoreflect.Message](<#ObjectRef.ProtoReflect>)
+  - [func \(x \*ObjectRef\) Reset\(\)](<#ObjectRef.Reset>)
+  - [func \(x \*ObjectRef\) String\(\) string](<#ObjectRef.String>)
+- [type Package](<#Package>)
+  - [func \(\*Package\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#Package.Descriptor>)
+  - [func \(x \*Package\) GetMetadata\(\) \*v1.Metadata](<#Package.GetMetadata>)
+  - [func \(x \*Package\) GetSpec\(\) \*PackageSpec](<#Package.GetSpec>)
+  - [func \(x \*Package\) GetStatus\(\) \*PackageStatus](<#Package.GetStatus>)
+  - [func \(\*Package\) ProtoMessage\(\)](<#Package.ProtoMessage>)
+  - [func \(x \*Package\) ProtoReflect\(\) protoreflect.Message](<#Package.ProtoReflect>)
+  - [func \(x \*Package\) Reset\(\)](<#Package.Reset>)
+  - [func \(x \*Package\) String\(\) string](<#Package.String>)
+- [type PackageRepository](<#PackageRepository>)
+  - [func \(\*PackageRepository\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PackageRepository.Descriptor>)
+  - [func \(x \*PackageRepository\) GetCredentialsSecret\(\) string](<#PackageRepository.GetCredentialsSecret>)
+  - [func \(x \*PackageRepository\) GetPath\(\) string](<#PackageRepository.GetPath>)
+  - [func \(x \*PackageRepository\) GetRef\(\) string](<#PackageRepository.GetRef>)
+  - [func \(x \*PackageRepository\) GetUrl\(\) string](<#PackageRepository.GetUrl>)
+  - [func \(\*PackageRepository\) ProtoMessage\(\)](<#PackageRepository.ProtoMessage>)
+  - [func \(x \*PackageRepository\) ProtoReflect\(\) protoreflect.Message](<#PackageRepository.ProtoReflect>)
+  - [func \(x \*PackageRepository\) Reset\(\)](<#PackageRepository.Reset>)
+  - [func \(x \*PackageRepository\) String\(\) string](<#PackageRepository.String>)
+- [type PackageServiceClient](<#PackageServiceClient>)
+  - [func NewPackageServiceClient\(cc grpc.ClientConnInterface\) PackageServiceClient](<#NewPackageServiceClient>)
+- [type PackageServiceServer](<#PackageServiceServer>)
+- [type PackageService\_WatchPackageClient](<#PackageService_WatchPackageClient>)
+- [type PackageService\_WatchPackageServer](<#PackageService_WatchPackageServer>)
+- [type PackageSpec](<#PackageSpec>)
+  - [func \(\*PackageSpec\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PackageSpec.Descriptor>)
+  - [func \(x \*PackageSpec\) GetDescription\(\) string](<#PackageSpec.GetDescription>)
+  - [func \(x \*PackageSpec\) GetDiffEnabled\(\) bool](<#PackageSpec.GetDiffEnabled>)
+  - [func \(x \*PackageSpec\) GetEnabled\(\) bool](<#PackageSpec.GetEnabled>)
+  - [func \(x \*PackageSpec\) GetMaintainers\(\) \[\]\*Maintainer](<#PackageSpec.GetMaintainers>)
+  - [func \(x \*PackageSpec\) GetName\(\) string](<#PackageSpec.GetName>)
+  - [func \(x \*PackageSpec\) GetRepository\(\) \*PackageRepository](<#PackageSpec.GetRepository>)
+  - [func \(x \*PackageSpec\) GetStateRepository\(\) \*StateRepository](<#PackageSpec.GetStateRepository>)
+  - [func \(x \*PackageSpec\) GetVersion\(\) string](<#PackageSpec.GetVersion>)
+  - [func \(\*PackageSpec\) ProtoMessage\(\)](<#PackageSpec.ProtoMessage>)
+  - [func \(x \*PackageSpec\) ProtoReflect\(\) protoreflect.Message](<#PackageSpec.ProtoReflect>)
+  - [func \(x \*PackageSpec\) Reset\(\)](<#PackageSpec.Reset>)
+  - [func \(x \*PackageSpec\) String\(\) string](<#PackageSpec.String>)
+- [type PackageState](<#PackageState>)
+  - [func \(\*PackageState\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PackageState.Descriptor>)
+  - [func \(x \*PackageState\) GetRepository\(\) string](<#PackageState.GetRepository>)
+  - [func \(x \*PackageState\) GetRevision\(\) string](<#PackageState.GetRevision>)
+  - [func \(\*PackageState\) ProtoMessage\(\)](<#PackageState.ProtoMessage>)
+  - [func \(x \*PackageState\) ProtoReflect\(\) protoreflect.Message](<#PackageState.ProtoReflect>)
+  - [func \(x \*PackageState\) Reset\(\)](<#PackageState.Reset>)
+  - [func \(x \*PackageState\) String\(\) string](<#PackageState.String>)
+- [type PackageStatus](<#PackageStatus>)
+  - [func \(\*PackageStatus\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PackageStatus.Descriptor>)
+  - [func \(x \*PackageStatus\) GetDiffApplied\(\) bool](<#PackageStatus.GetDiffApplied>)
+  - [func \(x \*PackageStatus\) GetDiffOutput\(\) string](<#PackageStatus.GetDiffOutput>)
+  - [func \(x \*PackageStatus\) GetLastReconciledAt\(\) \*timestamppb.Timestamp](<#PackageStatus.GetLastReconciledAt>)
+  - [func \(x \*PackageStatus\) GetMessage\(\) string](<#PackageStatus.GetMessage>)
+  - [func \(x \*PackageStatus\) GetPhase\(\) \*v1.PackagePhase](<#PackageStatus.GetPhase>)
+  - [func \(x \*PackageStatus\) GetState\(\) \*PackageState](<#PackageStatus.GetState>)
+  - [func \(\*PackageStatus\) ProtoMessage\(\)](<#PackageStatus.ProtoMessage>)
+  - [func \(x \*PackageStatus\) ProtoReflect\(\) protoreflect.Message](<#PackageStatus.ProtoReflect>)
+  - [func \(x \*PackageStatus\) Reset\(\)](<#PackageStatus.Reset>)
+  - [func \(x \*PackageStatus\) String\(\) string](<#PackageStatus.String>)
+- [type Param](<#Param>)
+  - [func \(\*Param\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#Param.Descriptor>)
+  - [func \(x \*Param\) GetName\(\) string](<#Param.GetName>)
+  - [func \(x \*Param\) GetValue\(\) string](<#Param.GetValue>)
+  - [func \(\*Param\) ProtoMessage\(\)](<#Param.ProtoMessage>)
+  - [func \(x \*Param\) ProtoReflect\(\) protoreflect.Message](<#Param.ProtoReflect>)
+  - [func \(x \*Param\) Reset\(\)](<#Param.Reset>)
+  - [func \(x \*Param\) String\(\) string](<#Param.String>)
+- [type PatchBuildRequest](<#PatchBuildRequest>)
+  - [func \(\*PatchBuildRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PatchBuildRequest.Descriptor>)
+  - [func \(x \*PatchBuildRequest\) GetName\(\) string](<#PatchBuildRequest.GetName>)
+  - [func \(x \*PatchBuildRequest\) GetPatch\(\) string](<#PatchBuildRequest.GetPatch>)
+  - [func \(\*PatchBuildRequest\) ProtoMessage\(\)](<#PatchBuildRequest.ProtoMessage>)
+  - [func \(x \*PatchBuildRequest\) ProtoReflect\(\) protoreflect.Message](<#PatchBuildRequest.ProtoReflect>)
+  - [func \(x \*PatchBuildRequest\) Reset\(\)](<#PatchBuildRequest.Reset>)
+  - [func \(x \*PatchBuildRequest\) String\(\) string](<#PatchBuildRequest.String>)
+- [type PatchBuildResponse](<#PatchBuildResponse>)
+  - [func \(\*PatchBuildResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PatchBuildResponse.Descriptor>)
+  - [func \(x \*PatchBuildResponse\) GetBuild\(\) \*Build](<#PatchBuildResponse.GetBuild>)
+  - [func \(\*PatchBuildResponse\) ProtoMessage\(\)](<#PatchBuildResponse.ProtoMessage>)
+  - [func \(x \*PatchBuildResponse\) ProtoReflect\(\) protoreflect.Message](<#PatchBuildResponse.ProtoReflect>)
+  - [func \(x \*PatchBuildResponse\) Reset\(\)](<#PatchBuildResponse.Reset>)
+  - [func \(x \*PatchBuildResponse\) String\(\) string](<#PatchBuildResponse.String>)
+- [type PatchDeploymentRequest](<#PatchDeploymentRequest>)
+  - [func \(\*PatchDeploymentRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PatchDeploymentRequest.Descriptor>)
+  - [func \(x \*PatchDeploymentRequest\) GetName\(\) string](<#PatchDeploymentRequest.GetName>)
+  - [func \(x \*PatchDeploymentRequest\) GetPatch\(\) string](<#PatchDeploymentRequest.GetPatch>)
+  - [func \(\*PatchDeploymentRequest\) ProtoMessage\(\)](<#PatchDeploymentRequest.ProtoMessage>)
+  - [func \(x \*PatchDeploymentRequest\) ProtoReflect\(\) protoreflect.Message](<#PatchDeploymentRequest.ProtoReflect>)
+  - [func \(x \*PatchDeploymentRequest\) Reset\(\)](<#PatchDeploymentRequest.Reset>)
+  - [func \(x \*PatchDeploymentRequest\) String\(\) string](<#PatchDeploymentRequest.String>)
+- [type PatchDeploymentResponse](<#PatchDeploymentResponse>)
+  - [func \(\*PatchDeploymentResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PatchDeploymentResponse.Descriptor>)
+  - [func \(x \*PatchDeploymentResponse\) GetDeployment\(\) \*Deployment](<#PatchDeploymentResponse.GetDeployment>)
+  - [func \(\*PatchDeploymentResponse\) ProtoMessage\(\)](<#PatchDeploymentResponse.ProtoMessage>)
+  - [func \(x \*PatchDeploymentResponse\) ProtoReflect\(\) protoreflect.Message](<#PatchDeploymentResponse.ProtoReflect>)
+  - [func \(x \*PatchDeploymentResponse\) Reset\(\)](<#PatchDeploymentResponse.Reset>)
+  - [func \(x \*PatchDeploymentResponse\) String\(\) string](<#PatchDeploymentResponse.String>)
+- [type PatchEnvironmentRequest](<#PatchEnvironmentRequest>)
+  - [func \(\*PatchEnvironmentRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PatchEnvironmentRequest.Descriptor>)
+  - [func \(x \*PatchEnvironmentRequest\) GetName\(\) string](<#PatchEnvironmentRequest.GetName>)
+  - [func \(x \*PatchEnvironmentRequest\) GetPatch\(\) string](<#PatchEnvironmentRequest.GetPatch>)
+  - [func \(\*PatchEnvironmentRequest\) ProtoMessage\(\)](<#PatchEnvironmentRequest.ProtoMessage>)
+  - [func \(x \*PatchEnvironmentRequest\) ProtoReflect\(\) protoreflect.Message](<#PatchEnvironmentRequest.ProtoReflect>)
+  - [func \(x \*PatchEnvironmentRequest\) Reset\(\)](<#PatchEnvironmentRequest.Reset>)
+  - [func \(x \*PatchEnvironmentRequest\) String\(\) string](<#PatchEnvironmentRequest.String>)
+- [type PatchEnvironmentResponse](<#PatchEnvironmentResponse>)
+  - [func \(\*PatchEnvironmentResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PatchEnvironmentResponse.Descriptor>)
+  - [func \(x \*PatchEnvironmentResponse\) GetEnvironment\(\) \*Environment](<#PatchEnvironmentResponse.GetEnvironment>)
+  - [func \(\*PatchEnvironmentResponse\) ProtoMessage\(\)](<#PatchEnvironmentResponse.ProtoMessage>)
+  - [func \(x \*PatchEnvironmentResponse\) ProtoReflect\(\) protoreflect.Message](<#PatchEnvironmentResponse.ProtoReflect>)
+  - [func \(x \*PatchEnvironmentResponse\) Reset\(\)](<#PatchEnvironmentResponse.Reset>)
+  - [func \(x \*PatchEnvironmentResponse\) String\(\) string](<#PatchEnvironmentResponse.String>)
+- [type PatchPackageRequest](<#PatchPackageRequest>)
+  - [func \(\*PatchPackageRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PatchPackageRequest.Descriptor>)
+  - [func \(x \*PatchPackageRequest\) GetName\(\) string](<#PatchPackageRequest.GetName>)
+  - [func \(x \*PatchPackageRequest\) GetPatch\(\) string](<#PatchPackageRequest.GetPatch>)
+  - [func \(\*PatchPackageRequest\) ProtoMessage\(\)](<#PatchPackageRequest.ProtoMessage>)
+  - [func \(x \*PatchPackageRequest\) ProtoReflect\(\) protoreflect.Message](<#PatchPackageRequest.ProtoReflect>)
+  - [func \(x \*PatchPackageRequest\) Reset\(\)](<#PatchPackageRequest.Reset>)
+  - [func \(x \*PatchPackageRequest\) String\(\) string](<#PatchPackageRequest.String>)
+- [type PatchPackageResponse](<#PatchPackageResponse>)
+  - [func \(\*PatchPackageResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PatchPackageResponse.Descriptor>)
+  - [func \(x \*PatchPackageResponse\) GetPackage\(\) \*Package](<#PatchPackageResponse.GetPackage>)
+  - [func \(\*PatchPackageResponse\) ProtoMessage\(\)](<#PatchPackageResponse.ProtoMessage>)
+  - [func \(x \*PatchPackageResponse\) ProtoReflect\(\) protoreflect.Message](<#PatchPackageResponse.ProtoReflect>)
+  - [func \(x \*PatchPackageResponse\) Reset\(\)](<#PatchPackageResponse.Reset>)
+  - [func \(x \*PatchPackageResponse\) String\(\) string](<#PatchPackageResponse.String>)
+- [type PatchServiceUnitRequest](<#PatchServiceUnitRequest>)
+  - [func \(\*PatchServiceUnitRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PatchServiceUnitRequest.Descriptor>)
+  - [func \(x \*PatchServiceUnitRequest\) GetName\(\) string](<#PatchServiceUnitRequest.GetName>)
+  - [func \(x \*PatchServiceUnitRequest\) GetPatch\(\) string](<#PatchServiceUnitRequest.GetPatch>)
+  - [func \(\*PatchServiceUnitRequest\) ProtoMessage\(\)](<#PatchServiceUnitRequest.ProtoMessage>)
+  - [func \(x \*PatchServiceUnitRequest\) ProtoReflect\(\) protoreflect.Message](<#PatchServiceUnitRequest.ProtoReflect>)
+  - [func \(x \*PatchServiceUnitRequest\) Reset\(\)](<#PatchServiceUnitRequest.Reset>)
+  - [func \(x \*PatchServiceUnitRequest\) String\(\) string](<#PatchServiceUnitRequest.String>)
+- [type PatchServiceUnitResponse](<#PatchServiceUnitResponse>)
+  - [func \(\*PatchServiceUnitResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#PatchServiceUnitResponse.Descriptor>)
+  - [func \(x \*PatchServiceUnitResponse\) GetServiceUnit\(\) \*ServiceUnit](<#PatchServiceUnitResponse.GetServiceUnit>)
+  - [func \(\*PatchServiceUnitResponse\) ProtoMessage\(\)](<#PatchServiceUnitResponse.ProtoMessage>)
+  - [func \(x \*PatchServiceUnitResponse\) ProtoReflect\(\) protoreflect.Message](<#PatchServiceUnitResponse.ProtoReflect>)
+  - [func \(x \*PatchServiceUnitResponse\) Reset\(\)](<#PatchServiceUnitResponse.Reset>)
+  - [func \(x \*PatchServiceUnitResponse\) String\(\) string](<#PatchServiceUnitResponse.String>)
+- [type RetryPolicy](<#RetryPolicy>)
+  - [func \(\*RetryPolicy\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#RetryPolicy.Descriptor>)
+  - [func \(x \*RetryPolicy\) GetMaxAttempts\(\) uint32](<#RetryPolicy.GetMaxAttempts>)
+  - [func \(x \*RetryPolicy\) GetOnFailure\(\) bool](<#RetryPolicy.GetOnFailure>)
+  - [func \(\*RetryPolicy\) ProtoMessage\(\)](<#RetryPolicy.ProtoMessage>)
+  - [func \(x \*RetryPolicy\) ProtoReflect\(\) protoreflect.Message](<#RetryPolicy.ProtoReflect>)
+  - [func \(x \*RetryPolicy\) Reset\(\)](<#RetryPolicy.Reset>)
+  - [func \(x \*RetryPolicy\) String\(\) string](<#RetryPolicy.String>)
+- [type RouteReference](<#RouteReference>)
+  - [func \(\*RouteReference\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#RouteReference.Descriptor>)
+  - [func \(x \*RouteReference\) GetName\(\) string](<#RouteReference.GetName>)
+  - [func \(\*RouteReference\) ProtoMessage\(\)](<#RouteReference.ProtoMessage>)
+  - [func \(x \*RouteReference\) ProtoReflect\(\) protoreflect.Message](<#RouteReference.ProtoReflect>)
+  - [func \(x \*RouteReference\) Reset\(\)](<#RouteReference.Reset>)
+  - [func \(x \*RouteReference\) String\(\) string](<#RouteReference.String>)
+- [type ServiceAccount](<#ServiceAccount>)
+  - [func \(\*ServiceAccount\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ServiceAccount.Descriptor>)
+  - [func \(x \*ServiceAccount\) GetName\(\) string](<#ServiceAccount.GetName>)
+  - [func \(x \*ServiceAccount\) GetSecret\(\) string](<#ServiceAccount.GetSecret>)
+  - [func \(\*ServiceAccount\) ProtoMessage\(\)](<#ServiceAccount.ProtoMessage>)
+  - [func \(x \*ServiceAccount\) ProtoReflect\(\) protoreflect.Message](<#ServiceAccount.ProtoReflect>)
+  - [func \(x \*ServiceAccount\) Reset\(\)](<#ServiceAccount.Reset>)
+  - [func \(x \*ServiceAccount\) String\(\) string](<#ServiceAccount.String>)
+- [type ServiceUnit](<#ServiceUnit>)
+  - [func \(\*ServiceUnit\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ServiceUnit.Descriptor>)
+  - [func \(x \*ServiceUnit\) GetMetadata\(\) \*v1.Metadata](<#ServiceUnit.GetMetadata>)
+  - [func \(x \*ServiceUnit\) GetSpec\(\) \*ServiceUnitSpec](<#ServiceUnit.GetSpec>)
+  - [func \(x \*ServiceUnit\) GetStatus\(\) \*ServiceUnitStatus](<#ServiceUnit.GetStatus>)
+  - [func \(\*ServiceUnit\) ProtoMessage\(\)](<#ServiceUnit.ProtoMessage>)
+  - [func \(x \*ServiceUnit\) ProtoReflect\(\) protoreflect.Message](<#ServiceUnit.ProtoReflect>)
+  - [func \(x \*ServiceUnit\) Reset\(\)](<#ServiceUnit.Reset>)
+  - [func \(x \*ServiceUnit\) String\(\) string](<#ServiceUnit.String>)
+- [type ServiceUnitCondition](<#ServiceUnitCondition>)
+  - [func \(\*ServiceUnitCondition\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ServiceUnitCondition.Descriptor>)
+  - [func \(x \*ServiceUnitCondition\) GetLastTransitionTime\(\) \*timestamppb.Timestamp](<#ServiceUnitCondition.GetLastTransitionTime>)
+  - [func \(x \*ServiceUnitCondition\) GetMessage\(\) string](<#ServiceUnitCondition.GetMessage>)
+  - [func \(x \*ServiceUnitCondition\) GetReason\(\) string](<#ServiceUnitCondition.GetReason>)
+  - [func \(x \*ServiceUnitCondition\) GetStatus\(\) string](<#ServiceUnitCondition.GetStatus>)
+  - [func \(x \*ServiceUnitCondition\) GetType\(\) string](<#ServiceUnitCondition.GetType>)
+  - [func \(\*ServiceUnitCondition\) ProtoMessage\(\)](<#ServiceUnitCondition.ProtoMessage>)
+  - [func \(x \*ServiceUnitCondition\) ProtoReflect\(\) protoreflect.Message](<#ServiceUnitCondition.ProtoReflect>)
+  - [func \(x \*ServiceUnitCondition\) Reset\(\)](<#ServiceUnitCondition.Reset>)
+  - [func \(x \*ServiceUnitCondition\) String\(\) string](<#ServiceUnitCondition.String>)
+- [type ServiceUnitDeploymentStatus](<#ServiceUnitDeploymentStatus>)
+  - [func \(\*ServiceUnitDeploymentStatus\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ServiceUnitDeploymentStatus.Descriptor>)
+  - [func \(x \*ServiceUnitDeploymentStatus\) GetError\(\) string](<#ServiceUnitDeploymentStatus.GetError>)
+  - [func \(x \*ServiceUnitDeploymentStatus\) GetImage\(\) string](<#ServiceUnitDeploymentStatus.GetImage>)
+  - [func \(x \*ServiceUnitDeploymentStatus\) GetLastTransitionTime\(\) \*timestamppb.Timestamp](<#ServiceUnitDeploymentStatus.GetLastTransitionTime>)
+  - [func \(x \*ServiceUnitDeploymentStatus\) GetMessage\(\) string](<#ServiceUnitDeploymentStatus.GetMessage>)
+  - [func \(x \*ServiceUnitDeploymentStatus\) GetName\(\) string](<#ServiceUnitDeploymentStatus.GetName>)
+  - [func \(x \*ServiceUnitDeploymentStatus\) GetPhase\(\) \*v1.DeploymentPhase](<#ServiceUnitDeploymentStatus.GetPhase>)
+  - [func \(x \*ServiceUnitDeploymentStatus\) GetRuntime\(\) \*v1.DeploymentRuntime](<#ServiceUnitDeploymentStatus.GetRuntime>)
+  - [func \(\*ServiceUnitDeploymentStatus\) ProtoMessage\(\)](<#ServiceUnitDeploymentStatus.ProtoMessage>)
+  - [func \(x \*ServiceUnitDeploymentStatus\) ProtoReflect\(\) protoreflect.Message](<#ServiceUnitDeploymentStatus.ProtoReflect>)
+  - [func \(x \*ServiceUnitDeploymentStatus\) Reset\(\)](<#ServiceUnitDeploymentStatus.Reset>)
+  - [func \(x \*ServiceUnitDeploymentStatus\) String\(\) string](<#ServiceUnitDeploymentStatus.String>)
+- [type ServiceUnitServiceClient](<#ServiceUnitServiceClient>)
+  - [func NewServiceUnitServiceClient\(cc grpc.ClientConnInterface\) ServiceUnitServiceClient](<#NewServiceUnitServiceClient>)
+- [type ServiceUnitServiceServer](<#ServiceUnitServiceServer>)
+- [type ServiceUnitService\_WatchServiceUnitClient](<#ServiceUnitService_WatchServiceUnitClient>)
+- [type ServiceUnitService\_WatchServiceUnitServer](<#ServiceUnitService_WatchServiceUnitServer>)
+- [type ServiceUnitSpec](<#ServiceUnitSpec>)
+  - [func \(\*ServiceUnitSpec\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ServiceUnitSpec.Descriptor>)
+  - [func \(x \*ServiceUnitSpec\) GetAppType\(\) string](<#ServiceUnitSpec.GetAppType>)
+  - [func \(x \*ServiceUnitSpec\) GetBuildRef\(\) \*BuildReference](<#ServiceUnitSpec.GetBuildRef>)
+  - [func \(x \*ServiceUnitSpec\) GetContainerPort\(\) int32](<#ServiceUnitSpec.GetContainerPort>)
+  - [func \(x \*ServiceUnitSpec\) GetImage\(\) string](<#ServiceUnitSpec.GetImage>)
+  - [func \(x \*ServiceUnitSpec\) GetRoute\(\) \*RouteReference](<#ServiceUnitSpec.GetRoute>)
+  - [func \(x \*ServiceUnitSpec\) GetSize\(\) int32](<#ServiceUnitSpec.GetSize>)
+  - [func \(x \*ServiceUnitSpec\) GetStackType\(\) string](<#ServiceUnitSpec.GetStackType>)
+  - [func \(x \*ServiceUnitSpec\) GetType\(\) \*v1.ServiceUnitType](<#ServiceUnitSpec.GetType>)
+  - [func \(\*ServiceUnitSpec\) ProtoMessage\(\)](<#ServiceUnitSpec.ProtoMessage>)
+  - [func \(x \*ServiceUnitSpec\) ProtoReflect\(\) protoreflect.Message](<#ServiceUnitSpec.ProtoReflect>)
+  - [func \(x \*ServiceUnitSpec\) Reset\(\)](<#ServiceUnitSpec.Reset>)
+  - [func \(x \*ServiceUnitSpec\) String\(\) string](<#ServiceUnitSpec.String>)
+- [type ServiceUnitStatus](<#ServiceUnitStatus>)
+  - [func \(\*ServiceUnitStatus\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#ServiceUnitStatus.Descriptor>)
+  - [func \(x \*ServiceUnitStatus\) GetBuildStatus\(\) \*BuildResolutionStatus](<#ServiceUnitStatus.GetBuildStatus>)
+  - [func \(x \*ServiceUnitStatus\) GetConditions\(\) \[\]\*ServiceUnitCondition](<#ServiceUnitStatus.GetConditions>)
+  - [func \(x \*ServiceUnitStatus\) GetLastUpdatedAt\(\) \*timestamppb.Timestamp](<#ServiceUnitStatus.GetLastUpdatedAt>)
+  - [func \(x \*ServiceUnitStatus\) GetMessage\(\) string](<#ServiceUnitStatus.GetMessage>)
+  - [func \(x \*ServiceUnitStatus\) GetObservedGeneration\(\) int64](<#ServiceUnitStatus.GetObservedGeneration>)
+  - [func \(x \*ServiceUnitStatus\) GetPhase\(\) \*v1.ServiceUnitDeploymentPhase](<#ServiceUnitStatus.GetPhase>)
+  - [func \(x \*ServiceUnitStatus\) GetResolvedImage\(\) string](<#ServiceUnitStatus.GetResolvedImage>)
+  - [func \(x \*ServiceUnitStatus\) GetRuntime\(\) \*v1.ServiceUnitRuntime](<#ServiceUnitStatus.GetRuntime>)
+  - [func \(x \*ServiceUnitStatus\) GetWorkloadRef\(\) \*WorkloadReference](<#ServiceUnitStatus.GetWorkloadRef>)
+  - [func \(\*ServiceUnitStatus\) ProtoMessage\(\)](<#ServiceUnitStatus.ProtoMessage>)
+  - [func \(x \*ServiceUnitStatus\) ProtoReflect\(\) protoreflect.Message](<#ServiceUnitStatus.ProtoReflect>)
+  - [func \(x \*ServiceUnitStatus\) Reset\(\)](<#ServiceUnitStatus.Reset>)
+  - [func \(x \*ServiceUnitStatus\) String\(\) string](<#ServiceUnitStatus.String>)
+- [type StateRepository](<#StateRepository>)
+  - [func \(\*StateRepository\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#StateRepository.Descriptor>)
+  - [func \(x \*StateRepository\) GetCloneSecret\(\) string](<#StateRepository.GetCloneSecret>)
+  - [func \(x \*StateRepository\) GetPath\(\) string](<#StateRepository.GetPath>)
+  - [func \(x \*StateRepository\) GetRef\(\) string](<#StateRepository.GetRef>)
+  - [func \(x \*StateRepository\) GetStrategy\(\) string](<#StateRepository.GetStrategy>)
+  - [func \(x \*StateRepository\) GetUrl\(\) string](<#StateRepository.GetUrl>)
+  - [func \(\*StateRepository\) ProtoMessage\(\)](<#StateRepository.ProtoMessage>)
+  - [func \(x \*StateRepository\) ProtoReflect\(\) protoreflect.Message](<#StateRepository.ProtoReflect>)
+  - [func \(x \*StateRepository\) Reset\(\)](<#StateRepository.Reset>)
+  - [func \(x \*StateRepository\) String\(\) string](<#StateRepository.String>)
+- [type TriggerBuildRequest](<#TriggerBuildRequest>)
+  - [func \(\*TriggerBuildRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#TriggerBuildRequest.Descriptor>)
+  - [func \(x \*TriggerBuildRequest\) GetName\(\) string](<#TriggerBuildRequest.GetName>)
+  - [func \(x \*TriggerBuildRequest\) GetParams\(\) \[\]\*Param](<#TriggerBuildRequest.GetParams>)
+  - [func \(\*TriggerBuildRequest\) ProtoMessage\(\)](<#TriggerBuildRequest.ProtoMessage>)
+  - [func \(x \*TriggerBuildRequest\) ProtoReflect\(\) protoreflect.Message](<#TriggerBuildRequest.ProtoReflect>)
+  - [func \(x \*TriggerBuildRequest\) Reset\(\)](<#TriggerBuildRequest.Reset>)
+  - [func \(x \*TriggerBuildRequest\) String\(\) string](<#TriggerBuildRequest.String>)
+- [type TriggerBuildResponse](<#TriggerBuildResponse>)
+  - [func \(\*TriggerBuildResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#TriggerBuildResponse.Descriptor>)
+  - [func \(x \*TriggerBuildResponse\) GetBuild\(\) \*Build](<#TriggerBuildResponse.GetBuild>)
+  - [func \(x \*TriggerBuildResponse\) GetExecutionRef\(\) string](<#TriggerBuildResponse.GetExecutionRef>)
+  - [func \(\*TriggerBuildResponse\) ProtoMessage\(\)](<#TriggerBuildResponse.ProtoMessage>)
+  - [func \(x \*TriggerBuildResponse\) ProtoReflect\(\) protoreflect.Message](<#TriggerBuildResponse.ProtoReflect>)
+  - [func \(x \*TriggerBuildResponse\) Reset\(\)](<#TriggerBuildResponse.Reset>)
+  - [func \(x \*TriggerBuildResponse\) String\(\) string](<#TriggerBuildResponse.String>)
+- [type UnimplementedBuildServiceServer](<#UnimplementedBuildServiceServer>)
+  - [func \(UnimplementedBuildServiceServer\) CreateBuild\(context.Context, \*CreateBuildRequest\) \(\*CreateBuildResponse, error\)](<#UnimplementedBuildServiceServer.CreateBuild>)
+  - [func \(UnimplementedBuildServiceServer\) DeleteBuild\(context.Context, \*DeleteBuildRequest\) \(\*DeleteBuildResponse, error\)](<#UnimplementedBuildServiceServer.DeleteBuild>)
+  - [func \(UnimplementedBuildServiceServer\) GetBuild\(context.Context, \*GetBuildRequest\) \(\*GetBuildResponse, error\)](<#UnimplementedBuildServiceServer.GetBuild>)
+  - [func \(UnimplementedBuildServiceServer\) ListBuilds\(context.Context, \*ListBuildsRequest\) \(\*ListBuildsResponse, error\)](<#UnimplementedBuildServiceServer.ListBuilds>)
+  - [func \(UnimplementedBuildServiceServer\) PatchBuild\(context.Context, \*PatchBuildRequest\) \(\*PatchBuildResponse, error\)](<#UnimplementedBuildServiceServer.PatchBuild>)
+  - [func \(UnimplementedBuildServiceServer\) TriggerBuild\(context.Context, \*TriggerBuildRequest\) \(\*TriggerBuildResponse, error\)](<#UnimplementedBuildServiceServer.TriggerBuild>)
+  - [func \(UnimplementedBuildServiceServer\) UpdateBuild\(context.Context, \*UpdateBuildRequest\) \(\*UpdateBuildResponse, error\)](<#UnimplementedBuildServiceServer.UpdateBuild>)
+  - [func \(UnimplementedBuildServiceServer\) WatchBuild\(\*WatchBuildRequest, grpc.ServerStreamingServer\[WatchBuildResponse\]\) error](<#UnimplementedBuildServiceServer.WatchBuild>)
+- [type UnimplementedDeploymentServiceServer](<#UnimplementedDeploymentServiceServer>)
+  - [func \(UnimplementedDeploymentServiceServer\) CreateDeployment\(context.Context, \*CreateDeploymentRequest\) \(\*CreateDeploymentResponse, error\)](<#UnimplementedDeploymentServiceServer.CreateDeployment>)
+  - [func \(UnimplementedDeploymentServiceServer\) DeleteDeployment\(context.Context, \*DeleteDeploymentRequest\) \(\*DeleteDeploymentResponse, error\)](<#UnimplementedDeploymentServiceServer.DeleteDeployment>)
+  - [func \(UnimplementedDeploymentServiceServer\) GetDeployment\(context.Context, \*GetDeploymentRequest\) \(\*GetDeploymentResponse, error\)](<#UnimplementedDeploymentServiceServer.GetDeployment>)
+  - [func \(UnimplementedDeploymentServiceServer\) ListDeployments\(context.Context, \*ListDeploymentsRequest\) \(\*ListDeploymentsResponse, error\)](<#UnimplementedDeploymentServiceServer.ListDeployments>)
+  - [func \(UnimplementedDeploymentServiceServer\) PatchDeployment\(context.Context, \*PatchDeploymentRequest\) \(\*PatchDeploymentResponse, error\)](<#UnimplementedDeploymentServiceServer.PatchDeployment>)
+  - [func \(UnimplementedDeploymentServiceServer\) UpdateDeployment\(context.Context, \*UpdateDeploymentRequest\) \(\*UpdateDeploymentResponse, error\)](<#UnimplementedDeploymentServiceServer.UpdateDeployment>)
+  - [func \(UnimplementedDeploymentServiceServer\) WatchDeployment\(\*WatchDeploymentRequest, grpc.ServerStreamingServer\[WatchDeploymentResponse\]\) error](<#UnimplementedDeploymentServiceServer.WatchDeployment>)
+- [type UnimplementedEnvironmentServiceServer](<#UnimplementedEnvironmentServiceServer>)
+  - [func \(UnimplementedEnvironmentServiceServer\) CreateEnvironment\(context.Context, \*CreateEnvironmentRequest\) \(\*CreateEnvironmentResponse, error\)](<#UnimplementedEnvironmentServiceServer.CreateEnvironment>)
+  - [func \(UnimplementedEnvironmentServiceServer\) DeleteEnvironment\(context.Context, \*DeleteEnvironmentRequest\) \(\*DeleteEnvironmentResponse, error\)](<#UnimplementedEnvironmentServiceServer.DeleteEnvironment>)
+  - [func \(UnimplementedEnvironmentServiceServer\) GetEnvironment\(context.Context, \*GetEnvironmentRequest\) \(\*GetEnvironmentResponse, error\)](<#UnimplementedEnvironmentServiceServer.GetEnvironment>)
+  - [func \(UnimplementedEnvironmentServiceServer\) ListEnvironments\(context.Context, \*ListEnvironmentsRequest\) \(\*ListEnvironmentsResponse, error\)](<#UnimplementedEnvironmentServiceServer.ListEnvironments>)
+  - [func \(UnimplementedEnvironmentServiceServer\) PatchEnvironment\(context.Context, \*PatchEnvironmentRequest\) \(\*PatchEnvironmentResponse, error\)](<#UnimplementedEnvironmentServiceServer.PatchEnvironment>)
+  - [func \(UnimplementedEnvironmentServiceServer\) UpdateEnvironment\(context.Context, \*UpdateEnvironmentRequest\) \(\*UpdateEnvironmentResponse, error\)](<#UnimplementedEnvironmentServiceServer.UpdateEnvironment>)
+  - [func \(UnimplementedEnvironmentServiceServer\) WatchEnvironment\(\*WatchEnvironmentRequest, grpc.ServerStreamingServer\[WatchEnvironmentResponse\]\) error](<#UnimplementedEnvironmentServiceServer.WatchEnvironment>)
+- [type UnimplementedPackageServiceServer](<#UnimplementedPackageServiceServer>)
+  - [func \(UnimplementedPackageServiceServer\) CreatePackage\(context.Context, \*CreatePackageRequest\) \(\*CreatePackageResponse, error\)](<#UnimplementedPackageServiceServer.CreatePackage>)
+  - [func \(UnimplementedPackageServiceServer\) DeletePackage\(context.Context, \*DeletePackageRequest\) \(\*DeletePackageResponse, error\)](<#UnimplementedPackageServiceServer.DeletePackage>)
+  - [func \(UnimplementedPackageServiceServer\) GetPackage\(context.Context, \*GetPackageRequest\) \(\*GetPackageResponse, error\)](<#UnimplementedPackageServiceServer.GetPackage>)
+  - [func \(UnimplementedPackageServiceServer\) ListPackages\(context.Context, \*ListPackagesRequest\) \(\*ListPackagesResponse, error\)](<#UnimplementedPackageServiceServer.ListPackages>)
+  - [func \(UnimplementedPackageServiceServer\) PatchPackage\(context.Context, \*PatchPackageRequest\) \(\*PatchPackageResponse, error\)](<#UnimplementedPackageServiceServer.PatchPackage>)
+  - [func \(UnimplementedPackageServiceServer\) UpdatePackage\(context.Context, \*UpdatePackageRequest\) \(\*UpdatePackageResponse, error\)](<#UnimplementedPackageServiceServer.UpdatePackage>)
+  - [func \(UnimplementedPackageServiceServer\) WatchPackage\(\*WatchPackageRequest, grpc.ServerStreamingServer\[WatchPackageResponse\]\) error](<#UnimplementedPackageServiceServer.WatchPackage>)
+- [type UnimplementedServiceUnitServiceServer](<#UnimplementedServiceUnitServiceServer>)
+  - [func \(UnimplementedServiceUnitServiceServer\) CreateServiceUnit\(context.Context, \*CreateServiceUnitRequest\) \(\*CreateServiceUnitResponse, error\)](<#UnimplementedServiceUnitServiceServer.CreateServiceUnit>)
+  - [func \(UnimplementedServiceUnitServiceServer\) DeleteServiceUnit\(context.Context, \*DeleteServiceUnitRequest\) \(\*DeleteServiceUnitResponse, error\)](<#UnimplementedServiceUnitServiceServer.DeleteServiceUnit>)
+  - [func \(UnimplementedServiceUnitServiceServer\) GetServiceUnit\(context.Context, \*GetServiceUnitRequest\) \(\*GetServiceUnitResponse, error\)](<#UnimplementedServiceUnitServiceServer.GetServiceUnit>)
+  - [func \(UnimplementedServiceUnitServiceServer\) ListServiceUnits\(context.Context, \*ListServiceUnitsRequest\) \(\*ListServiceUnitsResponse, error\)](<#UnimplementedServiceUnitServiceServer.ListServiceUnits>)
+  - [func \(UnimplementedServiceUnitServiceServer\) PatchServiceUnit\(context.Context, \*PatchServiceUnitRequest\) \(\*PatchServiceUnitResponse, error\)](<#UnimplementedServiceUnitServiceServer.PatchServiceUnit>)
+  - [func \(UnimplementedServiceUnitServiceServer\) UpdateServiceUnit\(context.Context, \*UpdateServiceUnitRequest\) \(\*UpdateServiceUnitResponse, error\)](<#UnimplementedServiceUnitServiceServer.UpdateServiceUnit>)
+  - [func \(UnimplementedServiceUnitServiceServer\) WatchServiceUnit\(\*WatchServiceUnitRequest, grpc.ServerStreamingServer\[WatchServiceUnitResponse\]\) error](<#UnimplementedServiceUnitServiceServer.WatchServiceUnit>)
+- [type UnsafeBuildServiceServer](<#UnsafeBuildServiceServer>)
+- [type UnsafeDeploymentServiceServer](<#UnsafeDeploymentServiceServer>)
+- [type UnsafeEnvironmentServiceServer](<#UnsafeEnvironmentServiceServer>)
+- [type UnsafePackageServiceServer](<#UnsafePackageServiceServer>)
+- [type UnsafeServiceUnitServiceServer](<#UnsafeServiceUnitServiceServer>)
+- [type UpdateBuildRequest](<#UpdateBuildRequest>)
+  - [func \(\*UpdateBuildRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#UpdateBuildRequest.Descriptor>)
+  - [func \(x \*UpdateBuildRequest\) GetBuild\(\) \*Build](<#UpdateBuildRequest.GetBuild>)
+  - [func \(\*UpdateBuildRequest\) ProtoMessage\(\)](<#UpdateBuildRequest.ProtoMessage>)
+  - [func \(x \*UpdateBuildRequest\) ProtoReflect\(\) protoreflect.Message](<#UpdateBuildRequest.ProtoReflect>)
+  - [func \(x \*UpdateBuildRequest\) Reset\(\)](<#UpdateBuildRequest.Reset>)
+  - [func \(x \*UpdateBuildRequest\) String\(\) string](<#UpdateBuildRequest.String>)
+- [type UpdateBuildResponse](<#UpdateBuildResponse>)
+  - [func \(\*UpdateBuildResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#UpdateBuildResponse.Descriptor>)
+  - [func \(x \*UpdateBuildResponse\) GetBuild\(\) \*Build](<#UpdateBuildResponse.GetBuild>)
+  - [func \(\*UpdateBuildResponse\) ProtoMessage\(\)](<#UpdateBuildResponse.ProtoMessage>)
+  - [func \(x \*UpdateBuildResponse\) ProtoReflect\(\) protoreflect.Message](<#UpdateBuildResponse.ProtoReflect>)
+  - [func \(x \*UpdateBuildResponse\) Reset\(\)](<#UpdateBuildResponse.Reset>)
+  - [func \(x \*UpdateBuildResponse\) String\(\) string](<#UpdateBuildResponse.String>)
+- [type UpdateDeploymentRequest](<#UpdateDeploymentRequest>)
+  - [func \(\*UpdateDeploymentRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#UpdateDeploymentRequest.Descriptor>)
+  - [func \(x \*UpdateDeploymentRequest\) GetDeployment\(\) \*Deployment](<#UpdateDeploymentRequest.GetDeployment>)
+  - [func \(\*UpdateDeploymentRequest\) ProtoMessage\(\)](<#UpdateDeploymentRequest.ProtoMessage>)
+  - [func \(x \*UpdateDeploymentRequest\) ProtoReflect\(\) protoreflect.Message](<#UpdateDeploymentRequest.ProtoReflect>)
+  - [func \(x \*UpdateDeploymentRequest\) Reset\(\)](<#UpdateDeploymentRequest.Reset>)
+  - [func \(x \*UpdateDeploymentRequest\) String\(\) string](<#UpdateDeploymentRequest.String>)
+- [type UpdateDeploymentResponse](<#UpdateDeploymentResponse>)
+  - [func \(\*UpdateDeploymentResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#UpdateDeploymentResponse.Descriptor>)
+  - [func \(x \*UpdateDeploymentResponse\) GetDeployment\(\) \*Deployment](<#UpdateDeploymentResponse.GetDeployment>)
+  - [func \(\*UpdateDeploymentResponse\) ProtoMessage\(\)](<#UpdateDeploymentResponse.ProtoMessage>)
+  - [func \(x \*UpdateDeploymentResponse\) ProtoReflect\(\) protoreflect.Message](<#UpdateDeploymentResponse.ProtoReflect>)
+  - [func \(x \*UpdateDeploymentResponse\) Reset\(\)](<#UpdateDeploymentResponse.Reset>)
+  - [func \(x \*UpdateDeploymentResponse\) String\(\) string](<#UpdateDeploymentResponse.String>)
+- [type UpdateEnvironmentRequest](<#UpdateEnvironmentRequest>)
+  - [func \(\*UpdateEnvironmentRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#UpdateEnvironmentRequest.Descriptor>)
+  - [func \(x \*UpdateEnvironmentRequest\) GetEnvironment\(\) \*Environment](<#UpdateEnvironmentRequest.GetEnvironment>)
+  - [func \(\*UpdateEnvironmentRequest\) ProtoMessage\(\)](<#UpdateEnvironmentRequest.ProtoMessage>)
+  - [func \(x \*UpdateEnvironmentRequest\) ProtoReflect\(\) protoreflect.Message](<#UpdateEnvironmentRequest.ProtoReflect>)
+  - [func \(x \*UpdateEnvironmentRequest\) Reset\(\)](<#UpdateEnvironmentRequest.Reset>)
+  - [func \(x \*UpdateEnvironmentRequest\) String\(\) string](<#UpdateEnvironmentRequest.String>)
+- [type UpdateEnvironmentResponse](<#UpdateEnvironmentResponse>)
+  - [func \(\*UpdateEnvironmentResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#UpdateEnvironmentResponse.Descriptor>)
+  - [func \(x \*UpdateEnvironmentResponse\) GetEnvironment\(\) \*Environment](<#UpdateEnvironmentResponse.GetEnvironment>)
+  - [func \(\*UpdateEnvironmentResponse\) ProtoMessage\(\)](<#UpdateEnvironmentResponse.ProtoMessage>)
+  - [func \(x \*UpdateEnvironmentResponse\) ProtoReflect\(\) protoreflect.Message](<#UpdateEnvironmentResponse.ProtoReflect>)
+  - [func \(x \*UpdateEnvironmentResponse\) Reset\(\)](<#UpdateEnvironmentResponse.Reset>)
+  - [func \(x \*UpdateEnvironmentResponse\) String\(\) string](<#UpdateEnvironmentResponse.String>)
+- [type UpdatePackageRequest](<#UpdatePackageRequest>)
+  - [func \(\*UpdatePackageRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#UpdatePackageRequest.Descriptor>)
+  - [func \(x \*UpdatePackageRequest\) GetPackage\(\) \*Package](<#UpdatePackageRequest.GetPackage>)
+  - [func \(\*UpdatePackageRequest\) ProtoMessage\(\)](<#UpdatePackageRequest.ProtoMessage>)
+  - [func \(x \*UpdatePackageRequest\) ProtoReflect\(\) protoreflect.Message](<#UpdatePackageRequest.ProtoReflect>)
+  - [func \(x \*UpdatePackageRequest\) Reset\(\)](<#UpdatePackageRequest.Reset>)
+  - [func \(x \*UpdatePackageRequest\) String\(\) string](<#UpdatePackageRequest.String>)
+- [type UpdatePackageResponse](<#UpdatePackageResponse>)
+  - [func \(\*UpdatePackageResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#UpdatePackageResponse.Descriptor>)
+  - [func \(x \*UpdatePackageResponse\) GetPackage\(\) \*Package](<#UpdatePackageResponse.GetPackage>)
+  - [func \(\*UpdatePackageResponse\) ProtoMessage\(\)](<#UpdatePackageResponse.ProtoMessage>)
+  - [func \(x \*UpdatePackageResponse\) ProtoReflect\(\) protoreflect.Message](<#UpdatePackageResponse.ProtoReflect>)
+  - [func \(x \*UpdatePackageResponse\) Reset\(\)](<#UpdatePackageResponse.Reset>)
+  - [func \(x \*UpdatePackageResponse\) String\(\) string](<#UpdatePackageResponse.String>)
+- [type UpdateServiceUnitRequest](<#UpdateServiceUnitRequest>)
+  - [func \(\*UpdateServiceUnitRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#UpdateServiceUnitRequest.Descriptor>)
+  - [func \(x \*UpdateServiceUnitRequest\) GetServiceUnit\(\) \*ServiceUnit](<#UpdateServiceUnitRequest.GetServiceUnit>)
+  - [func \(\*UpdateServiceUnitRequest\) ProtoMessage\(\)](<#UpdateServiceUnitRequest.ProtoMessage>)
+  - [func \(x \*UpdateServiceUnitRequest\) ProtoReflect\(\) protoreflect.Message](<#UpdateServiceUnitRequest.ProtoReflect>)
+  - [func \(x \*UpdateServiceUnitRequest\) Reset\(\)](<#UpdateServiceUnitRequest.Reset>)
+  - [func \(x \*UpdateServiceUnitRequest\) String\(\) string](<#UpdateServiceUnitRequest.String>)
+- [type UpdateServiceUnitResponse](<#UpdateServiceUnitResponse>)
+  - [func \(\*UpdateServiceUnitResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#UpdateServiceUnitResponse.Descriptor>)
+  - [func \(x \*UpdateServiceUnitResponse\) GetServiceUnit\(\) \*ServiceUnit](<#UpdateServiceUnitResponse.GetServiceUnit>)
+  - [func \(\*UpdateServiceUnitResponse\) ProtoMessage\(\)](<#UpdateServiceUnitResponse.ProtoMessage>)
+  - [func \(x \*UpdateServiceUnitResponse\) ProtoReflect\(\) protoreflect.Message](<#UpdateServiceUnitResponse.ProtoReflect>)
+  - [func \(x \*UpdateServiceUnitResponse\) Reset\(\)](<#UpdateServiceUnitResponse.Reset>)
+  - [func \(x \*UpdateServiceUnitResponse\) String\(\) string](<#UpdateServiceUnitResponse.String>)
+- [type WatchBuildRequest](<#WatchBuildRequest>)
+  - [func \(\*WatchBuildRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#WatchBuildRequest.Descriptor>)
+  - [func \(x \*WatchBuildRequest\) GetName\(\) string](<#WatchBuildRequest.GetName>)
+  - [func \(\*WatchBuildRequest\) ProtoMessage\(\)](<#WatchBuildRequest.ProtoMessage>)
+  - [func \(x \*WatchBuildRequest\) ProtoReflect\(\) protoreflect.Message](<#WatchBuildRequest.ProtoReflect>)
+  - [func \(x \*WatchBuildRequest\) Reset\(\)](<#WatchBuildRequest.Reset>)
+  - [func \(x \*WatchBuildRequest\) String\(\) string](<#WatchBuildRequest.String>)
+- [type WatchBuildResponse](<#WatchBuildResponse>)
+  - [func \(\*WatchBuildResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#WatchBuildResponse.Descriptor>)
+  - [func \(x \*WatchBuildResponse\) GetBuild\(\) \*Build](<#WatchBuildResponse.GetBuild>)
+  - [func \(x \*WatchBuildResponse\) GetType\(\) v1.EventType](<#WatchBuildResponse.GetType>)
+  - [func \(\*WatchBuildResponse\) ProtoMessage\(\)](<#WatchBuildResponse.ProtoMessage>)
+  - [func \(x \*WatchBuildResponse\) ProtoReflect\(\) protoreflect.Message](<#WatchBuildResponse.ProtoReflect>)
+  - [func \(x \*WatchBuildResponse\) Reset\(\)](<#WatchBuildResponse.Reset>)
+  - [func \(x \*WatchBuildResponse\) String\(\) string](<#WatchBuildResponse.String>)
+- [type WatchDeploymentRequest](<#WatchDeploymentRequest>)
+  - [func \(\*WatchDeploymentRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#WatchDeploymentRequest.Descriptor>)
+  - [func \(x \*WatchDeploymentRequest\) GetName\(\) string](<#WatchDeploymentRequest.GetName>)
+  - [func \(\*WatchDeploymentRequest\) ProtoMessage\(\)](<#WatchDeploymentRequest.ProtoMessage>)
+  - [func \(x \*WatchDeploymentRequest\) ProtoReflect\(\) protoreflect.Message](<#WatchDeploymentRequest.ProtoReflect>)
+  - [func \(x \*WatchDeploymentRequest\) Reset\(\)](<#WatchDeploymentRequest.Reset>)
+  - [func \(x \*WatchDeploymentRequest\) String\(\) string](<#WatchDeploymentRequest.String>)
+- [type WatchDeploymentResponse](<#WatchDeploymentResponse>)
+  - [func \(\*WatchDeploymentResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#WatchDeploymentResponse.Descriptor>)
+  - [func \(x \*WatchDeploymentResponse\) GetDeployment\(\) \*Deployment](<#WatchDeploymentResponse.GetDeployment>)
+  - [func \(x \*WatchDeploymentResponse\) GetType\(\) v1.EventType](<#WatchDeploymentResponse.GetType>)
+  - [func \(\*WatchDeploymentResponse\) ProtoMessage\(\)](<#WatchDeploymentResponse.ProtoMessage>)
+  - [func \(x \*WatchDeploymentResponse\) ProtoReflect\(\) protoreflect.Message](<#WatchDeploymentResponse.ProtoReflect>)
+  - [func \(x \*WatchDeploymentResponse\) Reset\(\)](<#WatchDeploymentResponse.Reset>)
+  - [func \(x \*WatchDeploymentResponse\) String\(\) string](<#WatchDeploymentResponse.String>)
+- [type WatchEnvironmentRequest](<#WatchEnvironmentRequest>)
+  - [func \(\*WatchEnvironmentRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#WatchEnvironmentRequest.Descriptor>)
+  - [func \(x \*WatchEnvironmentRequest\) GetName\(\) string](<#WatchEnvironmentRequest.GetName>)
+  - [func \(\*WatchEnvironmentRequest\) ProtoMessage\(\)](<#WatchEnvironmentRequest.ProtoMessage>)
+  - [func \(x \*WatchEnvironmentRequest\) ProtoReflect\(\) protoreflect.Message](<#WatchEnvironmentRequest.ProtoReflect>)
+  - [func \(x \*WatchEnvironmentRequest\) Reset\(\)](<#WatchEnvironmentRequest.Reset>)
+  - [func \(x \*WatchEnvironmentRequest\) String\(\) string](<#WatchEnvironmentRequest.String>)
+- [type WatchEnvironmentResponse](<#WatchEnvironmentResponse>)
+  - [func \(\*WatchEnvironmentResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#WatchEnvironmentResponse.Descriptor>)
+  - [func \(x \*WatchEnvironmentResponse\) GetEnvironment\(\) \*Environment](<#WatchEnvironmentResponse.GetEnvironment>)
+  - [func \(x \*WatchEnvironmentResponse\) GetType\(\) v1.EventType](<#WatchEnvironmentResponse.GetType>)
+  - [func \(\*WatchEnvironmentResponse\) ProtoMessage\(\)](<#WatchEnvironmentResponse.ProtoMessage>)
+  - [func \(x \*WatchEnvironmentResponse\) ProtoReflect\(\) protoreflect.Message](<#WatchEnvironmentResponse.ProtoReflect>)
+  - [func \(x \*WatchEnvironmentResponse\) Reset\(\)](<#WatchEnvironmentResponse.Reset>)
+  - [func \(x \*WatchEnvironmentResponse\) String\(\) string](<#WatchEnvironmentResponse.String>)
+- [type WatchPackageRequest](<#WatchPackageRequest>)
+  - [func \(\*WatchPackageRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#WatchPackageRequest.Descriptor>)
+  - [func \(x \*WatchPackageRequest\) GetName\(\) string](<#WatchPackageRequest.GetName>)
+  - [func \(\*WatchPackageRequest\) ProtoMessage\(\)](<#WatchPackageRequest.ProtoMessage>)
+  - [func \(x \*WatchPackageRequest\) ProtoReflect\(\) protoreflect.Message](<#WatchPackageRequest.ProtoReflect>)
+  - [func \(x \*WatchPackageRequest\) Reset\(\)](<#WatchPackageRequest.Reset>)
+  - [func \(x \*WatchPackageRequest\) String\(\) string](<#WatchPackageRequest.String>)
+- [type WatchPackageResponse](<#WatchPackageResponse>)
+  - [func \(\*WatchPackageResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#WatchPackageResponse.Descriptor>)
+  - [func \(x \*WatchPackageResponse\) GetPackage\(\) \*Package](<#WatchPackageResponse.GetPackage>)
+  - [func \(x \*WatchPackageResponse\) GetType\(\) v1.EventType](<#WatchPackageResponse.GetType>)
+  - [func \(\*WatchPackageResponse\) ProtoMessage\(\)](<#WatchPackageResponse.ProtoMessage>)
+  - [func \(x \*WatchPackageResponse\) ProtoReflect\(\) protoreflect.Message](<#WatchPackageResponse.ProtoReflect>)
+  - [func \(x \*WatchPackageResponse\) Reset\(\)](<#WatchPackageResponse.Reset>)
+  - [func \(x \*WatchPackageResponse\) String\(\) string](<#WatchPackageResponse.String>)
+- [type WatchServiceUnitRequest](<#WatchServiceUnitRequest>)
+  - [func \(\*WatchServiceUnitRequest\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#WatchServiceUnitRequest.Descriptor>)
+  - [func \(x \*WatchServiceUnitRequest\) GetName\(\) string](<#WatchServiceUnitRequest.GetName>)
+  - [func \(\*WatchServiceUnitRequest\) ProtoMessage\(\)](<#WatchServiceUnitRequest.ProtoMessage>)
+  - [func \(x \*WatchServiceUnitRequest\) ProtoReflect\(\) protoreflect.Message](<#WatchServiceUnitRequest.ProtoReflect>)
+  - [func \(x \*WatchServiceUnitRequest\) Reset\(\)](<#WatchServiceUnitRequest.Reset>)
+  - [func \(x \*WatchServiceUnitRequest\) String\(\) string](<#WatchServiceUnitRequest.String>)
+- [type WatchServiceUnitResponse](<#WatchServiceUnitResponse>)
+  - [func \(\*WatchServiceUnitResponse\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#WatchServiceUnitResponse.Descriptor>)
+  - [func \(x \*WatchServiceUnitResponse\) GetServiceUnit\(\) \*ServiceUnit](<#WatchServiceUnitResponse.GetServiceUnit>)
+  - [func \(x \*WatchServiceUnitResponse\) GetType\(\) v1.EventType](<#WatchServiceUnitResponse.GetType>)
+  - [func \(\*WatchServiceUnitResponse\) ProtoMessage\(\)](<#WatchServiceUnitResponse.ProtoMessage>)
+  - [func \(x \*WatchServiceUnitResponse\) ProtoReflect\(\) protoreflect.Message](<#WatchServiceUnitResponse.ProtoReflect>)
+  - [func \(x \*WatchServiceUnitResponse\) Reset\(\)](<#WatchServiceUnitResponse.Reset>)
+  - [func \(x \*WatchServiceUnitResponse\) String\(\) string](<#WatchServiceUnitResponse.String>)
+- [type WorkloadReference](<#WorkloadReference>)
+  - [func \(\*WorkloadReference\) Descriptor\(\) \(\[\]byte, \[\]int\)](<#WorkloadReference.Descriptor>)
+  - [func \(x \*WorkloadReference\) GetApiVersion\(\) string](<#WorkloadReference.GetApiVersion>)
+  - [func \(x \*WorkloadReference\) GetKind\(\) string](<#WorkloadReference.GetKind>)
+  - [func \(x \*WorkloadReference\) GetName\(\) string](<#WorkloadReference.GetName>)
+  - [func \(x \*WorkloadReference\) GetNamespace\(\) string](<#WorkloadReference.GetNamespace>)
+  - [func \(\*WorkloadReference\) ProtoMessage\(\)](<#WorkloadReference.ProtoMessage>)
+  - [func \(x \*WorkloadReference\) ProtoReflect\(\) protoreflect.Message](<#WorkloadReference.ProtoReflect>)
+  - [func \(x \*WorkloadReference\) Reset\(\)](<#WorkloadReference.Reset>)
+  - [func \(x \*WorkloadReference\) String\(\) string](<#WorkloadReference.String>)
+
+
+## Constants
+
+<a name="BuildService_CreateBuild_FullMethodName"></a>
+
+```go
+const (
+    BuildService_CreateBuild_FullMethodName  = "/blanketops.environments.v1alpha1.BuildService/CreateBuild"
+    BuildService_GetBuild_FullMethodName     = "/blanketops.environments.v1alpha1.BuildService/GetBuild"
+    BuildService_UpdateBuild_FullMethodName  = "/blanketops.environments.v1alpha1.BuildService/UpdateBuild"
+    BuildService_PatchBuild_FullMethodName   = "/blanketops.environments.v1alpha1.BuildService/PatchBuild"
+    BuildService_ListBuilds_FullMethodName   = "/blanketops.environments.v1alpha1.BuildService/ListBuilds"
+    BuildService_DeleteBuild_FullMethodName  = "/blanketops.environments.v1alpha1.BuildService/DeleteBuild"
+    BuildService_TriggerBuild_FullMethodName = "/blanketops.environments.v1alpha1.BuildService/TriggerBuild"
+    BuildService_WatchBuild_FullMethodName   = "/blanketops.environments.v1alpha1.BuildService/WatchBuild"
+)
+```
+
+<a name="DeploymentService_CreateDeployment_FullMethodName"></a>
+
+```go
+const (
+    DeploymentService_CreateDeployment_FullMethodName = "/blanketops.environments.v1alpha1.DeploymentService/CreateDeployment"
+    DeploymentService_GetDeployment_FullMethodName    = "/blanketops.environments.v1alpha1.DeploymentService/GetDeployment"
+    DeploymentService_UpdateDeployment_FullMethodName = "/blanketops.environments.v1alpha1.DeploymentService/UpdateDeployment"
+    DeploymentService_PatchDeployment_FullMethodName  = "/blanketops.environments.v1alpha1.DeploymentService/PatchDeployment"
+    DeploymentService_ListDeployments_FullMethodName  = "/blanketops.environments.v1alpha1.DeploymentService/ListDeployments"
+    DeploymentService_DeleteDeployment_FullMethodName = "/blanketops.environments.v1alpha1.DeploymentService/DeleteDeployment"
+    DeploymentService_WatchDeployment_FullMethodName  = "/blanketops.environments.v1alpha1.DeploymentService/WatchDeployment"
+)
+```
+
+<a name="EnvironmentService_CreateEnvironment_FullMethodName"></a>
+
+```go
+const (
+    EnvironmentService_CreateEnvironment_FullMethodName = "/blanketops.environments.v1alpha1.EnvironmentService/CreateEnvironment"
+    EnvironmentService_GetEnvironment_FullMethodName    = "/blanketops.environments.v1alpha1.EnvironmentService/GetEnvironment"
+    EnvironmentService_UpdateEnvironment_FullMethodName = "/blanketops.environments.v1alpha1.EnvironmentService/UpdateEnvironment"
+    EnvironmentService_PatchEnvironment_FullMethodName  = "/blanketops.environments.v1alpha1.EnvironmentService/PatchEnvironment"
+    EnvironmentService_ListEnvironments_FullMethodName  = "/blanketops.environments.v1alpha1.EnvironmentService/ListEnvironments"
+    EnvironmentService_DeleteEnvironment_FullMethodName = "/blanketops.environments.v1alpha1.EnvironmentService/DeleteEnvironment"
+    EnvironmentService_WatchEnvironment_FullMethodName  = "/blanketops.environments.v1alpha1.EnvironmentService/WatchEnvironment"
+)
+```
+
+<a name="PackageService_CreatePackage_FullMethodName"></a>
+
+```go
+const (
+    PackageService_CreatePackage_FullMethodName = "/blanketops.environments.v1alpha1.PackageService/CreatePackage"
+    PackageService_GetPackage_FullMethodName    = "/blanketops.environments.v1alpha1.PackageService/GetPackage"
+    PackageService_UpdatePackage_FullMethodName = "/blanketops.environments.v1alpha1.PackageService/UpdatePackage"
+    PackageService_PatchPackage_FullMethodName  = "/blanketops.environments.v1alpha1.PackageService/PatchPackage"
+    PackageService_ListPackages_FullMethodName  = "/blanketops.environments.v1alpha1.PackageService/ListPackages"
+    PackageService_DeletePackage_FullMethodName = "/blanketops.environments.v1alpha1.PackageService/DeletePackage"
+    PackageService_WatchPackage_FullMethodName  = "/blanketops.environments.v1alpha1.PackageService/WatchPackage"
+)
+```
+
+<a name="ServiceUnitService_CreateServiceUnit_FullMethodName"></a>
+
+```go
+const (
+    ServiceUnitService_CreateServiceUnit_FullMethodName = "/blanketops.environments.v1alpha1.ServiceUnitService/CreateServiceUnit"
+    ServiceUnitService_GetServiceUnit_FullMethodName    = "/blanketops.environments.v1alpha1.ServiceUnitService/GetServiceUnit"
+    ServiceUnitService_UpdateServiceUnit_FullMethodName = "/blanketops.environments.v1alpha1.ServiceUnitService/UpdateServiceUnit"
+    ServiceUnitService_PatchServiceUnit_FullMethodName  = "/blanketops.environments.v1alpha1.ServiceUnitService/PatchServiceUnit"
+    ServiceUnitService_ListServiceUnits_FullMethodName  = "/blanketops.environments.v1alpha1.ServiceUnitService/ListServiceUnits"
+    ServiceUnitService_DeleteServiceUnit_FullMethodName = "/blanketops.environments.v1alpha1.ServiceUnitService/DeleteServiceUnit"
+    ServiceUnitService_WatchServiceUnit_FullMethodName  = "/blanketops.environments.v1alpha1.ServiceUnitService/WatchServiceUnit"
+)
+```
+
+## Variables
+
+<a name="BuildService_ServiceDesc"></a>BuildService\_ServiceDesc is the grpc.ServiceDesc for BuildService service. It's only intended for direct use with grpc.RegisterService, and not to be introspected or modified \(even as a copy\)
+
+```go
+var BuildService_ServiceDesc = grpc.ServiceDesc{
+    ServiceName: "blanketops.environments.v1alpha1.BuildService",
+    HandlerType: (*BuildServiceServer)(nil),
+    Methods: []grpc.MethodDesc{
+        {
+            MethodName: "CreateBuild",
+            Handler:    _BuildService_CreateBuild_Handler,
+        },
+        {
+            MethodName: "GetBuild",
+            Handler:    _BuildService_GetBuild_Handler,
+        },
+        {
+            MethodName: "UpdateBuild",
+            Handler:    _BuildService_UpdateBuild_Handler,
+        },
+        {
+            MethodName: "PatchBuild",
+            Handler:    _BuildService_PatchBuild_Handler,
+        },
+        {
+            MethodName: "ListBuilds",
+            Handler:    _BuildService_ListBuilds_Handler,
+        },
+        {
+            MethodName: "DeleteBuild",
+            Handler:    _BuildService_DeleteBuild_Handler,
+        },
+        {
+            MethodName: "TriggerBuild",
+            Handler:    _BuildService_TriggerBuild_Handler,
+        },
+    },
+    Streams: []grpc.StreamDesc{
+        {
+            StreamName:    "WatchBuild",
+            Handler:       _BuildService_WatchBuild_Handler,
+            ServerStreams: true,
+        },
+    },
+    Metadata: "blanketops/environments/v1alpha1/build.proto",
+}
+```
+
+<a name="DeploymentService_ServiceDesc"></a>DeploymentService\_ServiceDesc is the grpc.ServiceDesc for DeploymentService service. It's only intended for direct use with grpc.RegisterService, and not to be introspected or modified \(even as a copy\)
+
+```go
+var DeploymentService_ServiceDesc = grpc.ServiceDesc{
+    ServiceName: "blanketops.environments.v1alpha1.DeploymentService",
+    HandlerType: (*DeploymentServiceServer)(nil),
+    Methods: []grpc.MethodDesc{
+        {
+            MethodName: "CreateDeployment",
+            Handler:    _DeploymentService_CreateDeployment_Handler,
+        },
+        {
+            MethodName: "GetDeployment",
+            Handler:    _DeploymentService_GetDeployment_Handler,
+        },
+        {
+            MethodName: "UpdateDeployment",
+            Handler:    _DeploymentService_UpdateDeployment_Handler,
+        },
+        {
+            MethodName: "PatchDeployment",
+            Handler:    _DeploymentService_PatchDeployment_Handler,
+        },
+        {
+            MethodName: "ListDeployments",
+            Handler:    _DeploymentService_ListDeployments_Handler,
+        },
+        {
+            MethodName: "DeleteDeployment",
+            Handler:    _DeploymentService_DeleteDeployment_Handler,
+        },
+    },
+    Streams: []grpc.StreamDesc{
+        {
+            StreamName:    "WatchDeployment",
+            Handler:       _DeploymentService_WatchDeployment_Handler,
+            ServerStreams: true,
+        },
+    },
+    Metadata: "blanketops/environments/v1alpha1/deployment.proto",
+}
+```
+
+<a name="EnvironmentService_ServiceDesc"></a>EnvironmentService\_ServiceDesc is the grpc.ServiceDesc for EnvironmentService service. It's only intended for direct use with grpc.RegisterService, and not to be introspected or modified \(even as a copy\)
+
+```go
+var EnvironmentService_ServiceDesc = grpc.ServiceDesc{
+    ServiceName: "blanketops.environments.v1alpha1.EnvironmentService",
+    HandlerType: (*EnvironmentServiceServer)(nil),
+    Methods: []grpc.MethodDesc{
+        {
+            MethodName: "CreateEnvironment",
+            Handler:    _EnvironmentService_CreateEnvironment_Handler,
+        },
+        {
+            MethodName: "GetEnvironment",
+            Handler:    _EnvironmentService_GetEnvironment_Handler,
+        },
+        {
+            MethodName: "UpdateEnvironment",
+            Handler:    _EnvironmentService_UpdateEnvironment_Handler,
+        },
+        {
+            MethodName: "PatchEnvironment",
+            Handler:    _EnvironmentService_PatchEnvironment_Handler,
+        },
+        {
+            MethodName: "ListEnvironments",
+            Handler:    _EnvironmentService_ListEnvironments_Handler,
+        },
+        {
+            MethodName: "DeleteEnvironment",
+            Handler:    _EnvironmentService_DeleteEnvironment_Handler,
+        },
+    },
+    Streams: []grpc.StreamDesc{
+        {
+            StreamName:    "WatchEnvironment",
+            Handler:       _EnvironmentService_WatchEnvironment_Handler,
+            ServerStreams: true,
+        },
+    },
+    Metadata: "blanketops/environments/v1alpha1/environment.proto",
+}
+```
+
+<a name="File_blanketops_environments_v1alpha1_build_proto"></a>
+
+```go
+var File_blanketops_environments_v1alpha1_build_proto protoreflect.FileDescriptor
+```
+
+<a name="File_blanketops_environments_v1alpha1_deployment_proto"></a>
+
+```go
+var File_blanketops_environments_v1alpha1_deployment_proto protoreflect.FileDescriptor
+```
+
+<a name="File_blanketops_environments_v1alpha1_environment_proto"></a>
+
+```go
+var File_blanketops_environments_v1alpha1_environment_proto protoreflect.FileDescriptor
+```
+
+<a name="File_blanketops_environments_v1alpha1_package_proto"></a>
+
+```go
+var File_blanketops_environments_v1alpha1_package_proto protoreflect.FileDescriptor
+```
+
+<a name="File_blanketops_environments_v1alpha1_serviceunit_proto"></a>
+
+```go
+var File_blanketops_environments_v1alpha1_serviceunit_proto protoreflect.FileDescriptor
+```
+
+<a name="PackageService_ServiceDesc"></a>PackageService\_ServiceDesc is the grpc.ServiceDesc for PackageService service. It's only intended for direct use with grpc.RegisterService, and not to be introspected or modified \(even as a copy\)
+
+```go
+var PackageService_ServiceDesc = grpc.ServiceDesc{
+    ServiceName: "blanketops.environments.v1alpha1.PackageService",
+    HandlerType: (*PackageServiceServer)(nil),
+    Methods: []grpc.MethodDesc{
+        {
+            MethodName: "CreatePackage",
+            Handler:    _PackageService_CreatePackage_Handler,
+        },
+        {
+            MethodName: "GetPackage",
+            Handler:    _PackageService_GetPackage_Handler,
+        },
+        {
+            MethodName: "UpdatePackage",
+            Handler:    _PackageService_UpdatePackage_Handler,
+        },
+        {
+            MethodName: "PatchPackage",
+            Handler:    _PackageService_PatchPackage_Handler,
+        },
+        {
+            MethodName: "ListPackages",
+            Handler:    _PackageService_ListPackages_Handler,
+        },
+        {
+            MethodName: "DeletePackage",
+            Handler:    _PackageService_DeletePackage_Handler,
+        },
+    },
+    Streams: []grpc.StreamDesc{
+        {
+            StreamName:    "WatchPackage",
+            Handler:       _PackageService_WatchPackage_Handler,
+            ServerStreams: true,
+        },
+    },
+    Metadata: "blanketops/environments/v1alpha1/package.proto",
+}
+```
+
+<a name="ServiceUnitService_ServiceDesc"></a>ServiceUnitService\_ServiceDesc is the grpc.ServiceDesc for ServiceUnitService service. It's only intended for direct use with grpc.RegisterService, and not to be introspected or modified \(even as a copy\)
+
+```go
+var ServiceUnitService_ServiceDesc = grpc.ServiceDesc{
+    ServiceName: "blanketops.environments.v1alpha1.ServiceUnitService",
+    HandlerType: (*ServiceUnitServiceServer)(nil),
+    Methods: []grpc.MethodDesc{
+        {
+            MethodName: "CreateServiceUnit",
+            Handler:    _ServiceUnitService_CreateServiceUnit_Handler,
+        },
+        {
+            MethodName: "GetServiceUnit",
+            Handler:    _ServiceUnitService_GetServiceUnit_Handler,
+        },
+        {
+            MethodName: "UpdateServiceUnit",
+            Handler:    _ServiceUnitService_UpdateServiceUnit_Handler,
+        },
+        {
+            MethodName: "PatchServiceUnit",
+            Handler:    _ServiceUnitService_PatchServiceUnit_Handler,
+        },
+        {
+            MethodName: "ListServiceUnits",
+            Handler:    _ServiceUnitService_ListServiceUnits_Handler,
+        },
+        {
+            MethodName: "DeleteServiceUnit",
+            Handler:    _ServiceUnitService_DeleteServiceUnit_Handler,
+        },
+    },
+    Streams: []grpc.StreamDesc{
+        {
+            StreamName:    "WatchServiceUnit",
+            Handler:       _ServiceUnitService_WatchServiceUnit_Handler,
+            ServerStreams: true,
+        },
+    },
+    Metadata: "blanketops/environments/v1alpha1/serviceunit.proto",
+}
+```
+
+<a name="RegisterBuildServiceServer"></a>
+## func RegisterBuildServiceServer
+
+```go
+func RegisterBuildServiceServer(s grpc.ServiceRegistrar, srv BuildServiceServer)
+```
+
+
+
+<a name="RegisterDeploymentServiceServer"></a>
+## func RegisterDeploymentServiceServer
+
+```go
+func RegisterDeploymentServiceServer(s grpc.ServiceRegistrar, srv DeploymentServiceServer)
+```
+
+
+
+<a name="RegisterEnvironmentServiceServer"></a>
+## func RegisterEnvironmentServiceServer
+
+```go
+func RegisterEnvironmentServiceServer(s grpc.ServiceRegistrar, srv EnvironmentServiceServer)
+```
+
+
+
+<a name="RegisterPackageServiceServer"></a>
+## func RegisterPackageServiceServer
+
+```go
+func RegisterPackageServiceServer(s grpc.ServiceRegistrar, srv PackageServiceServer)
+```
+
+
+
+<a name="RegisterServiceUnitServiceServer"></a>
+## func RegisterServiceUnitServiceServer
+
+```go
+func RegisterServiceUnitServiceServer(s grpc.ServiceRegistrar, srv ServiceUnitServiceServer)
+```
+
+
+
+<a name="Build"></a>
+## type Build
+
+
+
+```go
+type Build struct {
+
+    // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
+    Metadata *v1.Metadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+    // Desired state declared by the operator.
+    Spec *BuildSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+    // Observed state set by the controller. Never manually edited.
+    Status *BuildStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="Build.Descriptor"></a>
+### func \(\*Build\) Descriptor
+
+```go
+func (*Build) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use Build.ProtoReflect.Descriptor instead.
+
+<a name="Build.GetMetadata"></a>
+### func \(\*Build\) GetMetadata
+
+```go
+func (x *Build) GetMetadata() *v1.Metadata
+```
+
+
+
+<a name="Build.GetSpec"></a>
+### func \(\*Build\) GetSpec
+
+```go
+func (x *Build) GetSpec() *BuildSpec
+```
+
+
+
+<a name="Build.GetStatus"></a>
+### func \(\*Build\) GetStatus
+
+```go
+func (x *Build) GetStatus() *BuildStatus
+```
+
+
+
+<a name="Build.ProtoMessage"></a>
+### func \(\*Build\) ProtoMessage
+
+```go
+func (*Build) ProtoMessage()
+```
+
+
+
+<a name="Build.ProtoReflect"></a>
+### func \(\*Build\) ProtoReflect
+
+```go
+func (x *Build) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="Build.Reset"></a>
+### func \(\*Build\) Reset
+
+```go
+func (x *Build) Reset()
+```
+
+
+
+<a name="Build.String"></a>
+### func \(\*Build\) String
+
+```go
+func (x *Build) String() string
+```
+
+
+
+<a name="BuildPolicy"></a>
+## type BuildPolicy
+
+
+
+```go
+type BuildPolicy struct {
+
+    // Events that are permitted to trigger a BuildRun.
+    // At least one trigger must be specified.
+    AllowedTriggers []*BuildTriggerPolicy `protobuf:"bytes,1,rep,name=allowed_triggers,json=allowedTriggers,proto3" json:"allowed_triggers,omitempty"`
+    // Retry behaviour on BuildRun failure.
+    Retry *RetryPolicy `protobuf:"bytes,2,opt,name=retry,proto3" json:"retry,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="BuildPolicy.Descriptor"></a>
+### func \(\*BuildPolicy\) Descriptor
+
+```go
+func (*BuildPolicy) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use BuildPolicy.ProtoReflect.Descriptor instead.
+
+<a name="BuildPolicy.GetAllowedTriggers"></a>
+### func \(\*BuildPolicy\) GetAllowedTriggers
+
+```go
+func (x *BuildPolicy) GetAllowedTriggers() []*BuildTriggerPolicy
+```
+
+
+
+<a name="BuildPolicy.GetRetry"></a>
+### func \(\*BuildPolicy\) GetRetry
+
+```go
+func (x *BuildPolicy) GetRetry() *RetryPolicy
+```
+
+
+
+<a name="BuildPolicy.ProtoMessage"></a>
+### func \(\*BuildPolicy\) ProtoMessage
+
+```go
+func (*BuildPolicy) ProtoMessage()
+```
+
+
+
+<a name="BuildPolicy.ProtoReflect"></a>
+### func \(\*BuildPolicy\) ProtoReflect
+
+```go
+func (x *BuildPolicy) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="BuildPolicy.Reset"></a>
+### func \(\*BuildPolicy\) Reset
+
+```go
+func (x *BuildPolicy) Reset()
+```
+
+
+
+<a name="BuildPolicy.String"></a>
+### func \(\*BuildPolicy\) String
+
+```go
+func (x *BuildPolicy) String() string
+```
+
+
+
+<a name="BuildReference"></a>
+## type BuildReference
+
+
+
+```go
+type BuildReference struct {
+
+    // Name of the source Build CR.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // Namespace of the source Build CR.
+    // Defaults to the ServiceUnit's namespace if empty.
+    Namespace string `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="BuildReference.Descriptor"></a>
+### func \(\*BuildReference\) Descriptor
+
+```go
+func (*BuildReference) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use BuildReference.ProtoReflect.Descriptor instead.
+
+<a name="BuildReference.GetName"></a>
+### func \(\*BuildReference\) GetName
+
+```go
+func (x *BuildReference) GetName() string
+```
+
+
+
+<a name="BuildReference.GetNamespace"></a>
+### func \(\*BuildReference\) GetNamespace
+
+```go
+func (x *BuildReference) GetNamespace() string
+```
+
+
+
+<a name="BuildReference.ProtoMessage"></a>
+### func \(\*BuildReference\) ProtoMessage
+
+```go
+func (*BuildReference) ProtoMessage()
+```
+
+
+
+<a name="BuildReference.ProtoReflect"></a>
+### func \(\*BuildReference\) ProtoReflect
+
+```go
+func (x *BuildReference) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="BuildReference.Reset"></a>
+### func \(\*BuildReference\) Reset
+
+```go
+func (x *BuildReference) Reset()
+```
+
+
+
+<a name="BuildReference.String"></a>
+### func \(\*BuildReference\) String
+
+```go
+func (x *BuildReference) String() string
+```
+
+
+
+<a name="BuildResolutionStatus"></a>
+## type BuildResolutionStatus
+
+
+
+```go
+type BuildResolutionStatus struct {
+
+    // Name of the resolved Build CR.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // Observed phase of the source Build.
+    Phase *v1.ServiceUnitDeploymentPhase `protobuf:"bytes,2,opt,name=phase,proto3" json:"phase,omitempty"`
+    // Image produced by the source Build, including digest.
+    Image string `protobuf:"bytes,3,opt,name=image,proto3" json:"image,omitempty"`
+    // Error detail when resolution failed.
+    Error string `protobuf:"bytes,4,opt,name=error,proto3" json:"error,omitempty"`
+    // When the resolution last changed.
+    LastTransitionTime *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=last_transition_time,json=lastTransitionTime,proto3" json:"last_transition_time,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="BuildResolutionStatus.Descriptor"></a>
+### func \(\*BuildResolutionStatus\) Descriptor
+
+```go
+func (*BuildResolutionStatus) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use BuildResolutionStatus.ProtoReflect.Descriptor instead.
+
+<a name="BuildResolutionStatus.GetError"></a>
+### func \(\*BuildResolutionStatus\) GetError
+
+```go
+func (x *BuildResolutionStatus) GetError() string
+```
+
+
+
+<a name="BuildResolutionStatus.GetImage"></a>
+### func \(\*BuildResolutionStatus\) GetImage
+
+```go
+func (x *BuildResolutionStatus) GetImage() string
+```
+
+
+
+<a name="BuildResolutionStatus.GetLastTransitionTime"></a>
+### func \(\*BuildResolutionStatus\) GetLastTransitionTime
+
+```go
+func (x *BuildResolutionStatus) GetLastTransitionTime() *timestamppb.Timestamp
+```
+
+
+
+<a name="BuildResolutionStatus.GetName"></a>
+### func \(\*BuildResolutionStatus\) GetName
+
+```go
+func (x *BuildResolutionStatus) GetName() string
+```
+
+
+
+<a name="BuildResolutionStatus.GetPhase"></a>
+### func \(\*BuildResolutionStatus\) GetPhase
+
+```go
+func (x *BuildResolutionStatus) GetPhase() *v1.ServiceUnitDeploymentPhase
+```
+
+
+
+<a name="BuildResolutionStatus.ProtoMessage"></a>
+### func \(\*BuildResolutionStatus\) ProtoMessage
+
+```go
+func (*BuildResolutionStatus) ProtoMessage()
+```
+
+
+
+<a name="BuildResolutionStatus.ProtoReflect"></a>
+### func \(\*BuildResolutionStatus\) ProtoReflect
+
+```go
+func (x *BuildResolutionStatus) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="BuildResolutionStatus.Reset"></a>
+### func \(\*BuildResolutionStatus\) Reset
+
+```go
+func (x *BuildResolutionStatus) Reset()
+```
+
+
+
+<a name="BuildResolutionStatus.String"></a>
+### func \(\*BuildResolutionStatus\) String
+
+```go
+func (x *BuildResolutionStatus) String() string
+```
+
+
+
+<a name="BuildServiceClient"></a>
+## type BuildServiceClient
+
+BuildServiceClient is the client API for BuildService service.
+
+For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+
+```go
+type BuildServiceClient interface {
+    // Declare a new Build intent.
+    // Controller emits Shipwright Build + BuildRun on first trigger.
+    CreateBuild(ctx context.Context, in *CreateBuildRequest, opts ...grpc.CallOption) (*CreateBuildResponse, error)
+    // Fetch a Build CR by name.
+    GetBuild(ctx context.Context, in *GetBuildRequest, opts ...grpc.CallOption) (*GetBuildResponse, error)
+    // Full replace of a Build spec.
+    UpdateBuild(ctx context.Context, in *UpdateBuildRequest, opts ...grpc.CallOption) (*UpdateBuildResponse, error)
+    // Partial update via JSON merge patch RFC 7396.
+    PatchBuild(ctx context.Context, in *PatchBuildRequest, opts ...grpc.CallOption) (*PatchBuildResponse, error)
+    // List Build CRs with optional phase/strategy filter and paging.
+    ListBuilds(ctx context.Context, in *ListBuildsRequest, opts ...grpc.CallOption) (*ListBuildsResponse, error)
+    // Delete a Build CR and its owned Shipwright resources.
+    DeleteBuild(ctx context.Context, in *DeleteBuildRequest, opts ...grpc.CallOption) (*DeleteBuildResponse, error)
+    // Fire a BuildRun against an existing Build CR.
+    // Useful for manual reruns and CI webhook dispatch.
+    TriggerBuild(ctx context.Context, in *TriggerBuildRequest, opts ...grpc.CallOption) (*TriggerBuildResponse, error)
+    // Stream phase transitions for a Build CR.
+    // Closes when the build reaches a terminal phase (SUCCEEDED, FAILED, CANCELLED).
+    WatchBuild(ctx context.Context, in *WatchBuildRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchBuildResponse], error)
+}
+```
+
+<a name="NewBuildServiceClient"></a>
+### func NewBuildServiceClient
+
+```go
+func NewBuildServiceClient(cc grpc.ClientConnInterface) BuildServiceClient
+```
+
+
+
+<a name="BuildServiceServer"></a>
+## type BuildServiceServer
+
+BuildServiceServer is the server API for BuildService service. All implementations must embed UnimplementedBuildServiceServer for forward compatibility.
+
+```go
+type BuildServiceServer interface {
+    // Declare a new Build intent.
+    // Controller emits Shipwright Build + BuildRun on first trigger.
+    CreateBuild(context.Context, *CreateBuildRequest) (*CreateBuildResponse, error)
+    // Fetch a Build CR by name.
+    GetBuild(context.Context, *GetBuildRequest) (*GetBuildResponse, error)
+    // Full replace of a Build spec.
+    UpdateBuild(context.Context, *UpdateBuildRequest) (*UpdateBuildResponse, error)
+    // Partial update via JSON merge patch RFC 7396.
+    PatchBuild(context.Context, *PatchBuildRequest) (*PatchBuildResponse, error)
+    // List Build CRs with optional phase/strategy filter and paging.
+    ListBuilds(context.Context, *ListBuildsRequest) (*ListBuildsResponse, error)
+    // Delete a Build CR and its owned Shipwright resources.
+    DeleteBuild(context.Context, *DeleteBuildRequest) (*DeleteBuildResponse, error)
+    // Fire a BuildRun against an existing Build CR.
+    // Useful for manual reruns and CI webhook dispatch.
+    TriggerBuild(context.Context, *TriggerBuildRequest) (*TriggerBuildResponse, error)
+    // Stream phase transitions for a Build CR.
+    // Closes when the build reaches a terminal phase (SUCCEEDED, FAILED, CANCELLED).
+    WatchBuild(*WatchBuildRequest, grpc.ServerStreamingServer[WatchBuildResponse]) error
+    // contains filtered or unexported methods
+}
+```
+
+<a name="BuildService_WatchBuildClient"></a>
+## type BuildService\_WatchBuildClient
+
+This type alias is provided for backwards compatibility with existing code that references the prior non\-generic stream type by name.
+
+```go
+type BuildService_WatchBuildClient = grpc.ServerStreamingClient[WatchBuildResponse]
+```
+
+<a name="BuildService_WatchBuildServer"></a>
+## type BuildService\_WatchBuildServer
+
+This type alias is provided for backwards compatibility with existing code that references the prior non\-generic stream type by name.
+
+```go
+type BuildService_WatchBuildServer = grpc.ServerStreamingServer[WatchBuildResponse]
+```
+
+<a name="BuildSpec"></a>
+## type BuildSpec
+
+
+
+```go
+type BuildSpec struct {
+
+    // Fully qualified target image — registry/repo/app:tag.
+    // Tag strategy: git-sha, semver, or literal.
+    // e.g. docker.io/nkanyezisolutions/for-kaniko-app:main
+    Image string `protobuf:"bytes,1,opt,name=image,proto3" json:"image,omitempty"`
+    // Shipwright ClusterBuildStrategy or namespaced BuildStrategy to use.
+    Strategy *BuildStrategy `protobuf:"bytes,2,opt,name=strategy,proto3" json:"strategy,omitempty"`
+    // Git source configuration — where to clone from.
+    Source *GitSource `protobuf:"bytes,3,opt,name=source,proto3" json:"source,omitempty"`
+    // Trigger and retry policy for this build.
+    Policy *BuildPolicy `protobuf:"bytes,4,opt,name=policy,proto3" json:"policy,omitempty"`
+    // Kubernetes ServiceAccount used by the build pod.
+    // Must have push access to the image registry.
+    ServiceAccount *ServiceAccount `protobuf:"bytes,5,opt,name=service_account,json=serviceAccount,proto3" json:"service_account,omitempty"`
+    // Additional parameters passed to the Shipwright BuildStrategy.
+    // Merged with strategy defaults — these take precedence.
+    Params []*Param `protobuf:"bytes,6,rep,name=params,proto3" json:"params,omitempty"`
+    // Maximum duration a BuildRun may run before being cancelled.
+    // Defaults to the strategy default if unset.
+    Timeout *durationpb.Duration `protobuf:"bytes,7,opt,name=timeout,proto3" json:"timeout,omitempty"`
+    // How long a completed BuildRun is retained before garbage collection.
+    TimeToLive *durationpb.Duration `protobuf:"bytes,8,opt,name=time_to_live,json=timeToLive,proto3" json:"time_to_live,omitempty"`
+    // GitHubEvent reference — (Optional) The canonical link to the subscription
+    // that initiated this build. If provided, observers use this to propagate
+    // event metadata (e.g., Short SHA, Actor) as build tags and provenance
+    // annotations. If omitted, the build is treated as a manual execution.
+    GithubEvent string `protobuf:"bytes,9,opt,name=github_event,json=githubEvent,proto3" json:"github_event,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="BuildSpec.Descriptor"></a>
+### func \(\*BuildSpec\) Descriptor
+
+```go
+func (*BuildSpec) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use BuildSpec.ProtoReflect.Descriptor instead.
+
+<a name="BuildSpec.GetGithubEvent"></a>
+### func \(\*BuildSpec\) GetGithubEvent
+
+```go
+func (x *BuildSpec) GetGithubEvent() string
+```
+
+
+
+<a name="BuildSpec.GetImage"></a>
+### func \(\*BuildSpec\) GetImage
+
+```go
+func (x *BuildSpec) GetImage() string
+```
+
+
+
+<a name="BuildSpec.GetParams"></a>
+### func \(\*BuildSpec\) GetParams
+
+```go
+func (x *BuildSpec) GetParams() []*Param
+```
+
+
+
+<a name="BuildSpec.GetPolicy"></a>
+### func \(\*BuildSpec\) GetPolicy
+
+```go
+func (x *BuildSpec) GetPolicy() *BuildPolicy
+```
+
+
+
+<a name="BuildSpec.GetServiceAccount"></a>
+### func \(\*BuildSpec\) GetServiceAccount
+
+```go
+func (x *BuildSpec) GetServiceAccount() *ServiceAccount
+```
+
+
+
+<a name="BuildSpec.GetSource"></a>
+### func \(\*BuildSpec\) GetSource
+
+```go
+func (x *BuildSpec) GetSource() *GitSource
+```
+
+
+
+<a name="BuildSpec.GetStrategy"></a>
+### func \(\*BuildSpec\) GetStrategy
+
+```go
+func (x *BuildSpec) GetStrategy() *BuildStrategy
+```
+
+
+
+<a name="BuildSpec.GetTimeToLive"></a>
+### func \(\*BuildSpec\) GetTimeToLive
+
+```go
+func (x *BuildSpec) GetTimeToLive() *durationpb.Duration
+```
+
+
+
+<a name="BuildSpec.GetTimeout"></a>
+### func \(\*BuildSpec\) GetTimeout
+
+```go
+func (x *BuildSpec) GetTimeout() *durationpb.Duration
+```
+
+
+
+<a name="BuildSpec.ProtoMessage"></a>
+### func \(\*BuildSpec\) ProtoMessage
+
+```go
+func (*BuildSpec) ProtoMessage()
+```
+
+
+
+<a name="BuildSpec.ProtoReflect"></a>
+### func \(\*BuildSpec\) ProtoReflect
+
+```go
+func (x *BuildSpec) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="BuildSpec.Reset"></a>
+### func \(\*BuildSpec\) Reset
+
+```go
+func (x *BuildSpec) Reset()
+```
+
+
+
+<a name="BuildSpec.String"></a>
+### func \(\*BuildSpec\) String
+
+```go
+func (x *BuildSpec) String() string
+```
+
+
+
+<a name="BuildStatus"></a>
+## type BuildStatus
+
+
+
+```go
+type BuildStatus struct {
+
+    // Current lifecycle phase. Set by the controller.
+    Phase *v1.BuildStatusPhase `protobuf:"bytes,1,opt,name=phase,proto3" json:"phase,omitempty"`
+    // Fully qualified image reference including digest, once pushed.
+    // e.g. docker.io/nkanyezisolutions/for-kaniko-app@sha256:abc...
+    Image string `protobuf:"bytes,2,opt,name=image,proto3" json:"image,omitempty"`
+    // Name of the Shipwright BuildRun that last executed this Build.
+    // Use this to fetch full build logs and step details.
+    ExecutionRef string `protobuf:"bytes,3,opt,name=execution_ref,json=executionRef,proto3" json:"execution_ref,omitempty"`
+    // Human-readable status message. Populated on failure.
+    Message string `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
+    // When the most recent BuildRun started.
+    StartTime *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+    // When the most recent BuildRun completed (success or failure).
+    CompletionTime *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=completion_time,json=completionTime,proto3" json:"completion_time,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="BuildStatus.Descriptor"></a>
+### func \(\*BuildStatus\) Descriptor
+
+```go
+func (*BuildStatus) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use BuildStatus.ProtoReflect.Descriptor instead.
+
+<a name="BuildStatus.GetCompletionTime"></a>
+### func \(\*BuildStatus\) GetCompletionTime
+
+```go
+func (x *BuildStatus) GetCompletionTime() *timestamppb.Timestamp
+```
+
+
+
+<a name="BuildStatus.GetExecutionRef"></a>
+### func \(\*BuildStatus\) GetExecutionRef
+
+```go
+func (x *BuildStatus) GetExecutionRef() string
+```
+
+
+
+<a name="BuildStatus.GetImage"></a>
+### func \(\*BuildStatus\) GetImage
+
+```go
+func (x *BuildStatus) GetImage() string
+```
+
+
+
+<a name="BuildStatus.GetMessage"></a>
+### func \(\*BuildStatus\) GetMessage
+
+```go
+func (x *BuildStatus) GetMessage() string
+```
+
+
+
+<a name="BuildStatus.GetPhase"></a>
+### func \(\*BuildStatus\) GetPhase
+
+```go
+func (x *BuildStatus) GetPhase() *v1.BuildStatusPhase
+```
+
+
+
+<a name="BuildStatus.GetStartTime"></a>
+### func \(\*BuildStatus\) GetStartTime
+
+```go
+func (x *BuildStatus) GetStartTime() *timestamppb.Timestamp
+```
+
+
+
+<a name="BuildStatus.ProtoMessage"></a>
+### func \(\*BuildStatus\) ProtoMessage
+
+```go
+func (*BuildStatus) ProtoMessage()
+```
+
+
+
+<a name="BuildStatus.ProtoReflect"></a>
+### func \(\*BuildStatus\) ProtoReflect
+
+```go
+func (x *BuildStatus) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="BuildStatus.Reset"></a>
+### func \(\*BuildStatus\) Reset
+
+```go
+func (x *BuildStatus) Reset()
+```
+
+
+
+<a name="BuildStatus.String"></a>
+### func \(\*BuildStatus\) String
+
+```go
+func (x *BuildStatus) String() string
+```
+
+
+
+<a name="BuildStrategy"></a>
+## type BuildStrategy
+
+
+
+```go
+type BuildStrategy struct {
+
+    // Name of the Shipwright BuildStrategy.
+    // Known values: kaniko | buildah-shipwright-managed-push | buildpacks-v3
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // Scope of the strategy resource.
+    Kind *v1.BuildStrategyKind `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="BuildStrategy.Descriptor"></a>
+### func \(\*BuildStrategy\) Descriptor
+
+```go
+func (*BuildStrategy) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use BuildStrategy.ProtoReflect.Descriptor instead.
+
+<a name="BuildStrategy.GetKind"></a>
+### func \(\*BuildStrategy\) GetKind
+
+```go
+func (x *BuildStrategy) GetKind() *v1.BuildStrategyKind
+```
+
+
+
+<a name="BuildStrategy.GetName"></a>
+### func \(\*BuildStrategy\) GetName
+
+```go
+func (x *BuildStrategy) GetName() string
+```
+
+
+
+<a name="BuildStrategy.ProtoMessage"></a>
+### func \(\*BuildStrategy\) ProtoMessage
+
+```go
+func (*BuildStrategy) ProtoMessage()
+```
+
+
+
+<a name="BuildStrategy.ProtoReflect"></a>
+### func \(\*BuildStrategy\) ProtoReflect
+
+```go
+func (x *BuildStrategy) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="BuildStrategy.Reset"></a>
+### func \(\*BuildStrategy\) Reset
+
+```go
+func (x *BuildStrategy) Reset()
+```
+
+
+
+<a name="BuildStrategy.String"></a>
+### func \(\*BuildStrategy\) String
+
+```go
+func (x *BuildStrategy) String() string
+```
+
+
+
+<a name="BuildTriggerPolicy"></a>
+## type BuildTriggerPolicy
+
+
+
+```go
+type BuildTriggerPolicy struct {
+
+    // The event type that permits a BuildRun to be triggered.
+    Type *v1.BuildTriggerType `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="BuildTriggerPolicy.Descriptor"></a>
+### func \(\*BuildTriggerPolicy\) Descriptor
+
+```go
+func (*BuildTriggerPolicy) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use BuildTriggerPolicy.ProtoReflect.Descriptor instead.
+
+<a name="BuildTriggerPolicy.GetType"></a>
+### func \(\*BuildTriggerPolicy\) GetType
+
+```go
+func (x *BuildTriggerPolicy) GetType() *v1.BuildTriggerType
+```
+
+
+
+<a name="BuildTriggerPolicy.ProtoMessage"></a>
+### func \(\*BuildTriggerPolicy\) ProtoMessage
+
+```go
+func (*BuildTriggerPolicy) ProtoMessage()
+```
+
+
+
+<a name="BuildTriggerPolicy.ProtoReflect"></a>
+### func \(\*BuildTriggerPolicy\) ProtoReflect
+
+```go
+func (x *BuildTriggerPolicy) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="BuildTriggerPolicy.Reset"></a>
+### func \(\*BuildTriggerPolicy\) Reset
+
+```go
+func (x *BuildTriggerPolicy) Reset()
+```
+
+
+
+<a name="BuildTriggerPolicy.String"></a>
+### func \(\*BuildTriggerPolicy\) String
+
+```go
+func (x *BuildTriggerPolicy) String() string
+```
+
+
+
+<a name="CreateBuildRequest"></a>
+## type CreateBuildRequest
+
+CreateBuild — declare a new Build intent. Controller emits a Shipwright Build on reconciliation.
+
+```go
+type CreateBuildRequest struct {
+
+    // Desired spec for the new Build.
+    Spec *BuildSpec `protobuf:"bytes,1,opt,name=spec,proto3" json:"spec,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="CreateBuildRequest.Descriptor"></a>
+### func \(\*CreateBuildRequest\) Descriptor
+
+```go
+func (*CreateBuildRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use CreateBuildRequest.ProtoReflect.Descriptor instead.
+
+<a name="CreateBuildRequest.GetSpec"></a>
+### func \(\*CreateBuildRequest\) GetSpec
+
+```go
+func (x *CreateBuildRequest) GetSpec() *BuildSpec
+```
+
+
+
+<a name="CreateBuildRequest.ProtoMessage"></a>
+### func \(\*CreateBuildRequest\) ProtoMessage
+
+```go
+func (*CreateBuildRequest) ProtoMessage()
+```
+
+
+
+<a name="CreateBuildRequest.ProtoReflect"></a>
+### func \(\*CreateBuildRequest\) ProtoReflect
+
+```go
+func (x *CreateBuildRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="CreateBuildRequest.Reset"></a>
+### func \(\*CreateBuildRequest\) Reset
+
+```go
+func (x *CreateBuildRequest) Reset()
+```
+
+
+
+<a name="CreateBuildRequest.String"></a>
+### func \(\*CreateBuildRequest\) String
+
+```go
+func (x *CreateBuildRequest) String() string
+```
+
+
+
+<a name="CreateBuildResponse"></a>
+## type CreateBuildResponse
+
+
+
+```go
+type CreateBuildResponse struct {
+
+    // The created Build including generated metadata and initial status.
+    Build *Build `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="CreateBuildResponse.Descriptor"></a>
+### func \(\*CreateBuildResponse\) Descriptor
+
+```go
+func (*CreateBuildResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use CreateBuildResponse.ProtoReflect.Descriptor instead.
+
+<a name="CreateBuildResponse.GetBuild"></a>
+### func \(\*CreateBuildResponse\) GetBuild
+
+```go
+func (x *CreateBuildResponse) GetBuild() *Build
+```
+
+
+
+<a name="CreateBuildResponse.ProtoMessage"></a>
+### func \(\*CreateBuildResponse\) ProtoMessage
+
+```go
+func (*CreateBuildResponse) ProtoMessage()
+```
+
+
+
+<a name="CreateBuildResponse.ProtoReflect"></a>
+### func \(\*CreateBuildResponse\) ProtoReflect
+
+```go
+func (x *CreateBuildResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="CreateBuildResponse.Reset"></a>
+### func \(\*CreateBuildResponse\) Reset
+
+```go
+func (x *CreateBuildResponse) Reset()
+```
+
+
+
+<a name="CreateBuildResponse.String"></a>
+### func \(\*CreateBuildResponse\) String
+
+```go
+func (x *CreateBuildResponse) String() string
+```
+
+
+
+<a name="CreateDeploymentRequest"></a>
+## type CreateDeploymentRequest
+
+CreateDeployment — declare a new Deployment intent. Controller materializes workloads on reconciliation.
+
+```go
+type CreateDeploymentRequest struct {
+
+    // Desired spec for the new Deployment.
+    Spec *DeploymentSpec `protobuf:"bytes,1,opt,name=spec,proto3" json:"spec,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="CreateDeploymentRequest.Descriptor"></a>
+### func \(\*CreateDeploymentRequest\) Descriptor
+
+```go
+func (*CreateDeploymentRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use CreateDeploymentRequest.ProtoReflect.Descriptor instead.
+
+<a name="CreateDeploymentRequest.GetSpec"></a>
+### func \(\*CreateDeploymentRequest\) GetSpec
+
+```go
+func (x *CreateDeploymentRequest) GetSpec() *DeploymentSpec
+```
+
+
+
+<a name="CreateDeploymentRequest.ProtoMessage"></a>
+### func \(\*CreateDeploymentRequest\) ProtoMessage
+
+```go
+func (*CreateDeploymentRequest) ProtoMessage()
+```
+
+
+
+<a name="CreateDeploymentRequest.ProtoReflect"></a>
+### func \(\*CreateDeploymentRequest\) ProtoReflect
+
+```go
+func (x *CreateDeploymentRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="CreateDeploymentRequest.Reset"></a>
+### func \(\*CreateDeploymentRequest\) Reset
+
+```go
+func (x *CreateDeploymentRequest) Reset()
+```
+
+
+
+<a name="CreateDeploymentRequest.String"></a>
+### func \(\*CreateDeploymentRequest\) String
+
+```go
+func (x *CreateDeploymentRequest) String() string
+```
+
+
+
+<a name="CreateDeploymentResponse"></a>
+## type CreateDeploymentResponse
+
+
+
+```go
+type CreateDeploymentResponse struct {
+
+    // The created Deployment including generated metadata and initial status.
+    Deployment *Deployment `protobuf:"bytes,1,opt,name=deployment,proto3" json:"deployment,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="CreateDeploymentResponse.Descriptor"></a>
+### func \(\*CreateDeploymentResponse\) Descriptor
+
+```go
+func (*CreateDeploymentResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use CreateDeploymentResponse.ProtoReflect.Descriptor instead.
+
+<a name="CreateDeploymentResponse.GetDeployment"></a>
+### func \(\*CreateDeploymentResponse\) GetDeployment
+
+```go
+func (x *CreateDeploymentResponse) GetDeployment() *Deployment
+```
+
+
+
+<a name="CreateDeploymentResponse.ProtoMessage"></a>
+### func \(\*CreateDeploymentResponse\) ProtoMessage
+
+```go
+func (*CreateDeploymentResponse) ProtoMessage()
+```
+
+
+
+<a name="CreateDeploymentResponse.ProtoReflect"></a>
+### func \(\*CreateDeploymentResponse\) ProtoReflect
+
+```go
+func (x *CreateDeploymentResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="CreateDeploymentResponse.Reset"></a>
+### func \(\*CreateDeploymentResponse\) Reset
+
+```go
+func (x *CreateDeploymentResponse) Reset()
+```
+
+
+
+<a name="CreateDeploymentResponse.String"></a>
+### func \(\*CreateDeploymentResponse\) String
+
+```go
+func (x *CreateDeploymentResponse) String() string
+```
+
+
+
+<a name="CreateEnvironmentRequest"></a>
+## type CreateEnvironmentRequest
 
-
-
-<a name="blanketops_environments_v1alpha1_build-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## blanketops/environments/v1alpha1/build.proto
-
-
-
-<a name="blanketops-environments-v1alpha1-Build"></a>
-
-### Build
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| metadata | [blanketops.common.v1.Metadata](#blanketops-common-v1-Metadata) |  | Standard BlanketOps metadata (name, namespace, labels, ownerRef). |
-| spec | [BuildSpec](#blanketops-environments-v1alpha1-BuildSpec) |  | Desired state declared by the operator. |
-| status | [BuildStatus](#blanketops-environments-v1alpha1-BuildStatus) |  | Observed state set by the controller. Never manually edited. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-BuildPolicy"></a>
-
-### BuildPolicy
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| allowed_triggers | [BuildTriggerPolicy](#blanketops-environments-v1alpha1-BuildTriggerPolicy) | repeated | Events that are permitted to trigger a BuildRun. At least one trigger must be specified. |
-| retry | [RetryPolicy](#blanketops-environments-v1alpha1-RetryPolicy) |  | Retry behaviour on BuildRun failure. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-BuildSpec"></a>
-
-### BuildSpec
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| image | [string](#string) |  | Fully qualified target image — registry/repo/app:tag. Tag strategy: git-sha, semver, or literal. e.g. docker.io/nkanyezisolutions/for-kaniko-app:main |
-| strategy | [BuildStrategy](#blanketops-environments-v1alpha1-BuildStrategy) |  | Shipwright ClusterBuildStrategy or namespaced BuildStrategy to use. |
-| source | [GitSource](#blanketops-environments-v1alpha1-GitSource) |  | Git source configuration — where to clone from. |
-| policy | [BuildPolicy](#blanketops-environments-v1alpha1-BuildPolicy) |  | Trigger and retry policy for this build. |
-| service_account | [ServiceAccount](#blanketops-environments-v1alpha1-ServiceAccount) |  | Kubernetes ServiceAccount used by the build pod. Must have push access to the image registry. |
-| params | [Param](#blanketops-environments-v1alpha1-Param) | repeated | Additional parameters passed to the Shipwright BuildStrategy. Merged with strategy defaults — these take precedence. |
-| timeout | [google.protobuf.Duration](#google-protobuf-Duration) |  | Maximum duration a BuildRun may run before being cancelled. Defaults to the strategy default if unset. |
-| time_to_live | [google.protobuf.Duration](#google-protobuf-Duration) |  | How long a completed BuildRun is retained before garbage collection. |
-| github_event | [string](#string) |  | GitHubEvent reference — (Optional) The canonical link to the subscription that initiated this build. If provided, observers use this to propagate event metadata (e.g., Short SHA, Actor) as build tags and provenance annotations. If omitted, the build is treated as a manual execution. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-BuildStatus"></a>
-
-### BuildStatus
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| phase | [blanketops.common.v1.BuildStatusPhase](#blanketops-common-v1-BuildStatusPhase) |  | Current lifecycle phase. Set by the controller. |
-| image | [string](#string) |  | Fully qualified image reference including digest, once pushed. e.g. docker.io/nkanyezisolutions/for-kaniko-app@sha256:abc... |
-| execution_ref | [string](#string) |  | Name of the Shipwright BuildRun that last executed this Build. Use this to fetch full build logs and step details. |
-| message | [string](#string) |  | Human-readable status message. Populated on failure. |
-| start_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | When the most recent BuildRun started. |
-| completion_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | When the most recent BuildRun completed (success or failure). |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-BuildStrategy"></a>
-
-### BuildStrategy
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Shipwright BuildStrategy. Known values: kaniko | buildah-shipwright-managed-push | buildpacks-v3 |
-| kind | [blanketops.common.v1.BuildStrategyKind](#blanketops-common-v1-BuildStrategyKind) |  | Scope of the strategy resource. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-BuildTriggerPolicy"></a>
-
-### BuildTriggerPolicy
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| type | [blanketops.common.v1.BuildTriggerType](#blanketops-common-v1-BuildTriggerType) |  | The event type that permits a BuildRun to be triggered. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-CreateBuildRequest"></a>
-
-### CreateBuildRequest
-CreateBuild — declare a new Build intent.
-Controller emits a Shipwright Build on reconciliation.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| spec | [BuildSpec](#blanketops-environments-v1alpha1-BuildSpec) |  | Desired spec for the new Build. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-CreateBuildResponse"></a>
-
-### CreateBuildResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| build | [Build](#blanketops-environments-v1alpha1-Build) |  | The created Build including generated metadata and initial status. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-DeleteBuildRequest"></a>
-
-### DeleteBuildRequest
-DeleteBuild — delete a Build CR.
-The controller garbage-collects the Shipwright Build and all BuildRuns.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Build CR to delete. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-DeleteBuildResponse"></a>
-
-### DeleteBuildResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| success | [bool](#bool) |  | True if the Build was successfully deleted. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-GetBuildRequest"></a>
-
-### GetBuildRequest
-GetBuild — fetch a Build by name.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Build CR to fetch. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-GetBuildResponse"></a>
-
-### GetBuildResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| build | [Build](#blanketops-environments-v1alpha1-Build) |  |  |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-GitSource"></a>
-
-### GitSource
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| url | [string](#string) |  | SSH or HTTPS URL of the Git repository. SSH format: git@github.com:&lt;owner&gt;/&lt;repo&gt;.git |
-| revision | [string](#string) |  | Branch, tag, or commit SHA to build from. e.g. main, refs/heads/main, abc1234 |
-| context_dir | [string](#string) |  | Path within the repository to use as the build context. Required for kaniko strategy. Defaults to repository root. |
-| depth | [uint32](#uint32) |  | Clone depth — 0 means full history. Set to 1 for faster CI builds when history is not needed. |
-| ssl_verify | [bool](#bool) |  | Whether to verify the Git server TLS certificate. Set to false only for internal Git servers with self-signed certs. |
-| clone_secret | [string](#string) |  | Name of the Kubernetes Secret containing SSH private key. Sourced from the environment SecretStore via ExternalSecret. Key: ssh-privatekey |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-ListBuildsRequest"></a>
-
-### ListBuildsRequest
-ListBuilds — list Build CRs with optional filtering and paging.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| phase | [blanketops.common.v1.BuildStatusPhase](#blanketops-common-v1-BuildStatusPhase) | optional | Filter by current lifecycle phase. |
-| strategy | [string](#string) | optional | Filter by strategy name. e.g. kaniko | buildah-shipwright-managed-push | buildpacks-v3 |
-| page_size | [int32](#int32) | optional | Maximum number of results to return. Server may return fewer. |
-| page_token | [string](#string) | optional | Token from a previous ListBuildsResponse.next_page_token. Omit for the first request. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-ListBuildsResponse"></a>
-
-### ListBuildsResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| builds | [Build](#blanketops-environments-v1alpha1-Build) | repeated | The list of Build CRs matching the request filters. |
-| next_page_token | [string](#string) | optional | Token to retrieve the next page. Empty if no more results. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-Param"></a>
-
-### Param
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Parameter name — must match a param declared in the BuildStrategy. |
-| value | [string](#string) |  | Parameter value — overrides strategy defaults. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-PatchBuildRequest"></a>
-
-### PatchBuildRequest
-PatchBuild — partial update using JSON merge patch RFC 7396.
-Only specified fields are updated — others left unchanged.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Build CR to patch. |
-| patch | [string](#string) |  | JSON merge patch document — RFC 7396. e.g. {&#34;spec&#34;:{&#34;policy&#34;:{&#34;retry&#34;:{&#34;max_attempts&#34;:5}}}} |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-PatchBuildResponse"></a>
-
-### PatchBuildResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| build | [Build](#blanketops-environments-v1alpha1-Build) |  | The patched Build as observed by the controller. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-RetryPolicy"></a>
-
-### RetryPolicy
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| on_failure | [bool](#bool) |  | Whether to automatically retry a failed BuildRun. |
-| max_attempts | [uint32](#uint32) |  | Maximum number of retry attempts before marking the Build failed. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-ServiceAccount"></a>
-
-### ServiceAccount
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Kubernetes ServiceAccount. auto-generated as build-bot if not specified. |
-| secret | [string](#string) |  | Name of the Kubernetes Secret containing registry credentials. Sourced from the environment SecretStore via ExternalSecret. Must be of type kubernetes.io/dockerconfigjson. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-TriggerBuildRequest"></a>
-
-### TriggerBuildRequest
-TriggerBuild — fire a BuildRun against an existing Build CR.
-Build-specific RPC — no equivalent in OrganizationService.
-Useful for manual reruns or CI webhook dispatch.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Build CR to trigger a run against. |
-| params | [Param](#blanketops-environments-v1alpha1-Param) | repeated | Per-run param overrides. Applied on top of spec.params. Useful for SHA overrides on manual triggers. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-TriggerBuildResponse"></a>
-
-### TriggerBuildResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| execution_ref | [string](#string) |  | Name of the emitted Shipwright BuildRun. Use GetBuild or WatchBuild to track progress. |
-| build | [Build](#blanketops-environments-v1alpha1-Build) |  | The Build CR after the trigger was applied. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-UpdateBuildRequest"></a>
-
-### UpdateBuildRequest
-UpdateBuild — full replace of the Build spec.
-Equivalent to kubectl apply — all fields replaced.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| build | [Build](#blanketops-environments-v1alpha1-Build) |  | Full Build object including metadata and desired spec. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-UpdateBuildResponse"></a>
-
-### UpdateBuildResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| build | [Build](#blanketops-environments-v1alpha1-Build) |  | The updated Build as observed by the controller. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-WatchBuildRequest"></a>
-
-### WatchBuildRequest
-WatchBuild — stream phase transitions for a Build CR.
-Delivers an event for every controller reconciliation loop.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Build CR to watch. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-WatchBuildResponse"></a>
-
-### WatchBuildResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| build | [Build](#blanketops-environments-v1alpha1-Build) |  | Current state of the Build at this point in the stream. |
-| type | [blanketops.common.v1.EventType](#blanketops-common-v1-EventType) |  | The type of change that triggered this event. |
-
-
-
-
-
- 
-
- 
-
- 
-
-
-<a name="blanketops-environments-v1alpha1-BuildService"></a>
-
-### BuildService
-── CRUD — aligned with OrganizationService pattern ─────────────────────
-
-| Method Name | Request Type | Response Type | Description |
-| ----------- | ------------ | ------------- | ------------|
-| CreateBuild | [CreateBuildRequest](#blanketops-environments-v1alpha1-CreateBuildRequest) | [CreateBuildResponse](#blanketops-environments-v1alpha1-CreateBuildResponse) | Declare a new Build intent. Controller emits Shipwright Build &#43; BuildRun on first trigger. |
-| GetBuild | [GetBuildRequest](#blanketops-environments-v1alpha1-GetBuildRequest) | [GetBuildResponse](#blanketops-environments-v1alpha1-GetBuildResponse) | Fetch a Build CR by name. |
-| UpdateBuild | [UpdateBuildRequest](#blanketops-environments-v1alpha1-UpdateBuildRequest) | [UpdateBuildResponse](#blanketops-environments-v1alpha1-UpdateBuildResponse) | Full replace of a Build spec. |
-| PatchBuild | [PatchBuildRequest](#blanketops-environments-v1alpha1-PatchBuildRequest) | [PatchBuildResponse](#blanketops-environments-v1alpha1-PatchBuildResponse) | Partial update via JSON merge patch RFC 7396. |
-| ListBuilds | [ListBuildsRequest](#blanketops-environments-v1alpha1-ListBuildsRequest) | [ListBuildsResponse](#blanketops-environments-v1alpha1-ListBuildsResponse) | List Build CRs with optional phase/strategy filter and paging. |
-| DeleteBuild | [DeleteBuildRequest](#blanketops-environments-v1alpha1-DeleteBuildRequest) | [DeleteBuildResponse](#blanketops-environments-v1alpha1-DeleteBuildResponse) | Delete a Build CR and its owned Shipwright resources. |
-| TriggerBuild | [TriggerBuildRequest](#blanketops-environments-v1alpha1-TriggerBuildRequest) | [TriggerBuildResponse](#blanketops-environments-v1alpha1-TriggerBuildResponse) | Fire a BuildRun against an existing Build CR. Useful for manual reruns and CI webhook dispatch. |
-| WatchBuild | [WatchBuildRequest](#blanketops-environments-v1alpha1-WatchBuildRequest) | [WatchBuildResponse](#blanketops-environments-v1alpha1-WatchBuildResponse) stream | Stream phase transitions for a Build CR. Closes when the build reaches a terminal phase (SUCCEEDED, FAILED, CANCELLED). |
-
- 
-
-
-
-<a name="blanketops_environments_v1alpha1_deployment-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## blanketops/environments/v1alpha1/deployment.proto
-
-
-
-<a name="blanketops-environments-v1alpha1-CreateDeploymentRequest"></a>
-
-### CreateDeploymentRequest
-CreateDeployment — declare a new Deployment intent.
-Controller materializes workloads on reconciliation.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| spec | [DeploymentSpec](#blanketops-environments-v1alpha1-DeploymentSpec) |  | Desired spec for the new Deployment. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-CreateDeploymentResponse"></a>
-
-### CreateDeploymentResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| deployment | [Deployment](#blanketops-environments-v1alpha1-Deployment) |  | The created Deployment including generated metadata and initial status. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-DeleteDeploymentRequest"></a>
-
-### DeleteDeploymentRequest
-DeleteDeployment — delete a Deployment CR.
-The controller garbage-collects materialized workloads and any
-GitOps sources owned by this deployment.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Deployment CR to delete. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-DeleteDeploymentResponse"></a>
-
-### DeleteDeploymentResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| success | [bool](#bool) |  | True if the Deployment was successfully deleted. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-Deployment"></a>
-
-### Deployment
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| metadata | [blanketops.common.v1.Metadata](#blanketops-common-v1-Metadata) |  | Standard BlanketOps metadata (name, namespace, labels, ownerRef). |
-| spec | [DeploymentSpec](#blanketops-environments-v1alpha1-DeploymentSpec) |  | Desired state declared by the operator. |
-| status | [DeploymentStatus](#blanketops-environments-v1alpha1-DeploymentStatus) |  | Observed state set by the controller. Never manually edited. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-DeploymentSpec"></a>
-
-### DeploymentSpec
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| service_units | [string](#string) | repeated | Names of the ServiceUnit CRs that make up this deployment. Resolved in the same namespace as this Deployment. |
-| runtime | [blanketops.common.v1.DeploymentRuntime](#blanketops-common-v1-DeploymentRuntime) |  | Target runtime backend for all service units. |
-| image_automation | [bool](#bool) |  | Enable automatic image updates from Build outputs. Materialized as FluxCD ImageUpdateAutomation when GitOps is active. |
-| manifests_repo | [ManifestsRepo](#blanketops-environments-v1alpha1-ManifestsRepo) |  | GitOps repository containing rendered manifests. Optional — when unset, the controller applies workloads directly. |
-| reconciliation_strategy | [blanketops.common.v1.ReconciliationStrategy](#blanketops-common-v1-ReconciliationStrategy) |  | Manifest application strategy. Required when manifests_repo is set. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-DeploymentStatus"></a>
-
-### DeploymentStatus
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| phase | [blanketops.common.v1.DeploymentPhase](#blanketops-common-v1-DeploymentPhase) |  | Current lifecycle phase. Set by the controller. |
-| message | [string](#string) |  | Human-readable status summary. Populated on failure. |
-| runtime | [blanketops.common.v1.DeploymentRuntime](#blanketops-common-v1-DeploymentRuntime) |  | Runtime actually used to materialize workloads. |
-| strategy | [blanketops.common.v1.DeploymentStrategy](#blanketops-common-v1-DeploymentStrategy) |  | Rollout strategy applied by the runtime. |
-| service_unit_statuses | [ServiceUnitDeploymentStatus](#blanketops-environments-v1alpha1-ServiceUnitDeploymentStatus) | repeated | Per-ServiceUnit deployment status. |
-| last_updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | When the controller last updated this status. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-GetDeploymentRequest"></a>
-
-### GetDeploymentRequest
-GetDeployment — fetch a Deployment by name.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Deployment CR to fetch. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-GetDeploymentResponse"></a>
-
-### GetDeploymentResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| deployment | [Deployment](#blanketops-environments-v1alpha1-Deployment) |  |  |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-ListDeploymentsRequest"></a>
-
-### ListDeploymentsRequest
-ListDeployments — list Deployment CRs with optional filtering and paging.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| phase | [blanketops.common.v1.DeploymentPhase](#blanketops-common-v1-DeploymentPhase) | optional | Filter by current lifecycle phase. |
-| runtime | [blanketops.common.v1.DeploymentRuntime](#blanketops-common-v1-DeploymentRuntime) | optional | Filter by target runtime. |
-| page_size | [int32](#int32) | optional | Maximum number of results to return. Server may return fewer. |
-| page_token | [string](#string) | optional | Token from a previous ListDeploymentsResponse.next_page_token. Omit for the first request. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-ListDeploymentsResponse"></a>
-
-### ListDeploymentsResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| deployments | [Deployment](#blanketops-environments-v1alpha1-Deployment) | repeated | The list of Deployment CRs matching the request filters. |
-| next_page_token | [string](#string) | optional | Token to retrieve the next page. Empty if no more results. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-ManifestsRepo"></a>
-
-### ManifestsRepo
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| url | [string](#string) |  | SSH or HTTPS URL of the manifests repository. SSH format: git@github.com:&lt;owner&gt;/&lt;repo&gt;.git |
-| ref | [string](#string) |  | Git ref to reconcile from — branch, tag, or commit SHA. |
-| clone_secret | [string](#string) |  | Name of the Kubernetes Secret used to authenticate the clone. Sourced from the environment SecretStore via ExternalSecret. |
-| strategy | [string](#string) |  | Application strategy hint for the repository contents. e.g. kustomize, helm |
-| path | [string](#string) |  | Path inside the repository to reconcile. e.g. ./clusters/dev |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-PatchDeploymentRequest"></a>
-
-### PatchDeploymentRequest
-PatchDeployment — partial update using JSON merge patch RFC 7396.
-Only specified fields are updated — others left unchanged.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Deployment CR to patch. |
-| patch | [string](#string) |  | JSON merge patch document — RFC 7396. e.g. {&#34;spec&#34;:{&#34;image_automation&#34;:true}} |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-PatchDeploymentResponse"></a>
-
-### PatchDeploymentResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| deployment | [Deployment](#blanketops-environments-v1alpha1-Deployment) |  | The patched Deployment as observed by the controller. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-ServiceUnitDeploymentStatus"></a>
-
-### ServiceUnitDeploymentStatus
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the ServiceUnit CR. |
-| phase | [blanketops.common.v1.DeploymentPhase](#blanketops-common-v1-DeploymentPhase) |  | Current deployment phase for this unit. |
-| image | [string](#string) |  | Fully qualified image that was deployed, including digest when known. |
-| runtime | [blanketops.common.v1.DeploymentRuntime](#blanketops-common-v1-DeploymentRuntime) |  | Runtime backend used for this unit. |
-| message | [string](#string) |  | Human-readable status message. |
-| error | [string](#string) |  | Error detail when phase is FAILED. |
-| last_transition_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | When this unit last changed phase. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-UpdateDeploymentRequest"></a>
-
-### UpdateDeploymentRequest
-UpdateDeployment — full replace of the Deployment spec.
-Equivalent to kubectl apply — all fields replaced.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| deployment | [Deployment](#blanketops-environments-v1alpha1-Deployment) |  | Full Deployment object including metadata and desired spec. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-UpdateDeploymentResponse"></a>
-
-### UpdateDeploymentResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| deployment | [Deployment](#blanketops-environments-v1alpha1-Deployment) |  | The updated Deployment as observed by the controller. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-WatchDeploymentRequest"></a>
-
-### WatchDeploymentRequest
-WatchDeployment — stream phase transitions for a Deployment CR.
-Delivers an event for every controller reconciliation loop.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Deployment CR to watch. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-WatchDeploymentResponse"></a>
-
-### WatchDeploymentResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| deployment | [Deployment](#blanketops-environments-v1alpha1-Deployment) |  | Current state of the Deployment at this point in the stream. |
-| type | [blanketops.common.v1.EventType](#blanketops-common-v1-EventType) |  | The type of change that triggered this event. |
-
-
-
-
-
- 
-
- 
-
- 
-
-
-<a name="blanketops-environments-v1alpha1-DeploymentService"></a>
-
-### DeploymentService
-── CRUD — aligned with BuildService pattern ─────────────────────────────
-
-| Method Name | Request Type | Response Type | Description |
-| ----------- | ------------ | ------------- | ------------|
-| CreateDeployment | [CreateDeploymentRequest](#blanketops-environments-v1alpha1-CreateDeploymentRequest) | [CreateDeploymentResponse](#blanketops-environments-v1alpha1-CreateDeploymentResponse) | Declare a new Deployment intent. |
-| GetDeployment | [GetDeploymentRequest](#blanketops-environments-v1alpha1-GetDeploymentRequest) | [GetDeploymentResponse](#blanketops-environments-v1alpha1-GetDeploymentResponse) | Fetch a Deployment CR by name. |
-| UpdateDeployment | [UpdateDeploymentRequest](#blanketops-environments-v1alpha1-UpdateDeploymentRequest) | [UpdateDeploymentResponse](#blanketops-environments-v1alpha1-UpdateDeploymentResponse) | Full replace of a Deployment spec. |
-| PatchDeployment | [PatchDeploymentRequest](#blanketops-environments-v1alpha1-PatchDeploymentRequest) | [PatchDeploymentResponse](#blanketops-environments-v1alpha1-PatchDeploymentResponse) | Partial update via JSON merge patch RFC 7396. |
-| ListDeployments | [ListDeploymentsRequest](#blanketops-environments-v1alpha1-ListDeploymentsRequest) | [ListDeploymentsResponse](#blanketops-environments-v1alpha1-ListDeploymentsResponse) | List Deployment CRs with optional phase/runtime filter and paging. |
-| DeleteDeployment | [DeleteDeploymentRequest](#blanketops-environments-v1alpha1-DeleteDeploymentRequest) | [DeleteDeploymentResponse](#blanketops-environments-v1alpha1-DeleteDeploymentResponse) | Delete a Deployment CR and its materialized workloads. |
-| WatchDeployment | [WatchDeploymentRequest](#blanketops-environments-v1alpha1-WatchDeploymentRequest) | [WatchDeploymentResponse](#blanketops-environments-v1alpha1-WatchDeploymentResponse) stream | Stream phase transitions for a Deployment CR. Streams indefinitely — deployments have no terminal phase; close client-side. |
-
- 
-
-
-
-<a name="blanketops_environments_v1alpha1_environment-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## blanketops/environments/v1alpha1/environment.proto
-Copyright 2026 The BlanketOps Authors.
-Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-
-<a name="blanketops-environments-v1alpha1-CreateEnvironmentRequest"></a>
-
-### CreateEnvironmentRequest
 Requests / Responses
 
+```go
+type CreateEnvironmentRequest struct {
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| spec | [EnvironmentSpec](#blanketops-environments-v1alpha1-EnvironmentSpec) |  | Desired spec for the new Environment. |
+    // Desired spec for the new Environment.
+    Spec *EnvironmentSpec `protobuf:"bytes,1,opt,name=spec,proto3" json:"spec,omitempty"`
+    // contains filtered or unexported fields
+}
+```
 
+<a name="CreateEnvironmentRequest.Descriptor"></a>
+### func \(\*CreateEnvironmentRequest\) Descriptor
 
+```go
+func (*CreateEnvironmentRequest) Descriptor() ([]byte, []int)
+```
 
+Deprecated: Use CreateEnvironmentRequest.ProtoReflect.Descriptor instead.
 
+<a name="CreateEnvironmentRequest.GetSpec"></a>
+### func \(\*CreateEnvironmentRequest\) GetSpec
 
-
-<a name="blanketops-environments-v1alpha1-CreateEnvironmentResponse"></a>
-
-### CreateEnvironmentResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| environment | [Environment](#blanketops-environments-v1alpha1-Environment) |  | The created Environment including generated metadata and initial status. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-DeleteEnvironmentRequest"></a>
-
-### DeleteEnvironmentRequest
+```go
+func (x *CreateEnvironmentRequest) GetSpec() *EnvironmentSpec
+```
 
 
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Environment CR to delete. |
+<a name="CreateEnvironmentRequest.ProtoMessage"></a>
+### func \(\*CreateEnvironmentRequest\) ProtoMessage
+
+```go
+func (*CreateEnvironmentRequest) ProtoMessage()
+```
 
 
 
+<a name="CreateEnvironmentRequest.ProtoReflect"></a>
+### func \(\*CreateEnvironmentRequest\) ProtoReflect
+
+```go
+func (x *CreateEnvironmentRequest) ProtoReflect() protoreflect.Message
+```
 
 
 
-<a name="blanketops-environments-v1alpha1-DeleteEnvironmentResponse"></a>
+<a name="CreateEnvironmentRequest.Reset"></a>
+### func \(\*CreateEnvironmentRequest\) Reset
 
-### DeleteEnvironmentResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| success | [bool](#bool) |  | True if the Environment was successfully deleted. |
+```go
+func (x *CreateEnvironmentRequest) Reset()
+```
 
 
 
+<a name="CreateEnvironmentRequest.String"></a>
+### func \(\*CreateEnvironmentRequest\) String
+
+```go
+func (x *CreateEnvironmentRequest) String() string
+```
 
 
 
-<a name="blanketops-environments-v1alpha1-Environment"></a>
+<a name="CreateEnvironmentResponse"></a>
+## type CreateEnvironmentResponse
 
-### Environment
+
+
+```go
+type CreateEnvironmentResponse struct {
+
+    // The created Environment including generated metadata and initial status.
+    Environment *Environment `protobuf:"bytes,1,opt,name=environment,proto3" json:"environment,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="CreateEnvironmentResponse.Descriptor"></a>
+### func \(\*CreateEnvironmentResponse\) Descriptor
+
+```go
+func (*CreateEnvironmentResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use CreateEnvironmentResponse.ProtoReflect.Descriptor instead.
+
+<a name="CreateEnvironmentResponse.GetEnvironment"></a>
+### func \(\*CreateEnvironmentResponse\) GetEnvironment
+
+```go
+func (x *CreateEnvironmentResponse) GetEnvironment() *Environment
+```
+
+
+
+<a name="CreateEnvironmentResponse.ProtoMessage"></a>
+### func \(\*CreateEnvironmentResponse\) ProtoMessage
+
+```go
+func (*CreateEnvironmentResponse) ProtoMessage()
+```
+
+
+
+<a name="CreateEnvironmentResponse.ProtoReflect"></a>
+### func \(\*CreateEnvironmentResponse\) ProtoReflect
+
+```go
+func (x *CreateEnvironmentResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="CreateEnvironmentResponse.Reset"></a>
+### func \(\*CreateEnvironmentResponse\) Reset
+
+```go
+func (x *CreateEnvironmentResponse) Reset()
+```
+
+
+
+<a name="CreateEnvironmentResponse.String"></a>
+### func \(\*CreateEnvironmentResponse\) String
+
+```go
+func (x *CreateEnvironmentResponse) String() string
+```
+
+
+
+<a name="CreatePackageRequest"></a>
+## type CreatePackageRequest
+
+CreatePackage — declare a new Package. Controller reconciles the package sources on creation.
+
+```go
+type CreatePackageRequest struct {
+
+    // Desired spec for the new Package.
+    Spec *PackageSpec `protobuf:"bytes,1,opt,name=spec,proto3" json:"spec,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="CreatePackageRequest.Descriptor"></a>
+### func \(\*CreatePackageRequest\) Descriptor
+
+```go
+func (*CreatePackageRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use CreatePackageRequest.ProtoReflect.Descriptor instead.
+
+<a name="CreatePackageRequest.GetSpec"></a>
+### func \(\*CreatePackageRequest\) GetSpec
+
+```go
+func (x *CreatePackageRequest) GetSpec() *PackageSpec
+```
+
+
+
+<a name="CreatePackageRequest.ProtoMessage"></a>
+### func \(\*CreatePackageRequest\) ProtoMessage
+
+```go
+func (*CreatePackageRequest) ProtoMessage()
+```
+
+
+
+<a name="CreatePackageRequest.ProtoReflect"></a>
+### func \(\*CreatePackageRequest\) ProtoReflect
+
+```go
+func (x *CreatePackageRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="CreatePackageRequest.Reset"></a>
+### func \(\*CreatePackageRequest\) Reset
+
+```go
+func (x *CreatePackageRequest) Reset()
+```
+
+
+
+<a name="CreatePackageRequest.String"></a>
+### func \(\*CreatePackageRequest\) String
+
+```go
+func (x *CreatePackageRequest) String() string
+```
+
+
+
+<a name="CreatePackageResponse"></a>
+## type CreatePackageResponse
+
+
+
+```go
+type CreatePackageResponse struct {
+
+    // The created Package including generated metadata and initial status.
+    Package *Package `protobuf:"bytes,1,opt,name=package,proto3" json:"package,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="CreatePackageResponse.Descriptor"></a>
+### func \(\*CreatePackageResponse\) Descriptor
+
+```go
+func (*CreatePackageResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use CreatePackageResponse.ProtoReflect.Descriptor instead.
+
+<a name="CreatePackageResponse.GetPackage"></a>
+### func \(\*CreatePackageResponse\) GetPackage
+
+```go
+func (x *CreatePackageResponse) GetPackage() *Package
+```
+
+
+
+<a name="CreatePackageResponse.ProtoMessage"></a>
+### func \(\*CreatePackageResponse\) ProtoMessage
+
+```go
+func (*CreatePackageResponse) ProtoMessage()
+```
+
+
+
+<a name="CreatePackageResponse.ProtoReflect"></a>
+### func \(\*CreatePackageResponse\) ProtoReflect
+
+```go
+func (x *CreatePackageResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="CreatePackageResponse.Reset"></a>
+### func \(\*CreatePackageResponse\) Reset
+
+```go
+func (x *CreatePackageResponse) Reset()
+```
+
+
+
+<a name="CreatePackageResponse.String"></a>
+### func \(\*CreatePackageResponse\) String
+
+```go
+func (x *CreatePackageResponse) String() string
+```
+
+
+
+<a name="CreateServiceUnitRequest"></a>
+## type CreateServiceUnitRequest
+
+CreateServiceUnit — declare a new ServiceUnit.
+
+```go
+type CreateServiceUnitRequest struct {
+
+    // Desired spec for the new ServiceUnit.
+    Spec *ServiceUnitSpec `protobuf:"bytes,1,opt,name=spec,proto3" json:"spec,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="CreateServiceUnitRequest.Descriptor"></a>
+### func \(\*CreateServiceUnitRequest\) Descriptor
+
+```go
+func (*CreateServiceUnitRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use CreateServiceUnitRequest.ProtoReflect.Descriptor instead.
+
+<a name="CreateServiceUnitRequest.GetSpec"></a>
+### func \(\*CreateServiceUnitRequest\) GetSpec
+
+```go
+func (x *CreateServiceUnitRequest) GetSpec() *ServiceUnitSpec
+```
+
+
+
+<a name="CreateServiceUnitRequest.ProtoMessage"></a>
+### func \(\*CreateServiceUnitRequest\) ProtoMessage
+
+```go
+func (*CreateServiceUnitRequest) ProtoMessage()
+```
+
+
+
+<a name="CreateServiceUnitRequest.ProtoReflect"></a>
+### func \(\*CreateServiceUnitRequest\) ProtoReflect
+
+```go
+func (x *CreateServiceUnitRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="CreateServiceUnitRequest.Reset"></a>
+### func \(\*CreateServiceUnitRequest\) Reset
+
+```go
+func (x *CreateServiceUnitRequest) Reset()
+```
+
+
+
+<a name="CreateServiceUnitRequest.String"></a>
+### func \(\*CreateServiceUnitRequest\) String
+
+```go
+func (x *CreateServiceUnitRequest) String() string
+```
+
+
+
+<a name="CreateServiceUnitResponse"></a>
+## type CreateServiceUnitResponse
+
+
+
+```go
+type CreateServiceUnitResponse struct {
+
+    // The created ServiceUnit including generated metadata and initial status.
+    ServiceUnit *ServiceUnit `protobuf:"bytes,1,opt,name=service_unit,json=serviceUnit,proto3" json:"service_unit,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="CreateServiceUnitResponse.Descriptor"></a>
+### func \(\*CreateServiceUnitResponse\) Descriptor
+
+```go
+func (*CreateServiceUnitResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use CreateServiceUnitResponse.ProtoReflect.Descriptor instead.
+
+<a name="CreateServiceUnitResponse.GetServiceUnit"></a>
+### func \(\*CreateServiceUnitResponse\) GetServiceUnit
+
+```go
+func (x *CreateServiceUnitResponse) GetServiceUnit() *ServiceUnit
+```
+
+
+
+<a name="CreateServiceUnitResponse.ProtoMessage"></a>
+### func \(\*CreateServiceUnitResponse\) ProtoMessage
+
+```go
+func (*CreateServiceUnitResponse) ProtoMessage()
+```
+
+
+
+<a name="CreateServiceUnitResponse.ProtoReflect"></a>
+### func \(\*CreateServiceUnitResponse\) ProtoReflect
+
+```go
+func (x *CreateServiceUnitResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="CreateServiceUnitResponse.Reset"></a>
+### func \(\*CreateServiceUnitResponse\) Reset
+
+```go
+func (x *CreateServiceUnitResponse) Reset()
+```
+
+
+
+<a name="CreateServiceUnitResponse.String"></a>
+### func \(\*CreateServiceUnitResponse\) String
+
+```go
+func (x *CreateServiceUnitResponse) String() string
+```
+
+
+
+<a name="DeleteBuildRequest"></a>
+## type DeleteBuildRequest
+
+DeleteBuild — delete a Build CR. The controller garbage\-collects the Shipwright Build and all BuildRuns.
+
+```go
+type DeleteBuildRequest struct {
+
+    // Name of the Build CR to delete.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="DeleteBuildRequest.Descriptor"></a>
+### func \(\*DeleteBuildRequest\) Descriptor
+
+```go
+func (*DeleteBuildRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use DeleteBuildRequest.ProtoReflect.Descriptor instead.
+
+<a name="DeleteBuildRequest.GetName"></a>
+### func \(\*DeleteBuildRequest\) GetName
+
+```go
+func (x *DeleteBuildRequest) GetName() string
+```
+
+
+
+<a name="DeleteBuildRequest.ProtoMessage"></a>
+### func \(\*DeleteBuildRequest\) ProtoMessage
+
+```go
+func (*DeleteBuildRequest) ProtoMessage()
+```
+
+
+
+<a name="DeleteBuildRequest.ProtoReflect"></a>
+### func \(\*DeleteBuildRequest\) ProtoReflect
+
+```go
+func (x *DeleteBuildRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="DeleteBuildRequest.Reset"></a>
+### func \(\*DeleteBuildRequest\) Reset
+
+```go
+func (x *DeleteBuildRequest) Reset()
+```
+
+
+
+<a name="DeleteBuildRequest.String"></a>
+### func \(\*DeleteBuildRequest\) String
+
+```go
+func (x *DeleteBuildRequest) String() string
+```
+
+
+
+<a name="DeleteBuildResponse"></a>
+## type DeleteBuildResponse
+
+
+
+```go
+type DeleteBuildResponse struct {
+
+    // True if the Build was successfully deleted.
+    Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="DeleteBuildResponse.Descriptor"></a>
+### func \(\*DeleteBuildResponse\) Descriptor
+
+```go
+func (*DeleteBuildResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use DeleteBuildResponse.ProtoReflect.Descriptor instead.
+
+<a name="DeleteBuildResponse.GetSuccess"></a>
+### func \(\*DeleteBuildResponse\) GetSuccess
+
+```go
+func (x *DeleteBuildResponse) GetSuccess() bool
+```
+
+
+
+<a name="DeleteBuildResponse.ProtoMessage"></a>
+### func \(\*DeleteBuildResponse\) ProtoMessage
+
+```go
+func (*DeleteBuildResponse) ProtoMessage()
+```
+
+
+
+<a name="DeleteBuildResponse.ProtoReflect"></a>
+### func \(\*DeleteBuildResponse\) ProtoReflect
+
+```go
+func (x *DeleteBuildResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="DeleteBuildResponse.Reset"></a>
+### func \(\*DeleteBuildResponse\) Reset
+
+```go
+func (x *DeleteBuildResponse) Reset()
+```
+
+
+
+<a name="DeleteBuildResponse.String"></a>
+### func \(\*DeleteBuildResponse\) String
+
+```go
+func (x *DeleteBuildResponse) String() string
+```
+
+
+
+<a name="DeleteDeploymentRequest"></a>
+## type DeleteDeploymentRequest
+
+DeleteDeployment — delete a Deployment CR. The controller garbage\-collects materialized workloads and any GitOps sources owned by this deployment.
+
+```go
+type DeleteDeploymentRequest struct {
+
+    // Name of the Deployment CR to delete.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="DeleteDeploymentRequest.Descriptor"></a>
+### func \(\*DeleteDeploymentRequest\) Descriptor
+
+```go
+func (*DeleteDeploymentRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use DeleteDeploymentRequest.ProtoReflect.Descriptor instead.
+
+<a name="DeleteDeploymentRequest.GetName"></a>
+### func \(\*DeleteDeploymentRequest\) GetName
+
+```go
+func (x *DeleteDeploymentRequest) GetName() string
+```
+
+
+
+<a name="DeleteDeploymentRequest.ProtoMessage"></a>
+### func \(\*DeleteDeploymentRequest\) ProtoMessage
+
+```go
+func (*DeleteDeploymentRequest) ProtoMessage()
+```
+
+
+
+<a name="DeleteDeploymentRequest.ProtoReflect"></a>
+### func \(\*DeleteDeploymentRequest\) ProtoReflect
+
+```go
+func (x *DeleteDeploymentRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="DeleteDeploymentRequest.Reset"></a>
+### func \(\*DeleteDeploymentRequest\) Reset
+
+```go
+func (x *DeleteDeploymentRequest) Reset()
+```
+
+
+
+<a name="DeleteDeploymentRequest.String"></a>
+### func \(\*DeleteDeploymentRequest\) String
+
+```go
+func (x *DeleteDeploymentRequest) String() string
+```
+
+
+
+<a name="DeleteDeploymentResponse"></a>
+## type DeleteDeploymentResponse
+
+
+
+```go
+type DeleteDeploymentResponse struct {
+
+    // True if the Deployment was successfully deleted.
+    Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="DeleteDeploymentResponse.Descriptor"></a>
+### func \(\*DeleteDeploymentResponse\) Descriptor
+
+```go
+func (*DeleteDeploymentResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use DeleteDeploymentResponse.ProtoReflect.Descriptor instead.
+
+<a name="DeleteDeploymentResponse.GetSuccess"></a>
+### func \(\*DeleteDeploymentResponse\) GetSuccess
+
+```go
+func (x *DeleteDeploymentResponse) GetSuccess() bool
+```
+
+
+
+<a name="DeleteDeploymentResponse.ProtoMessage"></a>
+### func \(\*DeleteDeploymentResponse\) ProtoMessage
+
+```go
+func (*DeleteDeploymentResponse) ProtoMessage()
+```
+
+
+
+<a name="DeleteDeploymentResponse.ProtoReflect"></a>
+### func \(\*DeleteDeploymentResponse\) ProtoReflect
+
+```go
+func (x *DeleteDeploymentResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="DeleteDeploymentResponse.Reset"></a>
+### func \(\*DeleteDeploymentResponse\) Reset
+
+```go
+func (x *DeleteDeploymentResponse) Reset()
+```
+
+
+
+<a name="DeleteDeploymentResponse.String"></a>
+### func \(\*DeleteDeploymentResponse\) String
+
+```go
+func (x *DeleteDeploymentResponse) String() string
+```
+
+
+
+<a name="DeleteEnvironmentRequest"></a>
+## type DeleteEnvironmentRequest
+
+
+
+```go
+type DeleteEnvironmentRequest struct {
+
+    // Name of the Environment CR to delete.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="DeleteEnvironmentRequest.Descriptor"></a>
+### func \(\*DeleteEnvironmentRequest\) Descriptor
+
+```go
+func (*DeleteEnvironmentRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use DeleteEnvironmentRequest.ProtoReflect.Descriptor instead.
+
+<a name="DeleteEnvironmentRequest.GetName"></a>
+### func \(\*DeleteEnvironmentRequest\) GetName
+
+```go
+func (x *DeleteEnvironmentRequest) GetName() string
+```
+
+
+
+<a name="DeleteEnvironmentRequest.ProtoMessage"></a>
+### func \(\*DeleteEnvironmentRequest\) ProtoMessage
+
+```go
+func (*DeleteEnvironmentRequest) ProtoMessage()
+```
+
+
+
+<a name="DeleteEnvironmentRequest.ProtoReflect"></a>
+### func \(\*DeleteEnvironmentRequest\) ProtoReflect
+
+```go
+func (x *DeleteEnvironmentRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="DeleteEnvironmentRequest.Reset"></a>
+### func \(\*DeleteEnvironmentRequest\) Reset
+
+```go
+func (x *DeleteEnvironmentRequest) Reset()
+```
+
+
+
+<a name="DeleteEnvironmentRequest.String"></a>
+### func \(\*DeleteEnvironmentRequest\) String
+
+```go
+func (x *DeleteEnvironmentRequest) String() string
+```
+
+
+
+<a name="DeleteEnvironmentResponse"></a>
+## type DeleteEnvironmentResponse
+
+
+
+```go
+type DeleteEnvironmentResponse struct {
+
+    // True if the Environment was successfully deleted.
+    Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="DeleteEnvironmentResponse.Descriptor"></a>
+### func \(\*DeleteEnvironmentResponse\) Descriptor
+
+```go
+func (*DeleteEnvironmentResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use DeleteEnvironmentResponse.ProtoReflect.Descriptor instead.
+
+<a name="DeleteEnvironmentResponse.GetSuccess"></a>
+### func \(\*DeleteEnvironmentResponse\) GetSuccess
+
+```go
+func (x *DeleteEnvironmentResponse) GetSuccess() bool
+```
+
+
+
+<a name="DeleteEnvironmentResponse.ProtoMessage"></a>
+### func \(\*DeleteEnvironmentResponse\) ProtoMessage
+
+```go
+func (*DeleteEnvironmentResponse) ProtoMessage()
+```
+
+
+
+<a name="DeleteEnvironmentResponse.ProtoReflect"></a>
+### func \(\*DeleteEnvironmentResponse\) ProtoReflect
+
+```go
+func (x *DeleteEnvironmentResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="DeleteEnvironmentResponse.Reset"></a>
+### func \(\*DeleteEnvironmentResponse\) Reset
+
+```go
+func (x *DeleteEnvironmentResponse) Reset()
+```
+
+
+
+<a name="DeleteEnvironmentResponse.String"></a>
+### func \(\*DeleteEnvironmentResponse\) String
+
+```go
+func (x *DeleteEnvironmentResponse) String() string
+```
+
+
+
+<a name="DeletePackageRequest"></a>
+## type DeletePackageRequest
+
+DeletePackage — delete a Package CR. The controller garbage\-collects reconciliation sources owned by this package. State repository contents are not modified.
+
+```go
+type DeletePackageRequest struct {
+
+    // Name of the Package CR to delete.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="DeletePackageRequest.Descriptor"></a>
+### func \(\*DeletePackageRequest\) Descriptor
+
+```go
+func (*DeletePackageRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use DeletePackageRequest.ProtoReflect.Descriptor instead.
+
+<a name="DeletePackageRequest.GetName"></a>
+### func \(\*DeletePackageRequest\) GetName
+
+```go
+func (x *DeletePackageRequest) GetName() string
+```
+
+
+
+<a name="DeletePackageRequest.ProtoMessage"></a>
+### func \(\*DeletePackageRequest\) ProtoMessage
+
+```go
+func (*DeletePackageRequest) ProtoMessage()
+```
+
+
+
+<a name="DeletePackageRequest.ProtoReflect"></a>
+### func \(\*DeletePackageRequest\) ProtoReflect
+
+```go
+func (x *DeletePackageRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="DeletePackageRequest.Reset"></a>
+### func \(\*DeletePackageRequest\) Reset
+
+```go
+func (x *DeletePackageRequest) Reset()
+```
+
+
+
+<a name="DeletePackageRequest.String"></a>
+### func \(\*DeletePackageRequest\) String
+
+```go
+func (x *DeletePackageRequest) String() string
+```
+
+
+
+<a name="DeletePackageResponse"></a>
+## type DeletePackageResponse
+
+
+
+```go
+type DeletePackageResponse struct {
+
+    // True if the Package was successfully deleted.
+    Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="DeletePackageResponse.Descriptor"></a>
+### func \(\*DeletePackageResponse\) Descriptor
+
+```go
+func (*DeletePackageResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use DeletePackageResponse.ProtoReflect.Descriptor instead.
+
+<a name="DeletePackageResponse.GetSuccess"></a>
+### func \(\*DeletePackageResponse\) GetSuccess
+
+```go
+func (x *DeletePackageResponse) GetSuccess() bool
+```
+
+
+
+<a name="DeletePackageResponse.ProtoMessage"></a>
+### func \(\*DeletePackageResponse\) ProtoMessage
+
+```go
+func (*DeletePackageResponse) ProtoMessage()
+```
+
+
+
+<a name="DeletePackageResponse.ProtoReflect"></a>
+### func \(\*DeletePackageResponse\) ProtoReflect
+
+```go
+func (x *DeletePackageResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="DeletePackageResponse.Reset"></a>
+### func \(\*DeletePackageResponse\) Reset
+
+```go
+func (x *DeletePackageResponse) Reset()
+```
+
+
+
+<a name="DeletePackageResponse.String"></a>
+### func \(\*DeletePackageResponse\) String
+
+```go
+func (x *DeletePackageResponse) String() string
+```
+
+
+
+<a name="DeleteServiceUnitRequest"></a>
+## type DeleteServiceUnitRequest
+
+DeleteServiceUnit — delete a ServiceUnit CR. The controller garbage\-collects the materialized workload.
+
+```go
+type DeleteServiceUnitRequest struct {
+
+    // Name of the ServiceUnit CR to delete.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="DeleteServiceUnitRequest.Descriptor"></a>
+### func \(\*DeleteServiceUnitRequest\) Descriptor
+
+```go
+func (*DeleteServiceUnitRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use DeleteServiceUnitRequest.ProtoReflect.Descriptor instead.
+
+<a name="DeleteServiceUnitRequest.GetName"></a>
+### func \(\*DeleteServiceUnitRequest\) GetName
+
+```go
+func (x *DeleteServiceUnitRequest) GetName() string
+```
+
+
+
+<a name="DeleteServiceUnitRequest.ProtoMessage"></a>
+### func \(\*DeleteServiceUnitRequest\) ProtoMessage
+
+```go
+func (*DeleteServiceUnitRequest) ProtoMessage()
+```
+
+
+
+<a name="DeleteServiceUnitRequest.ProtoReflect"></a>
+### func \(\*DeleteServiceUnitRequest\) ProtoReflect
+
+```go
+func (x *DeleteServiceUnitRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="DeleteServiceUnitRequest.Reset"></a>
+### func \(\*DeleteServiceUnitRequest\) Reset
+
+```go
+func (x *DeleteServiceUnitRequest) Reset()
+```
+
+
+
+<a name="DeleteServiceUnitRequest.String"></a>
+### func \(\*DeleteServiceUnitRequest\) String
+
+```go
+func (x *DeleteServiceUnitRequest) String() string
+```
+
+
+
+<a name="DeleteServiceUnitResponse"></a>
+## type DeleteServiceUnitResponse
+
+
+
+```go
+type DeleteServiceUnitResponse struct {
+
+    // True if the ServiceUnit was successfully deleted.
+    Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="DeleteServiceUnitResponse.Descriptor"></a>
+### func \(\*DeleteServiceUnitResponse\) Descriptor
+
+```go
+func (*DeleteServiceUnitResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use DeleteServiceUnitResponse.ProtoReflect.Descriptor instead.
+
+<a name="DeleteServiceUnitResponse.GetSuccess"></a>
+### func \(\*DeleteServiceUnitResponse\) GetSuccess
+
+```go
+func (x *DeleteServiceUnitResponse) GetSuccess() bool
+```
+
+
+
+<a name="DeleteServiceUnitResponse.ProtoMessage"></a>
+### func \(\*DeleteServiceUnitResponse\) ProtoMessage
+
+```go
+func (*DeleteServiceUnitResponse) ProtoMessage()
+```
+
+
+
+<a name="DeleteServiceUnitResponse.ProtoReflect"></a>
+### func \(\*DeleteServiceUnitResponse\) ProtoReflect
+
+```go
+func (x *DeleteServiceUnitResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="DeleteServiceUnitResponse.Reset"></a>
+### func \(\*DeleteServiceUnitResponse\) Reset
+
+```go
+func (x *DeleteServiceUnitResponse) Reset()
+```
+
+
+
+<a name="DeleteServiceUnitResponse.String"></a>
+### func \(\*DeleteServiceUnitResponse\) String
+
+```go
+func (x *DeleteServiceUnitResponse) String() string
+```
+
+
+
+<a name="Deployment"></a>
+## type Deployment
+
+
+
+```go
+type Deployment struct {
+
+    // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
+    Metadata *v1.Metadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+    // Desired state declared by the operator.
+    Spec *DeploymentSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+    // Observed state set by the controller. Never manually edited.
+    Status *DeploymentStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="Deployment.Descriptor"></a>
+### func \(\*Deployment\) Descriptor
+
+```go
+func (*Deployment) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use Deployment.ProtoReflect.Descriptor instead.
+
+<a name="Deployment.GetMetadata"></a>
+### func \(\*Deployment\) GetMetadata
+
+```go
+func (x *Deployment) GetMetadata() *v1.Metadata
+```
+
+
+
+<a name="Deployment.GetSpec"></a>
+### func \(\*Deployment\) GetSpec
+
+```go
+func (x *Deployment) GetSpec() *DeploymentSpec
+```
+
+
+
+<a name="Deployment.GetStatus"></a>
+### func \(\*Deployment\) GetStatus
+
+```go
+func (x *Deployment) GetStatus() *DeploymentStatus
+```
+
+
+
+<a name="Deployment.ProtoMessage"></a>
+### func \(\*Deployment\) ProtoMessage
+
+```go
+func (*Deployment) ProtoMessage()
+```
+
+
+
+<a name="Deployment.ProtoReflect"></a>
+### func \(\*Deployment\) ProtoReflect
+
+```go
+func (x *Deployment) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="Deployment.Reset"></a>
+### func \(\*Deployment\) Reset
+
+```go
+func (x *Deployment) Reset()
+```
+
+
+
+<a name="Deployment.String"></a>
+### func \(\*Deployment\) String
+
+```go
+func (x *Deployment) String() string
+```
+
+
+
+<a name="DeploymentServiceClient"></a>
+## type DeploymentServiceClient
+
+DeploymentServiceClient is the client API for DeploymentService service.
+
+For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+
+```go
+type DeploymentServiceClient interface {
+    // Declare a new Deployment intent.
+    CreateDeployment(ctx context.Context, in *CreateDeploymentRequest, opts ...grpc.CallOption) (*CreateDeploymentResponse, error)
+    // Fetch a Deployment CR by name.
+    GetDeployment(ctx context.Context, in *GetDeploymentRequest, opts ...grpc.CallOption) (*GetDeploymentResponse, error)
+    // Full replace of a Deployment spec.
+    UpdateDeployment(ctx context.Context, in *UpdateDeploymentRequest, opts ...grpc.CallOption) (*UpdateDeploymentResponse, error)
+    // Partial update via JSON merge patch RFC 7396.
+    PatchDeployment(ctx context.Context, in *PatchDeploymentRequest, opts ...grpc.CallOption) (*PatchDeploymentResponse, error)
+    // List Deployment CRs with optional phase/runtime filter and paging.
+    ListDeployments(ctx context.Context, in *ListDeploymentsRequest, opts ...grpc.CallOption) (*ListDeploymentsResponse, error)
+    // Delete a Deployment CR and its materialized workloads.
+    DeleteDeployment(ctx context.Context, in *DeleteDeploymentRequest, opts ...grpc.CallOption) (*DeleteDeploymentResponse, error)
+    // Stream phase transitions for a Deployment CR.
+    // Streams indefinitely — deployments have no terminal phase; close client-side.
+    WatchDeployment(ctx context.Context, in *WatchDeploymentRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchDeploymentResponse], error)
+}
+```
+
+<a name="NewDeploymentServiceClient"></a>
+### func NewDeploymentServiceClient
+
+```go
+func NewDeploymentServiceClient(cc grpc.ClientConnInterface) DeploymentServiceClient
+```
+
+
+
+<a name="DeploymentServiceServer"></a>
+## type DeploymentServiceServer
+
+DeploymentServiceServer is the server API for DeploymentService service. All implementations must embed UnimplementedDeploymentServiceServer for forward compatibility.
+
+```go
+type DeploymentServiceServer interface {
+    // Declare a new Deployment intent.
+    CreateDeployment(context.Context, *CreateDeploymentRequest) (*CreateDeploymentResponse, error)
+    // Fetch a Deployment CR by name.
+    GetDeployment(context.Context, *GetDeploymentRequest) (*GetDeploymentResponse, error)
+    // Full replace of a Deployment spec.
+    UpdateDeployment(context.Context, *UpdateDeploymentRequest) (*UpdateDeploymentResponse, error)
+    // Partial update via JSON merge patch RFC 7396.
+    PatchDeployment(context.Context, *PatchDeploymentRequest) (*PatchDeploymentResponse, error)
+    // List Deployment CRs with optional phase/runtime filter and paging.
+    ListDeployments(context.Context, *ListDeploymentsRequest) (*ListDeploymentsResponse, error)
+    // Delete a Deployment CR and its materialized workloads.
+    DeleteDeployment(context.Context, *DeleteDeploymentRequest) (*DeleteDeploymentResponse, error)
+    // Stream phase transitions for a Deployment CR.
+    // Streams indefinitely — deployments have no terminal phase; close client-side.
+    WatchDeployment(*WatchDeploymentRequest, grpc.ServerStreamingServer[WatchDeploymentResponse]) error
+    // contains filtered or unexported methods
+}
+```
+
+<a name="DeploymentService_WatchDeploymentClient"></a>
+## type DeploymentService\_WatchDeploymentClient
+
+This type alias is provided for backwards compatibility with existing code that references the prior non\-generic stream type by name.
+
+```go
+type DeploymentService_WatchDeploymentClient = grpc.ServerStreamingClient[WatchDeploymentResponse]
+```
+
+<a name="DeploymentService_WatchDeploymentServer"></a>
+## type DeploymentService\_WatchDeploymentServer
+
+This type alias is provided for backwards compatibility with existing code that references the prior non\-generic stream type by name.
+
+```go
+type DeploymentService_WatchDeploymentServer = grpc.ServerStreamingServer[WatchDeploymentResponse]
+```
+
+<a name="DeploymentSpec"></a>
+## type DeploymentSpec
+
+
+
+```go
+type DeploymentSpec struct {
+
+    // Names of the ServiceUnit CRs that make up this deployment.
+    // Resolved in the same namespace as this Deployment.
+    ServiceUnits []string `protobuf:"bytes,1,rep,name=service_units,json=serviceUnits,proto3" json:"service_units,omitempty"`
+    // Target runtime backend for all service units.
+    Runtime *v1.DeploymentRuntime `protobuf:"bytes,2,opt,name=runtime,proto3" json:"runtime,omitempty"`
+    // Enable automatic image updates from Build outputs.
+    // Materialized as FluxCD ImageUpdateAutomation when GitOps is active.
+    ImageAutomation bool `protobuf:"varint,3,opt,name=image_automation,json=imageAutomation,proto3" json:"image_automation,omitempty"`
+    // GitOps repository containing rendered manifests. Optional —
+    // when unset, the controller applies workloads directly.
+    ManifestsRepo *ManifestsRepo `protobuf:"bytes,4,opt,name=manifests_repo,json=manifestsRepo,proto3" json:"manifests_repo,omitempty"`
+    // Manifest application strategy. Required when manifests_repo is set.
+    ReconciliationStrategy *v1.ReconciliationStrategy `protobuf:"bytes,5,opt,name=reconciliation_strategy,json=reconciliationStrategy,proto3" json:"reconciliation_strategy,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="DeploymentSpec.Descriptor"></a>
+### func \(\*DeploymentSpec\) Descriptor
+
+```go
+func (*DeploymentSpec) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use DeploymentSpec.ProtoReflect.Descriptor instead.
+
+<a name="DeploymentSpec.GetImageAutomation"></a>
+### func \(\*DeploymentSpec\) GetImageAutomation
+
+```go
+func (x *DeploymentSpec) GetImageAutomation() bool
+```
+
+
+
+<a name="DeploymentSpec.GetManifestsRepo"></a>
+### func \(\*DeploymentSpec\) GetManifestsRepo
+
+```go
+func (x *DeploymentSpec) GetManifestsRepo() *ManifestsRepo
+```
+
+
+
+<a name="DeploymentSpec.GetReconciliationStrategy"></a>
+### func \(\*DeploymentSpec\) GetReconciliationStrategy
+
+```go
+func (x *DeploymentSpec) GetReconciliationStrategy() *v1.ReconciliationStrategy
+```
+
+
+
+<a name="DeploymentSpec.GetRuntime"></a>
+### func \(\*DeploymentSpec\) GetRuntime
+
+```go
+func (x *DeploymentSpec) GetRuntime() *v1.DeploymentRuntime
+```
+
+
+
+<a name="DeploymentSpec.GetServiceUnits"></a>
+### func \(\*DeploymentSpec\) GetServiceUnits
+
+```go
+func (x *DeploymentSpec) GetServiceUnits() []string
+```
+
+
+
+<a name="DeploymentSpec.ProtoMessage"></a>
+### func \(\*DeploymentSpec\) ProtoMessage
+
+```go
+func (*DeploymentSpec) ProtoMessage()
+```
+
+
+
+<a name="DeploymentSpec.ProtoReflect"></a>
+### func \(\*DeploymentSpec\) ProtoReflect
+
+```go
+func (x *DeploymentSpec) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="DeploymentSpec.Reset"></a>
+### func \(\*DeploymentSpec\) Reset
+
+```go
+func (x *DeploymentSpec) Reset()
+```
+
+
+
+<a name="DeploymentSpec.String"></a>
+### func \(\*DeploymentSpec\) String
+
+```go
+func (x *DeploymentSpec) String() string
+```
+
+
+
+<a name="DeploymentStatus"></a>
+## type DeploymentStatus
+
+
+
+```go
+type DeploymentStatus struct {
+
+    // Current lifecycle phase. Set by the controller.
+    Phase *v1.DeploymentPhase `protobuf:"bytes,1,opt,name=phase,proto3" json:"phase,omitempty"`
+    // Human-readable status summary. Populated on failure.
+    Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+    // Runtime actually used to materialize workloads.
+    Runtime *v1.DeploymentRuntime `protobuf:"bytes,3,opt,name=runtime,proto3" json:"runtime,omitempty"`
+    // Rollout strategy applied by the runtime.
+    Strategy *v1.DeploymentStrategy `protobuf:"bytes,4,opt,name=strategy,proto3" json:"strategy,omitempty"`
+    // Per-ServiceUnit deployment status.
+    ServiceUnitStatuses []*ServiceUnitDeploymentStatus `protobuf:"bytes,5,rep,name=service_unit_statuses,json=serviceUnitStatuses,proto3" json:"service_unit_statuses,omitempty"`
+    // When the controller last updated this status.
+    LastUpdatedAt *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=last_updated_at,json=lastUpdatedAt,proto3" json:"last_updated_at,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="DeploymentStatus.Descriptor"></a>
+### func \(\*DeploymentStatus\) Descriptor
+
+```go
+func (*DeploymentStatus) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use DeploymentStatus.ProtoReflect.Descriptor instead.
+
+<a name="DeploymentStatus.GetLastUpdatedAt"></a>
+### func \(\*DeploymentStatus\) GetLastUpdatedAt
+
+```go
+func (x *DeploymentStatus) GetLastUpdatedAt() *timestamppb.Timestamp
+```
+
+
+
+<a name="DeploymentStatus.GetMessage"></a>
+### func \(\*DeploymentStatus\) GetMessage
+
+```go
+func (x *DeploymentStatus) GetMessage() string
+```
+
+
+
+<a name="DeploymentStatus.GetPhase"></a>
+### func \(\*DeploymentStatus\) GetPhase
+
+```go
+func (x *DeploymentStatus) GetPhase() *v1.DeploymentPhase
+```
+
+
+
+<a name="DeploymentStatus.GetRuntime"></a>
+### func \(\*DeploymentStatus\) GetRuntime
+
+```go
+func (x *DeploymentStatus) GetRuntime() *v1.DeploymentRuntime
+```
+
+
+
+<a name="DeploymentStatus.GetServiceUnitStatuses"></a>
+### func \(\*DeploymentStatus\) GetServiceUnitStatuses
+
+```go
+func (x *DeploymentStatus) GetServiceUnitStatuses() []*ServiceUnitDeploymentStatus
+```
+
+
+
+<a name="DeploymentStatus.GetStrategy"></a>
+### func \(\*DeploymentStatus\) GetStrategy
+
+```go
+func (x *DeploymentStatus) GetStrategy() *v1.DeploymentStrategy
+```
+
+
+
+<a name="DeploymentStatus.ProtoMessage"></a>
+### func \(\*DeploymentStatus\) ProtoMessage
+
+```go
+func (*DeploymentStatus) ProtoMessage()
+```
+
+
+
+<a name="DeploymentStatus.ProtoReflect"></a>
+### func \(\*DeploymentStatus\) ProtoReflect
+
+```go
+func (x *DeploymentStatus) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="DeploymentStatus.Reset"></a>
+### func \(\*DeploymentStatus\) Reset
+
+```go
+func (x *DeploymentStatus) Reset()
+```
+
+
+
+<a name="DeploymentStatus.String"></a>
+### func \(\*DeploymentStatus\) String
+
+```go
+func (x *DeploymentStatus) String() string
+```
+
+
+
+<a name="Environment"></a>
+## type Environment
+
 Environment
 
-The envelope of the delivery chain: a versioned, isolated execution
-context where applications run (ESP-0001). Composes the CRs that make
-up an application&#39;s delivery — builds, packages, service units,
-deployment, and routing — by reference, and owns them via ownerReference
-(cascade delete).
+The envelope of the delivery chain: a versioned, isolated execution context where applications run \(ESP\-0001\). Composes the CRs that make up an application's delivery — builds, packages, service units, deployment, and routing — by reference, and owns them via ownerReference \(cascade delete\).
 
 Resource
 
+```go
+type Environment struct {
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| metadata | [blanketops.common.v1.Metadata](#blanketops-common-v1-Metadata) |  | Standard BlanketOps metadata (name, namespace, labels, ownerRef). |
-| spec | [EnvironmentSpec](#blanketops-environments-v1alpha1-EnvironmentSpec) |  | Desired state declared by the operator. |
-| status | [EnvironmentStatus](#blanketops-environments-v1alpha1-EnvironmentStatus) |  | Observed state set by the controller. Never manually edited. |
+    // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
+    Metadata *v1.Metadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+    // Desired state declared by the operator.
+    Spec *EnvironmentSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+    // Observed state set by the controller. Never manually edited.
+    Status *EnvironmentStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+    // contains filtered or unexported fields
+}
+```
 
+<a name="Environment.Descriptor"></a>
+### func \(\*Environment\) Descriptor
 
+```go
+func (*Environment) Descriptor() ([]byte, []int)
+```
 
+Deprecated: Use Environment.ProtoReflect.Descriptor instead.
 
+<a name="Environment.GetMetadata"></a>
+### func \(\*Environment\) GetMetadata
 
+```go
+func (x *Environment) GetMetadata() *v1.Metadata
+```
 
-<a name="blanketops-environments-v1alpha1-EnvironmentCondition"></a>
 
-### EnvironmentCondition
 
+<a name="Environment.GetSpec"></a>
+### func \(\*Environment\) GetSpec
 
+```go
+func (x *Environment) GetSpec() *EnvironmentSpec
+```
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| type | [string](#string) |  | Condition type. e.g. BuildReady, DeploymentReady, RouteReady |
-| status | [string](#string) |  | Condition status: True, False, or Unknown. |
-| reason | [string](#string) |  | Machine-readable reason for the last transition. |
-| message | [string](#string) |  | Human-readable detail for the last transition. |
-| last_transition_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | When the condition last changed status. |
 
 
+<a name="Environment.GetStatus"></a>
+### func \(\*Environment\) GetStatus
 
+```go
+func (x *Environment) GetStatus() *EnvironmentStatus
+```
 
 
 
-<a name="blanketops-environments-v1alpha1-EnvironmentContract"></a>
+<a name="Environment.ProtoMessage"></a>
+### func \(\*Environment\) ProtoMessage
 
-### EnvironmentContract
-Contract
-EnvironmentContract — platform-level bindings declared per environment.
-Drives ESO ClusterSecretStore selection at reconciliation time.
-Each composed CR owns its own credential secrets — this declares only
-which provider backs the environment so the platform can select the
-correct ClusterSecretStore. Users may reference their own store by
-setting provider accordingly.
+```go
+func (*Environment) ProtoMessage()
+```
 
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| secret_store | [blanketops.common.v1.SecretStore](#blanketops-common-v1-SecretStore) |  | External secrets backend for this environment. Drives ESO ClusterSecretStore selection. Each CR manages its own credential secrets independently. |
 
+<a name="Environment.ProtoReflect"></a>
+### func \(\*Environment\) ProtoReflect
 
+```go
+func (x *Environment) ProtoReflect() protoreflect.Message
+```
 
 
 
+<a name="Environment.Reset"></a>
+### func \(\*Environment\) Reset
 
-<a name="blanketops-environments-v1alpha1-EnvironmentSpec"></a>
+```go
+func (x *Environment) Reset()
+```
 
-### EnvironmentSpec
-Spec (intent)
 
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| application_name | [string](#string) |  | Human-readable application identifier. e.g. for-kaniko-app |
-| branch | [string](#string) |  | Git branch associated with this environment. e.g. main, feature/checkout |
-| git_owner | [string](#string) |  | Owning Git organisation or user. e.g. ntlaletsi70 |
-| environment_type | [blanketops.common.v1.EnvironmentType](#blanketops-common-v1-EnvironmentType) |  | Environment classification. |
-| version | [string](#string) |  | Application version — semantic or otherwise. e.g. v1.2.3 |
-| description | [string](#string) |  | Human-readable description. Optional. |
-| service_units | [ObjectRef](#blanketops-environments-v1alpha1-ObjectRef) | repeated | ServiceUnits composed into this environment. |
-| deployment | [ObjectRef](#blanketops-environments-v1alpha1-ObjectRef) |  | Deployment intent — how service units are materialized. |
-| route | [ObjectRef](#blanketops-environments-v1alpha1-ObjectRef) |  | External routing. Optional. |
-| package | [ObjectRef](#blanketops-environments-v1alpha1-ObjectRef) |  | Packaging / release artifact. Optional. |
-| build | [ObjectRef](#blanketops-environments-v1alpha1-ObjectRef) |  | Build configuration. |
-| git_repository | [ObjectRef](#blanketops-environments-v1alpha1-ObjectRef) |  | Git repository associated with this environment. The GitRepository CR owns branch, owner, and clone config. |
-| contract | [EnvironmentContract](#blanketops-environments-v1alpha1-EnvironmentContract) |  | Platform-level bindings — secret store provider selection. |
-| git_hub_event | [ObjectRef](#blanketops-environments-v1alpha1-ObjectRef) |  | GitHub event source for this environment. The GitHubEvent CR owns webhook event routing and Argo Events config. |
+<a name="Environment.String"></a>
+### func \(\*Environment\) String
 
+```go
+func (x *Environment) String() string
+```
 
 
 
+<a name="EnvironmentCondition"></a>
+## type EnvironmentCondition
 
 
-<a name="blanketops-environments-v1alpha1-EnvironmentStatus"></a>
 
-### EnvironmentStatus
-Status (observed state)
+```go
+type EnvironmentCondition struct {
 
+    // Condition type. e.g. BuildReady, DeploymentReady, RouteReady
+    Type string `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
+    // Condition status: True, False, or Unknown.
+    Status string `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+    // Machine-readable reason for the last transition.
+    Reason string `protobuf:"bytes,3,opt,name=reason,proto3" json:"reason,omitempty"`
+    // Human-readable detail for the last transition.
+    Message string `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
+    // When the condition last changed status.
+    LastTransitionTime *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=last_transition_time,json=lastTransitionTime,proto3" json:"last_transition_time,omitempty"`
+    // contains filtered or unexported fields
+}
+```
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| phase | [blanketops.common.v1.EnvironmentPhase](#blanketops-common-v1-EnvironmentPhase) |  | Current aggregate phase. Set by the controller. |
-| message | [string](#string) |  | Human-readable status summary. Populated on failure. |
-| conditions | [EnvironmentCondition](#blanketops-environments-v1alpha1-EnvironmentCondition) | repeated | Per-resource readiness conditions for UI and automation consumers. e.g. BuildReady, DeploymentReady, RouteReady |
-| last_updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | When the controller last updated this status. |
+<a name="EnvironmentCondition.Descriptor"></a>
+### func \(\*EnvironmentCondition\) Descriptor
 
+```go
+func (*EnvironmentCondition) Descriptor() ([]byte, []int)
+```
 
+Deprecated: Use EnvironmentCondition.ProtoReflect.Descriptor instead.
 
+<a name="EnvironmentCondition.GetLastTransitionTime"></a>
+### func \(\*EnvironmentCondition\) GetLastTransitionTime
 
+```go
+func (x *EnvironmentCondition) GetLastTransitionTime() *timestamppb.Timestamp
+```
 
 
-<a name="blanketops-environments-v1alpha1-GetEnvironmentRequest"></a>
 
-### GetEnvironmentRequest
+<a name="EnvironmentCondition.GetMessage"></a>
+### func \(\*EnvironmentCondition\) GetMessage
 
+```go
+func (x *EnvironmentCondition) GetMessage() string
+```
 
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Environment CR to fetch. |
 
+<a name="EnvironmentCondition.GetReason"></a>
+### func \(\*EnvironmentCondition\) GetReason
 
+```go
+func (x *EnvironmentCondition) GetReason() string
+```
 
 
 
+<a name="EnvironmentCondition.GetStatus"></a>
+### func \(\*EnvironmentCondition\) GetStatus
 
-<a name="blanketops-environments-v1alpha1-GetEnvironmentResponse"></a>
+```go
+func (x *EnvironmentCondition) GetStatus() string
+```
 
-### GetEnvironmentResponse
 
 
+<a name="EnvironmentCondition.GetType"></a>
+### func \(\*EnvironmentCondition\) GetType
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| environment | [Environment](#blanketops-environments-v1alpha1-Environment) |  |  |
+```go
+func (x *EnvironmentCondition) GetType() string
+```
 
 
 
+<a name="EnvironmentCondition.ProtoMessage"></a>
+### func \(\*EnvironmentCondition\) ProtoMessage
 
+```go
+func (*EnvironmentCondition) ProtoMessage()
+```
 
 
-<a name="blanketops-environments-v1alpha1-ListEnvironmentsRequest"></a>
 
-### ListEnvironmentsRequest
+<a name="EnvironmentCondition.ProtoReflect"></a>
+### func \(\*EnvironmentCondition\) ProtoReflect
 
+```go
+func (x *EnvironmentCondition) ProtoReflect() protoreflect.Message
+```
 
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| phase | [blanketops.common.v1.EnvironmentPhase](#blanketops-common-v1-EnvironmentPhase) | optional | Filter by current aggregate phase. |
-| environment_type | [blanketops.common.v1.EnvironmentType](#blanketops-common-v1-EnvironmentType) | optional | Filter by environment classification. |
-| application_name | [string](#string) | optional | Filter by application name. |
-| page_size | [int32](#int32) | optional | Maximum number of results to return. Server may return fewer. |
-| page_token | [string](#string) | optional | Token from a previous ListEnvironmentsResponse.next_page_token. Omit for the first request. |
 
+<a name="EnvironmentCondition.Reset"></a>
+### func \(\*EnvironmentCondition\) Reset
 
+```go
+func (x *EnvironmentCondition) Reset()
+```
 
 
 
+<a name="EnvironmentCondition.String"></a>
+### func \(\*EnvironmentCondition\) String
 
-<a name="blanketops-environments-v1alpha1-ListEnvironmentsResponse"></a>
+```go
+func (x *EnvironmentCondition) String() string
+```
 
-### ListEnvironmentsResponse
 
 
+<a name="EnvironmentContract"></a>
+## type EnvironmentContract
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| environments | [Environment](#blanketops-environments-v1alpha1-Environment) | repeated | The list of Environment CRs matching the request filters. |
-| next_page_token | [string](#string) | optional | Token to retrieve the next page. Empty if no more results. |
+Contract EnvironmentContract — platform\-level bindings declared per environment. Drives ESO ClusterSecretStore selection at reconciliation time. Each composed CR owns its own credential secrets — this declares only which provider backs the environment so the platform can select the correct ClusterSecretStore. Users may reference their own store by setting provider accordingly.
 
+```go
+type EnvironmentContract struct {
 
+    // External secrets backend for this environment.
+    // Drives ESO ClusterSecretStore selection.
+    // Each CR manages its own credential secrets independently.
+    SecretStore *v1.SecretStore `protobuf:"bytes,1,opt,name=secret_store,json=secretStore,proto3" json:"secret_store,omitempty"`
+    // contains filtered or unexported fields
+}
+```
 
+<a name="EnvironmentContract.Descriptor"></a>
+### func \(\*EnvironmentContract\) Descriptor
 
+```go
+func (*EnvironmentContract) Descriptor() ([]byte, []int)
+```
 
+Deprecated: Use EnvironmentContract.ProtoReflect.Descriptor instead.
 
-<a name="blanketops-environments-v1alpha1-ObjectRef"></a>
+<a name="EnvironmentContract.GetSecretStore"></a>
+### func \(\*EnvironmentContract\) GetSecretStore
 
-### ObjectRef
-References (composition, not ownership)
-Reference to a CR composed into this environment.
-Resolved in the same namespace as the Environment.
+```go
+func (x *EnvironmentContract) GetSecretStore() *v1.SecretStore
+```
 
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the referenced CR. |
 
+<a name="EnvironmentContract.ProtoMessage"></a>
+### func \(\*EnvironmentContract\) ProtoMessage
 
+```go
+func (*EnvironmentContract) ProtoMessage()
+```
 
 
 
+<a name="EnvironmentContract.ProtoReflect"></a>
+### func \(\*EnvironmentContract\) ProtoReflect
 
-<a name="blanketops-environments-v1alpha1-PatchEnvironmentRequest"></a>
+```go
+func (x *EnvironmentContract) ProtoReflect() protoreflect.Message
+```
 
-### PatchEnvironmentRequest
 
 
+<a name="EnvironmentContract.Reset"></a>
+### func \(\*EnvironmentContract\) Reset
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Environment CR to patch. |
-| patch | [string](#string) |  | JSON merge patch document — RFC 7396. e.g. {&#34;spec&#34;:{&#34;version&#34;:&#34;v1.3.0&#34;}} |
+```go
+func (x *EnvironmentContract) Reset()
+```
 
 
 
+<a name="EnvironmentContract.String"></a>
+### func \(\*EnvironmentContract\) String
 
+```go
+func (x *EnvironmentContract) String() string
+```
 
 
-<a name="blanketops-environments-v1alpha1-PatchEnvironmentResponse"></a>
 
-### PatchEnvironmentResponse
+<a name="EnvironmentServiceClient"></a>
+## type EnvironmentServiceClient
 
+EnvironmentServiceClient is the client API for EnvironmentService service.
 
+For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| environment | [Environment](#blanketops-environments-v1alpha1-Environment) |  | The patched Environment as observed by the controller. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-UpdateEnvironmentRequest"></a>
-
-### UpdateEnvironmentRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| environment | [Environment](#blanketops-environments-v1alpha1-Environment) |  | Full Environment object including metadata and desired spec. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-UpdateEnvironmentResponse"></a>
-
-### UpdateEnvironmentResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| environment | [Environment](#blanketops-environments-v1alpha1-Environment) |  | The updated Environment as observed by the controller. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-WatchEnvironmentRequest"></a>
-
-### WatchEnvironmentRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Environment CR to watch. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-WatchEnvironmentResponse"></a>
-
-### WatchEnvironmentResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| environment | [Environment](#blanketops-environments-v1alpha1-Environment) |  | Current state of the Environment at this point in the stream. |
-| type | [blanketops.common.v1.EventType](#blanketops-common-v1-EventType) |  | The type of change that triggered this event. |
-
-
-
-
-
- 
-
- 
-
- 
-
-
-<a name="blanketops-environments-v1alpha1-EnvironmentService"></a>
-
-### EnvironmentService
 Service
 
-| Method Name | Request Type | Response Type | Description |
-| ----------- | ------------ | ------------- | ------------|
-| CreateEnvironment | [CreateEnvironmentRequest](#blanketops-environments-v1alpha1-CreateEnvironmentRequest) | [CreateEnvironmentResponse](#blanketops-environments-v1alpha1-CreateEnvironmentResponse) | ── CRUD — aligned with BuildService pattern ───────────────────────────── Declare a new Environment. |
-| GetEnvironment | [GetEnvironmentRequest](#blanketops-environments-v1alpha1-GetEnvironmentRequest) | [GetEnvironmentResponse](#blanketops-environments-v1alpha1-GetEnvironmentResponse) | Fetch an Environment CR by name. |
-| UpdateEnvironment | [UpdateEnvironmentRequest](#blanketops-environments-v1alpha1-UpdateEnvironmentRequest) | [UpdateEnvironmentResponse](#blanketops-environments-v1alpha1-UpdateEnvironmentResponse) | Full replace of an Environment spec. |
-| PatchEnvironment | [PatchEnvironmentRequest](#blanketops-environments-v1alpha1-PatchEnvironmentRequest) | [PatchEnvironmentResponse](#blanketops-environments-v1alpha1-PatchEnvironmentResponse) | Partial update via JSON merge patch RFC 7396. |
-| ListEnvironments | [ListEnvironmentsRequest](#blanketops-environments-v1alpha1-ListEnvironmentsRequest) | [ListEnvironmentsResponse](#blanketops-environments-v1alpha1-ListEnvironmentsResponse) | List Environment CRs with optional phase/type/application filter and paging. |
-| DeleteEnvironment | [DeleteEnvironmentRequest](#blanketops-environments-v1alpha1-DeleteEnvironmentRequest) | [DeleteEnvironmentResponse](#blanketops-environments-v1alpha1-DeleteEnvironmentResponse) | Delete an Environment CR and cascade-delete owned resources. |
-| WatchEnvironment | [WatchEnvironmentRequest](#blanketops-environments-v1alpha1-WatchEnvironmentRequest) | [WatchEnvironmentResponse](#blanketops-environments-v1alpha1-WatchEnvironmentResponse) stream | ── Streaming ──────────────────────────────────────────────────────────── Stream phase transitions for an Environment CR. Streams indefinitely — environments have no terminal phase; close client-side. |
+```go
+type EnvironmentServiceClient interface {
+    // ── CRUD — aligned with BuildService pattern ─────────────────────────────
+    // Declare a new Environment.
+    CreateEnvironment(ctx context.Context, in *CreateEnvironmentRequest, opts ...grpc.CallOption) (*CreateEnvironmentResponse, error)
+    // Fetch an Environment CR by name.
+    GetEnvironment(ctx context.Context, in *GetEnvironmentRequest, opts ...grpc.CallOption) (*GetEnvironmentResponse, error)
+    // Full replace of an Environment spec.
+    UpdateEnvironment(ctx context.Context, in *UpdateEnvironmentRequest, opts ...grpc.CallOption) (*UpdateEnvironmentResponse, error)
+    // Partial update via JSON merge patch RFC 7396.
+    PatchEnvironment(ctx context.Context, in *PatchEnvironmentRequest, opts ...grpc.CallOption) (*PatchEnvironmentResponse, error)
+    // List Environment CRs with optional phase/type/application filter and paging.
+    ListEnvironments(ctx context.Context, in *ListEnvironmentsRequest, opts ...grpc.CallOption) (*ListEnvironmentsResponse, error)
+    // Delete an Environment CR and cascade-delete owned resources.
+    DeleteEnvironment(ctx context.Context, in *DeleteEnvironmentRequest, opts ...grpc.CallOption) (*DeleteEnvironmentResponse, error)
+    // ── Streaming ────────────────────────────────────────────────────────────
+    // Stream phase transitions for an Environment CR.
+    // Streams indefinitely — environments have no terminal phase; close client-side.
+    WatchEnvironment(ctx context.Context, in *WatchEnvironmentRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchEnvironmentResponse], error)
+}
+```
 
- 
+<a name="NewEnvironmentServiceClient"></a>
+### func NewEnvironmentServiceClient
 
-
-
-<a name="blanketops_environments_v1alpha1_package-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## blanketops/environments/v1alpha1/package.proto
-
-
-
-<a name="blanketops-environments-v1alpha1-CreatePackageRequest"></a>
-
-### CreatePackageRequest
-CreatePackage — declare a new Package.
-Controller reconciles the package sources on creation.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| spec | [PackageSpec](#blanketops-environments-v1alpha1-PackageSpec) |  | Desired spec for the new Package. |
+```go
+func NewEnvironmentServiceClient(cc grpc.ClientConnInterface) EnvironmentServiceClient
+```
 
 
 
+<a name="EnvironmentServiceServer"></a>
+## type EnvironmentServiceServer
+
+EnvironmentServiceServer is the server API for EnvironmentService service. All implementations must embed UnimplementedEnvironmentServiceServer for forward compatibility.
+
+Service
+
+```go
+type EnvironmentServiceServer interface {
+    // ── CRUD — aligned with BuildService pattern ─────────────────────────────
+    // Declare a new Environment.
+    CreateEnvironment(context.Context, *CreateEnvironmentRequest) (*CreateEnvironmentResponse, error)
+    // Fetch an Environment CR by name.
+    GetEnvironment(context.Context, *GetEnvironmentRequest) (*GetEnvironmentResponse, error)
+    // Full replace of an Environment spec.
+    UpdateEnvironment(context.Context, *UpdateEnvironmentRequest) (*UpdateEnvironmentResponse, error)
+    // Partial update via JSON merge patch RFC 7396.
+    PatchEnvironment(context.Context, *PatchEnvironmentRequest) (*PatchEnvironmentResponse, error)
+    // List Environment CRs with optional phase/type/application filter and paging.
+    ListEnvironments(context.Context, *ListEnvironmentsRequest) (*ListEnvironmentsResponse, error)
+    // Delete an Environment CR and cascade-delete owned resources.
+    DeleteEnvironment(context.Context, *DeleteEnvironmentRequest) (*DeleteEnvironmentResponse, error)
+    // ── Streaming ────────────────────────────────────────────────────────────
+    // Stream phase transitions for an Environment CR.
+    // Streams indefinitely — environments have no terminal phase; close client-side.
+    WatchEnvironment(*WatchEnvironmentRequest, grpc.ServerStreamingServer[WatchEnvironmentResponse]) error
+    // contains filtered or unexported methods
+}
+```
+
+<a name="EnvironmentService_WatchEnvironmentClient"></a>
+## type EnvironmentService\_WatchEnvironmentClient
+
+This type alias is provided for backwards compatibility with existing code that references the prior non\-generic stream type by name.
+
+```go
+type EnvironmentService_WatchEnvironmentClient = grpc.ServerStreamingClient[WatchEnvironmentResponse]
+```
+
+<a name="EnvironmentService_WatchEnvironmentServer"></a>
+## type EnvironmentService\_WatchEnvironmentServer
+
+This type alias is provided for backwards compatibility with existing code that references the prior non\-generic stream type by name.
+
+```go
+type EnvironmentService_WatchEnvironmentServer = grpc.ServerStreamingServer[WatchEnvironmentResponse]
+```
+
+<a name="EnvironmentSpec"></a>
+## type EnvironmentSpec
+
+Spec \(intent\)
+
+```go
+type EnvironmentSpec struct {
+
+    // Human-readable application identifier.
+    // e.g. for-kaniko-app
+    ApplicationName string `protobuf:"bytes,1,opt,name=application_name,json=applicationName,proto3" json:"application_name,omitempty"`
+    // Git branch associated with this environment.
+    // e.g. main, feature/checkout
+    Branch string `protobuf:"bytes,2,opt,name=branch,proto3" json:"branch,omitempty"`
+    // Owning Git organisation or user.
+    // e.g. ntlaletsi70
+    GitOwner string `protobuf:"bytes,3,opt,name=git_owner,json=gitOwner,proto3" json:"git_owner,omitempty"`
+    // Environment classification.
+    EnvironmentType *v1.EnvironmentType `protobuf:"bytes,4,opt,name=environment_type,json=environmentType,proto3" json:"environment_type,omitempty"`
+    // Application version — semantic or otherwise.
+    // e.g. v1.2.3
+    Version string `protobuf:"bytes,5,opt,name=version,proto3" json:"version,omitempty"`
+    // Human-readable description. Optional.
+    Description string `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
+    // ServiceUnits composed into this environment.
+    ServiceUnits []*ObjectRef `protobuf:"bytes,7,rep,name=service_units,json=serviceUnits,proto3" json:"service_units,omitempty"`
+    // Deployment intent — how service units are materialized.
+    Deployment *ObjectRef `protobuf:"bytes,8,opt,name=deployment,proto3" json:"deployment,omitempty"`
+    // External routing. Optional.
+    Route *ObjectRef `protobuf:"bytes,9,opt,name=route,proto3" json:"route,omitempty"`
+    // Packaging / release artifact. Optional.
+    Package *ObjectRef `protobuf:"bytes,10,opt,name=package,proto3" json:"package,omitempty"`
+    // Build configuration.
+    Build *ObjectRef `protobuf:"bytes,11,opt,name=build,proto3" json:"build,omitempty"`
+    // Git repository associated with this environment.
+    // The GitRepository CR owns branch, owner, and clone config.
+    GitRepository *ObjectRef `protobuf:"bytes,12,opt,name=git_repository,json=gitRepository,proto3" json:"git_repository,omitempty"`
+    // Platform-level bindings — secret store provider selection.
+    Contract *EnvironmentContract `protobuf:"bytes,13,opt,name=contract,proto3" json:"contract,omitempty"`
+    // GitHub event source for this environment.
+    // The GitHubEvent CR owns webhook event routing and Argo Events config.
+    GitHubEvent *ObjectRef `protobuf:"bytes,14,opt,name=git_hub_event,json=gitHubEvent,proto3" json:"git_hub_event,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="EnvironmentSpec.Descriptor"></a>
+### func \(\*EnvironmentSpec\) Descriptor
+
+```go
+func (*EnvironmentSpec) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use EnvironmentSpec.ProtoReflect.Descriptor instead.
+
+<a name="EnvironmentSpec.GetApplicationName"></a>
+### func \(\*EnvironmentSpec\) GetApplicationName
+
+```go
+func (x *EnvironmentSpec) GetApplicationName() string
+```
 
 
 
-<a name="blanketops-environments-v1alpha1-CreatePackageResponse"></a>
+<a name="EnvironmentSpec.GetBranch"></a>
+### func \(\*EnvironmentSpec\) GetBranch
 
-### CreatePackageResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| package | [Package](#blanketops-environments-v1alpha1-Package) |  | The created Package including generated metadata and initial status. |
+```go
+func (x *EnvironmentSpec) GetBranch() string
+```
 
 
 
+<a name="EnvironmentSpec.GetBuild"></a>
+### func \(\*EnvironmentSpec\) GetBuild
+
+```go
+func (x *EnvironmentSpec) GetBuild() *ObjectRef
+```
 
 
 
-<a name="blanketops-environments-v1alpha1-DeletePackageRequest"></a>
+<a name="EnvironmentSpec.GetContract"></a>
+### func \(\*EnvironmentSpec\) GetContract
 
-### DeletePackageRequest
-DeletePackage — delete a Package CR.
-The controller garbage-collects reconciliation sources owned by
-this package. State repository contents are not modified.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Package CR to delete. |
+```go
+func (x *EnvironmentSpec) GetContract() *EnvironmentContract
+```
 
 
 
+<a name="EnvironmentSpec.GetDeployment"></a>
+### func \(\*EnvironmentSpec\) GetDeployment
+
+```go
+func (x *EnvironmentSpec) GetDeployment() *ObjectRef
+```
 
 
 
-<a name="blanketops-environments-v1alpha1-DeletePackageResponse"></a>
+<a name="EnvironmentSpec.GetDescription"></a>
+### func \(\*EnvironmentSpec\) GetDescription
 
-### DeletePackageResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| success | [bool](#bool) |  | True if the Package was successfully deleted. |
+```go
+func (x *EnvironmentSpec) GetDescription() string
+```
 
 
 
+<a name="EnvironmentSpec.GetEnvironmentType"></a>
+### func \(\*EnvironmentSpec\) GetEnvironmentType
+
+```go
+func (x *EnvironmentSpec) GetEnvironmentType() *v1.EnvironmentType
+```
 
 
 
-<a name="blanketops-environments-v1alpha1-GetPackageRequest"></a>
+<a name="EnvironmentSpec.GetGitHubEvent"></a>
+### func \(\*EnvironmentSpec\) GetGitHubEvent
 
-### GetPackageRequest
+```go
+func (x *EnvironmentSpec) GetGitHubEvent() *ObjectRef
+```
+
+
+
+<a name="EnvironmentSpec.GetGitOwner"></a>
+### func \(\*EnvironmentSpec\) GetGitOwner
+
+```go
+func (x *EnvironmentSpec) GetGitOwner() string
+```
+
+
+
+<a name="EnvironmentSpec.GetGitRepository"></a>
+### func \(\*EnvironmentSpec\) GetGitRepository
+
+```go
+func (x *EnvironmentSpec) GetGitRepository() *ObjectRef
+```
+
+
+
+<a name="EnvironmentSpec.GetPackage"></a>
+### func \(\*EnvironmentSpec\) GetPackage
+
+```go
+func (x *EnvironmentSpec) GetPackage() *ObjectRef
+```
+
+
+
+<a name="EnvironmentSpec.GetRoute"></a>
+### func \(\*EnvironmentSpec\) GetRoute
+
+```go
+func (x *EnvironmentSpec) GetRoute() *ObjectRef
+```
+
+
+
+<a name="EnvironmentSpec.GetServiceUnits"></a>
+### func \(\*EnvironmentSpec\) GetServiceUnits
+
+```go
+func (x *EnvironmentSpec) GetServiceUnits() []*ObjectRef
+```
+
+
+
+<a name="EnvironmentSpec.GetVersion"></a>
+### func \(\*EnvironmentSpec\) GetVersion
+
+```go
+func (x *EnvironmentSpec) GetVersion() string
+```
+
+
+
+<a name="EnvironmentSpec.ProtoMessage"></a>
+### func \(\*EnvironmentSpec\) ProtoMessage
+
+```go
+func (*EnvironmentSpec) ProtoMessage()
+```
+
+
+
+<a name="EnvironmentSpec.ProtoReflect"></a>
+### func \(\*EnvironmentSpec\) ProtoReflect
+
+```go
+func (x *EnvironmentSpec) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="EnvironmentSpec.Reset"></a>
+### func \(\*EnvironmentSpec\) Reset
+
+```go
+func (x *EnvironmentSpec) Reset()
+```
+
+
+
+<a name="EnvironmentSpec.String"></a>
+### func \(\*EnvironmentSpec\) String
+
+```go
+func (x *EnvironmentSpec) String() string
+```
+
+
+
+<a name="EnvironmentStatus"></a>
+## type EnvironmentStatus
+
+Status \(observed state\)
+
+```go
+type EnvironmentStatus struct {
+
+    // Current aggregate phase. Set by the controller.
+    Phase *v1.EnvironmentPhase `protobuf:"bytes,1,opt,name=phase,proto3" json:"phase,omitempty"`
+    // Human-readable status summary. Populated on failure.
+    Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+    // Per-resource readiness conditions for UI and automation consumers.
+    // e.g. BuildReady, DeploymentReady, RouteReady
+    Conditions []*EnvironmentCondition `protobuf:"bytes,3,rep,name=conditions,proto3" json:"conditions,omitempty"`
+    // When the controller last updated this status.
+    LastUpdatedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=last_updated_at,json=lastUpdatedAt,proto3" json:"last_updated_at,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="EnvironmentStatus.Descriptor"></a>
+### func \(\*EnvironmentStatus\) Descriptor
+
+```go
+func (*EnvironmentStatus) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use EnvironmentStatus.ProtoReflect.Descriptor instead.
+
+<a name="EnvironmentStatus.GetConditions"></a>
+### func \(\*EnvironmentStatus\) GetConditions
+
+```go
+func (x *EnvironmentStatus) GetConditions() []*EnvironmentCondition
+```
+
+
+
+<a name="EnvironmentStatus.GetLastUpdatedAt"></a>
+### func \(\*EnvironmentStatus\) GetLastUpdatedAt
+
+```go
+func (x *EnvironmentStatus) GetLastUpdatedAt() *timestamppb.Timestamp
+```
+
+
+
+<a name="EnvironmentStatus.GetMessage"></a>
+### func \(\*EnvironmentStatus\) GetMessage
+
+```go
+func (x *EnvironmentStatus) GetMessage() string
+```
+
+
+
+<a name="EnvironmentStatus.GetPhase"></a>
+### func \(\*EnvironmentStatus\) GetPhase
+
+```go
+func (x *EnvironmentStatus) GetPhase() *v1.EnvironmentPhase
+```
+
+
+
+<a name="EnvironmentStatus.ProtoMessage"></a>
+### func \(\*EnvironmentStatus\) ProtoMessage
+
+```go
+func (*EnvironmentStatus) ProtoMessage()
+```
+
+
+
+<a name="EnvironmentStatus.ProtoReflect"></a>
+### func \(\*EnvironmentStatus\) ProtoReflect
+
+```go
+func (x *EnvironmentStatus) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="EnvironmentStatus.Reset"></a>
+### func \(\*EnvironmentStatus\) Reset
+
+```go
+func (x *EnvironmentStatus) Reset()
+```
+
+
+
+<a name="EnvironmentStatus.String"></a>
+### func \(\*EnvironmentStatus\) String
+
+```go
+func (x *EnvironmentStatus) String() string
+```
+
+
+
+<a name="GetBuildRequest"></a>
+## type GetBuildRequest
+
+GetBuild — fetch a Build by name.
+
+```go
+type GetBuildRequest struct {
+
+    // Name of the Build CR to fetch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="GetBuildRequest.Descriptor"></a>
+### func \(\*GetBuildRequest\) Descriptor
+
+```go
+func (*GetBuildRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use GetBuildRequest.ProtoReflect.Descriptor instead.
+
+<a name="GetBuildRequest.GetName"></a>
+### func \(\*GetBuildRequest\) GetName
+
+```go
+func (x *GetBuildRequest) GetName() string
+```
+
+
+
+<a name="GetBuildRequest.ProtoMessage"></a>
+### func \(\*GetBuildRequest\) ProtoMessage
+
+```go
+func (*GetBuildRequest) ProtoMessage()
+```
+
+
+
+<a name="GetBuildRequest.ProtoReflect"></a>
+### func \(\*GetBuildRequest\) ProtoReflect
+
+```go
+func (x *GetBuildRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="GetBuildRequest.Reset"></a>
+### func \(\*GetBuildRequest\) Reset
+
+```go
+func (x *GetBuildRequest) Reset()
+```
+
+
+
+<a name="GetBuildRequest.String"></a>
+### func \(\*GetBuildRequest\) String
+
+```go
+func (x *GetBuildRequest) String() string
+```
+
+
+
+<a name="GetBuildResponse"></a>
+## type GetBuildResponse
+
+
+
+```go
+type GetBuildResponse struct {
+    Build *Build `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="GetBuildResponse.Descriptor"></a>
+### func \(\*GetBuildResponse\) Descriptor
+
+```go
+func (*GetBuildResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use GetBuildResponse.ProtoReflect.Descriptor instead.
+
+<a name="GetBuildResponse.GetBuild"></a>
+### func \(\*GetBuildResponse\) GetBuild
+
+```go
+func (x *GetBuildResponse) GetBuild() *Build
+```
+
+
+
+<a name="GetBuildResponse.ProtoMessage"></a>
+### func \(\*GetBuildResponse\) ProtoMessage
+
+```go
+func (*GetBuildResponse) ProtoMessage()
+```
+
+
+
+<a name="GetBuildResponse.ProtoReflect"></a>
+### func \(\*GetBuildResponse\) ProtoReflect
+
+```go
+func (x *GetBuildResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="GetBuildResponse.Reset"></a>
+### func \(\*GetBuildResponse\) Reset
+
+```go
+func (x *GetBuildResponse) Reset()
+```
+
+
+
+<a name="GetBuildResponse.String"></a>
+### func \(\*GetBuildResponse\) String
+
+```go
+func (x *GetBuildResponse) String() string
+```
+
+
+
+<a name="GetDeploymentRequest"></a>
+## type GetDeploymentRequest
+
+GetDeployment — fetch a Deployment by name.
+
+```go
+type GetDeploymentRequest struct {
+
+    // Name of the Deployment CR to fetch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="GetDeploymentRequest.Descriptor"></a>
+### func \(\*GetDeploymentRequest\) Descriptor
+
+```go
+func (*GetDeploymentRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use GetDeploymentRequest.ProtoReflect.Descriptor instead.
+
+<a name="GetDeploymentRequest.GetName"></a>
+### func \(\*GetDeploymentRequest\) GetName
+
+```go
+func (x *GetDeploymentRequest) GetName() string
+```
+
+
+
+<a name="GetDeploymentRequest.ProtoMessage"></a>
+### func \(\*GetDeploymentRequest\) ProtoMessage
+
+```go
+func (*GetDeploymentRequest) ProtoMessage()
+```
+
+
+
+<a name="GetDeploymentRequest.ProtoReflect"></a>
+### func \(\*GetDeploymentRequest\) ProtoReflect
+
+```go
+func (x *GetDeploymentRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="GetDeploymentRequest.Reset"></a>
+### func \(\*GetDeploymentRequest\) Reset
+
+```go
+func (x *GetDeploymentRequest) Reset()
+```
+
+
+
+<a name="GetDeploymentRequest.String"></a>
+### func \(\*GetDeploymentRequest\) String
+
+```go
+func (x *GetDeploymentRequest) String() string
+```
+
+
+
+<a name="GetDeploymentResponse"></a>
+## type GetDeploymentResponse
+
+
+
+```go
+type GetDeploymentResponse struct {
+    Deployment *Deployment `protobuf:"bytes,1,opt,name=deployment,proto3" json:"deployment,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="GetDeploymentResponse.Descriptor"></a>
+### func \(\*GetDeploymentResponse\) Descriptor
+
+```go
+func (*GetDeploymentResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use GetDeploymentResponse.ProtoReflect.Descriptor instead.
+
+<a name="GetDeploymentResponse.GetDeployment"></a>
+### func \(\*GetDeploymentResponse\) GetDeployment
+
+```go
+func (x *GetDeploymentResponse) GetDeployment() *Deployment
+```
+
+
+
+<a name="GetDeploymentResponse.ProtoMessage"></a>
+### func \(\*GetDeploymentResponse\) ProtoMessage
+
+```go
+func (*GetDeploymentResponse) ProtoMessage()
+```
+
+
+
+<a name="GetDeploymentResponse.ProtoReflect"></a>
+### func \(\*GetDeploymentResponse\) ProtoReflect
+
+```go
+func (x *GetDeploymentResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="GetDeploymentResponse.Reset"></a>
+### func \(\*GetDeploymentResponse\) Reset
+
+```go
+func (x *GetDeploymentResponse) Reset()
+```
+
+
+
+<a name="GetDeploymentResponse.String"></a>
+### func \(\*GetDeploymentResponse\) String
+
+```go
+func (x *GetDeploymentResponse) String() string
+```
+
+
+
+<a name="GetEnvironmentRequest"></a>
+## type GetEnvironmentRequest
+
+
+
+```go
+type GetEnvironmentRequest struct {
+
+    // Name of the Environment CR to fetch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="GetEnvironmentRequest.Descriptor"></a>
+### func \(\*GetEnvironmentRequest\) Descriptor
+
+```go
+func (*GetEnvironmentRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use GetEnvironmentRequest.ProtoReflect.Descriptor instead.
+
+<a name="GetEnvironmentRequest.GetName"></a>
+### func \(\*GetEnvironmentRequest\) GetName
+
+```go
+func (x *GetEnvironmentRequest) GetName() string
+```
+
+
+
+<a name="GetEnvironmentRequest.ProtoMessage"></a>
+### func \(\*GetEnvironmentRequest\) ProtoMessage
+
+```go
+func (*GetEnvironmentRequest) ProtoMessage()
+```
+
+
+
+<a name="GetEnvironmentRequest.ProtoReflect"></a>
+### func \(\*GetEnvironmentRequest\) ProtoReflect
+
+```go
+func (x *GetEnvironmentRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="GetEnvironmentRequest.Reset"></a>
+### func \(\*GetEnvironmentRequest\) Reset
+
+```go
+func (x *GetEnvironmentRequest) Reset()
+```
+
+
+
+<a name="GetEnvironmentRequest.String"></a>
+### func \(\*GetEnvironmentRequest\) String
+
+```go
+func (x *GetEnvironmentRequest) String() string
+```
+
+
+
+<a name="GetEnvironmentResponse"></a>
+## type GetEnvironmentResponse
+
+
+
+```go
+type GetEnvironmentResponse struct {
+    Environment *Environment `protobuf:"bytes,1,opt,name=environment,proto3" json:"environment,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="GetEnvironmentResponse.Descriptor"></a>
+### func \(\*GetEnvironmentResponse\) Descriptor
+
+```go
+func (*GetEnvironmentResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use GetEnvironmentResponse.ProtoReflect.Descriptor instead.
+
+<a name="GetEnvironmentResponse.GetEnvironment"></a>
+### func \(\*GetEnvironmentResponse\) GetEnvironment
+
+```go
+func (x *GetEnvironmentResponse) GetEnvironment() *Environment
+```
+
+
+
+<a name="GetEnvironmentResponse.ProtoMessage"></a>
+### func \(\*GetEnvironmentResponse\) ProtoMessage
+
+```go
+func (*GetEnvironmentResponse) ProtoMessage()
+```
+
+
+
+<a name="GetEnvironmentResponse.ProtoReflect"></a>
+### func \(\*GetEnvironmentResponse\) ProtoReflect
+
+```go
+func (x *GetEnvironmentResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="GetEnvironmentResponse.Reset"></a>
+### func \(\*GetEnvironmentResponse\) Reset
+
+```go
+func (x *GetEnvironmentResponse) Reset()
+```
+
+
+
+<a name="GetEnvironmentResponse.String"></a>
+### func \(\*GetEnvironmentResponse\) String
+
+```go
+func (x *GetEnvironmentResponse) String() string
+```
+
+
+
+<a name="GetPackageRequest"></a>
+## type GetPackageRequest
+
 GetPackage — fetch a Package by name.
 
+```go
+type GetPackageRequest struct {
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Package CR to fetch. |
+    // Name of the Package CR to fetch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
 
+<a name="GetPackageRequest.Descriptor"></a>
+### func \(\*GetPackageRequest\) Descriptor
 
+```go
+func (*GetPackageRequest) Descriptor() ([]byte, []int)
+```
 
+Deprecated: Use GetPackageRequest.ProtoReflect.Descriptor instead.
 
+<a name="GetPackageRequest.GetName"></a>
+### func \(\*GetPackageRequest\) GetName
 
+```go
+func (x *GetPackageRequest) GetName() string
+```
 
-<a name="blanketops-environments-v1alpha1-GetPackageResponse"></a>
 
-### GetPackageResponse
 
+<a name="GetPackageRequest.ProtoMessage"></a>
+### func \(\*GetPackageRequest\) ProtoMessage
 
+```go
+func (*GetPackageRequest) ProtoMessage()
+```
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| package | [Package](#blanketops-environments-v1alpha1-Package) |  |  |
 
 
+<a name="GetPackageRequest.ProtoReflect"></a>
+### func \(\*GetPackageRequest\) ProtoReflect
 
+```go
+func (x *GetPackageRequest) ProtoReflect() protoreflect.Message
+```
 
 
 
-<a name="blanketops-environments-v1alpha1-ListPackagesRequest"></a>
+<a name="GetPackageRequest.Reset"></a>
+### func \(\*GetPackageRequest\) Reset
 
-### ListPackagesRequest
-ListPackages — list Package CRs with optional filtering and paging.
+```go
+func (x *GetPackageRequest) Reset()
+```
 
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| phase | [blanketops.common.v1.PackagePhase](#blanketops-common-v1-PackagePhase) | optional | Filter by current lifecycle phase. |
-| enabled | [bool](#bool) | optional | Filter by enabled state. |
-| name | [string](#string) | optional | Filter by logical package name. |
-| page_size | [int32](#int32) | optional | Maximum number of results to return. Server may return fewer. |
-| page_token | [string](#string) | optional | Token from a previous ListPackagesResponse.next_page_token. Omit for the first request. |
 
+<a name="GetPackageRequest.String"></a>
+### func \(\*GetPackageRequest\) String
 
+```go
+func (x *GetPackageRequest) String() string
+```
 
 
 
+<a name="GetPackageResponse"></a>
+## type GetPackageResponse
 
-<a name="blanketops-environments-v1alpha1-ListPackagesResponse"></a>
 
-### ListPackagesResponse
 
+```go
+type GetPackageResponse struct {
+    Package *Package `protobuf:"bytes,1,opt,name=package,proto3" json:"package,omitempty"`
+    // contains filtered or unexported fields
+}
+```
 
+<a name="GetPackageResponse.Descriptor"></a>
+### func \(\*GetPackageResponse\) Descriptor
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| packages | [Package](#blanketops-environments-v1alpha1-Package) | repeated | The list of Package CRs matching the request filters. |
-| next_page_token | [string](#string) | optional | Token to retrieve the next page. Empty if no more results. |
+```go
+func (*GetPackageResponse) Descriptor() ([]byte, []int)
+```
 
+Deprecated: Use GetPackageResponse.ProtoReflect.Descriptor instead.
 
+<a name="GetPackageResponse.GetPackage"></a>
+### func \(\*GetPackageResponse\) GetPackage
 
+```go
+func (x *GetPackageResponse) GetPackage() *Package
+```
 
 
 
-<a name="blanketops-environments-v1alpha1-Maintainer"></a>
+<a name="GetPackageResponse.ProtoMessage"></a>
+### func \(\*GetPackageResponse\) ProtoMessage
 
-### Maintainer
+```go
+func (*GetPackageResponse) ProtoMessage()
+```
 
 
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Maintainer display name. |
-| email | [string](#string) |  | Maintainer contact email. |
+<a name="GetPackageResponse.ProtoReflect"></a>
+### func \(\*GetPackageResponse\) ProtoReflect
 
+```go
+func (x *GetPackageResponse) ProtoReflect() protoreflect.Message
+```
 
 
 
+<a name="GetPackageResponse.Reset"></a>
+### func \(\*GetPackageResponse\) Reset
 
+```go
+func (x *GetPackageResponse) Reset()
+```
 
-<a name="blanketops-environments-v1alpha1-Package"></a>
 
-### Package
 
+<a name="GetPackageResponse.String"></a>
+### func \(\*GetPackageResponse\) String
 
+```go
+func (x *GetPackageResponse) String() string
+```
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| metadata | [blanketops.common.v1.Metadata](#blanketops-common-v1-Metadata) |  | Standard BlanketOps metadata (name, namespace, labels, ownerRef). |
-| spec | [PackageSpec](#blanketops-environments-v1alpha1-PackageSpec) |  | Desired state declared by the operator. |
-| status | [PackageStatus](#blanketops-environments-v1alpha1-PackageStatus) |  | Observed state set by the controller. Never manually edited. |
 
 
+<a name="GetServiceUnitRequest"></a>
+## type GetServiceUnitRequest
 
-
-
-
-<a name="blanketops-environments-v1alpha1-PackageRepository"></a>
-
-### PackageRepository
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| url | [string](#string) |  | SSH or HTTPS URL of the package repository. SSH format: git@github.com:&lt;owner&gt;/&lt;repo&gt;.git |
-| credentials_secret | [string](#string) |  | Name of the Kubernetes Secret containing repository credentials. Sourced from the environment SecretStore via ExternalSecret. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-PackageSpec"></a>
-
-### PackageSpec
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| enabled | [bool](#bool) |  | Whether this package is enabled. Disabled packages are not reconciled but the CR is retained. |
-| name | [string](#string) |  | Logical name of the package — may differ from metadata.name. e.g. for-kaniko-app |
-| version | [string](#string) |  | Version identifier of the package contents. e.g. v1.2.3 |
-| maintainers | [Maintainer](#blanketops-environments-v1alpha1-Maintainer) | repeated | Package maintainers, for provenance and contact. |
-| description | [string](#string) |  | Human-readable description of the package contents. |
-| repository | [PackageRepository](#blanketops-environments-v1alpha1-PackageRepository) |  | Source repository containing the package definitions. |
-| diff_enabled | [bool](#bool) |  | Enable diff preview (kapp) during reconciliation. Diff output is recorded in status for audit. |
-| state_repository | [StateRepository](#blanketops-environments-v1alpha1-StateRepository) |  | Repository where rendered/applied state is stored. The FluxCD reconciliation source of truth. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-PackageState"></a>
-
-### PackageState
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| repository | [string](#string) |  | Repository the applied state was sourced from. |
-| revision | [string](#string) |  | Revision (commit SHA) of the applied state. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-PackageStatus"></a>
-
-### PackageStatus
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| phase | [blanketops.common.v1.PackagePhase](#blanketops-common-v1-PackagePhase) |  | Current lifecycle phase. Set by the controller. |
-| message | [string](#string) |  | Human-readable status message. Populated on failure. |
-| last_reconciled_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | When reconciliation was last attempted. |
-| diff_applied | [bool](#bool) |  | Whether the last diff resulted in applied changes. |
-| diff_output | [string](#string) |  | Raw diff output from the last reconciliation, for audit and debug. |
-| state | [PackageState](#blanketops-environments-v1alpha1-PackageState) |  | Applied source-of-truth state. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-PatchPackageRequest"></a>
-
-### PatchPackageRequest
-PatchPackage — partial update using JSON merge patch RFC 7396.
-Only specified fields are updated — others left unchanged.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Package CR to patch. |
-| patch | [string](#string) |  | JSON merge patch document — RFC 7396. e.g. {&#34;spec&#34;:{&#34;version&#34;:&#34;v1.3.0&#34;}} |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-PatchPackageResponse"></a>
-
-### PatchPackageResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| package | [Package](#blanketops-environments-v1alpha1-Package) |  | The patched Package as observed by the controller. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-StateRepository"></a>
-
-### StateRepository
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| url | [string](#string) |  | SSH or HTTPS URL of the state repository. |
-| ref | [string](#string) |  | Git ref to reconcile against — branch, tag, or commit SHA. |
-| clone_secret | [string](#string) |  | Name of the Kubernetes Secret used to authenticate the clone. |
-| strategy | [string](#string) |  | Application strategy for the state contents. e.g. kustomization |
-| path | [string](#string) |  | Path inside the repository to reconcile. e.g. ./clusters/dev |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-UpdatePackageRequest"></a>
-
-### UpdatePackageRequest
-UpdatePackage — full replace of the Package spec.
-Equivalent to kubectl apply — all fields replaced.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| package | [Package](#blanketops-environments-v1alpha1-Package) |  | Full Package object including metadata and desired spec. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-UpdatePackageResponse"></a>
-
-### UpdatePackageResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| package | [Package](#blanketops-environments-v1alpha1-Package) |  | The updated Package as observed by the controller. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-WatchPackageRequest"></a>
-
-### WatchPackageRequest
-WatchPackage — stream phase transitions for a Package CR.
-Delivers an event for every controller reconciliation loop.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Package CR to watch. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-WatchPackageResponse"></a>
-
-### WatchPackageResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| package | [Package](#blanketops-environments-v1alpha1-Package) |  | Current state of the Package at this point in the stream. |
-| type | [blanketops.common.v1.EventType](#blanketops-common-v1-EventType) |  | The type of change that triggered this event. |
-
-
-
-
-
- 
-
- 
-
- 
-
-
-<a name="blanketops-environments-v1alpha1-PackageService"></a>
-
-### PackageService
-── CRUD — aligned with BuildService pattern ─────────────────────────────
-
-| Method Name | Request Type | Response Type | Description |
-| ----------- | ------------ | ------------- | ------------|
-| CreatePackage | [CreatePackageRequest](#blanketops-environments-v1alpha1-CreatePackageRequest) | [CreatePackageResponse](#blanketops-environments-v1alpha1-CreatePackageResponse) | Declare a new Package. |
-| GetPackage | [GetPackageRequest](#blanketops-environments-v1alpha1-GetPackageRequest) | [GetPackageResponse](#blanketops-environments-v1alpha1-GetPackageResponse) | Fetch a Package CR by name. |
-| UpdatePackage | [UpdatePackageRequest](#blanketops-environments-v1alpha1-UpdatePackageRequest) | [UpdatePackageResponse](#blanketops-environments-v1alpha1-UpdatePackageResponse) | Full replace of a Package spec. |
-| PatchPackage | [PatchPackageRequest](#blanketops-environments-v1alpha1-PatchPackageRequest) | [PatchPackageResponse](#blanketops-environments-v1alpha1-PatchPackageResponse) | Partial update via JSON merge patch RFC 7396. |
-| ListPackages | [ListPackagesRequest](#blanketops-environments-v1alpha1-ListPackagesRequest) | [ListPackagesResponse](#blanketops-environments-v1alpha1-ListPackagesResponse) | List Package CRs with optional phase/enabled/name filter and paging. |
-| DeletePackage | [DeletePackageRequest](#blanketops-environments-v1alpha1-DeletePackageRequest) | [DeletePackageResponse](#blanketops-environments-v1alpha1-DeletePackageResponse) | Delete a Package CR and its owned reconciliation sources. |
-| WatchPackage | [WatchPackageRequest](#blanketops-environments-v1alpha1-WatchPackageRequest) | [WatchPackageResponse](#blanketops-environments-v1alpha1-WatchPackageResponse) stream | Stream phase transitions for a Package CR. Streams indefinitely — packages have no terminal phase; close client-side. |
-
- 
-
-
-
-<a name="blanketops_environments_v1alpha1_serviceunit-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## blanketops/environments/v1alpha1/serviceunit.proto
-
-
-
-<a name="blanketops-environments-v1alpha1-BuildReference"></a>
-
-### BuildReference
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the source Build CR. |
-| namespace | [string](#string) |  | Namespace of the source Build CR. Defaults to the ServiceUnit&#39;s namespace if empty. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-BuildResolutionStatus"></a>
-
-### BuildResolutionStatus
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the resolved Build CR. |
-| phase | [blanketops.common.v1.ServiceUnitDeploymentPhase](#blanketops-common-v1-ServiceUnitDeploymentPhase) |  | Observed phase of the source Build. |
-| image | [string](#string) |  | Image produced by the source Build, including digest. |
-| error | [string](#string) |  | Error detail when resolution failed. |
-| last_transition_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | When the resolution last changed. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-CreateServiceUnitRequest"></a>
-
-### CreateServiceUnitRequest
-CreateServiceUnit — declare a new ServiceUnit.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| spec | [ServiceUnitSpec](#blanketops-environments-v1alpha1-ServiceUnitSpec) |  | Desired spec for the new ServiceUnit. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-CreateServiceUnitResponse"></a>
-
-### CreateServiceUnitResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| service_unit | [ServiceUnit](#blanketops-environments-v1alpha1-ServiceUnit) |  | The created ServiceUnit including generated metadata and initial status. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-DeleteServiceUnitRequest"></a>
-
-### DeleteServiceUnitRequest
-DeleteServiceUnit — delete a ServiceUnit CR.
-The controller garbage-collects the materialized workload.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the ServiceUnit CR to delete. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-DeleteServiceUnitResponse"></a>
-
-### DeleteServiceUnitResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| success | [bool](#bool) |  | True if the ServiceUnit was successfully deleted. |
-
-
-
-
-
-
-<a name="blanketops-environments-v1alpha1-GetServiceUnitRequest"></a>
-
-### GetServiceUnitRequest
 GetServiceUnit — fetch a ServiceUnit by name.
 
+```go
+type GetServiceUnitRequest struct {
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the ServiceUnit CR to fetch. |
+    // Name of the ServiceUnit CR to fetch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="GetServiceUnitRequest.Descriptor"></a>
+### func \(\*GetServiceUnitRequest\) Descriptor
+
+```go
+func (*GetServiceUnitRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use GetServiceUnitRequest.ProtoReflect.Descriptor instead.
+
+<a name="GetServiceUnitRequest.GetName"></a>
+### func \(\*GetServiceUnitRequest\) GetName
+
+```go
+func (x *GetServiceUnitRequest) GetName() string
+```
 
 
 
+<a name="GetServiceUnitRequest.ProtoMessage"></a>
+### func \(\*GetServiceUnitRequest\) ProtoMessage
+
+```go
+func (*GetServiceUnitRequest) ProtoMessage()
+```
 
 
 
-<a name="blanketops-environments-v1alpha1-GetServiceUnitResponse"></a>
+<a name="GetServiceUnitRequest.ProtoReflect"></a>
+### func \(\*GetServiceUnitRequest\) ProtoReflect
 
-### GetServiceUnitResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| service_unit | [ServiceUnit](#blanketops-environments-v1alpha1-ServiceUnit) |  |  |
+```go
+func (x *GetServiceUnitRequest) ProtoReflect() protoreflect.Message
+```
 
 
 
+<a name="GetServiceUnitRequest.Reset"></a>
+### func \(\*GetServiceUnitRequest\) Reset
+
+```go
+func (x *GetServiceUnitRequest) Reset()
+```
 
 
 
-<a name="blanketops-environments-v1alpha1-ListServiceUnitsRequest"></a>
+<a name="GetServiceUnitRequest.String"></a>
+### func \(\*GetServiceUnitRequest\) String
 
-### ListServiceUnitsRequest
+```go
+func (x *GetServiceUnitRequest) String() string
+```
+
+
+
+<a name="GetServiceUnitResponse"></a>
+## type GetServiceUnitResponse
+
+
+
+```go
+type GetServiceUnitResponse struct {
+    ServiceUnit *ServiceUnit `protobuf:"bytes,1,opt,name=service_unit,json=serviceUnit,proto3" json:"service_unit,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="GetServiceUnitResponse.Descriptor"></a>
+### func \(\*GetServiceUnitResponse\) Descriptor
+
+```go
+func (*GetServiceUnitResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use GetServiceUnitResponse.ProtoReflect.Descriptor instead.
+
+<a name="GetServiceUnitResponse.GetServiceUnit"></a>
+### func \(\*GetServiceUnitResponse\) GetServiceUnit
+
+```go
+func (x *GetServiceUnitResponse) GetServiceUnit() *ServiceUnit
+```
+
+
+
+<a name="GetServiceUnitResponse.ProtoMessage"></a>
+### func \(\*GetServiceUnitResponse\) ProtoMessage
+
+```go
+func (*GetServiceUnitResponse) ProtoMessage()
+```
+
+
+
+<a name="GetServiceUnitResponse.ProtoReflect"></a>
+### func \(\*GetServiceUnitResponse\) ProtoReflect
+
+```go
+func (x *GetServiceUnitResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="GetServiceUnitResponse.Reset"></a>
+### func \(\*GetServiceUnitResponse\) Reset
+
+```go
+func (x *GetServiceUnitResponse) Reset()
+```
+
+
+
+<a name="GetServiceUnitResponse.String"></a>
+### func \(\*GetServiceUnitResponse\) String
+
+```go
+func (x *GetServiceUnitResponse) String() string
+```
+
+
+
+<a name="GitSource"></a>
+## type GitSource
+
+
+
+```go
+type GitSource struct {
+
+    // SSH or HTTPS URL of the Git repository.
+    // SSH format: git@github.com:<owner>/<repo>.git
+    Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+    // Branch, tag, or commit SHA to build from.
+    // e.g. main, refs/heads/main, abc1234
+    Revision string `protobuf:"bytes,2,opt,name=revision,proto3" json:"revision,omitempty"`
+    // Path within the repository to use as the build context.
+    // Required for kaniko strategy. Defaults to repository root.
+    ContextDir string `protobuf:"bytes,3,opt,name=context_dir,json=contextDir,proto3" json:"context_dir,omitempty"`
+    // Clone depth — 0 means full history.
+    // Set to 1 for faster CI builds when history is not needed.
+    Depth uint32 `protobuf:"varint,4,opt,name=depth,proto3" json:"depth,omitempty"`
+    // Whether to verify the Git server TLS certificate.
+    // Set to false only for internal Git servers with self-signed certs.
+    SslVerify bool `protobuf:"varint,5,opt,name=ssl_verify,json=sslVerify,proto3" json:"ssl_verify,omitempty"`
+    // Name of the Kubernetes Secret containing SSH private key.
+    // Sourced from the environment SecretStore via ExternalSecret.
+    // Key: ssh-privatekey
+    CloneSecret string `protobuf:"bytes,6,opt,name=clone_secret,json=cloneSecret,proto3" json:"clone_secret,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="GitSource.Descriptor"></a>
+### func \(\*GitSource\) Descriptor
+
+```go
+func (*GitSource) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use GitSource.ProtoReflect.Descriptor instead.
+
+<a name="GitSource.GetCloneSecret"></a>
+### func \(\*GitSource\) GetCloneSecret
+
+```go
+func (x *GitSource) GetCloneSecret() string
+```
+
+
+
+<a name="GitSource.GetContextDir"></a>
+### func \(\*GitSource\) GetContextDir
+
+```go
+func (x *GitSource) GetContextDir() string
+```
+
+
+
+<a name="GitSource.GetDepth"></a>
+### func \(\*GitSource\) GetDepth
+
+```go
+func (x *GitSource) GetDepth() uint32
+```
+
+
+
+<a name="GitSource.GetRevision"></a>
+### func \(\*GitSource\) GetRevision
+
+```go
+func (x *GitSource) GetRevision() string
+```
+
+
+
+<a name="GitSource.GetSslVerify"></a>
+### func \(\*GitSource\) GetSslVerify
+
+```go
+func (x *GitSource) GetSslVerify() bool
+```
+
+
+
+<a name="GitSource.GetUrl"></a>
+### func \(\*GitSource\) GetUrl
+
+```go
+func (x *GitSource) GetUrl() string
+```
+
+
+
+<a name="GitSource.ProtoMessage"></a>
+### func \(\*GitSource\) ProtoMessage
+
+```go
+func (*GitSource) ProtoMessage()
+```
+
+
+
+<a name="GitSource.ProtoReflect"></a>
+### func \(\*GitSource\) ProtoReflect
+
+```go
+func (x *GitSource) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="GitSource.Reset"></a>
+### func \(\*GitSource\) Reset
+
+```go
+func (x *GitSource) Reset()
+```
+
+
+
+<a name="GitSource.String"></a>
+### func \(\*GitSource\) String
+
+```go
+func (x *GitSource) String() string
+```
+
+
+
+<a name="ListBuildsRequest"></a>
+## type ListBuildsRequest
+
+ListBuilds — list Build CRs with optional filtering and paging.
+
+```go
+type ListBuildsRequest struct {
+
+    // Filter by current lifecycle phase.
+    Phase *v1.BuildStatusPhase `protobuf:"bytes,1,opt,name=phase,proto3,oneof" json:"phase,omitempty"`
+    // Filter by strategy name.
+    // e.g. kaniko | buildah-shipwright-managed-push | buildpacks-v3
+    Strategy *string `protobuf:"bytes,2,opt,name=strategy,proto3,oneof" json:"strategy,omitempty"`
+    // Maximum number of results to return. Server may return fewer.
+    PageSize *int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"`
+    // Token from a previous ListBuildsResponse.next_page_token.
+    // Omit for the first request.
+    PageToken *string `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3,oneof" json:"page_token,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ListBuildsRequest.Descriptor"></a>
+### func \(\*ListBuildsRequest\) Descriptor
+
+```go
+func (*ListBuildsRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ListBuildsRequest.ProtoReflect.Descriptor instead.
+
+<a name="ListBuildsRequest.GetPageSize"></a>
+### func \(\*ListBuildsRequest\) GetPageSize
+
+```go
+func (x *ListBuildsRequest) GetPageSize() int32
+```
+
+
+
+<a name="ListBuildsRequest.GetPageToken"></a>
+### func \(\*ListBuildsRequest\) GetPageToken
+
+```go
+func (x *ListBuildsRequest) GetPageToken() string
+```
+
+
+
+<a name="ListBuildsRequest.GetPhase"></a>
+### func \(\*ListBuildsRequest\) GetPhase
+
+```go
+func (x *ListBuildsRequest) GetPhase() *v1.BuildStatusPhase
+```
+
+
+
+<a name="ListBuildsRequest.GetStrategy"></a>
+### func \(\*ListBuildsRequest\) GetStrategy
+
+```go
+func (x *ListBuildsRequest) GetStrategy() string
+```
+
+
+
+<a name="ListBuildsRequest.ProtoMessage"></a>
+### func \(\*ListBuildsRequest\) ProtoMessage
+
+```go
+func (*ListBuildsRequest) ProtoMessage()
+```
+
+
+
+<a name="ListBuildsRequest.ProtoReflect"></a>
+### func \(\*ListBuildsRequest\) ProtoReflect
+
+```go
+func (x *ListBuildsRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ListBuildsRequest.Reset"></a>
+### func \(\*ListBuildsRequest\) Reset
+
+```go
+func (x *ListBuildsRequest) Reset()
+```
+
+
+
+<a name="ListBuildsRequest.String"></a>
+### func \(\*ListBuildsRequest\) String
+
+```go
+func (x *ListBuildsRequest) String() string
+```
+
+
+
+<a name="ListBuildsResponse"></a>
+## type ListBuildsResponse
+
+
+
+```go
+type ListBuildsResponse struct {
+
+    // The list of Build CRs matching the request filters.
+    Builds []*Build `protobuf:"bytes,1,rep,name=builds,proto3" json:"builds,omitempty"`
+    // Token to retrieve the next page. Empty if no more results.
+    NextPageToken *string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3,oneof" json:"next_page_token,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ListBuildsResponse.Descriptor"></a>
+### func \(\*ListBuildsResponse\) Descriptor
+
+```go
+func (*ListBuildsResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ListBuildsResponse.ProtoReflect.Descriptor instead.
+
+<a name="ListBuildsResponse.GetBuilds"></a>
+### func \(\*ListBuildsResponse\) GetBuilds
+
+```go
+func (x *ListBuildsResponse) GetBuilds() []*Build
+```
+
+
+
+<a name="ListBuildsResponse.GetNextPageToken"></a>
+### func \(\*ListBuildsResponse\) GetNextPageToken
+
+```go
+func (x *ListBuildsResponse) GetNextPageToken() string
+```
+
+
+
+<a name="ListBuildsResponse.ProtoMessage"></a>
+### func \(\*ListBuildsResponse\) ProtoMessage
+
+```go
+func (*ListBuildsResponse) ProtoMessage()
+```
+
+
+
+<a name="ListBuildsResponse.ProtoReflect"></a>
+### func \(\*ListBuildsResponse\) ProtoReflect
+
+```go
+func (x *ListBuildsResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ListBuildsResponse.Reset"></a>
+### func \(\*ListBuildsResponse\) Reset
+
+```go
+func (x *ListBuildsResponse) Reset()
+```
+
+
+
+<a name="ListBuildsResponse.String"></a>
+### func \(\*ListBuildsResponse\) String
+
+```go
+func (x *ListBuildsResponse) String() string
+```
+
+
+
+<a name="ListDeploymentsRequest"></a>
+## type ListDeploymentsRequest
+
+ListDeployments — list Deployment CRs with optional filtering and paging.
+
+```go
+type ListDeploymentsRequest struct {
+
+    // Filter by current lifecycle phase.
+    Phase *v1.DeploymentPhase `protobuf:"bytes,1,opt,name=phase,proto3,oneof" json:"phase,omitempty"`
+    // Filter by target runtime.
+    Runtime *v1.DeploymentRuntime `protobuf:"bytes,2,opt,name=runtime,proto3,oneof" json:"runtime,omitempty"`
+    // Maximum number of results to return. Server may return fewer.
+    PageSize *int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"`
+    // Token from a previous ListDeploymentsResponse.next_page_token.
+    // Omit for the first request.
+    PageToken *string `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3,oneof" json:"page_token,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ListDeploymentsRequest.Descriptor"></a>
+### func \(\*ListDeploymentsRequest\) Descriptor
+
+```go
+func (*ListDeploymentsRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ListDeploymentsRequest.ProtoReflect.Descriptor instead.
+
+<a name="ListDeploymentsRequest.GetPageSize"></a>
+### func \(\*ListDeploymentsRequest\) GetPageSize
+
+```go
+func (x *ListDeploymentsRequest) GetPageSize() int32
+```
+
+
+
+<a name="ListDeploymentsRequest.GetPageToken"></a>
+### func \(\*ListDeploymentsRequest\) GetPageToken
+
+```go
+func (x *ListDeploymentsRequest) GetPageToken() string
+```
+
+
+
+<a name="ListDeploymentsRequest.GetPhase"></a>
+### func \(\*ListDeploymentsRequest\) GetPhase
+
+```go
+func (x *ListDeploymentsRequest) GetPhase() *v1.DeploymentPhase
+```
+
+
+
+<a name="ListDeploymentsRequest.GetRuntime"></a>
+### func \(\*ListDeploymentsRequest\) GetRuntime
+
+```go
+func (x *ListDeploymentsRequest) GetRuntime() *v1.DeploymentRuntime
+```
+
+
+
+<a name="ListDeploymentsRequest.ProtoMessage"></a>
+### func \(\*ListDeploymentsRequest\) ProtoMessage
+
+```go
+func (*ListDeploymentsRequest) ProtoMessage()
+```
+
+
+
+<a name="ListDeploymentsRequest.ProtoReflect"></a>
+### func \(\*ListDeploymentsRequest\) ProtoReflect
+
+```go
+func (x *ListDeploymentsRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ListDeploymentsRequest.Reset"></a>
+### func \(\*ListDeploymentsRequest\) Reset
+
+```go
+func (x *ListDeploymentsRequest) Reset()
+```
+
+
+
+<a name="ListDeploymentsRequest.String"></a>
+### func \(\*ListDeploymentsRequest\) String
+
+```go
+func (x *ListDeploymentsRequest) String() string
+```
+
+
+
+<a name="ListDeploymentsResponse"></a>
+## type ListDeploymentsResponse
+
+
+
+```go
+type ListDeploymentsResponse struct {
+
+    // The list of Deployment CRs matching the request filters.
+    Deployments []*Deployment `protobuf:"bytes,1,rep,name=deployments,proto3" json:"deployments,omitempty"`
+    // Token to retrieve the next page. Empty if no more results.
+    NextPageToken *string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3,oneof" json:"next_page_token,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ListDeploymentsResponse.Descriptor"></a>
+### func \(\*ListDeploymentsResponse\) Descriptor
+
+```go
+func (*ListDeploymentsResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ListDeploymentsResponse.ProtoReflect.Descriptor instead.
+
+<a name="ListDeploymentsResponse.GetDeployments"></a>
+### func \(\*ListDeploymentsResponse\) GetDeployments
+
+```go
+func (x *ListDeploymentsResponse) GetDeployments() []*Deployment
+```
+
+
+
+<a name="ListDeploymentsResponse.GetNextPageToken"></a>
+### func \(\*ListDeploymentsResponse\) GetNextPageToken
+
+```go
+func (x *ListDeploymentsResponse) GetNextPageToken() string
+```
+
+
+
+<a name="ListDeploymentsResponse.ProtoMessage"></a>
+### func \(\*ListDeploymentsResponse\) ProtoMessage
+
+```go
+func (*ListDeploymentsResponse) ProtoMessage()
+```
+
+
+
+<a name="ListDeploymentsResponse.ProtoReflect"></a>
+### func \(\*ListDeploymentsResponse\) ProtoReflect
+
+```go
+func (x *ListDeploymentsResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ListDeploymentsResponse.Reset"></a>
+### func \(\*ListDeploymentsResponse\) Reset
+
+```go
+func (x *ListDeploymentsResponse) Reset()
+```
+
+
+
+<a name="ListDeploymentsResponse.String"></a>
+### func \(\*ListDeploymentsResponse\) String
+
+```go
+func (x *ListDeploymentsResponse) String() string
+```
+
+
+
+<a name="ListEnvironmentsRequest"></a>
+## type ListEnvironmentsRequest
+
+
+
+```go
+type ListEnvironmentsRequest struct {
+
+    // Filter by current aggregate phase.
+    Phase *v1.EnvironmentPhase `protobuf:"bytes,1,opt,name=phase,proto3,oneof" json:"phase,omitempty"`
+    // Filter by environment classification.
+    EnvironmentType *v1.EnvironmentType `protobuf:"bytes,2,opt,name=environment_type,json=environmentType,proto3,oneof" json:"environment_type,omitempty"`
+    // Filter by application name.
+    ApplicationName *string `protobuf:"bytes,3,opt,name=application_name,json=applicationName,proto3,oneof" json:"application_name,omitempty"`
+    // Maximum number of results to return. Server may return fewer.
+    PageSize *int32 `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"`
+    // Token from a previous ListEnvironmentsResponse.next_page_token.
+    // Omit for the first request.
+    PageToken *string `protobuf:"bytes,5,opt,name=page_token,json=pageToken,proto3,oneof" json:"page_token,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ListEnvironmentsRequest.Descriptor"></a>
+### func \(\*ListEnvironmentsRequest\) Descriptor
+
+```go
+func (*ListEnvironmentsRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ListEnvironmentsRequest.ProtoReflect.Descriptor instead.
+
+<a name="ListEnvironmentsRequest.GetApplicationName"></a>
+### func \(\*ListEnvironmentsRequest\) GetApplicationName
+
+```go
+func (x *ListEnvironmentsRequest) GetApplicationName() string
+```
+
+
+
+<a name="ListEnvironmentsRequest.GetEnvironmentType"></a>
+### func \(\*ListEnvironmentsRequest\) GetEnvironmentType
+
+```go
+func (x *ListEnvironmentsRequest) GetEnvironmentType() *v1.EnvironmentType
+```
+
+
+
+<a name="ListEnvironmentsRequest.GetPageSize"></a>
+### func \(\*ListEnvironmentsRequest\) GetPageSize
+
+```go
+func (x *ListEnvironmentsRequest) GetPageSize() int32
+```
+
+
+
+<a name="ListEnvironmentsRequest.GetPageToken"></a>
+### func \(\*ListEnvironmentsRequest\) GetPageToken
+
+```go
+func (x *ListEnvironmentsRequest) GetPageToken() string
+```
+
+
+
+<a name="ListEnvironmentsRequest.GetPhase"></a>
+### func \(\*ListEnvironmentsRequest\) GetPhase
+
+```go
+func (x *ListEnvironmentsRequest) GetPhase() *v1.EnvironmentPhase
+```
+
+
+
+<a name="ListEnvironmentsRequest.ProtoMessage"></a>
+### func \(\*ListEnvironmentsRequest\) ProtoMessage
+
+```go
+func (*ListEnvironmentsRequest) ProtoMessage()
+```
+
+
+
+<a name="ListEnvironmentsRequest.ProtoReflect"></a>
+### func \(\*ListEnvironmentsRequest\) ProtoReflect
+
+```go
+func (x *ListEnvironmentsRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ListEnvironmentsRequest.Reset"></a>
+### func \(\*ListEnvironmentsRequest\) Reset
+
+```go
+func (x *ListEnvironmentsRequest) Reset()
+```
+
+
+
+<a name="ListEnvironmentsRequest.String"></a>
+### func \(\*ListEnvironmentsRequest\) String
+
+```go
+func (x *ListEnvironmentsRequest) String() string
+```
+
+
+
+<a name="ListEnvironmentsResponse"></a>
+## type ListEnvironmentsResponse
+
+
+
+```go
+type ListEnvironmentsResponse struct {
+
+    // The list of Environment CRs matching the request filters.
+    Environments []*Environment `protobuf:"bytes,1,rep,name=environments,proto3" json:"environments,omitempty"`
+    // Token to retrieve the next page. Empty if no more results.
+    NextPageToken *string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3,oneof" json:"next_page_token,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ListEnvironmentsResponse.Descriptor"></a>
+### func \(\*ListEnvironmentsResponse\) Descriptor
+
+```go
+func (*ListEnvironmentsResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ListEnvironmentsResponse.ProtoReflect.Descriptor instead.
+
+<a name="ListEnvironmentsResponse.GetEnvironments"></a>
+### func \(\*ListEnvironmentsResponse\) GetEnvironments
+
+```go
+func (x *ListEnvironmentsResponse) GetEnvironments() []*Environment
+```
+
+
+
+<a name="ListEnvironmentsResponse.GetNextPageToken"></a>
+### func \(\*ListEnvironmentsResponse\) GetNextPageToken
+
+```go
+func (x *ListEnvironmentsResponse) GetNextPageToken() string
+```
+
+
+
+<a name="ListEnvironmentsResponse.ProtoMessage"></a>
+### func \(\*ListEnvironmentsResponse\) ProtoMessage
+
+```go
+func (*ListEnvironmentsResponse) ProtoMessage()
+```
+
+
+
+<a name="ListEnvironmentsResponse.ProtoReflect"></a>
+### func \(\*ListEnvironmentsResponse\) ProtoReflect
+
+```go
+func (x *ListEnvironmentsResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ListEnvironmentsResponse.Reset"></a>
+### func \(\*ListEnvironmentsResponse\) Reset
+
+```go
+func (x *ListEnvironmentsResponse) Reset()
+```
+
+
+
+<a name="ListEnvironmentsResponse.String"></a>
+### func \(\*ListEnvironmentsResponse\) String
+
+```go
+func (x *ListEnvironmentsResponse) String() string
+```
+
+
+
+<a name="ListPackagesRequest"></a>
+## type ListPackagesRequest
+
+ListPackages — list Package CRs with optional filtering and paging.
+
+```go
+type ListPackagesRequest struct {
+
+    // Filter by current lifecycle phase.
+    Phase *v1.PackagePhase `protobuf:"bytes,1,opt,name=phase,proto3,oneof" json:"phase,omitempty"`
+    // Filter by enabled state.
+    Enabled *bool `protobuf:"varint,2,opt,name=enabled,proto3,oneof" json:"enabled,omitempty"`
+    // Filter by logical package name.
+    Name *string `protobuf:"bytes,3,opt,name=name,proto3,oneof" json:"name,omitempty"`
+    // Maximum number of results to return. Server may return fewer.
+    PageSize *int32 `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"`
+    // Token from a previous ListPackagesResponse.next_page_token.
+    // Omit for the first request.
+    PageToken *string `protobuf:"bytes,5,opt,name=page_token,json=pageToken,proto3,oneof" json:"page_token,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ListPackagesRequest.Descriptor"></a>
+### func \(\*ListPackagesRequest\) Descriptor
+
+```go
+func (*ListPackagesRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ListPackagesRequest.ProtoReflect.Descriptor instead.
+
+<a name="ListPackagesRequest.GetEnabled"></a>
+### func \(\*ListPackagesRequest\) GetEnabled
+
+```go
+func (x *ListPackagesRequest) GetEnabled() bool
+```
+
+
+
+<a name="ListPackagesRequest.GetName"></a>
+### func \(\*ListPackagesRequest\) GetName
+
+```go
+func (x *ListPackagesRequest) GetName() string
+```
+
+
+
+<a name="ListPackagesRequest.GetPageSize"></a>
+### func \(\*ListPackagesRequest\) GetPageSize
+
+```go
+func (x *ListPackagesRequest) GetPageSize() int32
+```
+
+
+
+<a name="ListPackagesRequest.GetPageToken"></a>
+### func \(\*ListPackagesRequest\) GetPageToken
+
+```go
+func (x *ListPackagesRequest) GetPageToken() string
+```
+
+
+
+<a name="ListPackagesRequest.GetPhase"></a>
+### func \(\*ListPackagesRequest\) GetPhase
+
+```go
+func (x *ListPackagesRequest) GetPhase() *v1.PackagePhase
+```
+
+
+
+<a name="ListPackagesRequest.ProtoMessage"></a>
+### func \(\*ListPackagesRequest\) ProtoMessage
+
+```go
+func (*ListPackagesRequest) ProtoMessage()
+```
+
+
+
+<a name="ListPackagesRequest.ProtoReflect"></a>
+### func \(\*ListPackagesRequest\) ProtoReflect
+
+```go
+func (x *ListPackagesRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ListPackagesRequest.Reset"></a>
+### func \(\*ListPackagesRequest\) Reset
+
+```go
+func (x *ListPackagesRequest) Reset()
+```
+
+
+
+<a name="ListPackagesRequest.String"></a>
+### func \(\*ListPackagesRequest\) String
+
+```go
+func (x *ListPackagesRequest) String() string
+```
+
+
+
+<a name="ListPackagesResponse"></a>
+## type ListPackagesResponse
+
+
+
+```go
+type ListPackagesResponse struct {
+
+    // The list of Package CRs matching the request filters.
+    Packages []*Package `protobuf:"bytes,1,rep,name=packages,proto3" json:"packages,omitempty"`
+    // Token to retrieve the next page. Empty if no more results.
+    NextPageToken *string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3,oneof" json:"next_page_token,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ListPackagesResponse.Descriptor"></a>
+### func \(\*ListPackagesResponse\) Descriptor
+
+```go
+func (*ListPackagesResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ListPackagesResponse.ProtoReflect.Descriptor instead.
+
+<a name="ListPackagesResponse.GetNextPageToken"></a>
+### func \(\*ListPackagesResponse\) GetNextPageToken
+
+```go
+func (x *ListPackagesResponse) GetNextPageToken() string
+```
+
+
+
+<a name="ListPackagesResponse.GetPackages"></a>
+### func \(\*ListPackagesResponse\) GetPackages
+
+```go
+func (x *ListPackagesResponse) GetPackages() []*Package
+```
+
+
+
+<a name="ListPackagesResponse.ProtoMessage"></a>
+### func \(\*ListPackagesResponse\) ProtoMessage
+
+```go
+func (*ListPackagesResponse) ProtoMessage()
+```
+
+
+
+<a name="ListPackagesResponse.ProtoReflect"></a>
+### func \(\*ListPackagesResponse\) ProtoReflect
+
+```go
+func (x *ListPackagesResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ListPackagesResponse.Reset"></a>
+### func \(\*ListPackagesResponse\) Reset
+
+```go
+func (x *ListPackagesResponse) Reset()
+```
+
+
+
+<a name="ListPackagesResponse.String"></a>
+### func \(\*ListPackagesResponse\) String
+
+```go
+func (x *ListPackagesResponse) String() string
+```
+
+
+
+<a name="ListServiceUnitsRequest"></a>
+## type ListServiceUnitsRequest
+
 ListServiceUnits — list ServiceUnit CRs with optional filtering and paging.
 
+```go
+type ListServiceUnitsRequest struct {
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| phase | [blanketops.common.v1.ServiceUnitDeploymentPhase](#blanketops-common-v1-ServiceUnitDeploymentPhase) | optional | Filter by current lifecycle phase. |
-| type | [blanketops.common.v1.ServiceUnitType](#blanketops-common-v1-ServiceUnitType) | optional | Filter by source type. |
-| app_type | [string](#string) | optional | Filter by application category. |
-| page_size | [int32](#int32) | optional | Maximum number of results to return. Server may return fewer. |
-| page_token | [string](#string) | optional | Token from a previous ListServiceUnitsResponse.next_page_token. Omit for the first request. |
+    // Filter by current lifecycle phase.
+    Phase *v1.ServiceUnitDeploymentPhase `protobuf:"bytes,1,opt,name=phase,proto3,oneof" json:"phase,omitempty"`
+    // Filter by source type.
+    Type *v1.ServiceUnitType `protobuf:"bytes,2,opt,name=type,proto3,oneof" json:"type,omitempty"`
+    // Filter by application category.
+    AppType *string `protobuf:"bytes,3,opt,name=app_type,json=appType,proto3,oneof" json:"app_type,omitempty"`
+    // Maximum number of results to return. Server may return fewer.
+    PageSize *int32 `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3,oneof" json:"page_size,omitempty"`
+    // Token from a previous ListServiceUnitsResponse.next_page_token.
+    // Omit for the first request.
+    PageToken *string `protobuf:"bytes,5,opt,name=page_token,json=pageToken,proto3,oneof" json:"page_token,omitempty"`
+    // contains filtered or unexported fields
+}
+```
 
+<a name="ListServiceUnitsRequest.Descriptor"></a>
+### func \(\*ListServiceUnitsRequest\) Descriptor
 
+```go
+func (*ListServiceUnitsRequest) Descriptor() ([]byte, []int)
+```
 
+Deprecated: Use ListServiceUnitsRequest.ProtoReflect.Descriptor instead.
 
+<a name="ListServiceUnitsRequest.GetAppType"></a>
+### func \(\*ListServiceUnitsRequest\) GetAppType
 
+```go
+func (x *ListServiceUnitsRequest) GetAppType() string
+```
 
-<a name="blanketops-environments-v1alpha1-ListServiceUnitsResponse"></a>
 
-### ListServiceUnitsResponse
 
+<a name="ListServiceUnitsRequest.GetPageSize"></a>
+### func \(\*ListServiceUnitsRequest\) GetPageSize
 
+```go
+func (x *ListServiceUnitsRequest) GetPageSize() int32
+```
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| service_units | [ServiceUnit](#blanketops-environments-v1alpha1-ServiceUnit) | repeated | The list of ServiceUnit CRs matching the request filters. |
-| next_page_token | [string](#string) | optional | Token to retrieve the next page. Empty if no more results. |
 
 
+<a name="ListServiceUnitsRequest.GetPageToken"></a>
+### func \(\*ListServiceUnitsRequest\) GetPageToken
 
+```go
+func (x *ListServiceUnitsRequest) GetPageToken() string
+```
 
 
 
-<a name="blanketops-environments-v1alpha1-PatchServiceUnitRequest"></a>
+<a name="ListServiceUnitsRequest.GetPhase"></a>
+### func \(\*ListServiceUnitsRequest\) GetPhase
 
-### PatchServiceUnitRequest
-PatchServiceUnit — partial update using JSON merge patch RFC 7396.
-Only specified fields are updated — others left unchanged.
+```go
+func (x *ListServiceUnitsRequest) GetPhase() *v1.ServiceUnitDeploymentPhase
+```
 
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the ServiceUnit CR to patch. |
-| patch | [string](#string) |  | JSON merge patch document — RFC 7396. e.g. {&#34;spec&#34;:{&#34;size&#34;:3}} |
 
+<a name="ListServiceUnitsRequest.GetType"></a>
+### func \(\*ListServiceUnitsRequest\) GetType
 
+```go
+func (x *ListServiceUnitsRequest) GetType() *v1.ServiceUnitType
+```
 
 
 
+<a name="ListServiceUnitsRequest.ProtoMessage"></a>
+### func \(\*ListServiceUnitsRequest\) ProtoMessage
 
-<a name="blanketops-environments-v1alpha1-PatchServiceUnitResponse"></a>
+```go
+func (*ListServiceUnitsRequest) ProtoMessage()
+```
 
-### PatchServiceUnitResponse
 
 
+<a name="ListServiceUnitsRequest.ProtoReflect"></a>
+### func \(\*ListServiceUnitsRequest\) ProtoReflect
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| service_unit | [ServiceUnit](#blanketops-environments-v1alpha1-ServiceUnit) |  | The patched ServiceUnit as observed by the controller. |
+```go
+func (x *ListServiceUnitsRequest) ProtoReflect() protoreflect.Message
+```
 
 
 
+<a name="ListServiceUnitsRequest.Reset"></a>
+### func \(\*ListServiceUnitsRequest\) Reset
 
+```go
+func (x *ListServiceUnitsRequest) Reset()
+```
 
 
-<a name="blanketops-environments-v1alpha1-RouteReference"></a>
 
-### RouteReference
+<a name="ListServiceUnitsRequest.String"></a>
+### func \(\*ListServiceUnitsRequest\) String
 
+```go
+func (x *ListServiceUnitsRequest) String() string
+```
 
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the Route CR. Resolved in the same namespace. |
 
+<a name="ListServiceUnitsResponse"></a>
+## type ListServiceUnitsResponse
 
 
 
+```go
+type ListServiceUnitsResponse struct {
 
+    // The list of ServiceUnit CRs matching the request filters.
+    ServiceUnits []*ServiceUnit `protobuf:"bytes,1,rep,name=service_units,json=serviceUnits,proto3" json:"service_units,omitempty"`
+    // Token to retrieve the next page. Empty if no more results.
+    NextPageToken *string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3,oneof" json:"next_page_token,omitempty"`
+    // contains filtered or unexported fields
+}
+```
 
-<a name="blanketops-environments-v1alpha1-ServiceUnit"></a>
+<a name="ListServiceUnitsResponse.Descriptor"></a>
+### func \(\*ListServiceUnitsResponse\) Descriptor
 
-### ServiceUnit
+```go
+func (*ListServiceUnitsResponse) Descriptor() ([]byte, []int)
+```
 
+Deprecated: Use ListServiceUnitsResponse.ProtoReflect.Descriptor instead.
 
+<a name="ListServiceUnitsResponse.GetNextPageToken"></a>
+### func \(\*ListServiceUnitsResponse\) GetNextPageToken
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| metadata | [blanketops.common.v1.Metadata](#blanketops-common-v1-Metadata) |  | Standard BlanketOps metadata (name, namespace, labels, ownerRef). |
-| spec | [ServiceUnitSpec](#blanketops-environments-v1alpha1-ServiceUnitSpec) |  | Desired state declared by the operator. |
-| status | [ServiceUnitStatus](#blanketops-environments-v1alpha1-ServiceUnitStatus) |  | Observed state set by the controller. Never manually edited. |
+```go
+func (x *ListServiceUnitsResponse) GetNextPageToken() string
+```
 
 
 
+<a name="ListServiceUnitsResponse.GetServiceUnits"></a>
+### func \(\*ListServiceUnitsResponse\) GetServiceUnits
 
+```go
+func (x *ListServiceUnitsResponse) GetServiceUnits() []*ServiceUnit
+```
 
 
-<a name="blanketops-environments-v1alpha1-ServiceUnitCondition"></a>
 
-### ServiceUnitCondition
+<a name="ListServiceUnitsResponse.ProtoMessage"></a>
+### func \(\*ListServiceUnitsResponse\) ProtoMessage
 
+```go
+func (*ListServiceUnitsResponse) ProtoMessage()
+```
 
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| type | [string](#string) |  | Condition type. e.g. ImageResolved, WorkloadReady, RouteBound |
-| status | [string](#string) |  | Condition status: True, False, or Unknown. |
-| reason | [string](#string) |  | Machine-readable reason for the last transition. |
-| message | [string](#string) |  | Human-readable detail for the last transition. |
-| last_transition_time | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | When the condition last changed status. |
 
+<a name="ListServiceUnitsResponse.ProtoReflect"></a>
+### func \(\*ListServiceUnitsResponse\) ProtoReflect
 
+```go
+func (x *ListServiceUnitsResponse) ProtoReflect() protoreflect.Message
+```
 
 
 
+<a name="ListServiceUnitsResponse.Reset"></a>
+### func \(\*ListServiceUnitsResponse\) Reset
 
-<a name="blanketops-environments-v1alpha1-ServiceUnitSpec"></a>
+```go
+func (x *ListServiceUnitsResponse) Reset()
+```
 
-### ServiceUnitSpec
 
 
+<a name="ListServiceUnitsResponse.String"></a>
+### func \(\*ListServiceUnitsResponse\) String
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| type | [blanketops.common.v1.ServiceUnitType](#blanketops-common-v1-ServiceUnitType) |  | How this service unit&#39;s image is sourced. |
-| build_ref | [BuildReference](#blanketops-environments-v1alpha1-BuildReference) |  | Reference to the source Build. Required when type is BUILD. |
-| image | [string](#string) |  | Fully qualified static image reference. Required when type is STATIC. e.g. docker.io/nkanyezisolutions/api:v1.2.3 |
-| container_port | [int32](#int32) |  | Port the workload listens on. |
-| size | [int32](#int32) |  | Desired replica count. |
-| route | [RouteReference](#blanketops-environments-v1alpha1-RouteReference) |  | External route for this unit. Optional. |
-| app_type | [string](#string) |  | Application category hint. e.g. web, worker, job |
-| stack_type | [string](#string) |  | Language or stack hint. e.g. nodejs, python, wasm |
+```go
+func (x *ListServiceUnitsResponse) String() string
+```
 
 
 
+<a name="Maintainer"></a>
+## type Maintainer
 
 
 
-<a name="blanketops-environments-v1alpha1-ServiceUnitStatus"></a>
+```go
+type Maintainer struct {
 
-### ServiceUnitStatus
+    // Maintainer display name.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // Maintainer contact email.
+    Email string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+    // contains filtered or unexported fields
+}
+```
 
+<a name="Maintainer.Descriptor"></a>
+### func \(\*Maintainer\) Descriptor
 
+```go
+func (*Maintainer) Descriptor() ([]byte, []int)
+```
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| phase | [blanketops.common.v1.ServiceUnitDeploymentPhase](#blanketops-common-v1-ServiceUnitDeploymentPhase) |  | Current lifecycle phase. Set by the controller. |
-| message | [string](#string) |  | Human-readable status message. Populated on failure. |
-| observed_generation | [int64](#int64) |  | Generation of the spec this status reflects. |
-| resolved_image | [string](#string) |  | Final resolved image used at runtime, including digest when known. |
-| build_status | [BuildResolutionStatus](#blanketops-environments-v1alpha1-BuildResolutionStatus) |  | Build resolution status. Populated when spec.type is BUILD. |
-| runtime | [blanketops.common.v1.ServiceUnitRuntime](#blanketops-common-v1-ServiceUnitRuntime) |  | Runtime backend used to materialize the workload. |
-| workload_ref | [WorkloadReference](#blanketops-environments-v1alpha1-WorkloadReference) |  | Reference to the concrete workload created. |
-| conditions | [ServiceUnitCondition](#blanketops-environments-v1alpha1-ServiceUnitCondition) | repeated | Lifecycle conditions for UI and automation consumers. |
-| last_updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | When the controller last updated this status. |
+Deprecated: Use Maintainer.ProtoReflect.Descriptor instead.
 
+<a name="Maintainer.GetEmail"></a>
+### func \(\*Maintainer\) GetEmail
 
+```go
+func (x *Maintainer) GetEmail() string
+```
 
 
 
+<a name="Maintainer.GetName"></a>
+### func \(\*Maintainer\) GetName
 
-<a name="blanketops-environments-v1alpha1-UpdateServiceUnitRequest"></a>
+```go
+func (x *Maintainer) GetName() string
+```
 
-### UpdateServiceUnitRequest
-UpdateServiceUnit — full replace of the ServiceUnit spec.
-Equivalent to kubectl apply — all fields replaced.
 
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| service_unit | [ServiceUnit](#blanketops-environments-v1alpha1-ServiceUnit) |  | Full ServiceUnit object including metadata and desired spec. |
+<a name="Maintainer.ProtoMessage"></a>
+### func \(\*Maintainer\) ProtoMessage
 
+```go
+func (*Maintainer) ProtoMessage()
+```
 
 
 
+<a name="Maintainer.ProtoReflect"></a>
+### func \(\*Maintainer\) ProtoReflect
 
+```go
+func (x *Maintainer) ProtoReflect() protoreflect.Message
+```
 
-<a name="blanketops-environments-v1alpha1-UpdateServiceUnitResponse"></a>
 
-### UpdateServiceUnitResponse
 
+<a name="Maintainer.Reset"></a>
+### func \(\*Maintainer\) Reset
 
+```go
+func (x *Maintainer) Reset()
+```
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| service_unit | [ServiceUnit](#blanketops-environments-v1alpha1-ServiceUnit) |  | The updated ServiceUnit as observed by the controller. |
 
 
+<a name="Maintainer.String"></a>
+### func \(\*Maintainer\) String
 
+```go
+func (x *Maintainer) String() string
+```
 
 
 
-<a name="blanketops-environments-v1alpha1-WatchServiceUnitRequest"></a>
+<a name="ManifestsRepo"></a>
+## type ManifestsRepo
 
-### WatchServiceUnitRequest
-WatchServiceUnit — stream phase transitions for a ServiceUnit CR.
-Delivers an event for every controller reconciliation loop.
 
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| name | [string](#string) |  | Name of the ServiceUnit CR to watch. |
+```go
+type ManifestsRepo struct {
 
+    // SSH or HTTPS URL of the manifests repository.
+    // SSH format: git@github.com:<owner>/<repo>.git
+    Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+    // Git ref to reconcile from — branch, tag, or commit SHA.
+    Ref string `protobuf:"bytes,2,opt,name=ref,proto3" json:"ref,omitempty"`
+    // Name of the Kubernetes Secret used to authenticate the clone.
+    // Sourced from the environment SecretStore via ExternalSecret.
+    CloneSecret string `protobuf:"bytes,3,opt,name=clone_secret,json=cloneSecret,proto3" json:"clone_secret,omitempty"`
+    // Application strategy hint for the repository contents.
+    // e.g. kustomize, helm
+    Strategy string `protobuf:"bytes,4,opt,name=strategy,proto3" json:"strategy,omitempty"`
+    // Path inside the repository to reconcile.
+    // e.g. ./clusters/dev
+    Path string `protobuf:"bytes,5,opt,name=path,proto3" json:"path,omitempty"`
+    // contains filtered or unexported fields
+}
+```
 
+<a name="ManifestsRepo.Descriptor"></a>
+### func \(\*ManifestsRepo\) Descriptor
 
+```go
+func (*ManifestsRepo) Descriptor() ([]byte, []int)
+```
 
+Deprecated: Use ManifestsRepo.ProtoReflect.Descriptor instead.
 
+<a name="ManifestsRepo.GetCloneSecret"></a>
+### func \(\*ManifestsRepo\) GetCloneSecret
 
-<a name="blanketops-environments-v1alpha1-WatchServiceUnitResponse"></a>
+```go
+func (x *ManifestsRepo) GetCloneSecret() string
+```
 
-### WatchServiceUnitResponse
 
 
+<a name="ManifestsRepo.GetPath"></a>
+### func \(\*ManifestsRepo\) GetPath
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| service_unit | [ServiceUnit](#blanketops-environments-v1alpha1-ServiceUnit) |  | Current state of the ServiceUnit at this point in the stream. |
-| type | [blanketops.common.v1.EventType](#blanketops-common-v1-EventType) |  | The type of change that triggered this event. |
+```go
+func (x *ManifestsRepo) GetPath() string
+```
 
 
 
+<a name="ManifestsRepo.GetRef"></a>
+### func \(\*ManifestsRepo\) GetRef
 
+```go
+func (x *ManifestsRepo) GetRef() string
+```
 
 
-<a name="blanketops-environments-v1alpha1-WorkloadReference"></a>
 
-### WorkloadReference
-Reference to the concrete workload materialized at runtime.
-Opaque to the contract — identifies any runtime object.
+<a name="ManifestsRepo.GetStrategy"></a>
+### func \(\*ManifestsRepo\) GetStrategy
 
+```go
+func (x *ManifestsRepo) GetStrategy() string
+```
 
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| api_version | [string](#string) |  | API version of the workload object. e.g. apps/v1, serving.knative.dev/v1 |
-| kind | [string](#string) |  | Kind of the workload object. e.g. Deployment, Service |
-| name | [string](#string) |  | Name of the workload object. |
-| namespace | [string](#string) |  | Namespace of the workload object. |
 
 
+<a name="ManifestsRepo.GetUrl"></a>
+### func \(\*ManifestsRepo\) GetUrl
 
+```go
+func (x *ManifestsRepo) GetUrl() string
+```
 
 
- 
 
- 
+<a name="ManifestsRepo.ProtoMessage"></a>
+### func \(\*ManifestsRepo\) ProtoMessage
 
- 
+```go
+func (*ManifestsRepo) ProtoMessage()
+```
 
 
-<a name="blanketops-environments-v1alpha1-ServiceUnitService"></a>
 
-### ServiceUnitService
-── CRUD — aligned with BuildService pattern ─────────────────────────────
+<a name="ManifestsRepo.ProtoReflect"></a>
+### func \(\*ManifestsRepo\) ProtoReflect
 
-| Method Name | Request Type | Response Type | Description |
-| ----------- | ------------ | ------------- | ------------|
-| CreateServiceUnit | [CreateServiceUnitRequest](#blanketops-environments-v1alpha1-CreateServiceUnitRequest) | [CreateServiceUnitResponse](#blanketops-environments-v1alpha1-CreateServiceUnitResponse) | Declare a new ServiceUnit. |
-| GetServiceUnit | [GetServiceUnitRequest](#blanketops-environments-v1alpha1-GetServiceUnitRequest) | [GetServiceUnitResponse](#blanketops-environments-v1alpha1-GetServiceUnitResponse) | Fetch a ServiceUnit CR by name. |
-| UpdateServiceUnit | [UpdateServiceUnitRequest](#blanketops-environments-v1alpha1-UpdateServiceUnitRequest) | [UpdateServiceUnitResponse](#blanketops-environments-v1alpha1-UpdateServiceUnitResponse) | Full replace of a ServiceUnit spec. |
-| PatchServiceUnit | [PatchServiceUnitRequest](#blanketops-environments-v1alpha1-PatchServiceUnitRequest) | [PatchServiceUnitResponse](#blanketops-environments-v1alpha1-PatchServiceUnitResponse) | Partial update via JSON merge patch RFC 7396. |
-| ListServiceUnits | [ListServiceUnitsRequest](#blanketops-environments-v1alpha1-ListServiceUnitsRequest) | [ListServiceUnitsResponse](#blanketops-environments-v1alpha1-ListServiceUnitsResponse) | List ServiceUnit CRs with optional phase/type/app filter and paging. |
-| DeleteServiceUnit | [DeleteServiceUnitRequest](#blanketops-environments-v1alpha1-DeleteServiceUnitRequest) | [DeleteServiceUnitResponse](#blanketops-environments-v1alpha1-DeleteServiceUnitResponse) | Delete a ServiceUnit CR and its materialized workload. |
-| WatchServiceUnit | [WatchServiceUnitRequest](#blanketops-environments-v1alpha1-WatchServiceUnitRequest) | [WatchServiceUnitResponse](#blanketops-environments-v1alpha1-WatchServiceUnitResponse) stream | Stream phase transitions for a ServiceUnit CR. Streams indefinitely — service units have no terminal phase; close client-side. |
+```go
+func (x *ManifestsRepo) ProtoReflect() protoreflect.Message
+```
 
- 
 
 
+<a name="ManifestsRepo.Reset"></a>
+### func \(\*ManifestsRepo\) Reset
 
-## Scalar Value Types
+```go
+func (x *ManifestsRepo) Reset()
+```
 
-| .proto Type | Notes | C++ | Java | Python | Go | C# | PHP | Ruby |
-| ----------- | ----- | --- | ---- | ------ | -- | -- | --- | ---- |
-| <a name="double" /> double |  | double | double | float | float64 | double | float | Float |
-| <a name="float" /> float |  | float | float | float | float32 | float | float | Float |
-| <a name="int32" /> int32 | Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint32 instead. | int32 | int | int | int32 | int | integer | Bignum or Fixnum (as required) |
-| <a name="int64" /> int64 | Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint64 instead. | int64 | long | int/long | int64 | long | integer/string | Bignum |
-| <a name="uint32" /> uint32 | Uses variable-length encoding. | uint32 | int | int/long | uint32 | uint | integer | Bignum or Fixnum (as required) |
-| <a name="uint64" /> uint64 | Uses variable-length encoding. | uint64 | long | int/long | uint64 | ulong | integer/string | Bignum or Fixnum (as required) |
-| <a name="sint32" /> sint32 | Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int32s. | int32 | int | int | int32 | int | integer | Bignum or Fixnum (as required) |
-| <a name="sint64" /> sint64 | Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int64s. | int64 | long | int/long | int64 | long | integer/string | Bignum |
-| <a name="fixed32" /> fixed32 | Always four bytes. More efficient than uint32 if values are often greater than 2^28. | uint32 | int | int | uint32 | uint | integer | Bignum or Fixnum (as required) |
-| <a name="fixed64" /> fixed64 | Always eight bytes. More efficient than uint64 if values are often greater than 2^56. | uint64 | long | int/long | uint64 | ulong | integer/string | Bignum |
-| <a name="sfixed32" /> sfixed32 | Always four bytes. | int32 | int | int | int32 | int | integer | Bignum or Fixnum (as required) |
-| <a name="sfixed64" /> sfixed64 | Always eight bytes. | int64 | long | int/long | int64 | long | integer/string | Bignum |
-| <a name="bool" /> bool |  | bool | boolean | boolean | bool | bool | boolean | TrueClass/FalseClass |
-| <a name="string" /> string | A string must always contain UTF-8 encoded or 7-bit ASCII text. | string | String | str/unicode | string | string | string | String (UTF-8) |
-| <a name="bytes" /> bytes | May contain any arbitrary sequence of bytes. | string | ByteString | str | []byte | ByteString | string | String (ASCII-8BIT) |
 
+
+<a name="ManifestsRepo.String"></a>
+### func \(\*ManifestsRepo\) String
+
+```go
+func (x *ManifestsRepo) String() string
+```
+
+
+
+<a name="ObjectRef"></a>
+## type ObjectRef
+
+References \(composition, not ownership\) Reference to a CR composed into this environment. Resolved in the same namespace as the Environment.
+
+```go
+type ObjectRef struct {
+
+    // Name of the referenced CR.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ObjectRef.Descriptor"></a>
+### func \(\*ObjectRef\) Descriptor
+
+```go
+func (*ObjectRef) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ObjectRef.ProtoReflect.Descriptor instead.
+
+<a name="ObjectRef.GetName"></a>
+### func \(\*ObjectRef\) GetName
+
+```go
+func (x *ObjectRef) GetName() string
+```
+
+
+
+<a name="ObjectRef.ProtoMessage"></a>
+### func \(\*ObjectRef\) ProtoMessage
+
+```go
+func (*ObjectRef) ProtoMessage()
+```
+
+
+
+<a name="ObjectRef.ProtoReflect"></a>
+### func \(\*ObjectRef\) ProtoReflect
+
+```go
+func (x *ObjectRef) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ObjectRef.Reset"></a>
+### func \(\*ObjectRef\) Reset
+
+```go
+func (x *ObjectRef) Reset()
+```
+
+
+
+<a name="ObjectRef.String"></a>
+### func \(\*ObjectRef\) String
+
+```go
+func (x *ObjectRef) String() string
+```
+
+
+
+<a name="Package"></a>
+## type Package
+
+
+
+```go
+type Package struct {
+
+    // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
+    Metadata *v1.Metadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+    // Desired state declared by the operator.
+    Spec *PackageSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+    // Observed state set by the controller. Never manually edited.
+    Status *PackageStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="Package.Descriptor"></a>
+### func \(\*Package\) Descriptor
+
+```go
+func (*Package) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use Package.ProtoReflect.Descriptor instead.
+
+<a name="Package.GetMetadata"></a>
+### func \(\*Package\) GetMetadata
+
+```go
+func (x *Package) GetMetadata() *v1.Metadata
+```
+
+
+
+<a name="Package.GetSpec"></a>
+### func \(\*Package\) GetSpec
+
+```go
+func (x *Package) GetSpec() *PackageSpec
+```
+
+
+
+<a name="Package.GetStatus"></a>
+### func \(\*Package\) GetStatus
+
+```go
+func (x *Package) GetStatus() *PackageStatus
+```
+
+
+
+<a name="Package.ProtoMessage"></a>
+### func \(\*Package\) ProtoMessage
+
+```go
+func (*Package) ProtoMessage()
+```
+
+
+
+<a name="Package.ProtoReflect"></a>
+### func \(\*Package\) ProtoReflect
+
+```go
+func (x *Package) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="Package.Reset"></a>
+### func \(\*Package\) Reset
+
+```go
+func (x *Package) Reset()
+```
+
+
+
+<a name="Package.String"></a>
+### func \(\*Package\) String
+
+```go
+func (x *Package) String() string
+```
+
+
+
+<a name="PackageRepository"></a>
+## type PackageRepository
+
+
+
+```go
+type PackageRepository struct {
+
+    // SSH or HTTPS URL of the package repository.
+    // SSH format: git@github.com:<owner>/<repo>.git
+    Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+    // Name of the Kubernetes Secret containing repository credentials.
+    // Sourced from the environment SecretStore via ExternalSecret.
+    CredentialsSecret string `protobuf:"bytes,2,opt,name=credentials_secret,json=credentialsSecret,proto3" json:"credentials_secret,omitempty"`
+    // Git ref of the package repository to apply — branch, tag, or commit SHA.
+    // Required to fetch: the repository is not fetched without one.
+    // A branch is written with its remote, e.g. origin/main.
+    Ref string `protobuf:"bytes,3,opt,name=ref,proto3" json:"ref,omitempty"`
+    // Path inside the repository that holds the package definitions.
+    // Only this directory is applied. Empty means the repository root.
+    // e.g. manifests
+    Path string `protobuf:"bytes,4,opt,name=path,proto3" json:"path,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PackageRepository.Descriptor"></a>
+### func \(\*PackageRepository\) Descriptor
+
+```go
+func (*PackageRepository) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PackageRepository.ProtoReflect.Descriptor instead.
+
+<a name="PackageRepository.GetCredentialsSecret"></a>
+### func \(\*PackageRepository\) GetCredentialsSecret
+
+```go
+func (x *PackageRepository) GetCredentialsSecret() string
+```
+
+
+
+<a name="PackageRepository.GetPath"></a>
+### func \(\*PackageRepository\) GetPath
+
+```go
+func (x *PackageRepository) GetPath() string
+```
+
+
+
+<a name="PackageRepository.GetRef"></a>
+### func \(\*PackageRepository\) GetRef
+
+```go
+func (x *PackageRepository) GetRef() string
+```
+
+
+
+<a name="PackageRepository.GetUrl"></a>
+### func \(\*PackageRepository\) GetUrl
+
+```go
+func (x *PackageRepository) GetUrl() string
+```
+
+
+
+<a name="PackageRepository.ProtoMessage"></a>
+### func \(\*PackageRepository\) ProtoMessage
+
+```go
+func (*PackageRepository) ProtoMessage()
+```
+
+
+
+<a name="PackageRepository.ProtoReflect"></a>
+### func \(\*PackageRepository\) ProtoReflect
+
+```go
+func (x *PackageRepository) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PackageRepository.Reset"></a>
+### func \(\*PackageRepository\) Reset
+
+```go
+func (x *PackageRepository) Reset()
+```
+
+
+
+<a name="PackageRepository.String"></a>
+### func \(\*PackageRepository\) String
+
+```go
+func (x *PackageRepository) String() string
+```
+
+
+
+<a name="PackageServiceClient"></a>
+## type PackageServiceClient
+
+PackageServiceClient is the client API for PackageService service.
+
+For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+
+```go
+type PackageServiceClient interface {
+    // Declare a new Package.
+    CreatePackage(ctx context.Context, in *CreatePackageRequest, opts ...grpc.CallOption) (*CreatePackageResponse, error)
+    // Fetch a Package CR by name.
+    GetPackage(ctx context.Context, in *GetPackageRequest, opts ...grpc.CallOption) (*GetPackageResponse, error)
+    // Full replace of a Package spec.
+    UpdatePackage(ctx context.Context, in *UpdatePackageRequest, opts ...grpc.CallOption) (*UpdatePackageResponse, error)
+    // Partial update via JSON merge patch RFC 7396.
+    PatchPackage(ctx context.Context, in *PatchPackageRequest, opts ...grpc.CallOption) (*PatchPackageResponse, error)
+    // List Package CRs with optional phase/enabled/name filter and paging.
+    ListPackages(ctx context.Context, in *ListPackagesRequest, opts ...grpc.CallOption) (*ListPackagesResponse, error)
+    // Delete a Package CR and its owned reconciliation sources.
+    DeletePackage(ctx context.Context, in *DeletePackageRequest, opts ...grpc.CallOption) (*DeletePackageResponse, error)
+    // Stream phase transitions for a Package CR.
+    // Streams indefinitely — packages have no terminal phase; close client-side.
+    WatchPackage(ctx context.Context, in *WatchPackageRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchPackageResponse], error)
+}
+```
+
+<a name="NewPackageServiceClient"></a>
+### func NewPackageServiceClient
+
+```go
+func NewPackageServiceClient(cc grpc.ClientConnInterface) PackageServiceClient
+```
+
+
+
+<a name="PackageServiceServer"></a>
+## type PackageServiceServer
+
+PackageServiceServer is the server API for PackageService service. All implementations must embed UnimplementedPackageServiceServer for forward compatibility.
+
+```go
+type PackageServiceServer interface {
+    // Declare a new Package.
+    CreatePackage(context.Context, *CreatePackageRequest) (*CreatePackageResponse, error)
+    // Fetch a Package CR by name.
+    GetPackage(context.Context, *GetPackageRequest) (*GetPackageResponse, error)
+    // Full replace of a Package spec.
+    UpdatePackage(context.Context, *UpdatePackageRequest) (*UpdatePackageResponse, error)
+    // Partial update via JSON merge patch RFC 7396.
+    PatchPackage(context.Context, *PatchPackageRequest) (*PatchPackageResponse, error)
+    // List Package CRs with optional phase/enabled/name filter and paging.
+    ListPackages(context.Context, *ListPackagesRequest) (*ListPackagesResponse, error)
+    // Delete a Package CR and its owned reconciliation sources.
+    DeletePackage(context.Context, *DeletePackageRequest) (*DeletePackageResponse, error)
+    // Stream phase transitions for a Package CR.
+    // Streams indefinitely — packages have no terminal phase; close client-side.
+    WatchPackage(*WatchPackageRequest, grpc.ServerStreamingServer[WatchPackageResponse]) error
+    // contains filtered or unexported methods
+}
+```
+
+<a name="PackageService_WatchPackageClient"></a>
+## type PackageService\_WatchPackageClient
+
+This type alias is provided for backwards compatibility with existing code that references the prior non\-generic stream type by name.
+
+```go
+type PackageService_WatchPackageClient = grpc.ServerStreamingClient[WatchPackageResponse]
+```
+
+<a name="PackageService_WatchPackageServer"></a>
+## type PackageService\_WatchPackageServer
+
+This type alias is provided for backwards compatibility with existing code that references the prior non\-generic stream type by name.
+
+```go
+type PackageService_WatchPackageServer = grpc.ServerStreamingServer[WatchPackageResponse]
+```
+
+<a name="PackageSpec"></a>
+## type PackageSpec
+
+
+
+```go
+type PackageSpec struct {
+
+    // Whether this package is enabled.
+    // Disabled packages are not reconciled but the CR is retained.
+    Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+    // Logical name of the package — may differ from metadata.name.
+    // e.g. for-kaniko-app
+    Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+    // Version identifier of the package contents.
+    // e.g. v1.2.3
+    Version string `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
+    // Package maintainers, for provenance and contact.
+    Maintainers []*Maintainer `protobuf:"bytes,4,rep,name=maintainers,proto3" json:"maintainers,omitempty"`
+    // Human-readable description of the package contents.
+    Description string `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+    // Source repository containing the package definitions.
+    Repository *PackageRepository `protobuf:"bytes,6,opt,name=repository,proto3" json:"repository,omitempty"`
+    // Enable diff preview (kapp) during reconciliation.
+    // Diff output is recorded in status for audit.
+    DiffEnabled bool `protobuf:"varint,7,opt,name=diff_enabled,json=diffEnabled,proto3" json:"diff_enabled,omitempty"`
+    // Repository where rendered/applied state is stored.
+    // The FluxCD reconciliation source of truth.
+    StateRepository *StateRepository `protobuf:"bytes,8,opt,name=state_repository,json=stateRepository,proto3" json:"state_repository,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PackageSpec.Descriptor"></a>
+### func \(\*PackageSpec\) Descriptor
+
+```go
+func (*PackageSpec) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PackageSpec.ProtoReflect.Descriptor instead.
+
+<a name="PackageSpec.GetDescription"></a>
+### func \(\*PackageSpec\) GetDescription
+
+```go
+func (x *PackageSpec) GetDescription() string
+```
+
+
+
+<a name="PackageSpec.GetDiffEnabled"></a>
+### func \(\*PackageSpec\) GetDiffEnabled
+
+```go
+func (x *PackageSpec) GetDiffEnabled() bool
+```
+
+
+
+<a name="PackageSpec.GetEnabled"></a>
+### func \(\*PackageSpec\) GetEnabled
+
+```go
+func (x *PackageSpec) GetEnabled() bool
+```
+
+
+
+<a name="PackageSpec.GetMaintainers"></a>
+### func \(\*PackageSpec\) GetMaintainers
+
+```go
+func (x *PackageSpec) GetMaintainers() []*Maintainer
+```
+
+
+
+<a name="PackageSpec.GetName"></a>
+### func \(\*PackageSpec\) GetName
+
+```go
+func (x *PackageSpec) GetName() string
+```
+
+
+
+<a name="PackageSpec.GetRepository"></a>
+### func \(\*PackageSpec\) GetRepository
+
+```go
+func (x *PackageSpec) GetRepository() *PackageRepository
+```
+
+
+
+<a name="PackageSpec.GetStateRepository"></a>
+### func \(\*PackageSpec\) GetStateRepository
+
+```go
+func (x *PackageSpec) GetStateRepository() *StateRepository
+```
+
+
+
+<a name="PackageSpec.GetVersion"></a>
+### func \(\*PackageSpec\) GetVersion
+
+```go
+func (x *PackageSpec) GetVersion() string
+```
+
+
+
+<a name="PackageSpec.ProtoMessage"></a>
+### func \(\*PackageSpec\) ProtoMessage
+
+```go
+func (*PackageSpec) ProtoMessage()
+```
+
+
+
+<a name="PackageSpec.ProtoReflect"></a>
+### func \(\*PackageSpec\) ProtoReflect
+
+```go
+func (x *PackageSpec) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PackageSpec.Reset"></a>
+### func \(\*PackageSpec\) Reset
+
+```go
+func (x *PackageSpec) Reset()
+```
+
+
+
+<a name="PackageSpec.String"></a>
+### func \(\*PackageSpec\) String
+
+```go
+func (x *PackageSpec) String() string
+```
+
+
+
+<a name="PackageState"></a>
+## type PackageState
+
+
+
+```go
+type PackageState struct {
+
+    // Repository the applied state was sourced from.
+    Repository string `protobuf:"bytes,1,opt,name=repository,proto3" json:"repository,omitempty"`
+    // Revision (commit SHA) of the applied state.
+    Revision string `protobuf:"bytes,2,opt,name=revision,proto3" json:"revision,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PackageState.Descriptor"></a>
+### func \(\*PackageState\) Descriptor
+
+```go
+func (*PackageState) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PackageState.ProtoReflect.Descriptor instead.
+
+<a name="PackageState.GetRepository"></a>
+### func \(\*PackageState\) GetRepository
+
+```go
+func (x *PackageState) GetRepository() string
+```
+
+
+
+<a name="PackageState.GetRevision"></a>
+### func \(\*PackageState\) GetRevision
+
+```go
+func (x *PackageState) GetRevision() string
+```
+
+
+
+<a name="PackageState.ProtoMessage"></a>
+### func \(\*PackageState\) ProtoMessage
+
+```go
+func (*PackageState) ProtoMessage()
+```
+
+
+
+<a name="PackageState.ProtoReflect"></a>
+### func \(\*PackageState\) ProtoReflect
+
+```go
+func (x *PackageState) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PackageState.Reset"></a>
+### func \(\*PackageState\) Reset
+
+```go
+func (x *PackageState) Reset()
+```
+
+
+
+<a name="PackageState.String"></a>
+### func \(\*PackageState\) String
+
+```go
+func (x *PackageState) String() string
+```
+
+
+
+<a name="PackageStatus"></a>
+## type PackageStatus
+
+
+
+```go
+type PackageStatus struct {
+
+    // Current lifecycle phase. Set by the controller.
+    Phase *v1.PackagePhase `protobuf:"bytes,1,opt,name=phase,proto3" json:"phase,omitempty"`
+    // Human-readable status message. Populated on failure.
+    Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+    // When reconciliation was last attempted.
+    LastReconciledAt *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=last_reconciled_at,json=lastReconciledAt,proto3" json:"last_reconciled_at,omitempty"`
+    // Whether the last diff resulted in applied changes.
+    DiffApplied bool `protobuf:"varint,4,opt,name=diff_applied,json=diffApplied,proto3" json:"diff_applied,omitempty"`
+    // Raw diff output from the last reconciliation, for audit and debug.
+    DiffOutput string `protobuf:"bytes,5,opt,name=diff_output,json=diffOutput,proto3" json:"diff_output,omitempty"`
+    // Applied source-of-truth state.
+    State *PackageState `protobuf:"bytes,6,opt,name=state,proto3" json:"state,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PackageStatus.Descriptor"></a>
+### func \(\*PackageStatus\) Descriptor
+
+```go
+func (*PackageStatus) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PackageStatus.ProtoReflect.Descriptor instead.
+
+<a name="PackageStatus.GetDiffApplied"></a>
+### func \(\*PackageStatus\) GetDiffApplied
+
+```go
+func (x *PackageStatus) GetDiffApplied() bool
+```
+
+
+
+<a name="PackageStatus.GetDiffOutput"></a>
+### func \(\*PackageStatus\) GetDiffOutput
+
+```go
+func (x *PackageStatus) GetDiffOutput() string
+```
+
+
+
+<a name="PackageStatus.GetLastReconciledAt"></a>
+### func \(\*PackageStatus\) GetLastReconciledAt
+
+```go
+func (x *PackageStatus) GetLastReconciledAt() *timestamppb.Timestamp
+```
+
+
+
+<a name="PackageStatus.GetMessage"></a>
+### func \(\*PackageStatus\) GetMessage
+
+```go
+func (x *PackageStatus) GetMessage() string
+```
+
+
+
+<a name="PackageStatus.GetPhase"></a>
+### func \(\*PackageStatus\) GetPhase
+
+```go
+func (x *PackageStatus) GetPhase() *v1.PackagePhase
+```
+
+
+
+<a name="PackageStatus.GetState"></a>
+### func \(\*PackageStatus\) GetState
+
+```go
+func (x *PackageStatus) GetState() *PackageState
+```
+
+
+
+<a name="PackageStatus.ProtoMessage"></a>
+### func \(\*PackageStatus\) ProtoMessage
+
+```go
+func (*PackageStatus) ProtoMessage()
+```
+
+
+
+<a name="PackageStatus.ProtoReflect"></a>
+### func \(\*PackageStatus\) ProtoReflect
+
+```go
+func (x *PackageStatus) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PackageStatus.Reset"></a>
+### func \(\*PackageStatus\) Reset
+
+```go
+func (x *PackageStatus) Reset()
+```
+
+
+
+<a name="PackageStatus.String"></a>
+### func \(\*PackageStatus\) String
+
+```go
+func (x *PackageStatus) String() string
+```
+
+
+
+<a name="Param"></a>
+## type Param
+
+
+
+```go
+type Param struct {
+
+    // Parameter name — must match a param declared in the BuildStrategy.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // Parameter value — overrides strategy defaults.
+    Value string `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="Param.Descriptor"></a>
+### func \(\*Param\) Descriptor
+
+```go
+func (*Param) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use Param.ProtoReflect.Descriptor instead.
+
+<a name="Param.GetName"></a>
+### func \(\*Param\) GetName
+
+```go
+func (x *Param) GetName() string
+```
+
+
+
+<a name="Param.GetValue"></a>
+### func \(\*Param\) GetValue
+
+```go
+func (x *Param) GetValue() string
+```
+
+
+
+<a name="Param.ProtoMessage"></a>
+### func \(\*Param\) ProtoMessage
+
+```go
+func (*Param) ProtoMessage()
+```
+
+
+
+<a name="Param.ProtoReflect"></a>
+### func \(\*Param\) ProtoReflect
+
+```go
+func (x *Param) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="Param.Reset"></a>
+### func \(\*Param\) Reset
+
+```go
+func (x *Param) Reset()
+```
+
+
+
+<a name="Param.String"></a>
+### func \(\*Param\) String
+
+```go
+func (x *Param) String() string
+```
+
+
+
+<a name="PatchBuildRequest"></a>
+## type PatchBuildRequest
+
+PatchBuild — partial update using JSON merge patch RFC 7396. Only specified fields are updated — others left unchanged.
+
+```go
+type PatchBuildRequest struct {
+
+    // Name of the Build CR to patch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // JSON merge patch document — RFC 7396.
+    // e.g. {"spec":{"policy":{"retry":{"max_attempts":5}}}}
+    Patch string `protobuf:"bytes,2,opt,name=patch,proto3" json:"patch,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PatchBuildRequest.Descriptor"></a>
+### func \(\*PatchBuildRequest\) Descriptor
+
+```go
+func (*PatchBuildRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PatchBuildRequest.ProtoReflect.Descriptor instead.
+
+<a name="PatchBuildRequest.GetName"></a>
+### func \(\*PatchBuildRequest\) GetName
+
+```go
+func (x *PatchBuildRequest) GetName() string
+```
+
+
+
+<a name="PatchBuildRequest.GetPatch"></a>
+### func \(\*PatchBuildRequest\) GetPatch
+
+```go
+func (x *PatchBuildRequest) GetPatch() string
+```
+
+
+
+<a name="PatchBuildRequest.ProtoMessage"></a>
+### func \(\*PatchBuildRequest\) ProtoMessage
+
+```go
+func (*PatchBuildRequest) ProtoMessage()
+```
+
+
+
+<a name="PatchBuildRequest.ProtoReflect"></a>
+### func \(\*PatchBuildRequest\) ProtoReflect
+
+```go
+func (x *PatchBuildRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PatchBuildRequest.Reset"></a>
+### func \(\*PatchBuildRequest\) Reset
+
+```go
+func (x *PatchBuildRequest) Reset()
+```
+
+
+
+<a name="PatchBuildRequest.String"></a>
+### func \(\*PatchBuildRequest\) String
+
+```go
+func (x *PatchBuildRequest) String() string
+```
+
+
+
+<a name="PatchBuildResponse"></a>
+## type PatchBuildResponse
+
+
+
+```go
+type PatchBuildResponse struct {
+
+    // The patched Build as observed by the controller.
+    Build *Build `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PatchBuildResponse.Descriptor"></a>
+### func \(\*PatchBuildResponse\) Descriptor
+
+```go
+func (*PatchBuildResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PatchBuildResponse.ProtoReflect.Descriptor instead.
+
+<a name="PatchBuildResponse.GetBuild"></a>
+### func \(\*PatchBuildResponse\) GetBuild
+
+```go
+func (x *PatchBuildResponse) GetBuild() *Build
+```
+
+
+
+<a name="PatchBuildResponse.ProtoMessage"></a>
+### func \(\*PatchBuildResponse\) ProtoMessage
+
+```go
+func (*PatchBuildResponse) ProtoMessage()
+```
+
+
+
+<a name="PatchBuildResponse.ProtoReflect"></a>
+### func \(\*PatchBuildResponse\) ProtoReflect
+
+```go
+func (x *PatchBuildResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PatchBuildResponse.Reset"></a>
+### func \(\*PatchBuildResponse\) Reset
+
+```go
+func (x *PatchBuildResponse) Reset()
+```
+
+
+
+<a name="PatchBuildResponse.String"></a>
+### func \(\*PatchBuildResponse\) String
+
+```go
+func (x *PatchBuildResponse) String() string
+```
+
+
+
+<a name="PatchDeploymentRequest"></a>
+## type PatchDeploymentRequest
+
+PatchDeployment — partial update using JSON merge patch RFC 7396. Only specified fields are updated — others left unchanged.
+
+```go
+type PatchDeploymentRequest struct {
+
+    // Name of the Deployment CR to patch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // JSON merge patch document — RFC 7396.
+    // e.g. {"spec":{"image_automation":true}}
+    Patch string `protobuf:"bytes,2,opt,name=patch,proto3" json:"patch,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PatchDeploymentRequest.Descriptor"></a>
+### func \(\*PatchDeploymentRequest\) Descriptor
+
+```go
+func (*PatchDeploymentRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PatchDeploymentRequest.ProtoReflect.Descriptor instead.
+
+<a name="PatchDeploymentRequest.GetName"></a>
+### func \(\*PatchDeploymentRequest\) GetName
+
+```go
+func (x *PatchDeploymentRequest) GetName() string
+```
+
+
+
+<a name="PatchDeploymentRequest.GetPatch"></a>
+### func \(\*PatchDeploymentRequest\) GetPatch
+
+```go
+func (x *PatchDeploymentRequest) GetPatch() string
+```
+
+
+
+<a name="PatchDeploymentRequest.ProtoMessage"></a>
+### func \(\*PatchDeploymentRequest\) ProtoMessage
+
+```go
+func (*PatchDeploymentRequest) ProtoMessage()
+```
+
+
+
+<a name="PatchDeploymentRequest.ProtoReflect"></a>
+### func \(\*PatchDeploymentRequest\) ProtoReflect
+
+```go
+func (x *PatchDeploymentRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PatchDeploymentRequest.Reset"></a>
+### func \(\*PatchDeploymentRequest\) Reset
+
+```go
+func (x *PatchDeploymentRequest) Reset()
+```
+
+
+
+<a name="PatchDeploymentRequest.String"></a>
+### func \(\*PatchDeploymentRequest\) String
+
+```go
+func (x *PatchDeploymentRequest) String() string
+```
+
+
+
+<a name="PatchDeploymentResponse"></a>
+## type PatchDeploymentResponse
+
+
+
+```go
+type PatchDeploymentResponse struct {
+
+    // The patched Deployment as observed by the controller.
+    Deployment *Deployment `protobuf:"bytes,1,opt,name=deployment,proto3" json:"deployment,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PatchDeploymentResponse.Descriptor"></a>
+### func \(\*PatchDeploymentResponse\) Descriptor
+
+```go
+func (*PatchDeploymentResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PatchDeploymentResponse.ProtoReflect.Descriptor instead.
+
+<a name="PatchDeploymentResponse.GetDeployment"></a>
+### func \(\*PatchDeploymentResponse\) GetDeployment
+
+```go
+func (x *PatchDeploymentResponse) GetDeployment() *Deployment
+```
+
+
+
+<a name="PatchDeploymentResponse.ProtoMessage"></a>
+### func \(\*PatchDeploymentResponse\) ProtoMessage
+
+```go
+func (*PatchDeploymentResponse) ProtoMessage()
+```
+
+
+
+<a name="PatchDeploymentResponse.ProtoReflect"></a>
+### func \(\*PatchDeploymentResponse\) ProtoReflect
+
+```go
+func (x *PatchDeploymentResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PatchDeploymentResponse.Reset"></a>
+### func \(\*PatchDeploymentResponse\) Reset
+
+```go
+func (x *PatchDeploymentResponse) Reset()
+```
+
+
+
+<a name="PatchDeploymentResponse.String"></a>
+### func \(\*PatchDeploymentResponse\) String
+
+```go
+func (x *PatchDeploymentResponse) String() string
+```
+
+
+
+<a name="PatchEnvironmentRequest"></a>
+## type PatchEnvironmentRequest
+
+
+
+```go
+type PatchEnvironmentRequest struct {
+
+    // Name of the Environment CR to patch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // JSON merge patch document — RFC 7396.
+    // e.g. {"spec":{"version":"v1.3.0"}}
+    Patch string `protobuf:"bytes,2,opt,name=patch,proto3" json:"patch,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PatchEnvironmentRequest.Descriptor"></a>
+### func \(\*PatchEnvironmentRequest\) Descriptor
+
+```go
+func (*PatchEnvironmentRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PatchEnvironmentRequest.ProtoReflect.Descriptor instead.
+
+<a name="PatchEnvironmentRequest.GetName"></a>
+### func \(\*PatchEnvironmentRequest\) GetName
+
+```go
+func (x *PatchEnvironmentRequest) GetName() string
+```
+
+
+
+<a name="PatchEnvironmentRequest.GetPatch"></a>
+### func \(\*PatchEnvironmentRequest\) GetPatch
+
+```go
+func (x *PatchEnvironmentRequest) GetPatch() string
+```
+
+
+
+<a name="PatchEnvironmentRequest.ProtoMessage"></a>
+### func \(\*PatchEnvironmentRequest\) ProtoMessage
+
+```go
+func (*PatchEnvironmentRequest) ProtoMessage()
+```
+
+
+
+<a name="PatchEnvironmentRequest.ProtoReflect"></a>
+### func \(\*PatchEnvironmentRequest\) ProtoReflect
+
+```go
+func (x *PatchEnvironmentRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PatchEnvironmentRequest.Reset"></a>
+### func \(\*PatchEnvironmentRequest\) Reset
+
+```go
+func (x *PatchEnvironmentRequest) Reset()
+```
+
+
+
+<a name="PatchEnvironmentRequest.String"></a>
+### func \(\*PatchEnvironmentRequest\) String
+
+```go
+func (x *PatchEnvironmentRequest) String() string
+```
+
+
+
+<a name="PatchEnvironmentResponse"></a>
+## type PatchEnvironmentResponse
+
+
+
+```go
+type PatchEnvironmentResponse struct {
+
+    // The patched Environment as observed by the controller.
+    Environment *Environment `protobuf:"bytes,1,opt,name=environment,proto3" json:"environment,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PatchEnvironmentResponse.Descriptor"></a>
+### func \(\*PatchEnvironmentResponse\) Descriptor
+
+```go
+func (*PatchEnvironmentResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PatchEnvironmentResponse.ProtoReflect.Descriptor instead.
+
+<a name="PatchEnvironmentResponse.GetEnvironment"></a>
+### func \(\*PatchEnvironmentResponse\) GetEnvironment
+
+```go
+func (x *PatchEnvironmentResponse) GetEnvironment() *Environment
+```
+
+
+
+<a name="PatchEnvironmentResponse.ProtoMessage"></a>
+### func \(\*PatchEnvironmentResponse\) ProtoMessage
+
+```go
+func (*PatchEnvironmentResponse) ProtoMessage()
+```
+
+
+
+<a name="PatchEnvironmentResponse.ProtoReflect"></a>
+### func \(\*PatchEnvironmentResponse\) ProtoReflect
+
+```go
+func (x *PatchEnvironmentResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PatchEnvironmentResponse.Reset"></a>
+### func \(\*PatchEnvironmentResponse\) Reset
+
+```go
+func (x *PatchEnvironmentResponse) Reset()
+```
+
+
+
+<a name="PatchEnvironmentResponse.String"></a>
+### func \(\*PatchEnvironmentResponse\) String
+
+```go
+func (x *PatchEnvironmentResponse) String() string
+```
+
+
+
+<a name="PatchPackageRequest"></a>
+## type PatchPackageRequest
+
+PatchPackage — partial update using JSON merge patch RFC 7396. Only specified fields are updated — others left unchanged.
+
+```go
+type PatchPackageRequest struct {
+
+    // Name of the Package CR to patch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // JSON merge patch document — RFC 7396.
+    // e.g. {"spec":{"version":"v1.3.0"}}
+    Patch string `protobuf:"bytes,2,opt,name=patch,proto3" json:"patch,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PatchPackageRequest.Descriptor"></a>
+### func \(\*PatchPackageRequest\) Descriptor
+
+```go
+func (*PatchPackageRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PatchPackageRequest.ProtoReflect.Descriptor instead.
+
+<a name="PatchPackageRequest.GetName"></a>
+### func \(\*PatchPackageRequest\) GetName
+
+```go
+func (x *PatchPackageRequest) GetName() string
+```
+
+
+
+<a name="PatchPackageRequest.GetPatch"></a>
+### func \(\*PatchPackageRequest\) GetPatch
+
+```go
+func (x *PatchPackageRequest) GetPatch() string
+```
+
+
+
+<a name="PatchPackageRequest.ProtoMessage"></a>
+### func \(\*PatchPackageRequest\) ProtoMessage
+
+```go
+func (*PatchPackageRequest) ProtoMessage()
+```
+
+
+
+<a name="PatchPackageRequest.ProtoReflect"></a>
+### func \(\*PatchPackageRequest\) ProtoReflect
+
+```go
+func (x *PatchPackageRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PatchPackageRequest.Reset"></a>
+### func \(\*PatchPackageRequest\) Reset
+
+```go
+func (x *PatchPackageRequest) Reset()
+```
+
+
+
+<a name="PatchPackageRequest.String"></a>
+### func \(\*PatchPackageRequest\) String
+
+```go
+func (x *PatchPackageRequest) String() string
+```
+
+
+
+<a name="PatchPackageResponse"></a>
+## type PatchPackageResponse
+
+
+
+```go
+type PatchPackageResponse struct {
+
+    // The patched Package as observed by the controller.
+    Package *Package `protobuf:"bytes,1,opt,name=package,proto3" json:"package,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PatchPackageResponse.Descriptor"></a>
+### func \(\*PatchPackageResponse\) Descriptor
+
+```go
+func (*PatchPackageResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PatchPackageResponse.ProtoReflect.Descriptor instead.
+
+<a name="PatchPackageResponse.GetPackage"></a>
+### func \(\*PatchPackageResponse\) GetPackage
+
+```go
+func (x *PatchPackageResponse) GetPackage() *Package
+```
+
+
+
+<a name="PatchPackageResponse.ProtoMessage"></a>
+### func \(\*PatchPackageResponse\) ProtoMessage
+
+```go
+func (*PatchPackageResponse) ProtoMessage()
+```
+
+
+
+<a name="PatchPackageResponse.ProtoReflect"></a>
+### func \(\*PatchPackageResponse\) ProtoReflect
+
+```go
+func (x *PatchPackageResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PatchPackageResponse.Reset"></a>
+### func \(\*PatchPackageResponse\) Reset
+
+```go
+func (x *PatchPackageResponse) Reset()
+```
+
+
+
+<a name="PatchPackageResponse.String"></a>
+### func \(\*PatchPackageResponse\) String
+
+```go
+func (x *PatchPackageResponse) String() string
+```
+
+
+
+<a name="PatchServiceUnitRequest"></a>
+## type PatchServiceUnitRequest
+
+PatchServiceUnit — partial update using JSON merge patch RFC 7396. Only specified fields are updated — others left unchanged.
+
+```go
+type PatchServiceUnitRequest struct {
+
+    // Name of the ServiceUnit CR to patch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // JSON merge patch document — RFC 7396.
+    // e.g. {"spec":{"size":3}}
+    Patch string `protobuf:"bytes,2,opt,name=patch,proto3" json:"patch,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PatchServiceUnitRequest.Descriptor"></a>
+### func \(\*PatchServiceUnitRequest\) Descriptor
+
+```go
+func (*PatchServiceUnitRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PatchServiceUnitRequest.ProtoReflect.Descriptor instead.
+
+<a name="PatchServiceUnitRequest.GetName"></a>
+### func \(\*PatchServiceUnitRequest\) GetName
+
+```go
+func (x *PatchServiceUnitRequest) GetName() string
+```
+
+
+
+<a name="PatchServiceUnitRequest.GetPatch"></a>
+### func \(\*PatchServiceUnitRequest\) GetPatch
+
+```go
+func (x *PatchServiceUnitRequest) GetPatch() string
+```
+
+
+
+<a name="PatchServiceUnitRequest.ProtoMessage"></a>
+### func \(\*PatchServiceUnitRequest\) ProtoMessage
+
+```go
+func (*PatchServiceUnitRequest) ProtoMessage()
+```
+
+
+
+<a name="PatchServiceUnitRequest.ProtoReflect"></a>
+### func \(\*PatchServiceUnitRequest\) ProtoReflect
+
+```go
+func (x *PatchServiceUnitRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PatchServiceUnitRequest.Reset"></a>
+### func \(\*PatchServiceUnitRequest\) Reset
+
+```go
+func (x *PatchServiceUnitRequest) Reset()
+```
+
+
+
+<a name="PatchServiceUnitRequest.String"></a>
+### func \(\*PatchServiceUnitRequest\) String
+
+```go
+func (x *PatchServiceUnitRequest) String() string
+```
+
+
+
+<a name="PatchServiceUnitResponse"></a>
+## type PatchServiceUnitResponse
+
+
+
+```go
+type PatchServiceUnitResponse struct {
+
+    // The patched ServiceUnit as observed by the controller.
+    ServiceUnit *ServiceUnit `protobuf:"bytes,1,opt,name=service_unit,json=serviceUnit,proto3" json:"service_unit,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="PatchServiceUnitResponse.Descriptor"></a>
+### func \(\*PatchServiceUnitResponse\) Descriptor
+
+```go
+func (*PatchServiceUnitResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use PatchServiceUnitResponse.ProtoReflect.Descriptor instead.
+
+<a name="PatchServiceUnitResponse.GetServiceUnit"></a>
+### func \(\*PatchServiceUnitResponse\) GetServiceUnit
+
+```go
+func (x *PatchServiceUnitResponse) GetServiceUnit() *ServiceUnit
+```
+
+
+
+<a name="PatchServiceUnitResponse.ProtoMessage"></a>
+### func \(\*PatchServiceUnitResponse\) ProtoMessage
+
+```go
+func (*PatchServiceUnitResponse) ProtoMessage()
+```
+
+
+
+<a name="PatchServiceUnitResponse.ProtoReflect"></a>
+### func \(\*PatchServiceUnitResponse\) ProtoReflect
+
+```go
+func (x *PatchServiceUnitResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="PatchServiceUnitResponse.Reset"></a>
+### func \(\*PatchServiceUnitResponse\) Reset
+
+```go
+func (x *PatchServiceUnitResponse) Reset()
+```
+
+
+
+<a name="PatchServiceUnitResponse.String"></a>
+### func \(\*PatchServiceUnitResponse\) String
+
+```go
+func (x *PatchServiceUnitResponse) String() string
+```
+
+
+
+<a name="RetryPolicy"></a>
+## type RetryPolicy
+
+
+
+```go
+type RetryPolicy struct {
+
+    // Whether to automatically retry a failed BuildRun.
+    OnFailure bool `protobuf:"varint,1,opt,name=on_failure,json=onFailure,proto3" json:"on_failure,omitempty"`
+    // Maximum number of retry attempts before marking the Build failed.
+    MaxAttempts uint32 `protobuf:"varint,2,opt,name=max_attempts,json=maxAttempts,proto3" json:"max_attempts,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="RetryPolicy.Descriptor"></a>
+### func \(\*RetryPolicy\) Descriptor
+
+```go
+func (*RetryPolicy) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use RetryPolicy.ProtoReflect.Descriptor instead.
+
+<a name="RetryPolicy.GetMaxAttempts"></a>
+### func \(\*RetryPolicy\) GetMaxAttempts
+
+```go
+func (x *RetryPolicy) GetMaxAttempts() uint32
+```
+
+
+
+<a name="RetryPolicy.GetOnFailure"></a>
+### func \(\*RetryPolicy\) GetOnFailure
+
+```go
+func (x *RetryPolicy) GetOnFailure() bool
+```
+
+
+
+<a name="RetryPolicy.ProtoMessage"></a>
+### func \(\*RetryPolicy\) ProtoMessage
+
+```go
+func (*RetryPolicy) ProtoMessage()
+```
+
+
+
+<a name="RetryPolicy.ProtoReflect"></a>
+### func \(\*RetryPolicy\) ProtoReflect
+
+```go
+func (x *RetryPolicy) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="RetryPolicy.Reset"></a>
+### func \(\*RetryPolicy\) Reset
+
+```go
+func (x *RetryPolicy) Reset()
+```
+
+
+
+<a name="RetryPolicy.String"></a>
+### func \(\*RetryPolicy\) String
+
+```go
+func (x *RetryPolicy) String() string
+```
+
+
+
+<a name="RouteReference"></a>
+## type RouteReference
+
+
+
+```go
+type RouteReference struct {
+
+    // Name of the Route CR. Resolved in the same namespace.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="RouteReference.Descriptor"></a>
+### func \(\*RouteReference\) Descriptor
+
+```go
+func (*RouteReference) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use RouteReference.ProtoReflect.Descriptor instead.
+
+<a name="RouteReference.GetName"></a>
+### func \(\*RouteReference\) GetName
+
+```go
+func (x *RouteReference) GetName() string
+```
+
+
+
+<a name="RouteReference.ProtoMessage"></a>
+### func \(\*RouteReference\) ProtoMessage
+
+```go
+func (*RouteReference) ProtoMessage()
+```
+
+
+
+<a name="RouteReference.ProtoReflect"></a>
+### func \(\*RouteReference\) ProtoReflect
+
+```go
+func (x *RouteReference) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="RouteReference.Reset"></a>
+### func \(\*RouteReference\) Reset
+
+```go
+func (x *RouteReference) Reset()
+```
+
+
+
+<a name="RouteReference.String"></a>
+### func \(\*RouteReference\) String
+
+```go
+func (x *RouteReference) String() string
+```
+
+
+
+<a name="ServiceAccount"></a>
+## type ServiceAccount
+
+
+
+```go
+type ServiceAccount struct {
+
+    // Name of the Kubernetes ServiceAccount.
+    // auto-generated as build-bot if not specified.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // Name of the Kubernetes Secret containing registry credentials.
+    // Sourced from the environment SecretStore via ExternalSecret.
+    // Must be of type kubernetes.io/dockerconfigjson.
+    Secret string `protobuf:"bytes,2,opt,name=secret,proto3" json:"secret,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ServiceAccount.Descriptor"></a>
+### func \(\*ServiceAccount\) Descriptor
+
+```go
+func (*ServiceAccount) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ServiceAccount.ProtoReflect.Descriptor instead.
+
+<a name="ServiceAccount.GetName"></a>
+### func \(\*ServiceAccount\) GetName
+
+```go
+func (x *ServiceAccount) GetName() string
+```
+
+
+
+<a name="ServiceAccount.GetSecret"></a>
+### func \(\*ServiceAccount\) GetSecret
+
+```go
+func (x *ServiceAccount) GetSecret() string
+```
+
+
+
+<a name="ServiceAccount.ProtoMessage"></a>
+### func \(\*ServiceAccount\) ProtoMessage
+
+```go
+func (*ServiceAccount) ProtoMessage()
+```
+
+
+
+<a name="ServiceAccount.ProtoReflect"></a>
+### func \(\*ServiceAccount\) ProtoReflect
+
+```go
+func (x *ServiceAccount) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ServiceAccount.Reset"></a>
+### func \(\*ServiceAccount\) Reset
+
+```go
+func (x *ServiceAccount) Reset()
+```
+
+
+
+<a name="ServiceAccount.String"></a>
+### func \(\*ServiceAccount\) String
+
+```go
+func (x *ServiceAccount) String() string
+```
+
+
+
+<a name="ServiceUnit"></a>
+## type ServiceUnit
+
+
+
+```go
+type ServiceUnit struct {
+
+    // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
+    Metadata *v1.Metadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
+    // Desired state declared by the operator.
+    Spec *ServiceUnitSpec `protobuf:"bytes,2,opt,name=spec,proto3" json:"spec,omitempty"`
+    // Observed state set by the controller. Never manually edited.
+    Status *ServiceUnitStatus `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ServiceUnit.Descriptor"></a>
+### func \(\*ServiceUnit\) Descriptor
+
+```go
+func (*ServiceUnit) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ServiceUnit.ProtoReflect.Descriptor instead.
+
+<a name="ServiceUnit.GetMetadata"></a>
+### func \(\*ServiceUnit\) GetMetadata
+
+```go
+func (x *ServiceUnit) GetMetadata() *v1.Metadata
+```
+
+
+
+<a name="ServiceUnit.GetSpec"></a>
+### func \(\*ServiceUnit\) GetSpec
+
+```go
+func (x *ServiceUnit) GetSpec() *ServiceUnitSpec
+```
+
+
+
+<a name="ServiceUnit.GetStatus"></a>
+### func \(\*ServiceUnit\) GetStatus
+
+```go
+func (x *ServiceUnit) GetStatus() *ServiceUnitStatus
+```
+
+
+
+<a name="ServiceUnit.ProtoMessage"></a>
+### func \(\*ServiceUnit\) ProtoMessage
+
+```go
+func (*ServiceUnit) ProtoMessage()
+```
+
+
+
+<a name="ServiceUnit.ProtoReflect"></a>
+### func \(\*ServiceUnit\) ProtoReflect
+
+```go
+func (x *ServiceUnit) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ServiceUnit.Reset"></a>
+### func \(\*ServiceUnit\) Reset
+
+```go
+func (x *ServiceUnit) Reset()
+```
+
+
+
+<a name="ServiceUnit.String"></a>
+### func \(\*ServiceUnit\) String
+
+```go
+func (x *ServiceUnit) String() string
+```
+
+
+
+<a name="ServiceUnitCondition"></a>
+## type ServiceUnitCondition
+
+
+
+```go
+type ServiceUnitCondition struct {
+
+    // Condition type. e.g. ImageResolved, WorkloadReady, RouteBound
+    Type string `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
+    // Condition status: True, False, or Unknown.
+    Status string `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+    // Machine-readable reason for the last transition.
+    Reason string `protobuf:"bytes,3,opt,name=reason,proto3" json:"reason,omitempty"`
+    // Human-readable detail for the last transition.
+    Message string `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
+    // When the condition last changed status.
+    LastTransitionTime *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=last_transition_time,json=lastTransitionTime,proto3" json:"last_transition_time,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ServiceUnitCondition.Descriptor"></a>
+### func \(\*ServiceUnitCondition\) Descriptor
+
+```go
+func (*ServiceUnitCondition) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ServiceUnitCondition.ProtoReflect.Descriptor instead.
+
+<a name="ServiceUnitCondition.GetLastTransitionTime"></a>
+### func \(\*ServiceUnitCondition\) GetLastTransitionTime
+
+```go
+func (x *ServiceUnitCondition) GetLastTransitionTime() *timestamppb.Timestamp
+```
+
+
+
+<a name="ServiceUnitCondition.GetMessage"></a>
+### func \(\*ServiceUnitCondition\) GetMessage
+
+```go
+func (x *ServiceUnitCondition) GetMessage() string
+```
+
+
+
+<a name="ServiceUnitCondition.GetReason"></a>
+### func \(\*ServiceUnitCondition\) GetReason
+
+```go
+func (x *ServiceUnitCondition) GetReason() string
+```
+
+
+
+<a name="ServiceUnitCondition.GetStatus"></a>
+### func \(\*ServiceUnitCondition\) GetStatus
+
+```go
+func (x *ServiceUnitCondition) GetStatus() string
+```
+
+
+
+<a name="ServiceUnitCondition.GetType"></a>
+### func \(\*ServiceUnitCondition\) GetType
+
+```go
+func (x *ServiceUnitCondition) GetType() string
+```
+
+
+
+<a name="ServiceUnitCondition.ProtoMessage"></a>
+### func \(\*ServiceUnitCondition\) ProtoMessage
+
+```go
+func (*ServiceUnitCondition) ProtoMessage()
+```
+
+
+
+<a name="ServiceUnitCondition.ProtoReflect"></a>
+### func \(\*ServiceUnitCondition\) ProtoReflect
+
+```go
+func (x *ServiceUnitCondition) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ServiceUnitCondition.Reset"></a>
+### func \(\*ServiceUnitCondition\) Reset
+
+```go
+func (x *ServiceUnitCondition) Reset()
+```
+
+
+
+<a name="ServiceUnitCondition.String"></a>
+### func \(\*ServiceUnitCondition\) String
+
+```go
+func (x *ServiceUnitCondition) String() string
+```
+
+
+
+<a name="ServiceUnitDeploymentStatus"></a>
+## type ServiceUnitDeploymentStatus
+
+
+
+```go
+type ServiceUnitDeploymentStatus struct {
+
+    // Name of the ServiceUnit CR.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // Current deployment phase for this unit.
+    Phase *v1.DeploymentPhase `protobuf:"bytes,2,opt,name=phase,proto3" json:"phase,omitempty"`
+    // Fully qualified image that was deployed, including digest when known.
+    Image string `protobuf:"bytes,3,opt,name=image,proto3" json:"image,omitempty"`
+    // Runtime backend used for this unit.
+    Runtime *v1.DeploymentRuntime `protobuf:"bytes,4,opt,name=runtime,proto3" json:"runtime,omitempty"`
+    // Human-readable status message.
+    Message string `protobuf:"bytes,5,opt,name=message,proto3" json:"message,omitempty"`
+    // Error detail when phase is FAILED.
+    Error string `protobuf:"bytes,6,opt,name=error,proto3" json:"error,omitempty"`
+    // When this unit last changed phase.
+    LastTransitionTime *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=last_transition_time,json=lastTransitionTime,proto3" json:"last_transition_time,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ServiceUnitDeploymentStatus.Descriptor"></a>
+### func \(\*ServiceUnitDeploymentStatus\) Descriptor
+
+```go
+func (*ServiceUnitDeploymentStatus) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ServiceUnitDeploymentStatus.ProtoReflect.Descriptor instead.
+
+<a name="ServiceUnitDeploymentStatus.GetError"></a>
+### func \(\*ServiceUnitDeploymentStatus\) GetError
+
+```go
+func (x *ServiceUnitDeploymentStatus) GetError() string
+```
+
+
+
+<a name="ServiceUnitDeploymentStatus.GetImage"></a>
+### func \(\*ServiceUnitDeploymentStatus\) GetImage
+
+```go
+func (x *ServiceUnitDeploymentStatus) GetImage() string
+```
+
+
+
+<a name="ServiceUnitDeploymentStatus.GetLastTransitionTime"></a>
+### func \(\*ServiceUnitDeploymentStatus\) GetLastTransitionTime
+
+```go
+func (x *ServiceUnitDeploymentStatus) GetLastTransitionTime() *timestamppb.Timestamp
+```
+
+
+
+<a name="ServiceUnitDeploymentStatus.GetMessage"></a>
+### func \(\*ServiceUnitDeploymentStatus\) GetMessage
+
+```go
+func (x *ServiceUnitDeploymentStatus) GetMessage() string
+```
+
+
+
+<a name="ServiceUnitDeploymentStatus.GetName"></a>
+### func \(\*ServiceUnitDeploymentStatus\) GetName
+
+```go
+func (x *ServiceUnitDeploymentStatus) GetName() string
+```
+
+
+
+<a name="ServiceUnitDeploymentStatus.GetPhase"></a>
+### func \(\*ServiceUnitDeploymentStatus\) GetPhase
+
+```go
+func (x *ServiceUnitDeploymentStatus) GetPhase() *v1.DeploymentPhase
+```
+
+
+
+<a name="ServiceUnitDeploymentStatus.GetRuntime"></a>
+### func \(\*ServiceUnitDeploymentStatus\) GetRuntime
+
+```go
+func (x *ServiceUnitDeploymentStatus) GetRuntime() *v1.DeploymentRuntime
+```
+
+
+
+<a name="ServiceUnitDeploymentStatus.ProtoMessage"></a>
+### func \(\*ServiceUnitDeploymentStatus\) ProtoMessage
+
+```go
+func (*ServiceUnitDeploymentStatus) ProtoMessage()
+```
+
+
+
+<a name="ServiceUnitDeploymentStatus.ProtoReflect"></a>
+### func \(\*ServiceUnitDeploymentStatus\) ProtoReflect
+
+```go
+func (x *ServiceUnitDeploymentStatus) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ServiceUnitDeploymentStatus.Reset"></a>
+### func \(\*ServiceUnitDeploymentStatus\) Reset
+
+```go
+func (x *ServiceUnitDeploymentStatus) Reset()
+```
+
+
+
+<a name="ServiceUnitDeploymentStatus.String"></a>
+### func \(\*ServiceUnitDeploymentStatus\) String
+
+```go
+func (x *ServiceUnitDeploymentStatus) String() string
+```
+
+
+
+<a name="ServiceUnitServiceClient"></a>
+## type ServiceUnitServiceClient
+
+ServiceUnitServiceClient is the client API for ServiceUnitService service.
+
+For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+
+```go
+type ServiceUnitServiceClient interface {
+    // Declare a new ServiceUnit.
+    CreateServiceUnit(ctx context.Context, in *CreateServiceUnitRequest, opts ...grpc.CallOption) (*CreateServiceUnitResponse, error)
+    // Fetch a ServiceUnit CR by name.
+    GetServiceUnit(ctx context.Context, in *GetServiceUnitRequest, opts ...grpc.CallOption) (*GetServiceUnitResponse, error)
+    // Full replace of a ServiceUnit spec.
+    UpdateServiceUnit(ctx context.Context, in *UpdateServiceUnitRequest, opts ...grpc.CallOption) (*UpdateServiceUnitResponse, error)
+    // Partial update via JSON merge patch RFC 7396.
+    PatchServiceUnit(ctx context.Context, in *PatchServiceUnitRequest, opts ...grpc.CallOption) (*PatchServiceUnitResponse, error)
+    // List ServiceUnit CRs with optional phase/type/app filter and paging.
+    ListServiceUnits(ctx context.Context, in *ListServiceUnitsRequest, opts ...grpc.CallOption) (*ListServiceUnitsResponse, error)
+    // Delete a ServiceUnit CR and its materialized workload.
+    DeleteServiceUnit(ctx context.Context, in *DeleteServiceUnitRequest, opts ...grpc.CallOption) (*DeleteServiceUnitResponse, error)
+    // Stream phase transitions for a ServiceUnit CR.
+    // Streams indefinitely — service units have no terminal phase; close client-side.
+    WatchServiceUnit(ctx context.Context, in *WatchServiceUnitRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WatchServiceUnitResponse], error)
+}
+```
+
+<a name="NewServiceUnitServiceClient"></a>
+### func NewServiceUnitServiceClient
+
+```go
+func NewServiceUnitServiceClient(cc grpc.ClientConnInterface) ServiceUnitServiceClient
+```
+
+
+
+<a name="ServiceUnitServiceServer"></a>
+## type ServiceUnitServiceServer
+
+ServiceUnitServiceServer is the server API for ServiceUnitService service. All implementations must embed UnimplementedServiceUnitServiceServer for forward compatibility.
+
+```go
+type ServiceUnitServiceServer interface {
+    // Declare a new ServiceUnit.
+    CreateServiceUnit(context.Context, *CreateServiceUnitRequest) (*CreateServiceUnitResponse, error)
+    // Fetch a ServiceUnit CR by name.
+    GetServiceUnit(context.Context, *GetServiceUnitRequest) (*GetServiceUnitResponse, error)
+    // Full replace of a ServiceUnit spec.
+    UpdateServiceUnit(context.Context, *UpdateServiceUnitRequest) (*UpdateServiceUnitResponse, error)
+    // Partial update via JSON merge patch RFC 7396.
+    PatchServiceUnit(context.Context, *PatchServiceUnitRequest) (*PatchServiceUnitResponse, error)
+    // List ServiceUnit CRs with optional phase/type/app filter and paging.
+    ListServiceUnits(context.Context, *ListServiceUnitsRequest) (*ListServiceUnitsResponse, error)
+    // Delete a ServiceUnit CR and its materialized workload.
+    DeleteServiceUnit(context.Context, *DeleteServiceUnitRequest) (*DeleteServiceUnitResponse, error)
+    // Stream phase transitions for a ServiceUnit CR.
+    // Streams indefinitely — service units have no terminal phase; close client-side.
+    WatchServiceUnit(*WatchServiceUnitRequest, grpc.ServerStreamingServer[WatchServiceUnitResponse]) error
+    // contains filtered or unexported methods
+}
+```
+
+<a name="ServiceUnitService_WatchServiceUnitClient"></a>
+## type ServiceUnitService\_WatchServiceUnitClient
+
+This type alias is provided for backwards compatibility with existing code that references the prior non\-generic stream type by name.
+
+```go
+type ServiceUnitService_WatchServiceUnitClient = grpc.ServerStreamingClient[WatchServiceUnitResponse]
+```
+
+<a name="ServiceUnitService_WatchServiceUnitServer"></a>
+## type ServiceUnitService\_WatchServiceUnitServer
+
+This type alias is provided for backwards compatibility with existing code that references the prior non\-generic stream type by name.
+
+```go
+type ServiceUnitService_WatchServiceUnitServer = grpc.ServerStreamingServer[WatchServiceUnitResponse]
+```
+
+<a name="ServiceUnitSpec"></a>
+## type ServiceUnitSpec
+
+
+
+```go
+type ServiceUnitSpec struct {
+
+    // How this service unit's image is sourced.
+    Type *v1.ServiceUnitType `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
+    // Reference to the source Build. Required when type is BUILD.
+    BuildRef *BuildReference `protobuf:"bytes,2,opt,name=build_ref,json=buildRef,proto3" json:"build_ref,omitempty"`
+    // Fully qualified static image reference. Required when type is STATIC.
+    // e.g. docker.io/nkanyezisolutions/api:v1.2.3
+    Image string `protobuf:"bytes,3,opt,name=image,proto3" json:"image,omitempty"`
+    // Port the workload listens on.
+    ContainerPort int32 `protobuf:"varint,4,opt,name=container_port,json=containerPort,proto3" json:"container_port,omitempty"`
+    // Desired replica count.
+    Size int32 `protobuf:"varint,5,opt,name=size,proto3" json:"size,omitempty"`
+    // External route for this unit. Optional.
+    Route *RouteReference `protobuf:"bytes,6,opt,name=route,proto3" json:"route,omitempty"`
+    // Application category hint.
+    // e.g. web, worker, job
+    AppType string `protobuf:"bytes,7,opt,name=app_type,json=appType,proto3" json:"app_type,omitempty"`
+    // Language or stack hint.
+    // e.g. nodejs, python, wasm
+    StackType string `protobuf:"bytes,8,opt,name=stack_type,json=stackType,proto3" json:"stack_type,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ServiceUnitSpec.Descriptor"></a>
+### func \(\*ServiceUnitSpec\) Descriptor
+
+```go
+func (*ServiceUnitSpec) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ServiceUnitSpec.ProtoReflect.Descriptor instead.
+
+<a name="ServiceUnitSpec.GetAppType"></a>
+### func \(\*ServiceUnitSpec\) GetAppType
+
+```go
+func (x *ServiceUnitSpec) GetAppType() string
+```
+
+
+
+<a name="ServiceUnitSpec.GetBuildRef"></a>
+### func \(\*ServiceUnitSpec\) GetBuildRef
+
+```go
+func (x *ServiceUnitSpec) GetBuildRef() *BuildReference
+```
+
+
+
+<a name="ServiceUnitSpec.GetContainerPort"></a>
+### func \(\*ServiceUnitSpec\) GetContainerPort
+
+```go
+func (x *ServiceUnitSpec) GetContainerPort() int32
+```
+
+
+
+<a name="ServiceUnitSpec.GetImage"></a>
+### func \(\*ServiceUnitSpec\) GetImage
+
+```go
+func (x *ServiceUnitSpec) GetImage() string
+```
+
+
+
+<a name="ServiceUnitSpec.GetRoute"></a>
+### func \(\*ServiceUnitSpec\) GetRoute
+
+```go
+func (x *ServiceUnitSpec) GetRoute() *RouteReference
+```
+
+
+
+<a name="ServiceUnitSpec.GetSize"></a>
+### func \(\*ServiceUnitSpec\) GetSize
+
+```go
+func (x *ServiceUnitSpec) GetSize() int32
+```
+
+
+
+<a name="ServiceUnitSpec.GetStackType"></a>
+### func \(\*ServiceUnitSpec\) GetStackType
+
+```go
+func (x *ServiceUnitSpec) GetStackType() string
+```
+
+
+
+<a name="ServiceUnitSpec.GetType"></a>
+### func \(\*ServiceUnitSpec\) GetType
+
+```go
+func (x *ServiceUnitSpec) GetType() *v1.ServiceUnitType
+```
+
+
+
+<a name="ServiceUnitSpec.ProtoMessage"></a>
+### func \(\*ServiceUnitSpec\) ProtoMessage
+
+```go
+func (*ServiceUnitSpec) ProtoMessage()
+```
+
+
+
+<a name="ServiceUnitSpec.ProtoReflect"></a>
+### func \(\*ServiceUnitSpec\) ProtoReflect
+
+```go
+func (x *ServiceUnitSpec) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ServiceUnitSpec.Reset"></a>
+### func \(\*ServiceUnitSpec\) Reset
+
+```go
+func (x *ServiceUnitSpec) Reset()
+```
+
+
+
+<a name="ServiceUnitSpec.String"></a>
+### func \(\*ServiceUnitSpec\) String
+
+```go
+func (x *ServiceUnitSpec) String() string
+```
+
+
+
+<a name="ServiceUnitStatus"></a>
+## type ServiceUnitStatus
+
+
+
+```go
+type ServiceUnitStatus struct {
+
+    // Current lifecycle phase. Set by the controller.
+    Phase *v1.ServiceUnitDeploymentPhase `protobuf:"bytes,1,opt,name=phase,proto3" json:"phase,omitempty"`
+    // Human-readable status message. Populated on failure.
+    Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+    // Generation of the spec this status reflects.
+    ObservedGeneration int64 `protobuf:"varint,3,opt,name=observed_generation,json=observedGeneration,proto3" json:"observed_generation,omitempty"`
+    // Final resolved image used at runtime, including digest when known.
+    ResolvedImage string `protobuf:"bytes,4,opt,name=resolved_image,json=resolvedImage,proto3" json:"resolved_image,omitempty"`
+    // Build resolution status. Populated when spec.type is BUILD.
+    BuildStatus *BuildResolutionStatus `protobuf:"bytes,5,opt,name=build_status,json=buildStatus,proto3" json:"build_status,omitempty"`
+    // Runtime backend used to materialize the workload.
+    Runtime *v1.ServiceUnitRuntime `protobuf:"bytes,6,opt,name=runtime,proto3" json:"runtime,omitempty"`
+    // Reference to the concrete workload created.
+    WorkloadRef *WorkloadReference `protobuf:"bytes,7,opt,name=workload_ref,json=workloadRef,proto3" json:"workload_ref,omitempty"`
+    // Lifecycle conditions for UI and automation consumers.
+    Conditions []*ServiceUnitCondition `protobuf:"bytes,8,rep,name=conditions,proto3" json:"conditions,omitempty"`
+    // When the controller last updated this status.
+    LastUpdatedAt *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=last_updated_at,json=lastUpdatedAt,proto3" json:"last_updated_at,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="ServiceUnitStatus.Descriptor"></a>
+### func \(\*ServiceUnitStatus\) Descriptor
+
+```go
+func (*ServiceUnitStatus) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use ServiceUnitStatus.ProtoReflect.Descriptor instead.
+
+<a name="ServiceUnitStatus.GetBuildStatus"></a>
+### func \(\*ServiceUnitStatus\) GetBuildStatus
+
+```go
+func (x *ServiceUnitStatus) GetBuildStatus() *BuildResolutionStatus
+```
+
+
+
+<a name="ServiceUnitStatus.GetConditions"></a>
+### func \(\*ServiceUnitStatus\) GetConditions
+
+```go
+func (x *ServiceUnitStatus) GetConditions() []*ServiceUnitCondition
+```
+
+
+
+<a name="ServiceUnitStatus.GetLastUpdatedAt"></a>
+### func \(\*ServiceUnitStatus\) GetLastUpdatedAt
+
+```go
+func (x *ServiceUnitStatus) GetLastUpdatedAt() *timestamppb.Timestamp
+```
+
+
+
+<a name="ServiceUnitStatus.GetMessage"></a>
+### func \(\*ServiceUnitStatus\) GetMessage
+
+```go
+func (x *ServiceUnitStatus) GetMessage() string
+```
+
+
+
+<a name="ServiceUnitStatus.GetObservedGeneration"></a>
+### func \(\*ServiceUnitStatus\) GetObservedGeneration
+
+```go
+func (x *ServiceUnitStatus) GetObservedGeneration() int64
+```
+
+
+
+<a name="ServiceUnitStatus.GetPhase"></a>
+### func \(\*ServiceUnitStatus\) GetPhase
+
+```go
+func (x *ServiceUnitStatus) GetPhase() *v1.ServiceUnitDeploymentPhase
+```
+
+
+
+<a name="ServiceUnitStatus.GetResolvedImage"></a>
+### func \(\*ServiceUnitStatus\) GetResolvedImage
+
+```go
+func (x *ServiceUnitStatus) GetResolvedImage() string
+```
+
+
+
+<a name="ServiceUnitStatus.GetRuntime"></a>
+### func \(\*ServiceUnitStatus\) GetRuntime
+
+```go
+func (x *ServiceUnitStatus) GetRuntime() *v1.ServiceUnitRuntime
+```
+
+
+
+<a name="ServiceUnitStatus.GetWorkloadRef"></a>
+### func \(\*ServiceUnitStatus\) GetWorkloadRef
+
+```go
+func (x *ServiceUnitStatus) GetWorkloadRef() *WorkloadReference
+```
+
+
+
+<a name="ServiceUnitStatus.ProtoMessage"></a>
+### func \(\*ServiceUnitStatus\) ProtoMessage
+
+```go
+func (*ServiceUnitStatus) ProtoMessage()
+```
+
+
+
+<a name="ServiceUnitStatus.ProtoReflect"></a>
+### func \(\*ServiceUnitStatus\) ProtoReflect
+
+```go
+func (x *ServiceUnitStatus) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="ServiceUnitStatus.Reset"></a>
+### func \(\*ServiceUnitStatus\) Reset
+
+```go
+func (x *ServiceUnitStatus) Reset()
+```
+
+
+
+<a name="ServiceUnitStatus.String"></a>
+### func \(\*ServiceUnitStatus\) String
+
+```go
+func (x *ServiceUnitStatus) String() string
+```
+
+
+
+<a name="StateRepository"></a>
+## type StateRepository
+
+
+
+```go
+type StateRepository struct {
+
+    // SSH or HTTPS URL of the state repository.
+    Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+    // Git ref to reconcile against — branch, tag, or commit SHA.
+    Ref string `protobuf:"bytes,2,opt,name=ref,proto3" json:"ref,omitempty"`
+    // Name of the Kubernetes Secret used to authenticate the clone.
+    CloneSecret string `protobuf:"bytes,3,opt,name=clone_secret,json=cloneSecret,proto3" json:"clone_secret,omitempty"`
+    // Application strategy for the state contents.
+    // e.g. kustomization
+    Strategy string `protobuf:"bytes,4,opt,name=strategy,proto3" json:"strategy,omitempty"`
+    // Path inside the repository to reconcile.
+    // e.g. ./clusters/dev
+    Path string `protobuf:"bytes,5,opt,name=path,proto3" json:"path,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="StateRepository.Descriptor"></a>
+### func \(\*StateRepository\) Descriptor
+
+```go
+func (*StateRepository) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use StateRepository.ProtoReflect.Descriptor instead.
+
+<a name="StateRepository.GetCloneSecret"></a>
+### func \(\*StateRepository\) GetCloneSecret
+
+```go
+func (x *StateRepository) GetCloneSecret() string
+```
+
+
+
+<a name="StateRepository.GetPath"></a>
+### func \(\*StateRepository\) GetPath
+
+```go
+func (x *StateRepository) GetPath() string
+```
+
+
+
+<a name="StateRepository.GetRef"></a>
+### func \(\*StateRepository\) GetRef
+
+```go
+func (x *StateRepository) GetRef() string
+```
+
+
+
+<a name="StateRepository.GetStrategy"></a>
+### func \(\*StateRepository\) GetStrategy
+
+```go
+func (x *StateRepository) GetStrategy() string
+```
+
+
+
+<a name="StateRepository.GetUrl"></a>
+### func \(\*StateRepository\) GetUrl
+
+```go
+func (x *StateRepository) GetUrl() string
+```
+
+
+
+<a name="StateRepository.ProtoMessage"></a>
+### func \(\*StateRepository\) ProtoMessage
+
+```go
+func (*StateRepository) ProtoMessage()
+```
+
+
+
+<a name="StateRepository.ProtoReflect"></a>
+### func \(\*StateRepository\) ProtoReflect
+
+```go
+func (x *StateRepository) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="StateRepository.Reset"></a>
+### func \(\*StateRepository\) Reset
+
+```go
+func (x *StateRepository) Reset()
+```
+
+
+
+<a name="StateRepository.String"></a>
+### func \(\*StateRepository\) String
+
+```go
+func (x *StateRepository) String() string
+```
+
+
+
+<a name="TriggerBuildRequest"></a>
+## type TriggerBuildRequest
+
+TriggerBuild — fire a BuildRun against an existing Build CR. Build\-specific RPC — no equivalent in OrganizationService. Useful for manual reruns or CI webhook dispatch.
+
+```go
+type TriggerBuildRequest struct {
+
+    // Name of the Build CR to trigger a run against.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // Per-run param overrides. Applied on top of spec.params.
+    // Useful for SHA overrides on manual triggers.
+    Params []*Param `protobuf:"bytes,2,rep,name=params,proto3" json:"params,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="TriggerBuildRequest.Descriptor"></a>
+### func \(\*TriggerBuildRequest\) Descriptor
+
+```go
+func (*TriggerBuildRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use TriggerBuildRequest.ProtoReflect.Descriptor instead.
+
+<a name="TriggerBuildRequest.GetName"></a>
+### func \(\*TriggerBuildRequest\) GetName
+
+```go
+func (x *TriggerBuildRequest) GetName() string
+```
+
+
+
+<a name="TriggerBuildRequest.GetParams"></a>
+### func \(\*TriggerBuildRequest\) GetParams
+
+```go
+func (x *TriggerBuildRequest) GetParams() []*Param
+```
+
+
+
+<a name="TriggerBuildRequest.ProtoMessage"></a>
+### func \(\*TriggerBuildRequest\) ProtoMessage
+
+```go
+func (*TriggerBuildRequest) ProtoMessage()
+```
+
+
+
+<a name="TriggerBuildRequest.ProtoReflect"></a>
+### func \(\*TriggerBuildRequest\) ProtoReflect
+
+```go
+func (x *TriggerBuildRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="TriggerBuildRequest.Reset"></a>
+### func \(\*TriggerBuildRequest\) Reset
+
+```go
+func (x *TriggerBuildRequest) Reset()
+```
+
+
+
+<a name="TriggerBuildRequest.String"></a>
+### func \(\*TriggerBuildRequest\) String
+
+```go
+func (x *TriggerBuildRequest) String() string
+```
+
+
+
+<a name="TriggerBuildResponse"></a>
+## type TriggerBuildResponse
+
+
+
+```go
+type TriggerBuildResponse struct {
+
+    // Name of the emitted Shipwright BuildRun.
+    // Use GetBuild or WatchBuild to track progress.
+    ExecutionRef string `protobuf:"bytes,1,opt,name=execution_ref,json=executionRef,proto3" json:"execution_ref,omitempty"`
+    // The Build CR after the trigger was applied.
+    Build *Build `protobuf:"bytes,2,opt,name=build,proto3" json:"build,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="TriggerBuildResponse.Descriptor"></a>
+### func \(\*TriggerBuildResponse\) Descriptor
+
+```go
+func (*TriggerBuildResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use TriggerBuildResponse.ProtoReflect.Descriptor instead.
+
+<a name="TriggerBuildResponse.GetBuild"></a>
+### func \(\*TriggerBuildResponse\) GetBuild
+
+```go
+func (x *TriggerBuildResponse) GetBuild() *Build
+```
+
+
+
+<a name="TriggerBuildResponse.GetExecutionRef"></a>
+### func \(\*TriggerBuildResponse\) GetExecutionRef
+
+```go
+func (x *TriggerBuildResponse) GetExecutionRef() string
+```
+
+
+
+<a name="TriggerBuildResponse.ProtoMessage"></a>
+### func \(\*TriggerBuildResponse\) ProtoMessage
+
+```go
+func (*TriggerBuildResponse) ProtoMessage()
+```
+
+
+
+<a name="TriggerBuildResponse.ProtoReflect"></a>
+### func \(\*TriggerBuildResponse\) ProtoReflect
+
+```go
+func (x *TriggerBuildResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="TriggerBuildResponse.Reset"></a>
+### func \(\*TriggerBuildResponse\) Reset
+
+```go
+func (x *TriggerBuildResponse) Reset()
+```
+
+
+
+<a name="TriggerBuildResponse.String"></a>
+### func \(\*TriggerBuildResponse\) String
+
+```go
+func (x *TriggerBuildResponse) String() string
+```
+
+
+
+<a name="UnimplementedBuildServiceServer"></a>
+## type UnimplementedBuildServiceServer
+
+UnimplementedBuildServiceServer must be embedded to have forward compatible implementations.
+
+NOTE: this should be embedded by value instead of pointer to avoid a nil pointer dereference when methods are called.
+
+```go
+type UnimplementedBuildServiceServer struct{}
+```
+
+<a name="UnimplementedBuildServiceServer.CreateBuild"></a>
+### func \(UnimplementedBuildServiceServer\) CreateBuild
+
+```go
+func (UnimplementedBuildServiceServer) CreateBuild(context.Context, *CreateBuildRequest) (*CreateBuildResponse, error)
+```
+
+
+
+<a name="UnimplementedBuildServiceServer.DeleteBuild"></a>
+### func \(UnimplementedBuildServiceServer\) DeleteBuild
+
+```go
+func (UnimplementedBuildServiceServer) DeleteBuild(context.Context, *DeleteBuildRequest) (*DeleteBuildResponse, error)
+```
+
+
+
+<a name="UnimplementedBuildServiceServer.GetBuild"></a>
+### func \(UnimplementedBuildServiceServer\) GetBuild
+
+```go
+func (UnimplementedBuildServiceServer) GetBuild(context.Context, *GetBuildRequest) (*GetBuildResponse, error)
+```
+
+
+
+<a name="UnimplementedBuildServiceServer.ListBuilds"></a>
+### func \(UnimplementedBuildServiceServer\) ListBuilds
+
+```go
+func (UnimplementedBuildServiceServer) ListBuilds(context.Context, *ListBuildsRequest) (*ListBuildsResponse, error)
+```
+
+
+
+<a name="UnimplementedBuildServiceServer.PatchBuild"></a>
+### func \(UnimplementedBuildServiceServer\) PatchBuild
+
+```go
+func (UnimplementedBuildServiceServer) PatchBuild(context.Context, *PatchBuildRequest) (*PatchBuildResponse, error)
+```
+
+
+
+<a name="UnimplementedBuildServiceServer.TriggerBuild"></a>
+### func \(UnimplementedBuildServiceServer\) TriggerBuild
+
+```go
+func (UnimplementedBuildServiceServer) TriggerBuild(context.Context, *TriggerBuildRequest) (*TriggerBuildResponse, error)
+```
+
+
+
+<a name="UnimplementedBuildServiceServer.UpdateBuild"></a>
+### func \(UnimplementedBuildServiceServer\) UpdateBuild
+
+```go
+func (UnimplementedBuildServiceServer) UpdateBuild(context.Context, *UpdateBuildRequest) (*UpdateBuildResponse, error)
+```
+
+
+
+<a name="UnimplementedBuildServiceServer.WatchBuild"></a>
+### func \(UnimplementedBuildServiceServer\) WatchBuild
+
+```go
+func (UnimplementedBuildServiceServer) WatchBuild(*WatchBuildRequest, grpc.ServerStreamingServer[WatchBuildResponse]) error
+```
+
+
+
+<a name="UnimplementedDeploymentServiceServer"></a>
+## type UnimplementedDeploymentServiceServer
+
+UnimplementedDeploymentServiceServer must be embedded to have forward compatible implementations.
+
+NOTE: this should be embedded by value instead of pointer to avoid a nil pointer dereference when methods are called.
+
+```go
+type UnimplementedDeploymentServiceServer struct{}
+```
+
+<a name="UnimplementedDeploymentServiceServer.CreateDeployment"></a>
+### func \(UnimplementedDeploymentServiceServer\) CreateDeployment
+
+```go
+func (UnimplementedDeploymentServiceServer) CreateDeployment(context.Context, *CreateDeploymentRequest) (*CreateDeploymentResponse, error)
+```
+
+
+
+<a name="UnimplementedDeploymentServiceServer.DeleteDeployment"></a>
+### func \(UnimplementedDeploymentServiceServer\) DeleteDeployment
+
+```go
+func (UnimplementedDeploymentServiceServer) DeleteDeployment(context.Context, *DeleteDeploymentRequest) (*DeleteDeploymentResponse, error)
+```
+
+
+
+<a name="UnimplementedDeploymentServiceServer.GetDeployment"></a>
+### func \(UnimplementedDeploymentServiceServer\) GetDeployment
+
+```go
+func (UnimplementedDeploymentServiceServer) GetDeployment(context.Context, *GetDeploymentRequest) (*GetDeploymentResponse, error)
+```
+
+
+
+<a name="UnimplementedDeploymentServiceServer.ListDeployments"></a>
+### func \(UnimplementedDeploymentServiceServer\) ListDeployments
+
+```go
+func (UnimplementedDeploymentServiceServer) ListDeployments(context.Context, *ListDeploymentsRequest) (*ListDeploymentsResponse, error)
+```
+
+
+
+<a name="UnimplementedDeploymentServiceServer.PatchDeployment"></a>
+### func \(UnimplementedDeploymentServiceServer\) PatchDeployment
+
+```go
+func (UnimplementedDeploymentServiceServer) PatchDeployment(context.Context, *PatchDeploymentRequest) (*PatchDeploymentResponse, error)
+```
+
+
+
+<a name="UnimplementedDeploymentServiceServer.UpdateDeployment"></a>
+### func \(UnimplementedDeploymentServiceServer\) UpdateDeployment
+
+```go
+func (UnimplementedDeploymentServiceServer) UpdateDeployment(context.Context, *UpdateDeploymentRequest) (*UpdateDeploymentResponse, error)
+```
+
+
+
+<a name="UnimplementedDeploymentServiceServer.WatchDeployment"></a>
+### func \(UnimplementedDeploymentServiceServer\) WatchDeployment
+
+```go
+func (UnimplementedDeploymentServiceServer) WatchDeployment(*WatchDeploymentRequest, grpc.ServerStreamingServer[WatchDeploymentResponse]) error
+```
+
+
+
+<a name="UnimplementedEnvironmentServiceServer"></a>
+## type UnimplementedEnvironmentServiceServer
+
+UnimplementedEnvironmentServiceServer must be embedded to have forward compatible implementations.
+
+NOTE: this should be embedded by value instead of pointer to avoid a nil pointer dereference when methods are called.
+
+```go
+type UnimplementedEnvironmentServiceServer struct{}
+```
+
+<a name="UnimplementedEnvironmentServiceServer.CreateEnvironment"></a>
+### func \(UnimplementedEnvironmentServiceServer\) CreateEnvironment
+
+```go
+func (UnimplementedEnvironmentServiceServer) CreateEnvironment(context.Context, *CreateEnvironmentRequest) (*CreateEnvironmentResponse, error)
+```
+
+
+
+<a name="UnimplementedEnvironmentServiceServer.DeleteEnvironment"></a>
+### func \(UnimplementedEnvironmentServiceServer\) DeleteEnvironment
+
+```go
+func (UnimplementedEnvironmentServiceServer) DeleteEnvironment(context.Context, *DeleteEnvironmentRequest) (*DeleteEnvironmentResponse, error)
+```
+
+
+
+<a name="UnimplementedEnvironmentServiceServer.GetEnvironment"></a>
+### func \(UnimplementedEnvironmentServiceServer\) GetEnvironment
+
+```go
+func (UnimplementedEnvironmentServiceServer) GetEnvironment(context.Context, *GetEnvironmentRequest) (*GetEnvironmentResponse, error)
+```
+
+
+
+<a name="UnimplementedEnvironmentServiceServer.ListEnvironments"></a>
+### func \(UnimplementedEnvironmentServiceServer\) ListEnvironments
+
+```go
+func (UnimplementedEnvironmentServiceServer) ListEnvironments(context.Context, *ListEnvironmentsRequest) (*ListEnvironmentsResponse, error)
+```
+
+
+
+<a name="UnimplementedEnvironmentServiceServer.PatchEnvironment"></a>
+### func \(UnimplementedEnvironmentServiceServer\) PatchEnvironment
+
+```go
+func (UnimplementedEnvironmentServiceServer) PatchEnvironment(context.Context, *PatchEnvironmentRequest) (*PatchEnvironmentResponse, error)
+```
+
+
+
+<a name="UnimplementedEnvironmentServiceServer.UpdateEnvironment"></a>
+### func \(UnimplementedEnvironmentServiceServer\) UpdateEnvironment
+
+```go
+func (UnimplementedEnvironmentServiceServer) UpdateEnvironment(context.Context, *UpdateEnvironmentRequest) (*UpdateEnvironmentResponse, error)
+```
+
+
+
+<a name="UnimplementedEnvironmentServiceServer.WatchEnvironment"></a>
+### func \(UnimplementedEnvironmentServiceServer\) WatchEnvironment
+
+```go
+func (UnimplementedEnvironmentServiceServer) WatchEnvironment(*WatchEnvironmentRequest, grpc.ServerStreamingServer[WatchEnvironmentResponse]) error
+```
+
+
+
+<a name="UnimplementedPackageServiceServer"></a>
+## type UnimplementedPackageServiceServer
+
+UnimplementedPackageServiceServer must be embedded to have forward compatible implementations.
+
+NOTE: this should be embedded by value instead of pointer to avoid a nil pointer dereference when methods are called.
+
+```go
+type UnimplementedPackageServiceServer struct{}
+```
+
+<a name="UnimplementedPackageServiceServer.CreatePackage"></a>
+### func \(UnimplementedPackageServiceServer\) CreatePackage
+
+```go
+func (UnimplementedPackageServiceServer) CreatePackage(context.Context, *CreatePackageRequest) (*CreatePackageResponse, error)
+```
+
+
+
+<a name="UnimplementedPackageServiceServer.DeletePackage"></a>
+### func \(UnimplementedPackageServiceServer\) DeletePackage
+
+```go
+func (UnimplementedPackageServiceServer) DeletePackage(context.Context, *DeletePackageRequest) (*DeletePackageResponse, error)
+```
+
+
+
+<a name="UnimplementedPackageServiceServer.GetPackage"></a>
+### func \(UnimplementedPackageServiceServer\) GetPackage
+
+```go
+func (UnimplementedPackageServiceServer) GetPackage(context.Context, *GetPackageRequest) (*GetPackageResponse, error)
+```
+
+
+
+<a name="UnimplementedPackageServiceServer.ListPackages"></a>
+### func \(UnimplementedPackageServiceServer\) ListPackages
+
+```go
+func (UnimplementedPackageServiceServer) ListPackages(context.Context, *ListPackagesRequest) (*ListPackagesResponse, error)
+```
+
+
+
+<a name="UnimplementedPackageServiceServer.PatchPackage"></a>
+### func \(UnimplementedPackageServiceServer\) PatchPackage
+
+```go
+func (UnimplementedPackageServiceServer) PatchPackage(context.Context, *PatchPackageRequest) (*PatchPackageResponse, error)
+```
+
+
+
+<a name="UnimplementedPackageServiceServer.UpdatePackage"></a>
+### func \(UnimplementedPackageServiceServer\) UpdatePackage
+
+```go
+func (UnimplementedPackageServiceServer) UpdatePackage(context.Context, *UpdatePackageRequest) (*UpdatePackageResponse, error)
+```
+
+
+
+<a name="UnimplementedPackageServiceServer.WatchPackage"></a>
+### func \(UnimplementedPackageServiceServer\) WatchPackage
+
+```go
+func (UnimplementedPackageServiceServer) WatchPackage(*WatchPackageRequest, grpc.ServerStreamingServer[WatchPackageResponse]) error
+```
+
+
+
+<a name="UnimplementedServiceUnitServiceServer"></a>
+## type UnimplementedServiceUnitServiceServer
+
+UnimplementedServiceUnitServiceServer must be embedded to have forward compatible implementations.
+
+NOTE: this should be embedded by value instead of pointer to avoid a nil pointer dereference when methods are called.
+
+```go
+type UnimplementedServiceUnitServiceServer struct{}
+```
+
+<a name="UnimplementedServiceUnitServiceServer.CreateServiceUnit"></a>
+### func \(UnimplementedServiceUnitServiceServer\) CreateServiceUnit
+
+```go
+func (UnimplementedServiceUnitServiceServer) CreateServiceUnit(context.Context, *CreateServiceUnitRequest) (*CreateServiceUnitResponse, error)
+```
+
+
+
+<a name="UnimplementedServiceUnitServiceServer.DeleteServiceUnit"></a>
+### func \(UnimplementedServiceUnitServiceServer\) DeleteServiceUnit
+
+```go
+func (UnimplementedServiceUnitServiceServer) DeleteServiceUnit(context.Context, *DeleteServiceUnitRequest) (*DeleteServiceUnitResponse, error)
+```
+
+
+
+<a name="UnimplementedServiceUnitServiceServer.GetServiceUnit"></a>
+### func \(UnimplementedServiceUnitServiceServer\) GetServiceUnit
+
+```go
+func (UnimplementedServiceUnitServiceServer) GetServiceUnit(context.Context, *GetServiceUnitRequest) (*GetServiceUnitResponse, error)
+```
+
+
+
+<a name="UnimplementedServiceUnitServiceServer.ListServiceUnits"></a>
+### func \(UnimplementedServiceUnitServiceServer\) ListServiceUnits
+
+```go
+func (UnimplementedServiceUnitServiceServer) ListServiceUnits(context.Context, *ListServiceUnitsRequest) (*ListServiceUnitsResponse, error)
+```
+
+
+
+<a name="UnimplementedServiceUnitServiceServer.PatchServiceUnit"></a>
+### func \(UnimplementedServiceUnitServiceServer\) PatchServiceUnit
+
+```go
+func (UnimplementedServiceUnitServiceServer) PatchServiceUnit(context.Context, *PatchServiceUnitRequest) (*PatchServiceUnitResponse, error)
+```
+
+
+
+<a name="UnimplementedServiceUnitServiceServer.UpdateServiceUnit"></a>
+### func \(UnimplementedServiceUnitServiceServer\) UpdateServiceUnit
+
+```go
+func (UnimplementedServiceUnitServiceServer) UpdateServiceUnit(context.Context, *UpdateServiceUnitRequest) (*UpdateServiceUnitResponse, error)
+```
+
+
+
+<a name="UnimplementedServiceUnitServiceServer.WatchServiceUnit"></a>
+### func \(UnimplementedServiceUnitServiceServer\) WatchServiceUnit
+
+```go
+func (UnimplementedServiceUnitServiceServer) WatchServiceUnit(*WatchServiceUnitRequest, grpc.ServerStreamingServer[WatchServiceUnitResponse]) error
+```
+
+
+
+<a name="UnsafeBuildServiceServer"></a>
+## type UnsafeBuildServiceServer
+
+UnsafeBuildServiceServer may be embedded to opt out of forward compatibility for this service. Use of this interface is not recommended, as added methods to BuildServiceServer will result in compilation errors.
+
+```go
+type UnsafeBuildServiceServer interface {
+    // contains filtered or unexported methods
+}
+```
+
+<a name="UnsafeDeploymentServiceServer"></a>
+## type UnsafeDeploymentServiceServer
+
+UnsafeDeploymentServiceServer may be embedded to opt out of forward compatibility for this service. Use of this interface is not recommended, as added methods to DeploymentServiceServer will result in compilation errors.
+
+```go
+type UnsafeDeploymentServiceServer interface {
+    // contains filtered or unexported methods
+}
+```
+
+<a name="UnsafeEnvironmentServiceServer"></a>
+## type UnsafeEnvironmentServiceServer
+
+UnsafeEnvironmentServiceServer may be embedded to opt out of forward compatibility for this service. Use of this interface is not recommended, as added methods to EnvironmentServiceServer will result in compilation errors.
+
+```go
+type UnsafeEnvironmentServiceServer interface {
+    // contains filtered or unexported methods
+}
+```
+
+<a name="UnsafePackageServiceServer"></a>
+## type UnsafePackageServiceServer
+
+UnsafePackageServiceServer may be embedded to opt out of forward compatibility for this service. Use of this interface is not recommended, as added methods to PackageServiceServer will result in compilation errors.
+
+```go
+type UnsafePackageServiceServer interface {
+    // contains filtered or unexported methods
+}
+```
+
+<a name="UnsafeServiceUnitServiceServer"></a>
+## type UnsafeServiceUnitServiceServer
+
+UnsafeServiceUnitServiceServer may be embedded to opt out of forward compatibility for this service. Use of this interface is not recommended, as added methods to ServiceUnitServiceServer will result in compilation errors.
+
+```go
+type UnsafeServiceUnitServiceServer interface {
+    // contains filtered or unexported methods
+}
+```
+
+<a name="UpdateBuildRequest"></a>
+## type UpdateBuildRequest
+
+UpdateBuild — full replace of the Build spec. Equivalent to kubectl apply — all fields replaced.
+
+```go
+type UpdateBuildRequest struct {
+
+    // Full Build object including metadata and desired spec.
+    Build *Build `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="UpdateBuildRequest.Descriptor"></a>
+### func \(\*UpdateBuildRequest\) Descriptor
+
+```go
+func (*UpdateBuildRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use UpdateBuildRequest.ProtoReflect.Descriptor instead.
+
+<a name="UpdateBuildRequest.GetBuild"></a>
+### func \(\*UpdateBuildRequest\) GetBuild
+
+```go
+func (x *UpdateBuildRequest) GetBuild() *Build
+```
+
+
+
+<a name="UpdateBuildRequest.ProtoMessage"></a>
+### func \(\*UpdateBuildRequest\) ProtoMessage
+
+```go
+func (*UpdateBuildRequest) ProtoMessage()
+```
+
+
+
+<a name="UpdateBuildRequest.ProtoReflect"></a>
+### func \(\*UpdateBuildRequest\) ProtoReflect
+
+```go
+func (x *UpdateBuildRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="UpdateBuildRequest.Reset"></a>
+### func \(\*UpdateBuildRequest\) Reset
+
+```go
+func (x *UpdateBuildRequest) Reset()
+```
+
+
+
+<a name="UpdateBuildRequest.String"></a>
+### func \(\*UpdateBuildRequest\) String
+
+```go
+func (x *UpdateBuildRequest) String() string
+```
+
+
+
+<a name="UpdateBuildResponse"></a>
+## type UpdateBuildResponse
+
+
+
+```go
+type UpdateBuildResponse struct {
+
+    // The updated Build as observed by the controller.
+    Build *Build `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="UpdateBuildResponse.Descriptor"></a>
+### func \(\*UpdateBuildResponse\) Descriptor
+
+```go
+func (*UpdateBuildResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use UpdateBuildResponse.ProtoReflect.Descriptor instead.
+
+<a name="UpdateBuildResponse.GetBuild"></a>
+### func \(\*UpdateBuildResponse\) GetBuild
+
+```go
+func (x *UpdateBuildResponse) GetBuild() *Build
+```
+
+
+
+<a name="UpdateBuildResponse.ProtoMessage"></a>
+### func \(\*UpdateBuildResponse\) ProtoMessage
+
+```go
+func (*UpdateBuildResponse) ProtoMessage()
+```
+
+
+
+<a name="UpdateBuildResponse.ProtoReflect"></a>
+### func \(\*UpdateBuildResponse\) ProtoReflect
+
+```go
+func (x *UpdateBuildResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="UpdateBuildResponse.Reset"></a>
+### func \(\*UpdateBuildResponse\) Reset
+
+```go
+func (x *UpdateBuildResponse) Reset()
+```
+
+
+
+<a name="UpdateBuildResponse.String"></a>
+### func \(\*UpdateBuildResponse\) String
+
+```go
+func (x *UpdateBuildResponse) String() string
+```
+
+
+
+<a name="UpdateDeploymentRequest"></a>
+## type UpdateDeploymentRequest
+
+UpdateDeployment — full replace of the Deployment spec. Equivalent to kubectl apply — all fields replaced.
+
+```go
+type UpdateDeploymentRequest struct {
+
+    // Full Deployment object including metadata and desired spec.
+    Deployment *Deployment `protobuf:"bytes,1,opt,name=deployment,proto3" json:"deployment,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="UpdateDeploymentRequest.Descriptor"></a>
+### func \(\*UpdateDeploymentRequest\) Descriptor
+
+```go
+func (*UpdateDeploymentRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use UpdateDeploymentRequest.ProtoReflect.Descriptor instead.
+
+<a name="UpdateDeploymentRequest.GetDeployment"></a>
+### func \(\*UpdateDeploymentRequest\) GetDeployment
+
+```go
+func (x *UpdateDeploymentRequest) GetDeployment() *Deployment
+```
+
+
+
+<a name="UpdateDeploymentRequest.ProtoMessage"></a>
+### func \(\*UpdateDeploymentRequest\) ProtoMessage
+
+```go
+func (*UpdateDeploymentRequest) ProtoMessage()
+```
+
+
+
+<a name="UpdateDeploymentRequest.ProtoReflect"></a>
+### func \(\*UpdateDeploymentRequest\) ProtoReflect
+
+```go
+func (x *UpdateDeploymentRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="UpdateDeploymentRequest.Reset"></a>
+### func \(\*UpdateDeploymentRequest\) Reset
+
+```go
+func (x *UpdateDeploymentRequest) Reset()
+```
+
+
+
+<a name="UpdateDeploymentRequest.String"></a>
+### func \(\*UpdateDeploymentRequest\) String
+
+```go
+func (x *UpdateDeploymentRequest) String() string
+```
+
+
+
+<a name="UpdateDeploymentResponse"></a>
+## type UpdateDeploymentResponse
+
+
+
+```go
+type UpdateDeploymentResponse struct {
+
+    // The updated Deployment as observed by the controller.
+    Deployment *Deployment `protobuf:"bytes,1,opt,name=deployment,proto3" json:"deployment,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="UpdateDeploymentResponse.Descriptor"></a>
+### func \(\*UpdateDeploymentResponse\) Descriptor
+
+```go
+func (*UpdateDeploymentResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use UpdateDeploymentResponse.ProtoReflect.Descriptor instead.
+
+<a name="UpdateDeploymentResponse.GetDeployment"></a>
+### func \(\*UpdateDeploymentResponse\) GetDeployment
+
+```go
+func (x *UpdateDeploymentResponse) GetDeployment() *Deployment
+```
+
+
+
+<a name="UpdateDeploymentResponse.ProtoMessage"></a>
+### func \(\*UpdateDeploymentResponse\) ProtoMessage
+
+```go
+func (*UpdateDeploymentResponse) ProtoMessage()
+```
+
+
+
+<a name="UpdateDeploymentResponse.ProtoReflect"></a>
+### func \(\*UpdateDeploymentResponse\) ProtoReflect
+
+```go
+func (x *UpdateDeploymentResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="UpdateDeploymentResponse.Reset"></a>
+### func \(\*UpdateDeploymentResponse\) Reset
+
+```go
+func (x *UpdateDeploymentResponse) Reset()
+```
+
+
+
+<a name="UpdateDeploymentResponse.String"></a>
+### func \(\*UpdateDeploymentResponse\) String
+
+```go
+func (x *UpdateDeploymentResponse) String() string
+```
+
+
+
+<a name="UpdateEnvironmentRequest"></a>
+## type UpdateEnvironmentRequest
+
+
+
+```go
+type UpdateEnvironmentRequest struct {
+
+    // Full Environment object including metadata and desired spec.
+    Environment *Environment `protobuf:"bytes,1,opt,name=environment,proto3" json:"environment,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="UpdateEnvironmentRequest.Descriptor"></a>
+### func \(\*UpdateEnvironmentRequest\) Descriptor
+
+```go
+func (*UpdateEnvironmentRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use UpdateEnvironmentRequest.ProtoReflect.Descriptor instead.
+
+<a name="UpdateEnvironmentRequest.GetEnvironment"></a>
+### func \(\*UpdateEnvironmentRequest\) GetEnvironment
+
+```go
+func (x *UpdateEnvironmentRequest) GetEnvironment() *Environment
+```
+
+
+
+<a name="UpdateEnvironmentRequest.ProtoMessage"></a>
+### func \(\*UpdateEnvironmentRequest\) ProtoMessage
+
+```go
+func (*UpdateEnvironmentRequest) ProtoMessage()
+```
+
+
+
+<a name="UpdateEnvironmentRequest.ProtoReflect"></a>
+### func \(\*UpdateEnvironmentRequest\) ProtoReflect
+
+```go
+func (x *UpdateEnvironmentRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="UpdateEnvironmentRequest.Reset"></a>
+### func \(\*UpdateEnvironmentRequest\) Reset
+
+```go
+func (x *UpdateEnvironmentRequest) Reset()
+```
+
+
+
+<a name="UpdateEnvironmentRequest.String"></a>
+### func \(\*UpdateEnvironmentRequest\) String
+
+```go
+func (x *UpdateEnvironmentRequest) String() string
+```
+
+
+
+<a name="UpdateEnvironmentResponse"></a>
+## type UpdateEnvironmentResponse
+
+
+
+```go
+type UpdateEnvironmentResponse struct {
+
+    // The updated Environment as observed by the controller.
+    Environment *Environment `protobuf:"bytes,1,opt,name=environment,proto3" json:"environment,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="UpdateEnvironmentResponse.Descriptor"></a>
+### func \(\*UpdateEnvironmentResponse\) Descriptor
+
+```go
+func (*UpdateEnvironmentResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use UpdateEnvironmentResponse.ProtoReflect.Descriptor instead.
+
+<a name="UpdateEnvironmentResponse.GetEnvironment"></a>
+### func \(\*UpdateEnvironmentResponse\) GetEnvironment
+
+```go
+func (x *UpdateEnvironmentResponse) GetEnvironment() *Environment
+```
+
+
+
+<a name="UpdateEnvironmentResponse.ProtoMessage"></a>
+### func \(\*UpdateEnvironmentResponse\) ProtoMessage
+
+```go
+func (*UpdateEnvironmentResponse) ProtoMessage()
+```
+
+
+
+<a name="UpdateEnvironmentResponse.ProtoReflect"></a>
+### func \(\*UpdateEnvironmentResponse\) ProtoReflect
+
+```go
+func (x *UpdateEnvironmentResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="UpdateEnvironmentResponse.Reset"></a>
+### func \(\*UpdateEnvironmentResponse\) Reset
+
+```go
+func (x *UpdateEnvironmentResponse) Reset()
+```
+
+
+
+<a name="UpdateEnvironmentResponse.String"></a>
+### func \(\*UpdateEnvironmentResponse\) String
+
+```go
+func (x *UpdateEnvironmentResponse) String() string
+```
+
+
+
+<a name="UpdatePackageRequest"></a>
+## type UpdatePackageRequest
+
+UpdatePackage — full replace of the Package spec. Equivalent to kubectl apply — all fields replaced.
+
+```go
+type UpdatePackageRequest struct {
+
+    // Full Package object including metadata and desired spec.
+    Package *Package `protobuf:"bytes,1,opt,name=package,proto3" json:"package,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="UpdatePackageRequest.Descriptor"></a>
+### func \(\*UpdatePackageRequest\) Descriptor
+
+```go
+func (*UpdatePackageRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use UpdatePackageRequest.ProtoReflect.Descriptor instead.
+
+<a name="UpdatePackageRequest.GetPackage"></a>
+### func \(\*UpdatePackageRequest\) GetPackage
+
+```go
+func (x *UpdatePackageRequest) GetPackage() *Package
+```
+
+
+
+<a name="UpdatePackageRequest.ProtoMessage"></a>
+### func \(\*UpdatePackageRequest\) ProtoMessage
+
+```go
+func (*UpdatePackageRequest) ProtoMessage()
+```
+
+
+
+<a name="UpdatePackageRequest.ProtoReflect"></a>
+### func \(\*UpdatePackageRequest\) ProtoReflect
+
+```go
+func (x *UpdatePackageRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="UpdatePackageRequest.Reset"></a>
+### func \(\*UpdatePackageRequest\) Reset
+
+```go
+func (x *UpdatePackageRequest) Reset()
+```
+
+
+
+<a name="UpdatePackageRequest.String"></a>
+### func \(\*UpdatePackageRequest\) String
+
+```go
+func (x *UpdatePackageRequest) String() string
+```
+
+
+
+<a name="UpdatePackageResponse"></a>
+## type UpdatePackageResponse
+
+
+
+```go
+type UpdatePackageResponse struct {
+
+    // The updated Package as observed by the controller.
+    Package *Package `protobuf:"bytes,1,opt,name=package,proto3" json:"package,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="UpdatePackageResponse.Descriptor"></a>
+### func \(\*UpdatePackageResponse\) Descriptor
+
+```go
+func (*UpdatePackageResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use UpdatePackageResponse.ProtoReflect.Descriptor instead.
+
+<a name="UpdatePackageResponse.GetPackage"></a>
+### func \(\*UpdatePackageResponse\) GetPackage
+
+```go
+func (x *UpdatePackageResponse) GetPackage() *Package
+```
+
+
+
+<a name="UpdatePackageResponse.ProtoMessage"></a>
+### func \(\*UpdatePackageResponse\) ProtoMessage
+
+```go
+func (*UpdatePackageResponse) ProtoMessage()
+```
+
+
+
+<a name="UpdatePackageResponse.ProtoReflect"></a>
+### func \(\*UpdatePackageResponse\) ProtoReflect
+
+```go
+func (x *UpdatePackageResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="UpdatePackageResponse.Reset"></a>
+### func \(\*UpdatePackageResponse\) Reset
+
+```go
+func (x *UpdatePackageResponse) Reset()
+```
+
+
+
+<a name="UpdatePackageResponse.String"></a>
+### func \(\*UpdatePackageResponse\) String
+
+```go
+func (x *UpdatePackageResponse) String() string
+```
+
+
+
+<a name="UpdateServiceUnitRequest"></a>
+## type UpdateServiceUnitRequest
+
+UpdateServiceUnit — full replace of the ServiceUnit spec. Equivalent to kubectl apply — all fields replaced.
+
+```go
+type UpdateServiceUnitRequest struct {
+
+    // Full ServiceUnit object including metadata and desired spec.
+    ServiceUnit *ServiceUnit `protobuf:"bytes,1,opt,name=service_unit,json=serviceUnit,proto3" json:"service_unit,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="UpdateServiceUnitRequest.Descriptor"></a>
+### func \(\*UpdateServiceUnitRequest\) Descriptor
+
+```go
+func (*UpdateServiceUnitRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use UpdateServiceUnitRequest.ProtoReflect.Descriptor instead.
+
+<a name="UpdateServiceUnitRequest.GetServiceUnit"></a>
+### func \(\*UpdateServiceUnitRequest\) GetServiceUnit
+
+```go
+func (x *UpdateServiceUnitRequest) GetServiceUnit() *ServiceUnit
+```
+
+
+
+<a name="UpdateServiceUnitRequest.ProtoMessage"></a>
+### func \(\*UpdateServiceUnitRequest\) ProtoMessage
+
+```go
+func (*UpdateServiceUnitRequest) ProtoMessage()
+```
+
+
+
+<a name="UpdateServiceUnitRequest.ProtoReflect"></a>
+### func \(\*UpdateServiceUnitRequest\) ProtoReflect
+
+```go
+func (x *UpdateServiceUnitRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="UpdateServiceUnitRequest.Reset"></a>
+### func \(\*UpdateServiceUnitRequest\) Reset
+
+```go
+func (x *UpdateServiceUnitRequest) Reset()
+```
+
+
+
+<a name="UpdateServiceUnitRequest.String"></a>
+### func \(\*UpdateServiceUnitRequest\) String
+
+```go
+func (x *UpdateServiceUnitRequest) String() string
+```
+
+
+
+<a name="UpdateServiceUnitResponse"></a>
+## type UpdateServiceUnitResponse
+
+
+
+```go
+type UpdateServiceUnitResponse struct {
+
+    // The updated ServiceUnit as observed by the controller.
+    ServiceUnit *ServiceUnit `protobuf:"bytes,1,opt,name=service_unit,json=serviceUnit,proto3" json:"service_unit,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="UpdateServiceUnitResponse.Descriptor"></a>
+### func \(\*UpdateServiceUnitResponse\) Descriptor
+
+```go
+func (*UpdateServiceUnitResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use UpdateServiceUnitResponse.ProtoReflect.Descriptor instead.
+
+<a name="UpdateServiceUnitResponse.GetServiceUnit"></a>
+### func \(\*UpdateServiceUnitResponse\) GetServiceUnit
+
+```go
+func (x *UpdateServiceUnitResponse) GetServiceUnit() *ServiceUnit
+```
+
+
+
+<a name="UpdateServiceUnitResponse.ProtoMessage"></a>
+### func \(\*UpdateServiceUnitResponse\) ProtoMessage
+
+```go
+func (*UpdateServiceUnitResponse) ProtoMessage()
+```
+
+
+
+<a name="UpdateServiceUnitResponse.ProtoReflect"></a>
+### func \(\*UpdateServiceUnitResponse\) ProtoReflect
+
+```go
+func (x *UpdateServiceUnitResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="UpdateServiceUnitResponse.Reset"></a>
+### func \(\*UpdateServiceUnitResponse\) Reset
+
+```go
+func (x *UpdateServiceUnitResponse) Reset()
+```
+
+
+
+<a name="UpdateServiceUnitResponse.String"></a>
+### func \(\*UpdateServiceUnitResponse\) String
+
+```go
+func (x *UpdateServiceUnitResponse) String() string
+```
+
+
+
+<a name="WatchBuildRequest"></a>
+## type WatchBuildRequest
+
+WatchBuild — stream phase transitions for a Build CR. Delivers an event for every controller reconciliation loop.
+
+```go
+type WatchBuildRequest struct {
+
+    // Name of the Build CR to watch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="WatchBuildRequest.Descriptor"></a>
+### func \(\*WatchBuildRequest\) Descriptor
+
+```go
+func (*WatchBuildRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use WatchBuildRequest.ProtoReflect.Descriptor instead.
+
+<a name="WatchBuildRequest.GetName"></a>
+### func \(\*WatchBuildRequest\) GetName
+
+```go
+func (x *WatchBuildRequest) GetName() string
+```
+
+
+
+<a name="WatchBuildRequest.ProtoMessage"></a>
+### func \(\*WatchBuildRequest\) ProtoMessage
+
+```go
+func (*WatchBuildRequest) ProtoMessage()
+```
+
+
+
+<a name="WatchBuildRequest.ProtoReflect"></a>
+### func \(\*WatchBuildRequest\) ProtoReflect
+
+```go
+func (x *WatchBuildRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="WatchBuildRequest.Reset"></a>
+### func \(\*WatchBuildRequest\) Reset
+
+```go
+func (x *WatchBuildRequest) Reset()
+```
+
+
+
+<a name="WatchBuildRequest.String"></a>
+### func \(\*WatchBuildRequest\) String
+
+```go
+func (x *WatchBuildRequest) String() string
+```
+
+
+
+<a name="WatchBuildResponse"></a>
+## type WatchBuildResponse
+
+
+
+```go
+type WatchBuildResponse struct {
+
+    // Current state of the Build at this point in the stream.
+    Build *Build `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
+    // The type of change that triggered this event.
+    Type v1.EventType `protobuf:"varint,2,opt,name=type,proto3,enum=blanketops.common.v1.EventType" json:"type,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="WatchBuildResponse.Descriptor"></a>
+### func \(\*WatchBuildResponse\) Descriptor
+
+```go
+func (*WatchBuildResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use WatchBuildResponse.ProtoReflect.Descriptor instead.
+
+<a name="WatchBuildResponse.GetBuild"></a>
+### func \(\*WatchBuildResponse\) GetBuild
+
+```go
+func (x *WatchBuildResponse) GetBuild() *Build
+```
+
+
+
+<a name="WatchBuildResponse.GetType"></a>
+### func \(\*WatchBuildResponse\) GetType
+
+```go
+func (x *WatchBuildResponse) GetType() v1.EventType
+```
+
+
+
+<a name="WatchBuildResponse.ProtoMessage"></a>
+### func \(\*WatchBuildResponse\) ProtoMessage
+
+```go
+func (*WatchBuildResponse) ProtoMessage()
+```
+
+
+
+<a name="WatchBuildResponse.ProtoReflect"></a>
+### func \(\*WatchBuildResponse\) ProtoReflect
+
+```go
+func (x *WatchBuildResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="WatchBuildResponse.Reset"></a>
+### func \(\*WatchBuildResponse\) Reset
+
+```go
+func (x *WatchBuildResponse) Reset()
+```
+
+
+
+<a name="WatchBuildResponse.String"></a>
+### func \(\*WatchBuildResponse\) String
+
+```go
+func (x *WatchBuildResponse) String() string
+```
+
+
+
+<a name="WatchDeploymentRequest"></a>
+## type WatchDeploymentRequest
+
+WatchDeployment — stream phase transitions for a Deployment CR. Delivers an event for every controller reconciliation loop.
+
+```go
+type WatchDeploymentRequest struct {
+
+    // Name of the Deployment CR to watch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="WatchDeploymentRequest.Descriptor"></a>
+### func \(\*WatchDeploymentRequest\) Descriptor
+
+```go
+func (*WatchDeploymentRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use WatchDeploymentRequest.ProtoReflect.Descriptor instead.
+
+<a name="WatchDeploymentRequest.GetName"></a>
+### func \(\*WatchDeploymentRequest\) GetName
+
+```go
+func (x *WatchDeploymentRequest) GetName() string
+```
+
+
+
+<a name="WatchDeploymentRequest.ProtoMessage"></a>
+### func \(\*WatchDeploymentRequest\) ProtoMessage
+
+```go
+func (*WatchDeploymentRequest) ProtoMessage()
+```
+
+
+
+<a name="WatchDeploymentRequest.ProtoReflect"></a>
+### func \(\*WatchDeploymentRequest\) ProtoReflect
+
+```go
+func (x *WatchDeploymentRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="WatchDeploymentRequest.Reset"></a>
+### func \(\*WatchDeploymentRequest\) Reset
+
+```go
+func (x *WatchDeploymentRequest) Reset()
+```
+
+
+
+<a name="WatchDeploymentRequest.String"></a>
+### func \(\*WatchDeploymentRequest\) String
+
+```go
+func (x *WatchDeploymentRequest) String() string
+```
+
+
+
+<a name="WatchDeploymentResponse"></a>
+## type WatchDeploymentResponse
+
+
+
+```go
+type WatchDeploymentResponse struct {
+
+    // Current state of the Deployment at this point in the stream.
+    Deployment *Deployment `protobuf:"bytes,1,opt,name=deployment,proto3" json:"deployment,omitempty"`
+    // The type of change that triggered this event.
+    Type v1.EventType `protobuf:"varint,2,opt,name=type,proto3,enum=blanketops.common.v1.EventType" json:"type,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="WatchDeploymentResponse.Descriptor"></a>
+### func \(\*WatchDeploymentResponse\) Descriptor
+
+```go
+func (*WatchDeploymentResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use WatchDeploymentResponse.ProtoReflect.Descriptor instead.
+
+<a name="WatchDeploymentResponse.GetDeployment"></a>
+### func \(\*WatchDeploymentResponse\) GetDeployment
+
+```go
+func (x *WatchDeploymentResponse) GetDeployment() *Deployment
+```
+
+
+
+<a name="WatchDeploymentResponse.GetType"></a>
+### func \(\*WatchDeploymentResponse\) GetType
+
+```go
+func (x *WatchDeploymentResponse) GetType() v1.EventType
+```
+
+
+
+<a name="WatchDeploymentResponse.ProtoMessage"></a>
+### func \(\*WatchDeploymentResponse\) ProtoMessage
+
+```go
+func (*WatchDeploymentResponse) ProtoMessage()
+```
+
+
+
+<a name="WatchDeploymentResponse.ProtoReflect"></a>
+### func \(\*WatchDeploymentResponse\) ProtoReflect
+
+```go
+func (x *WatchDeploymentResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="WatchDeploymentResponse.Reset"></a>
+### func \(\*WatchDeploymentResponse\) Reset
+
+```go
+func (x *WatchDeploymentResponse) Reset()
+```
+
+
+
+<a name="WatchDeploymentResponse.String"></a>
+### func \(\*WatchDeploymentResponse\) String
+
+```go
+func (x *WatchDeploymentResponse) String() string
+```
+
+
+
+<a name="WatchEnvironmentRequest"></a>
+## type WatchEnvironmentRequest
+
+
+
+```go
+type WatchEnvironmentRequest struct {
+
+    // Name of the Environment CR to watch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="WatchEnvironmentRequest.Descriptor"></a>
+### func \(\*WatchEnvironmentRequest\) Descriptor
+
+```go
+func (*WatchEnvironmentRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use WatchEnvironmentRequest.ProtoReflect.Descriptor instead.
+
+<a name="WatchEnvironmentRequest.GetName"></a>
+### func \(\*WatchEnvironmentRequest\) GetName
+
+```go
+func (x *WatchEnvironmentRequest) GetName() string
+```
+
+
+
+<a name="WatchEnvironmentRequest.ProtoMessage"></a>
+### func \(\*WatchEnvironmentRequest\) ProtoMessage
+
+```go
+func (*WatchEnvironmentRequest) ProtoMessage()
+```
+
+
+
+<a name="WatchEnvironmentRequest.ProtoReflect"></a>
+### func \(\*WatchEnvironmentRequest\) ProtoReflect
+
+```go
+func (x *WatchEnvironmentRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="WatchEnvironmentRequest.Reset"></a>
+### func \(\*WatchEnvironmentRequest\) Reset
+
+```go
+func (x *WatchEnvironmentRequest) Reset()
+```
+
+
+
+<a name="WatchEnvironmentRequest.String"></a>
+### func \(\*WatchEnvironmentRequest\) String
+
+```go
+func (x *WatchEnvironmentRequest) String() string
+```
+
+
+
+<a name="WatchEnvironmentResponse"></a>
+## type WatchEnvironmentResponse
+
+
+
+```go
+type WatchEnvironmentResponse struct {
+
+    // Current state of the Environment at this point in the stream.
+    Environment *Environment `protobuf:"bytes,1,opt,name=environment,proto3" json:"environment,omitempty"`
+    // The type of change that triggered this event.
+    Type v1.EventType `protobuf:"varint,2,opt,name=type,proto3,enum=blanketops.common.v1.EventType" json:"type,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="WatchEnvironmentResponse.Descriptor"></a>
+### func \(\*WatchEnvironmentResponse\) Descriptor
+
+```go
+func (*WatchEnvironmentResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use WatchEnvironmentResponse.ProtoReflect.Descriptor instead.
+
+<a name="WatchEnvironmentResponse.GetEnvironment"></a>
+### func \(\*WatchEnvironmentResponse\) GetEnvironment
+
+```go
+func (x *WatchEnvironmentResponse) GetEnvironment() *Environment
+```
+
+
+
+<a name="WatchEnvironmentResponse.GetType"></a>
+### func \(\*WatchEnvironmentResponse\) GetType
+
+```go
+func (x *WatchEnvironmentResponse) GetType() v1.EventType
+```
+
+
+
+<a name="WatchEnvironmentResponse.ProtoMessage"></a>
+### func \(\*WatchEnvironmentResponse\) ProtoMessage
+
+```go
+func (*WatchEnvironmentResponse) ProtoMessage()
+```
+
+
+
+<a name="WatchEnvironmentResponse.ProtoReflect"></a>
+### func \(\*WatchEnvironmentResponse\) ProtoReflect
+
+```go
+func (x *WatchEnvironmentResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="WatchEnvironmentResponse.Reset"></a>
+### func \(\*WatchEnvironmentResponse\) Reset
+
+```go
+func (x *WatchEnvironmentResponse) Reset()
+```
+
+
+
+<a name="WatchEnvironmentResponse.String"></a>
+### func \(\*WatchEnvironmentResponse\) String
+
+```go
+func (x *WatchEnvironmentResponse) String() string
+```
+
+
+
+<a name="WatchPackageRequest"></a>
+## type WatchPackageRequest
+
+WatchPackage — stream phase transitions for a Package CR. Delivers an event for every controller reconciliation loop.
+
+```go
+type WatchPackageRequest struct {
+
+    // Name of the Package CR to watch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="WatchPackageRequest.Descriptor"></a>
+### func \(\*WatchPackageRequest\) Descriptor
+
+```go
+func (*WatchPackageRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use WatchPackageRequest.ProtoReflect.Descriptor instead.
+
+<a name="WatchPackageRequest.GetName"></a>
+### func \(\*WatchPackageRequest\) GetName
+
+```go
+func (x *WatchPackageRequest) GetName() string
+```
+
+
+
+<a name="WatchPackageRequest.ProtoMessage"></a>
+### func \(\*WatchPackageRequest\) ProtoMessage
+
+```go
+func (*WatchPackageRequest) ProtoMessage()
+```
+
+
+
+<a name="WatchPackageRequest.ProtoReflect"></a>
+### func \(\*WatchPackageRequest\) ProtoReflect
+
+```go
+func (x *WatchPackageRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="WatchPackageRequest.Reset"></a>
+### func \(\*WatchPackageRequest\) Reset
+
+```go
+func (x *WatchPackageRequest) Reset()
+```
+
+
+
+<a name="WatchPackageRequest.String"></a>
+### func \(\*WatchPackageRequest\) String
+
+```go
+func (x *WatchPackageRequest) String() string
+```
+
+
+
+<a name="WatchPackageResponse"></a>
+## type WatchPackageResponse
+
+
+
+```go
+type WatchPackageResponse struct {
+
+    // Current state of the Package at this point in the stream.
+    Package *Package `protobuf:"bytes,1,opt,name=package,proto3" json:"package,omitempty"`
+    // The type of change that triggered this event.
+    Type v1.EventType `protobuf:"varint,2,opt,name=type,proto3,enum=blanketops.common.v1.EventType" json:"type,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="WatchPackageResponse.Descriptor"></a>
+### func \(\*WatchPackageResponse\) Descriptor
+
+```go
+func (*WatchPackageResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use WatchPackageResponse.ProtoReflect.Descriptor instead.
+
+<a name="WatchPackageResponse.GetPackage"></a>
+### func \(\*WatchPackageResponse\) GetPackage
+
+```go
+func (x *WatchPackageResponse) GetPackage() *Package
+```
+
+
+
+<a name="WatchPackageResponse.GetType"></a>
+### func \(\*WatchPackageResponse\) GetType
+
+```go
+func (x *WatchPackageResponse) GetType() v1.EventType
+```
+
+
+
+<a name="WatchPackageResponse.ProtoMessage"></a>
+### func \(\*WatchPackageResponse\) ProtoMessage
+
+```go
+func (*WatchPackageResponse) ProtoMessage()
+```
+
+
+
+<a name="WatchPackageResponse.ProtoReflect"></a>
+### func \(\*WatchPackageResponse\) ProtoReflect
+
+```go
+func (x *WatchPackageResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="WatchPackageResponse.Reset"></a>
+### func \(\*WatchPackageResponse\) Reset
+
+```go
+func (x *WatchPackageResponse) Reset()
+```
+
+
+
+<a name="WatchPackageResponse.String"></a>
+### func \(\*WatchPackageResponse\) String
+
+```go
+func (x *WatchPackageResponse) String() string
+```
+
+
+
+<a name="WatchServiceUnitRequest"></a>
+## type WatchServiceUnitRequest
+
+WatchServiceUnit — stream phase transitions for a ServiceUnit CR. Delivers an event for every controller reconciliation loop.
+
+```go
+type WatchServiceUnitRequest struct {
+
+    // Name of the ServiceUnit CR to watch.
+    Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="WatchServiceUnitRequest.Descriptor"></a>
+### func \(\*WatchServiceUnitRequest\) Descriptor
+
+```go
+func (*WatchServiceUnitRequest) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use WatchServiceUnitRequest.ProtoReflect.Descriptor instead.
+
+<a name="WatchServiceUnitRequest.GetName"></a>
+### func \(\*WatchServiceUnitRequest\) GetName
+
+```go
+func (x *WatchServiceUnitRequest) GetName() string
+```
+
+
+
+<a name="WatchServiceUnitRequest.ProtoMessage"></a>
+### func \(\*WatchServiceUnitRequest\) ProtoMessage
+
+```go
+func (*WatchServiceUnitRequest) ProtoMessage()
+```
+
+
+
+<a name="WatchServiceUnitRequest.ProtoReflect"></a>
+### func \(\*WatchServiceUnitRequest\) ProtoReflect
+
+```go
+func (x *WatchServiceUnitRequest) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="WatchServiceUnitRequest.Reset"></a>
+### func \(\*WatchServiceUnitRequest\) Reset
+
+```go
+func (x *WatchServiceUnitRequest) Reset()
+```
+
+
+
+<a name="WatchServiceUnitRequest.String"></a>
+### func \(\*WatchServiceUnitRequest\) String
+
+```go
+func (x *WatchServiceUnitRequest) String() string
+```
+
+
+
+<a name="WatchServiceUnitResponse"></a>
+## type WatchServiceUnitResponse
+
+
+
+```go
+type WatchServiceUnitResponse struct {
+
+    // Current state of the ServiceUnit at this point in the stream.
+    ServiceUnit *ServiceUnit `protobuf:"bytes,1,opt,name=service_unit,json=serviceUnit,proto3" json:"service_unit,omitempty"`
+    // The type of change that triggered this event.
+    Type v1.EventType `protobuf:"varint,2,opt,name=type,proto3,enum=blanketops.common.v1.EventType" json:"type,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="WatchServiceUnitResponse.Descriptor"></a>
+### func \(\*WatchServiceUnitResponse\) Descriptor
+
+```go
+func (*WatchServiceUnitResponse) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use WatchServiceUnitResponse.ProtoReflect.Descriptor instead.
+
+<a name="WatchServiceUnitResponse.GetServiceUnit"></a>
+### func \(\*WatchServiceUnitResponse\) GetServiceUnit
+
+```go
+func (x *WatchServiceUnitResponse) GetServiceUnit() *ServiceUnit
+```
+
+
+
+<a name="WatchServiceUnitResponse.GetType"></a>
+### func \(\*WatchServiceUnitResponse\) GetType
+
+```go
+func (x *WatchServiceUnitResponse) GetType() v1.EventType
+```
+
+
+
+<a name="WatchServiceUnitResponse.ProtoMessage"></a>
+### func \(\*WatchServiceUnitResponse\) ProtoMessage
+
+```go
+func (*WatchServiceUnitResponse) ProtoMessage()
+```
+
+
+
+<a name="WatchServiceUnitResponse.ProtoReflect"></a>
+### func \(\*WatchServiceUnitResponse\) ProtoReflect
+
+```go
+func (x *WatchServiceUnitResponse) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="WatchServiceUnitResponse.Reset"></a>
+### func \(\*WatchServiceUnitResponse\) Reset
+
+```go
+func (x *WatchServiceUnitResponse) Reset()
+```
+
+
+
+<a name="WatchServiceUnitResponse.String"></a>
+### func \(\*WatchServiceUnitResponse\) String
+
+```go
+func (x *WatchServiceUnitResponse) String() string
+```
+
+
+
+<a name="WorkloadReference"></a>
+## type WorkloadReference
+
+Reference to the concrete workload materialized at runtime. Opaque to the contract — identifies any runtime object.
+
+```go
+type WorkloadReference struct {
+
+    // API version of the workload object. e.g. apps/v1, serving.knative.dev/v1
+    ApiVersion string `protobuf:"bytes,1,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
+    // Kind of the workload object. e.g. Deployment, Service
+    Kind string `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
+    // Name of the workload object.
+    Name string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+    // Namespace of the workload object.
+    Namespace string `protobuf:"bytes,4,opt,name=namespace,proto3" json:"namespace,omitempty"`
+    // contains filtered or unexported fields
+}
+```
+
+<a name="WorkloadReference.Descriptor"></a>
+### func \(\*WorkloadReference\) Descriptor
+
+```go
+func (*WorkloadReference) Descriptor() ([]byte, []int)
+```
+
+Deprecated: Use WorkloadReference.ProtoReflect.Descriptor instead.
+
+<a name="WorkloadReference.GetApiVersion"></a>
+### func \(\*WorkloadReference\) GetApiVersion
+
+```go
+func (x *WorkloadReference) GetApiVersion() string
+```
+
+
+
+<a name="WorkloadReference.GetKind"></a>
+### func \(\*WorkloadReference\) GetKind
+
+```go
+func (x *WorkloadReference) GetKind() string
+```
+
+
+
+<a name="WorkloadReference.GetName"></a>
+### func \(\*WorkloadReference\) GetName
+
+```go
+func (x *WorkloadReference) GetName() string
+```
+
+
+
+<a name="WorkloadReference.GetNamespace"></a>
+### func \(\*WorkloadReference\) GetNamespace
+
+```go
+func (x *WorkloadReference) GetNamespace() string
+```
+
+
+
+<a name="WorkloadReference.ProtoMessage"></a>
+### func \(\*WorkloadReference\) ProtoMessage
+
+```go
+func (*WorkloadReference) ProtoMessage()
+```
+
+
+
+<a name="WorkloadReference.ProtoReflect"></a>
+### func \(\*WorkloadReference\) ProtoReflect
+
+```go
+func (x *WorkloadReference) ProtoReflect() protoreflect.Message
+```
+
+
+
+<a name="WorkloadReference.Reset"></a>
+### func \(\*WorkloadReference\) Reset
+
+```go
+func (x *WorkloadReference) Reset()
+```
+
+
+
+<a name="WorkloadReference.String"></a>
+### func \(\*WorkloadReference\) String
+
+```go
+func (x *WorkloadReference) String() string
+```
+
+
+
+Generated by [gomarkdoc](<https://github.com/princjef/gomarkdoc>)
