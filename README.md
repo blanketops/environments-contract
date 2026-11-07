@@ -10,10 +10,36 @@ This repository contains `versioned protobuf schemas` that describe:
 - build and deployment workflows.
 - routing and service units.
 - external events and sources.
+- secure supply chains — image builds, signatures and admission policy.
 
 These contracts are the source of truth for how BlanketOps components communicate and reason about environments.
 
 ---
+
+## Repository Structure
+
+```tree
+blanketops/
+├── environments/
+│ ├── v1alpha1/
+│ ├── v1beta1/
+│ └── v1/
+├── events/
+│ ├── v1alpha1/
+│ ├── v1beta1/
+│ └── v1/
+└── networks/
+│ ├── v1alpha1/
+│ ├── v1beta1/
+│ ├── v1/
+│ 
+├── sources/
+│ ├── v1alpha1/
+│ ├── v1beta1/
+│ └── v1/
+└── supplychain/
+  └── v1alpha1/
+```
 
 Each API group:
 
@@ -28,9 +54,9 @@ This repository follows semantic versioning at the contract level.
 
 ### API versions
 
-- `v1alpha1` — experimental, breaking changes allowed
-- `v1beta1` — feature complete, limited breaking changes
-- `v1` — stable, backward-compatible
+- `v1alpha1` — experimental, breaking changes allowed.
+- `v1beta1` — feature complete, limited breaking changes.
+- `v1` — stable, backward-compatible.
 
 Once an API reaches `v1`:
 
@@ -46,8 +72,8 @@ This repository uses Buf for protobuf generation and consistency.
 
 Relevant files:
 
-- `buf.gen.yaml` — generation configuration
-- `buf.gen` — generation output settings
+- `buf.gen.yaml` — generation configuration.
+- `buf.gen` — generation output settings.
 
 Generated Go code is committed intentionally to:
 

@@ -54,7 +54,7 @@
 
 ## Affected surface
 
-* Domain: `<!-- environments / events / sources / networks / common -->`
+* Domain: `<!-- environments / events / sources / networks / supplychain / common -->`
 * API version(s): `<!-- v1alpha1 / v1beta1 / v1 -->`
 * Messages / services / enums:
 

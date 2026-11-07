@@ -1,0 +1,55 @@
+/*
+   Copyright 2026 The BlanketOps Authors.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   	http://www.apache.org/licenses/LICENSE-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package blanketops.supplychain.v1alpha1;
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "BlanketOps.SupplyChain.V1Alpha1";
+option go_package = "github.com/blanketops/environments-contract/blanketops/supplychain/v1alpha1;v1alpha1";
+option java_outer_classname = "TypesProto";
+option java_package = "v1alpha1.blanketops.supplychain";
+
+// =============================================================================
+// Types shared by every resource in supplychain.blanketops.dev/v1alpha1.
+// =============================================================================
+
+// LocalObjectRef references an object in the same namespace.
+message LocalObjectRef {
+  // Name of the object.
+  string name = 1;
+}
+
+// Condition is one observed aspect of a resource, for UI and automation
+// consumers. Mirrors the Kubernetes metav1.Condition shape.
+message Condition {
+  // Condition type. e.g. Ready, Available, Progressing, Degraded
+  string type = 1;
+
+  // Condition status: True, False, or Unknown.
+  string status = 2;
+
+  // Machine-readable reason for the last transition.
+  string reason = 3;
+
+  // Human-readable detail about the last transition.
+  string message = 4;
+
+  // When the condition last changed status.
+  google.protobuf.Timestamp last_transition_time = 5;
+
+  // Generation of the spec this condition was computed from.
+  int64 observed_generation = 6;
+}

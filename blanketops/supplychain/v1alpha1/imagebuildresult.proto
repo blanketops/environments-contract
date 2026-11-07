@@ -1,0 +1,211 @@
+/*
+   Copyright 2026 The BlanketOps Authors.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   	http://www.apache.org/licenses/LICENSE-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package blanketops.supplychain.v1alpha1;
+
+import "blanketops/common/v1/metadata.proto";
+import "blanketops/common/v1/supplychain.proto";
+import "blanketops/supplychain/v1alpha1/types.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "BlanketOps.SupplyChain.V1Alpha1";
+option go_package = "github.com/blanketops/environments-contract/blanketops/supplychain/v1alpha1;v1alpha1";
+option java_outer_classname = "ImageBuildResultProto";
+option java_package = "v1alpha1.blanketops.supplychain";
+
+// =============================================================================
+// ImageBuildResult
+//
+// The durable record of a completed ImageBuild execution. Created by the
+// controller once the PipelineRun reaches a terminal state, and survives
+// PipelineRun pruning. One ImageBuildResult per ImageBuild.
+// Owned by an ImageBuild CR via ownerReference (cascade delete).
+// Read-only through the API — the controller is the only writer.
+//
+// APIVersion: supplychain.blanketops.dev/v1alpha1
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Resource
+// -----------------------------------------------------------------------------
+
+message ImageBuildResult {
+  // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
+  blanketops.common.v1.Metadata metadata = 1;
+
+  // What this result records. Set by the controller on creation.
+  ImageBuildResultSpec spec = 2;
+
+  // Observed state set by the controller. Never manually edited.
+  ImageBuildResultStatus status = 3;
+}
+
+// -----------------------------------------------------------------------------
+// Spec
+// -----------------------------------------------------------------------------
+
+message ImageBuildResultSpec {
+  // The ImageBuild that produced this result.
+  LocalObjectRef image_build_ref = 1;
+
+  // The Tekton PipelineRun that was executed.
+  LocalObjectRef pipeline_run_ref = 2;
+}
+
+// -----------------------------------------------------------------------------
+// Status (observed state)
+// -----------------------------------------------------------------------------
+
+message ImageBuildResultStatus {
+  // Terminal phase of the build execution.
+  blanketops.common.v1.ImageBuildResultPhase phase = 1;
+
+  // Conditions for UI and automation consumers.
+  repeated Condition conditions = 2;
+
+  // Machine-readable reason for the terminal phase.
+  string reason = 3;
+
+  // Fully qualified image reference that was built.
+  // Kept at the top level for quick access — also in build_results.
+  string image_url = 4;
+
+  // Content-addressable digest of the built image.
+  // Kept at the top level for quick access — also in build_results.
+  string image_digest = 5;
+
+  // Name of the Tekton PipelineRun that was executed.
+  // Stored here so the result remains useful after PipelineRun pruning.
+  string pipeline_run_name = 6;
+
+  // When the PipelineRun reached a terminal state.
+  google.protobuf.Timestamp completed_at = 7;
+
+  // Full structured output of all pipeline steps — git, build, security,
+  // policy.
+  PipelineStepResults build_results = 8;
+}
+
+// -----------------------------------------------------------------------------
+// Step results
+// -----------------------------------------------------------------------------
+
+// PipelineStepResults holds the structured output of the pipeline steps.
+// Populated from PipelineRun results after a terminal state is reached.
+message PipelineStepResults {
+  // ── Git provenance ───────────────────────────────────────────────────────
+
+  // Full git commit SHA that was cloned.
+  string commit = 1;
+
+  // Date of the commit, as reported by git.
+  string committer_date = 2;
+
+  // Git repository URL.
+  string repo_url = 3;
+
+  // ── Build ────────────────────────────────────────────────────────────────
+
+  // Fully qualified image reference that was built and pushed.
+  string image_url = 4;
+
+  // Content-addressable digest of the built image.
+  string image_digest = 5;
+
+  // ── Security gates ───────────────────────────────────────────────────────
+
+  // PASS or FAIL from the Trivy vulnerability scan.
+  string trivy_scan_summary = 6;
+
+  // Number of CRITICAL vulnerabilities found.
+  int32 trivy_critical_count = 7;
+
+  // Number of HIGH vulnerabilities found.
+  int32 trivy_high_count = 8;
+
+  // Total HIGH + CRITICAL count.
+  int32 trivy_total_count = 9;
+
+  // Path to the SARIF report in the pipeline workspace.
+  string trivy_sarif_path = 10;
+
+  // SonarQube quality gate result. Empty when the step did not run.
+  string sonar_gate_status = 11;
+
+  // ── Policy ───────────────────────────────────────────────────────────────
+
+  // PASS when the build's last step verified the pushed image the way
+  // admission does: keyless signature and authorization attestation by the
+  // SupplyChain's ServiceAccount. Empty when that step did not run or did
+  // not pass.
+  string policy_verification = 12;
+
+  // Certificate identity the signature and the attestation were verified
+  // against.
+  string verified_signer = 13;
+}
+
+// -----------------------------------------------------------------------------
+// Requests / Responses
+// -----------------------------------------------------------------------------
+
+// GetImageBuildResult — fetch an ImageBuildResult by name.
+message GetImageBuildResultRequest {
+  // Name of the ImageBuildResult CR to fetch.
+  string name = 1;
+}
+
+message GetImageBuildResultResponse {
+  ImageBuildResult image_build_result = 1;
+}
+
+// ListImageBuildResults — list ImageBuildResult CRs with optional filtering
+// and paging.
+message ListImageBuildResultsRequest {
+  // Filter by terminal phase.
+  optional blanketops.common.v1.ImageBuildResultPhase phase = 1;
+
+  // Filter by the ImageBuild that produced the result.
+  optional string image_build = 2;
+
+  // Maximum number of results to return. Server may return fewer.
+  optional int32 page_size = 3;
+
+  // Token from a previous ListImageBuildResultsResponse.next_page_token.
+  // Omit for the first request.
+  optional string page_token = 4;
+}
+
+message ListImageBuildResultsResponse {
+  // The list of ImageBuildResult CRs matching the request filters.
+  repeated ImageBuildResult image_build_results = 1;
+
+  // Token to retrieve the next page. Empty if no more results.
+  optional string next_page_token = 2;
+}
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
+// Read-only — results are written by the controller and removed with their
+// ImageBuild.
+service ImageBuildResultService {
+  // Fetch an ImageBuildResult CR by name.
+  rpc GetImageBuildResult(GetImageBuildResultRequest) returns (GetImageBuildResultResponse);
+
+  // List ImageBuildResult CRs with optional phase/image-build filter and paging.
+  rpc ListImageBuildResults(ListImageBuildResultsRequest) returns (ListImageBuildResultsResponse);
+}

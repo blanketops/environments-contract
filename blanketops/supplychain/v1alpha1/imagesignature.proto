@@ -1,0 +1,169 @@
+/*
+   Copyright 2026 The BlanketOps Authors.
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   	http://www.apache.org/licenses/LICENSE-2.0
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+syntax = "proto3";
+
+package blanketops.supplychain.v1alpha1;
+
+import "blanketops/common/v1/metadata.proto";
+import "blanketops/common/v1/supplychain.proto";
+import "blanketops/supplychain/v1alpha1/types.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "BlanketOps.SupplyChain.V1Alpha1";
+option go_package = "github.com/blanketops/environments-contract/blanketops/supplychain/v1alpha1;v1alpha1";
+option java_outer_classname = "ImageSignatureProto";
+option java_package = "v1alpha1.blanketops.supplychain";
+
+// =============================================================================
+// ImageSignature
+//
+// The cryptographic audit record of a signed image. Created by the
+// controller after a successful PipelineRun. Carries the full signing
+// identity, the Fulcio certificate and the Rekor log index.
+// Owned by an ImageBuild CR via ownerReference (cascade delete).
+// Read-only through the API — the controller is the only writer.
+//
+// APIVersion: supplychain.blanketops.dev/v1alpha1
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Resource
+// -----------------------------------------------------------------------------
+
+message ImageSignature {
+  // Standard BlanketOps metadata (name, namespace, labels, ownerRef).
+  blanketops.common.v1.Metadata metadata = 1;
+
+  // What was signed, by whom and against which sigstore.
+  // Set by the controller on creation.
+  ImageSignatureSpec spec = 2;
+
+  // Observed state set by the controller. Never manually edited.
+  ImageSignatureStatus status = 3;
+}
+
+// -----------------------------------------------------------------------------
+// Spec
+// -----------------------------------------------------------------------------
+
+message ImageSignatureSpec {
+  // Fully qualified image reference that was signed.
+  // e.g. docker.io/nkanyezisolutions/for-kaniko-app:abc123
+  string image = 1;
+
+  // Content-addressable digest of the image at time of signing.
+  // e.g. sha256:abc123...
+  string digest = 2;
+
+  // Identity of the ServiceAccount that signed, sourced from the Fulcio
+  // certificate subject.
+  // e.g. system:serviceaccount:default:supply-chain-runner
+  string signed_by = 3;
+
+  // Fulcio CA that issued the ephemeral signing certificate.
+  string fulcio_url = 4;
+
+  // Rekor transparency log where the signature was recorded.
+  string rekor_url = 5;
+
+  // Name of the SupplyChain that governed this build.
+  string supply_chain = 6;
+
+  // Name of the ImageBuild that produced this signature.
+  string image_build = 7;
+}
+
+// -----------------------------------------------------------------------------
+// Status (observed state)
+// -----------------------------------------------------------------------------
+
+message ImageSignatureStatus {
+  // Current signing phase. Set by the controller.
+  blanketops.common.v1.ImageSignaturePhase phase = 1;
+
+  // Rekor transparency log entry index.
+  // Populated after successful attestation.
+  int64 rekor_log_index = 2;
+
+  // PEM-encoded Fulcio ephemeral certificate used to sign.
+  // Stored for audit — the private key is discarded after signing.
+  string certificate = 3;
+
+  // When the image was signed.
+  google.protobuf.Timestamp signed_at = 4;
+
+  // Conditions for UI and automation consumers.
+  repeated Condition conditions = 5;
+}
+
+// -----------------------------------------------------------------------------
+// Requests / Responses
+// -----------------------------------------------------------------------------
+
+// GetImageSignature — fetch an ImageSignature by name.
+message GetImageSignatureRequest {
+  // Name of the ImageSignature CR to fetch.
+  string name = 1;
+}
+
+message GetImageSignatureResponse {
+  ImageSignature image_signature = 1;
+}
+
+// ListImageSignatures — list ImageSignature CRs with optional filtering and
+// paging.
+message ListImageSignaturesRequest {
+  // Filter by current signing phase.
+  optional blanketops.common.v1.ImageSignaturePhase phase = 1;
+
+  // Filter by the SupplyChain that governed the build.
+  optional string supply_chain = 2;
+
+  // Filter by the ImageBuild that produced the signature.
+  optional string image_build = 3;
+
+  // Filter by image digest.
+  // e.g. sha256:abc123...
+  optional string digest = 4;
+
+  // Maximum number of results to return. Server may return fewer.
+  optional int32 page_size = 5;
+
+  // Token from a previous ListImageSignaturesResponse.next_page_token.
+  // Omit for the first request.
+  optional string page_token = 6;
+}
+
+message ListImageSignaturesResponse {
+  // The list of ImageSignature CRs matching the request filters.
+  repeated ImageSignature image_signatures = 1;
+
+  // Token to retrieve the next page. Empty if no more results.
+  optional string next_page_token = 2;
+}
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
+// Read-only — signatures are written by the controller and removed with
+// their ImageBuild.
+service ImageSignatureService {
+  // Fetch an ImageSignature CR by name.
+  rpc GetImageSignature(GetImageSignatureRequest) returns (GetImageSignatureResponse);
+
+  // List ImageSignature CRs with optional phase/supply-chain/image-build/digest
+  // filter and paging.
+  rpc ListImageSignatures(ListImageSignaturesRequest) returns (ListImageSignaturesResponse);
+}
