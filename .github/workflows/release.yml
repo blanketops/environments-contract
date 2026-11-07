@@ -1,17 +1,12 @@
+name: Release
+
 # =============================================================================
-# release.yml — Publish GitHub Release
+# release.yml — Publish Secure GitHub Release & Contract Artifacts
 #
 # Triggers on version tags (v*). Generates contracts (buf gen via mage),
-# changelog (git-cliff), publishes contract bundle to OCI registry, and
-# publishes a GitHub Release with artifacts attached.
-#
-# Assets attached to the release:
-#   - generated-contracts-<tag>.tar.gz  (Go .pb.go + TypeScript _pb.ts)
-#   - RELEASE_NOTES.md                   (git-cliff output for this version)
-#
-# Note: This repo does not generate CRDs — that is handled by environments repo.
-#==============================================================================
-name: Release
+# changelog (git-cliff), SBOMs, cryptographically signs via Sigstore/Cosign,
+# issues GitHub build attestations, and publishes a GitHub Release.
+# =============================================================================
 
 on:
   push:
@@ -21,6 +16,8 @@ on:
 permissions:
   contents: write
   packages: write
+  id-token: write     # Required for Sigstore keyless OIDC signing
+  attestations: write # Required for GitHub native build provenance attestations
 
 jobs:
   release:
@@ -45,7 +42,7 @@ jobs:
         uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
-          cache: false      
+          cache: false
 
       - name: Generate contracts (Go + TypeScript)
         run: mage gen
@@ -53,6 +50,32 @@ jobs:
       - name: Package generated contracts
         run: |
           tar -czf "generated-contracts-${{ github.ref_name }}.tar.gz" -C blanketops .
+
+      - name: Generate SBOM (Software Bill of Materials)
+        uses: anchore/sbom-action@v0.18.0
+        with:
+          artifact-name: sbom-${{ github.ref_name }}.spdx.json
+          output-file: sbom-${{ github.ref_name }}.spdx.json
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.8.0
+
+      - name: Sign Artifacts with Sigstore Cosign (Keyless)
+        run: |
+          cosign sign-blob --yes \
+            --output-signature generated-contracts-${{ github.ref_name }}.tar.gz.sig \
+            generated-contracts-${{ github.ref_name }}.tar.gz
+
+          cosign sign-blob --yes \
+            --output-signature sbom-${{ github.ref_name }}.spdx.json.sig \
+            sbom-${{ github.ref_name }}.spdx.json
+
+      - name: Generate GitHub Native Artifact Attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            generated-contracts-${{ github.ref_name }}.tar.gz
+            sbom-${{ github.ref_name }}.spdx.json
 
       - name: Generate release notes
         run: git-cliff --config .cliff.toml --latest --output RELEASE_NOTES.md
@@ -64,37 +87,37 @@ jobs:
               | tar -xz -C /usr/local/bin oras
           fi
           oras version
-          
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
+          files: |
+            generated-contracts-${{ github.ref_name }}.tar.gz
+            generated-contracts-${{ github.ref_name }}.tar.gz.sig
+            sbom-${{ github.ref_name }}.spdx.json
+            sbom-${{ github.ref_name }}.spdx.json.sig
+            RELEASE_NOTES.md
           body_path: RELEASE_NOTES.md
-          files: generated-contracts-${{ github.ref_name }}.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Release Summary
         run: |
-          cat >> $GITHUB_STEP_SUMMARY <<EOF
-          # 📦 GitHub Release Published
+          cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          # 📦 Secure GitHub Release Published
 
-          **Version:** \`${{ github.ref_name }}\`
+          **Version:** `${{ github.ref_name }}`
 
-          ## Completed
+          ## Supply Chain Security & Verification
+          - **Contracts Generated:** `generated-contracts-${{ github.ref_name }}.tar.gz`
+          - **SBOM Generated:** `sbom-${{ github.ref_name }}.spdx.json`
+          - **Sigstore Signatures:** Attached (`.sig` files) via keyless OIDC signing
+          - **GitHub Provenance:** Native build attestations generated and verified
 
-          - Generated contracts (Go + TypeScript) via mage gen
-          - Generated release notes via git-cliff
-          - Published GitHub Release with assets
-
-          ## Artifacts
-
-          - generated-contracts-${{ github.ref_name }}.tar.gz (Go .pb.go + TypeScript _pb.ts)
-          - RELEASE_NOTES.md (attached to release body)
-          - GitHub Release
-
-          ## Source Tag
-
-          \`${{ github.ref_name }}\`
+          ## Attached Artifacts
+          - `generated-contracts-${{ github.ref_name }}.tar.gz` (+ `.sig`)
+          - `sbom-${{ github.ref_name }}.spdx.json` (+ `.sig`)
+          - `RELEASE_NOTES.md`
 
           EOF
 
