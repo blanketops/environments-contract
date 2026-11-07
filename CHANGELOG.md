@@ -1,3 +1,17 @@
+## [0.6.5] - 2026-11-07
+
+### 🚀 Features
+
+- *(types)* Add supplychain group to v1alpha1
+- *(proto)* Regenerate protobuf with StoreName field
+
+### 📚 Documentation
+
+- Auto-generate code documentation [skip ci] (#204)
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.6.4
 ## [0.6.4] - 2026-11-07
 
 ### 💼 Other
@@ -7,6 +21,7 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Sync develop with main after release/v0.6.3
+- *(release)* Update changelog for v0.6.4 (#199)
 ## [0.6.3] - 2026-11-07
 
 ### 💼 Other
