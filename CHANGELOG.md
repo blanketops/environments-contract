@@ -1,3 +1,13 @@
+## [0.6.7] - 2026-11-20
+
+### ⚙️ Miscellaneous Tasks
+
+- *(ci)* Bump blanketops/environments-bots from 0.1.0 to 0.1.1
+- Sync develop with main after release/v0.6.6
+
+### 💼 Other
+
+- Merge release/v0.6.7 into main
 ## [0.6.6] - 2026-11-11
 
 ### ⚙️ Miscellaneous Tasks
@@ -5,6 +15,7 @@
 - *(ci)* Bump actions/attest-build-provenance from 2 to 4
 - *(ci)* Bump anchore/sbom-action from 0.18.0 to 0.24.3
 - Sync develop with main after release/v0.6.5
+- *(release)* Update changelog for v0.6.6 (#210)
 ## [0.6.5] - 2026-11-07
 
 ### 🚀 Features
