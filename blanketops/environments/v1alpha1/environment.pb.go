@@ -109,16 +109,11 @@ func (x *Environment) GetStatus() *EnvironmentStatus {
 
 // Contract
 // EnvironmentContract — platform-level bindings declared per environment.
-// Drives ESO ClusterSecretStore selection at reconciliation time.
-// Each composed CR owns its own credential secrets — this declares only
-// which provider backs the environment so the platform can select the
-// correct ClusterSecretStore. Users may reference their own store by
-// setting provider accordingly.
+// Carries the external secrets backend selection and provider-specific
+// store configuration used to provision/select the backing secret store.
 type EnvironmentContract struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// External secrets backend for this environment.
-	// Drives ESO ClusterSecretStore selection.
-	// Each CR manages its own credential secrets independently.
+	// External secrets backend and provider configuration for this environment.
 	SecretStore   *v1.SecretStore `protobuf:"bytes,1,opt,name=secret_store,json=secretStore,proto3" json:"secret_store,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -193,11 +188,13 @@ type EnvironmentSpec struct {
 	// Git repository associated with this environment.
 	// The GitRepository CR owns branch, owner, and clone config.
 	GitRepository *ObjectRef `protobuf:"bytes,12,opt,name=git_repository,json=gitRepository,proto3" json:"git_repository,omitempty"`
-	// Platform-level bindings — secret store provider selection.
+	// Platform-level bindings — secret store selection and provider config.
 	Contract *EnvironmentContract `protobuf:"bytes,13,opt,name=contract,proto3" json:"contract,omitempty"`
 	// GitHub event source for this environment.
 	// The GitHubEvent CR owns webhook event routing and Argo Events config.
-	GitHubEvent   *ObjectRef `protobuf:"bytes,14,opt,name=git_hub_event,json=gitHubEvent,proto3" json:"git_hub_event,omitempty"`
+	GitHubEvent *ObjectRef `protobuf:"bytes,14,opt,name=git_hub_event,json=gitHubEvent,proto3" json:"git_hub_event,omitempty"`
+	// Domain binding for this environment. Optional.
+	Domain        *ObjectRef `protobuf:"bytes,15,opt,name=domain,proto3" json:"domain,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -326,6 +323,13 @@ func (x *EnvironmentSpec) GetContract() *EnvironmentContract {
 func (x *EnvironmentSpec) GetGitHubEvent() *ObjectRef {
 	if x != nil {
 		return x.GitHubEvent
+	}
+	return nil
+}
+
+func (x *EnvironmentSpec) GetDomain() *ObjectRef {
+	if x != nil {
+		return x.Domain
 	}
 	return nil
 }
@@ -1238,7 +1242,7 @@ const file_blanketops_environments_v1alpha1_environment_proto_rawDesc = "" +
 	"\x04spec\x18\x02 \x01(\v21.blanketops.environments.v1alpha1.EnvironmentSpecR\x04spec\x12K\n" +
 	"\x06status\x18\x03 \x01(\v23.blanketops.environments.v1alpha1.EnvironmentStatusR\x06status\"[\n" +
 	"\x13EnvironmentContract\x12D\n" +
-	"\fsecret_store\x18\x01 \x01(\v2!.blanketops.common.v1.SecretStoreR\vsecretStore\"\xe3\x06\n" +
+	"\fsecret_store\x18\x01 \x01(\v2!.blanketops.common.v1.SecretStoreR\vsecretStore\"\xa8\a\n" +
 	"\x0fEnvironmentSpec\x12)\n" +
 	"\x10application_name\x18\x01 \x01(\tR\x0fapplicationName\x12\x16\n" +
 	"\x06branch\x18\x02 \x01(\tR\x06branch\x12\x1b\n" +
@@ -1256,7 +1260,8 @@ const file_blanketops_environments_v1alpha1_environment_proto_rawDesc = "" +
 	"\x05build\x18\v \x01(\v2+.blanketops.environments.v1alpha1.ObjectRefR\x05build\x12R\n" +
 	"\x0egit_repository\x18\f \x01(\v2+.blanketops.environments.v1alpha1.ObjectRefR\rgitRepository\x12Q\n" +
 	"\bcontract\x18\r \x01(\v25.blanketops.environments.v1alpha1.EnvironmentContractR\bcontract\x12O\n" +
-	"\rgit_hub_event\x18\x0e \x01(\v2+.blanketops.environments.v1alpha1.ObjectRefR\vgitHubEvent\"\x1f\n" +
+	"\rgit_hub_event\x18\x0e \x01(\v2+.blanketops.environments.v1alpha1.ObjectRefR\vgitHubEvent\x12C\n" +
+	"\x06domain\x18\x0f \x01(\v2+.blanketops.environments.v1alpha1.ObjectRefR\x06domain\"\x1f\n" +
 	"\tObjectRef\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\"\x87\x02\n" +
 	"\x11EnvironmentStatus\x12<\n" +
@@ -1380,40 +1385,41 @@ var file_blanketops_environments_v1alpha1_environment_proto_depIdxs = []int32{
 	3,  // 10: blanketops.environments.v1alpha1.EnvironmentSpec.git_repository:type_name -> blanketops.environments.v1alpha1.ObjectRef
 	1,  // 11: blanketops.environments.v1alpha1.EnvironmentSpec.contract:type_name -> blanketops.environments.v1alpha1.EnvironmentContract
 	3,  // 12: blanketops.environments.v1alpha1.EnvironmentSpec.git_hub_event:type_name -> blanketops.environments.v1alpha1.ObjectRef
-	23, // 13: blanketops.environments.v1alpha1.EnvironmentStatus.phase:type_name -> blanketops.common.v1.EnvironmentPhase
-	5,  // 14: blanketops.environments.v1alpha1.EnvironmentStatus.conditions:type_name -> blanketops.environments.v1alpha1.EnvironmentCondition
-	24, // 15: blanketops.environments.v1alpha1.EnvironmentStatus.last_updated_at:type_name -> google.protobuf.Timestamp
-	24, // 16: blanketops.environments.v1alpha1.EnvironmentCondition.last_transition_time:type_name -> google.protobuf.Timestamp
-	2,  // 17: blanketops.environments.v1alpha1.CreateEnvironmentRequest.spec:type_name -> blanketops.environments.v1alpha1.EnvironmentSpec
-	0,  // 18: blanketops.environments.v1alpha1.CreateEnvironmentResponse.environment:type_name -> blanketops.environments.v1alpha1.Environment
-	0,  // 19: blanketops.environments.v1alpha1.GetEnvironmentResponse.environment:type_name -> blanketops.environments.v1alpha1.Environment
-	0,  // 20: blanketops.environments.v1alpha1.UpdateEnvironmentRequest.environment:type_name -> blanketops.environments.v1alpha1.Environment
-	0,  // 21: blanketops.environments.v1alpha1.UpdateEnvironmentResponse.environment:type_name -> blanketops.environments.v1alpha1.Environment
-	0,  // 22: blanketops.environments.v1alpha1.PatchEnvironmentResponse.environment:type_name -> blanketops.environments.v1alpha1.Environment
-	23, // 23: blanketops.environments.v1alpha1.ListEnvironmentsRequest.phase:type_name -> blanketops.common.v1.EnvironmentPhase
-	22, // 24: blanketops.environments.v1alpha1.ListEnvironmentsRequest.environment_type:type_name -> blanketops.common.v1.EnvironmentType
-	0,  // 25: blanketops.environments.v1alpha1.ListEnvironmentsResponse.environments:type_name -> blanketops.environments.v1alpha1.Environment
-	0,  // 26: blanketops.environments.v1alpha1.WatchEnvironmentResponse.environment:type_name -> blanketops.environments.v1alpha1.Environment
-	25, // 27: blanketops.environments.v1alpha1.WatchEnvironmentResponse.type:type_name -> blanketops.common.v1.EventType
-	6,  // 28: blanketops.environments.v1alpha1.EnvironmentService.CreateEnvironment:input_type -> blanketops.environments.v1alpha1.CreateEnvironmentRequest
-	8,  // 29: blanketops.environments.v1alpha1.EnvironmentService.GetEnvironment:input_type -> blanketops.environments.v1alpha1.GetEnvironmentRequest
-	10, // 30: blanketops.environments.v1alpha1.EnvironmentService.UpdateEnvironment:input_type -> blanketops.environments.v1alpha1.UpdateEnvironmentRequest
-	12, // 31: blanketops.environments.v1alpha1.EnvironmentService.PatchEnvironment:input_type -> blanketops.environments.v1alpha1.PatchEnvironmentRequest
-	14, // 32: blanketops.environments.v1alpha1.EnvironmentService.ListEnvironments:input_type -> blanketops.environments.v1alpha1.ListEnvironmentsRequest
-	16, // 33: blanketops.environments.v1alpha1.EnvironmentService.DeleteEnvironment:input_type -> blanketops.environments.v1alpha1.DeleteEnvironmentRequest
-	18, // 34: blanketops.environments.v1alpha1.EnvironmentService.WatchEnvironment:input_type -> blanketops.environments.v1alpha1.WatchEnvironmentRequest
-	7,  // 35: blanketops.environments.v1alpha1.EnvironmentService.CreateEnvironment:output_type -> blanketops.environments.v1alpha1.CreateEnvironmentResponse
-	9,  // 36: blanketops.environments.v1alpha1.EnvironmentService.GetEnvironment:output_type -> blanketops.environments.v1alpha1.GetEnvironmentResponse
-	11, // 37: blanketops.environments.v1alpha1.EnvironmentService.UpdateEnvironment:output_type -> blanketops.environments.v1alpha1.UpdateEnvironmentResponse
-	13, // 38: blanketops.environments.v1alpha1.EnvironmentService.PatchEnvironment:output_type -> blanketops.environments.v1alpha1.PatchEnvironmentResponse
-	15, // 39: blanketops.environments.v1alpha1.EnvironmentService.ListEnvironments:output_type -> blanketops.environments.v1alpha1.ListEnvironmentsResponse
-	17, // 40: blanketops.environments.v1alpha1.EnvironmentService.DeleteEnvironment:output_type -> blanketops.environments.v1alpha1.DeleteEnvironmentResponse
-	19, // 41: blanketops.environments.v1alpha1.EnvironmentService.WatchEnvironment:output_type -> blanketops.environments.v1alpha1.WatchEnvironmentResponse
-	35, // [35:42] is the sub-list for method output_type
-	28, // [28:35] is the sub-list for method input_type
-	28, // [28:28] is the sub-list for extension type_name
-	28, // [28:28] is the sub-list for extension extendee
-	0,  // [0:28] is the sub-list for field type_name
+	3,  // 13: blanketops.environments.v1alpha1.EnvironmentSpec.domain:type_name -> blanketops.environments.v1alpha1.ObjectRef
+	23, // 14: blanketops.environments.v1alpha1.EnvironmentStatus.phase:type_name -> blanketops.common.v1.EnvironmentPhase
+	5,  // 15: blanketops.environments.v1alpha1.EnvironmentStatus.conditions:type_name -> blanketops.environments.v1alpha1.EnvironmentCondition
+	24, // 16: blanketops.environments.v1alpha1.EnvironmentStatus.last_updated_at:type_name -> google.protobuf.Timestamp
+	24, // 17: blanketops.environments.v1alpha1.EnvironmentCondition.last_transition_time:type_name -> google.protobuf.Timestamp
+	2,  // 18: blanketops.environments.v1alpha1.CreateEnvironmentRequest.spec:type_name -> blanketops.environments.v1alpha1.EnvironmentSpec
+	0,  // 19: blanketops.environments.v1alpha1.CreateEnvironmentResponse.environment:type_name -> blanketops.environments.v1alpha1.Environment
+	0,  // 20: blanketops.environments.v1alpha1.GetEnvironmentResponse.environment:type_name -> blanketops.environments.v1alpha1.Environment
+	0,  // 21: blanketops.environments.v1alpha1.UpdateEnvironmentRequest.environment:type_name -> blanketops.environments.v1alpha1.Environment
+	0,  // 22: blanketops.environments.v1alpha1.UpdateEnvironmentResponse.environment:type_name -> blanketops.environments.v1alpha1.Environment
+	0,  // 23: blanketops.environments.v1alpha1.PatchEnvironmentResponse.environment:type_name -> blanketops.environments.v1alpha1.Environment
+	23, // 24: blanketops.environments.v1alpha1.ListEnvironmentsRequest.phase:type_name -> blanketops.common.v1.EnvironmentPhase
+	22, // 25: blanketops.environments.v1alpha1.ListEnvironmentsRequest.environment_type:type_name -> blanketops.common.v1.EnvironmentType
+	0,  // 26: blanketops.environments.v1alpha1.ListEnvironmentsResponse.environments:type_name -> blanketops.environments.v1alpha1.Environment
+	0,  // 27: blanketops.environments.v1alpha1.WatchEnvironmentResponse.environment:type_name -> blanketops.environments.v1alpha1.Environment
+	25, // 28: blanketops.environments.v1alpha1.WatchEnvironmentResponse.type:type_name -> blanketops.common.v1.EventType
+	6,  // 29: blanketops.environments.v1alpha1.EnvironmentService.CreateEnvironment:input_type -> blanketops.environments.v1alpha1.CreateEnvironmentRequest
+	8,  // 30: blanketops.environments.v1alpha1.EnvironmentService.GetEnvironment:input_type -> blanketops.environments.v1alpha1.GetEnvironmentRequest
+	10, // 31: blanketops.environments.v1alpha1.EnvironmentService.UpdateEnvironment:input_type -> blanketops.environments.v1alpha1.UpdateEnvironmentRequest
+	12, // 32: blanketops.environments.v1alpha1.EnvironmentService.PatchEnvironment:input_type -> blanketops.environments.v1alpha1.PatchEnvironmentRequest
+	14, // 33: blanketops.environments.v1alpha1.EnvironmentService.ListEnvironments:input_type -> blanketops.environments.v1alpha1.ListEnvironmentsRequest
+	16, // 34: blanketops.environments.v1alpha1.EnvironmentService.DeleteEnvironment:input_type -> blanketops.environments.v1alpha1.DeleteEnvironmentRequest
+	18, // 35: blanketops.environments.v1alpha1.EnvironmentService.WatchEnvironment:input_type -> blanketops.environments.v1alpha1.WatchEnvironmentRequest
+	7,  // 36: blanketops.environments.v1alpha1.EnvironmentService.CreateEnvironment:output_type -> blanketops.environments.v1alpha1.CreateEnvironmentResponse
+	9,  // 37: blanketops.environments.v1alpha1.EnvironmentService.GetEnvironment:output_type -> blanketops.environments.v1alpha1.GetEnvironmentResponse
+	11, // 38: blanketops.environments.v1alpha1.EnvironmentService.UpdateEnvironment:output_type -> blanketops.environments.v1alpha1.UpdateEnvironmentResponse
+	13, // 39: blanketops.environments.v1alpha1.EnvironmentService.PatchEnvironment:output_type -> blanketops.environments.v1alpha1.PatchEnvironmentResponse
+	15, // 40: blanketops.environments.v1alpha1.EnvironmentService.ListEnvironments:output_type -> blanketops.environments.v1alpha1.ListEnvironmentsResponse
+	17, // 41: blanketops.environments.v1alpha1.EnvironmentService.DeleteEnvironment:output_type -> blanketops.environments.v1alpha1.DeleteEnvironmentResponse
+	19, // 42: blanketops.environments.v1alpha1.EnvironmentService.WatchEnvironment:output_type -> blanketops.environments.v1alpha1.WatchEnvironmentResponse
+	36, // [36:43] is the sub-list for method output_type
+	29, // [29:36] is the sub-list for method input_type
+	29, // [29:29] is the sub-list for extension type_name
+	29, // [29:29] is the sub-list for extension extendee
+	0,  // [0:29] is the sub-list for field type_name
 }
 
 func init() { file_blanketops_environments_v1alpha1_environment_proto_init() }

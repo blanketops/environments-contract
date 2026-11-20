@@ -1,9 +1,27 @@
+## [0.6.8] - 2026-11-20
+
+### 🚀 Features
+
+- *(contract)* Generate Go contracts for v0.6.8 [skip ci] (#217)
+
+### 📚 Documentation
+
+- Auto-generate code documentation [skip ci] (#218)
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.6.7
+
+### 💼 Other
+
+- Merge release/v0.6.8 into main
 ## [0.6.7] - 2026-11-20
 
 ### ⚙️ Miscellaneous Tasks
 
 - *(ci)* Bump blanketops/environments-bots from 0.1.0 to 0.1.1
 - Sync develop with main after release/v0.6.6
+- *(release)* Update changelog for v0.6.7 (#214)
 
 ### 💼 Other
 
