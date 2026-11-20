@@ -315,6 +315,7 @@ import "github.com/blanketops/environments-contract/blanketops/environments/v1al
   - [func \(x \*EnvironmentSpec\) GetContract\(\) \*EnvironmentContract](<#EnvironmentSpec.GetContract>)
   - [func \(x \*EnvironmentSpec\) GetDeployment\(\) \*ObjectRef](<#EnvironmentSpec.GetDeployment>)
   - [func \(x \*EnvironmentSpec\) GetDescription\(\) string](<#EnvironmentSpec.GetDescription>)
+  - [func \(x \*EnvironmentSpec\) GetDomain\(\) \*ObjectRef](<#EnvironmentSpec.GetDomain>)
   - [func \(x \*EnvironmentSpec\) GetEnvironmentType\(\) \*v1.EnvironmentType](<#EnvironmentSpec.GetEnvironmentType>)
   - [func \(x \*EnvironmentSpec\) GetGitHubEvent\(\) \*ObjectRef](<#EnvironmentSpec.GetGitHubEvent>)
   - [func \(x \*EnvironmentSpec\) GetGitOwner\(\) string](<#EnvironmentSpec.GetGitOwner>)
@@ -4232,14 +4233,12 @@ func (x *EnvironmentCondition) String() string
 <a name="EnvironmentContract"></a>
 ## type EnvironmentContract
 
-Contract EnvironmentContract — platform\-level bindings declared per environment. Drives ESO ClusterSecretStore selection at reconciliation time. Each composed CR owns its own credential secrets — this declares only which provider backs the environment so the platform can select the correct ClusterSecretStore. Users may reference their own store by setting provider accordingly.
+Contract EnvironmentContract — platform\-level bindings declared per environment. Carries the external secrets backend selection and provider\-specific store configuration used to provision/select the backing secret store.
 
 ```go
 type EnvironmentContract struct {
 
-    // External secrets backend for this environment.
-    // Drives ESO ClusterSecretStore selection.
-    // Each CR manages its own credential secrets independently.
+    // External secrets backend and provider configuration for this environment.
     SecretStore *v1.SecretStore `protobuf:"bytes,1,opt,name=secret_store,json=secretStore,proto3" json:"secret_store,omitempty"`
     // contains filtered or unexported fields
 }
@@ -4424,11 +4423,13 @@ type EnvironmentSpec struct {
     // Git repository associated with this environment.
     // The GitRepository CR owns branch, owner, and clone config.
     GitRepository *ObjectRef `protobuf:"bytes,12,opt,name=git_repository,json=gitRepository,proto3" json:"git_repository,omitempty"`
-    // Platform-level bindings — secret store provider selection.
+    // Platform-level bindings — secret store selection and provider config.
     Contract *EnvironmentContract `protobuf:"bytes,13,opt,name=contract,proto3" json:"contract,omitempty"`
     // GitHub event source for this environment.
     // The GitHubEvent CR owns webhook event routing and Argo Events config.
     GitHubEvent *ObjectRef `protobuf:"bytes,14,opt,name=git_hub_event,json=gitHubEvent,proto3" json:"git_hub_event,omitempty"`
+    // Domain binding for this environment. Optional.
+    Domain *ObjectRef `protobuf:"bytes,15,opt,name=domain,proto3" json:"domain,omitempty"`
     // contains filtered or unexported fields
 }
 ```
@@ -4492,6 +4493,15 @@ func (x *EnvironmentSpec) GetDeployment() *ObjectRef
 
 ```go
 func (x *EnvironmentSpec) GetDescription() string
+```
+
+
+
+<a name="EnvironmentSpec.GetDomain"></a>
+### func \(\*EnvironmentSpec\) GetDomain
+
+```go
+func (x *EnvironmentSpec) GetDomain() *ObjectRef
 ```
 
 
