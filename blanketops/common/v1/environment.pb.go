@@ -345,21 +345,329 @@ func (x *SecretStoreProvider) GetSecretStoreProvider() SecretStoreProvider_Secre
 	return SecretStoreProvider_SECRET_STORE_PROVIDER_UNSPECIFIED
 }
 
-// SecretStore declares which external secrets backend backs a resource.
+// VaultSecretStoreConfig declares HashiCorp Vault connection and auth settings.
+type VaultSecretStoreConfig struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Address            string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Path               string                 `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	Role               string                 `protobuf:"bytes,3,opt,name=role,proto3" json:"role,omitempty"`
+	MountPath          string                 `protobuf:"bytes,4,opt,name=mount_path,json=mountPath,proto3" json:"mount_path,omitempty"`
+	Version            string                 `protobuf:"bytes,5,opt,name=version,proto3" json:"version,omitempty"`
+	ServiceAccountName string                 `protobuf:"bytes,6,opt,name=service_account_name,json=serviceAccountName,proto3" json:"service_account_name,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *VaultSecretStoreConfig) Reset() {
+	*x = VaultSecretStoreConfig{}
+	mi := &file_blanketops_common_v1_environment_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VaultSecretStoreConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VaultSecretStoreConfig) ProtoMessage() {}
+
+func (x *VaultSecretStoreConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_blanketops_common_v1_environment_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VaultSecretStoreConfig.ProtoReflect.Descriptor instead.
+func (*VaultSecretStoreConfig) Descriptor() ([]byte, []int) {
+	return file_blanketops_common_v1_environment_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *VaultSecretStoreConfig) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *VaultSecretStoreConfig) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *VaultSecretStoreConfig) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
+func (x *VaultSecretStoreConfig) GetMountPath() string {
+	if x != nil {
+		return x.MountPath
+	}
+	return ""
+}
+
+func (x *VaultSecretStoreConfig) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
+func (x *VaultSecretStoreConfig) GetServiceAccountName() string {
+	if x != nil {
+		return x.ServiceAccountName
+	}
+	return ""
+}
+
+// AWSSecretStoreConfig declares AWS Secrets Manager / Parameter Store settings.
+type AWSSecretStoreConfig struct {
+	state                   protoimpl.MessageState `protogen:"open.v1"`
+	Region                  string                 `protobuf:"bytes,1,opt,name=region,proto3" json:"region,omitempty"`
+	Service                 string                 `protobuf:"bytes,2,opt,name=service,proto3" json:"service,omitempty"`
+	Role                    string                 `protobuf:"bytes,3,opt,name=role,proto3" json:"role,omitempty"`
+	ServiceAccountName      string                 `protobuf:"bytes,4,opt,name=service_account_name,json=serviceAccountName,proto3" json:"service_account_name,omitempty"`
+	ServiceAccountNamespace string                 `protobuf:"bytes,5,opt,name=service_account_namespace,json=serviceAccountNamespace,proto3" json:"service_account_namespace,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
+}
+
+func (x *AWSSecretStoreConfig) Reset() {
+	*x = AWSSecretStoreConfig{}
+	mi := &file_blanketops_common_v1_environment_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AWSSecretStoreConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AWSSecretStoreConfig) ProtoMessage() {}
+
+func (x *AWSSecretStoreConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_blanketops_common_v1_environment_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AWSSecretStoreConfig.ProtoReflect.Descriptor instead.
+func (*AWSSecretStoreConfig) Descriptor() ([]byte, []int) {
+	return file_blanketops_common_v1_environment_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *AWSSecretStoreConfig) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+func (x *AWSSecretStoreConfig) GetService() string {
+	if x != nil {
+		return x.Service
+	}
+	return ""
+}
+
+func (x *AWSSecretStoreConfig) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
+func (x *AWSSecretStoreConfig) GetServiceAccountName() string {
+	if x != nil {
+		return x.ServiceAccountName
+	}
+	return ""
+}
+
+func (x *AWSSecretStoreConfig) GetServiceAccountNamespace() string {
+	if x != nil {
+		return x.ServiceAccountNamespace
+	}
+	return ""
+}
+
+// AzureSecretStoreConfig declares Azure Key Vault connection and auth settings.
+type AzureSecretStoreConfig struct {
+	state                   protoimpl.MessageState `protogen:"open.v1"`
+	VaultUrl                string                 `protobuf:"bytes,1,opt,name=vault_url,json=vaultUrl,proto3" json:"vault_url,omitempty"`
+	TenantId                string                 `protobuf:"bytes,2,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	EnvironmentType         string                 `protobuf:"bytes,3,opt,name=environment_type,json=environmentType,proto3" json:"environment_type,omitempty"`
+	ServiceAccountName      string                 `protobuf:"bytes,4,opt,name=service_account_name,json=serviceAccountName,proto3" json:"service_account_name,omitempty"`
+	ServiceAccountNamespace string                 `protobuf:"bytes,5,opt,name=service_account_namespace,json=serviceAccountNamespace,proto3" json:"service_account_namespace,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
+}
+
+func (x *AzureSecretStoreConfig) Reset() {
+	*x = AzureSecretStoreConfig{}
+	mi := &file_blanketops_common_v1_environment_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AzureSecretStoreConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AzureSecretStoreConfig) ProtoMessage() {}
+
+func (x *AzureSecretStoreConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_blanketops_common_v1_environment_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AzureSecretStoreConfig.ProtoReflect.Descriptor instead.
+func (*AzureSecretStoreConfig) Descriptor() ([]byte, []int) {
+	return file_blanketops_common_v1_environment_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *AzureSecretStoreConfig) GetVaultUrl() string {
+	if x != nil {
+		return x.VaultUrl
+	}
+	return ""
+}
+
+func (x *AzureSecretStoreConfig) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *AzureSecretStoreConfig) GetEnvironmentType() string {
+	if x != nil {
+		return x.EnvironmentType
+	}
+	return ""
+}
+
+func (x *AzureSecretStoreConfig) GetServiceAccountName() string {
+	if x != nil {
+		return x.ServiceAccountName
+	}
+	return ""
+}
+
+func (x *AzureSecretStoreConfig) GetServiceAccountNamespace() string {
+	if x != nil {
+		return x.ServiceAccountNamespace
+	}
+	return ""
+}
+
+// GCPSecretStoreConfig declares GCP Secret Manager connection and auth settings.
+type GCPSecretStoreConfig struct {
+	state                   protoimpl.MessageState `protogen:"open.v1"`
+	ProjectId               string                 `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
+	ServiceAccountName      string                 `protobuf:"bytes,2,opt,name=service_account_name,json=serviceAccountName,proto3" json:"service_account_name,omitempty"`
+	ServiceAccountNamespace string                 `protobuf:"bytes,3,opt,name=service_account_namespace,json=serviceAccountNamespace,proto3" json:"service_account_namespace,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
+}
+
+func (x *GCPSecretStoreConfig) Reset() {
+	*x = GCPSecretStoreConfig{}
+	mi := &file_blanketops_common_v1_environment_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GCPSecretStoreConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GCPSecretStoreConfig) ProtoMessage() {}
+
+func (x *GCPSecretStoreConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_blanketops_common_v1_environment_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GCPSecretStoreConfig.ProtoReflect.Descriptor instead.
+func (*GCPSecretStoreConfig) Descriptor() ([]byte, []int) {
+	return file_blanketops_common_v1_environment_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GCPSecretStoreConfig) GetProjectId() string {
+	if x != nil {
+		return x.ProjectId
+	}
+	return ""
+}
+
+func (x *GCPSecretStoreConfig) GetServiceAccountName() string {
+	if x != nil {
+		return x.ServiceAccountName
+	}
+	return ""
+}
+
+func (x *GCPSecretStoreConfig) GetServiceAccountNamespace() string {
+	if x != nil {
+		return x.ServiceAccountNamespace
+	}
+	return ""
+}
+
+// SecretStore declares which external secrets backend backs a resource and
+// carries the active provider's configuration.
 type SecretStore struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Backend provider. Drives ESO ClusterSecretStore selection.
 	Provider *SecretStoreProvider `protobuf:"bytes,1,opt,name=provider,proto3" json:"provider,omitempty"`
 	// Optional override for the SecretStore name.
 	// If empty, the platform default for the provider is used.
-	StoreName     string `protobuf:"bytes,2,opt,name=store_name,json=storeName,proto3" json:"store_name,omitempty"`
+	StoreName string `protobuf:"bytes,2,opt,name=store_name,json=storeName,proto3" json:"store_name,omitempty"`
+	// Types that are valid to be assigned to Config:
+	//
+	//	*SecretStore_Vault
+	//	*SecretStore_Aws
+	//	*SecretStore_Azure
+	//	*SecretStore_Gcp
+	Config        isSecretStore_Config `protobuf_oneof:"config"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SecretStore) Reset() {
 	*x = SecretStore{}
-	mi := &file_blanketops_common_v1_environment_proto_msgTypes[3]
+	mi := &file_blanketops_common_v1_environment_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -371,7 +679,7 @@ func (x *SecretStore) String() string {
 func (*SecretStore) ProtoMessage() {}
 
 func (x *SecretStore) ProtoReflect() protoreflect.Message {
-	mi := &file_blanketops_common_v1_environment_proto_msgTypes[3]
+	mi := &file_blanketops_common_v1_environment_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -384,7 +692,7 @@ func (x *SecretStore) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SecretStore.ProtoReflect.Descriptor instead.
 func (*SecretStore) Descriptor() ([]byte, []int) {
-	return file_blanketops_common_v1_environment_proto_rawDescGZIP(), []int{3}
+	return file_blanketops_common_v1_environment_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *SecretStore) GetProvider() *SecretStoreProvider {
@@ -400,6 +708,77 @@ func (x *SecretStore) GetStoreName() string {
 	}
 	return ""
 }
+
+func (x *SecretStore) GetConfig() isSecretStore_Config {
+	if x != nil {
+		return x.Config
+	}
+	return nil
+}
+
+func (x *SecretStore) GetVault() *VaultSecretStoreConfig {
+	if x != nil {
+		if x, ok := x.Config.(*SecretStore_Vault); ok {
+			return x.Vault
+		}
+	}
+	return nil
+}
+
+func (x *SecretStore) GetAws() *AWSSecretStoreConfig {
+	if x != nil {
+		if x, ok := x.Config.(*SecretStore_Aws); ok {
+			return x.Aws
+		}
+	}
+	return nil
+}
+
+func (x *SecretStore) GetAzure() *AzureSecretStoreConfig {
+	if x != nil {
+		if x, ok := x.Config.(*SecretStore_Azure); ok {
+			return x.Azure
+		}
+	}
+	return nil
+}
+
+func (x *SecretStore) GetGcp() *GCPSecretStoreConfig {
+	if x != nil {
+		if x, ok := x.Config.(*SecretStore_Gcp); ok {
+			return x.Gcp
+		}
+	}
+	return nil
+}
+
+type isSecretStore_Config interface {
+	isSecretStore_Config()
+}
+
+type SecretStore_Vault struct {
+	Vault *VaultSecretStoreConfig `protobuf:"bytes,3,opt,name=vault,proto3,oneof"`
+}
+
+type SecretStore_Aws struct {
+	Aws *AWSSecretStoreConfig `protobuf:"bytes,4,opt,name=aws,proto3,oneof"`
+}
+
+type SecretStore_Azure struct {
+	Azure *AzureSecretStoreConfig `protobuf:"bytes,5,opt,name=azure,proto3,oneof"`
+}
+
+type SecretStore_Gcp struct {
+	Gcp *GCPSecretStoreConfig `protobuf:"bytes,6,opt,name=gcp,proto3,oneof"`
+}
+
+func (*SecretStore_Vault) isSecretStore_Config() {}
+
+func (*SecretStore_Aws) isSecretStore_Config() {}
+
+func (*SecretStore_Azure) isSecretStore_Config() {}
+
+func (*SecretStore_Gcp) isSecretStore_Config() {}
 
 var File_blanketops_common_v1_environment_proto protoreflect.FileDescriptor
 
@@ -429,11 +808,41 @@ const file_blanketops_common_v1_environment_proto_rawDesc = "" +
 	"\x19SECRET_STORE_PROVIDER_AWS\x10\x01\x12\x1f\n" +
 	"\x1bSECRET_STORE_PROVIDER_VAULT\x10\x02\x12\x1d\n" +
 	"\x19SECRET_STORE_PROVIDER_GCP\x10\x03\x12\x1f\n" +
-	"\x1bSECRET_STORE_PROVIDER_AZURE\x10\x04\"s\n" +
+	"\x1bSECRET_STORE_PROVIDER_AZURE\x10\x04\"\xc5\x01\n" +
+	"\x16VaultSecretStoreConfig\x12\x18\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\x12\x12\n" +
+	"\x04path\x18\x02 \x01(\tR\x04path\x12\x12\n" +
+	"\x04role\x18\x03 \x01(\tR\x04role\x12\x1d\n" +
+	"\n" +
+	"mount_path\x18\x04 \x01(\tR\tmountPath\x12\x18\n" +
+	"\aversion\x18\x05 \x01(\tR\aversion\x120\n" +
+	"\x14service_account_name\x18\x06 \x01(\tR\x12serviceAccountName\"\xca\x01\n" +
+	"\x14AWSSecretStoreConfig\x12\x16\n" +
+	"\x06region\x18\x01 \x01(\tR\x06region\x12\x18\n" +
+	"\aservice\x18\x02 \x01(\tR\aservice\x12\x12\n" +
+	"\x04role\x18\x03 \x01(\tR\x04role\x120\n" +
+	"\x14service_account_name\x18\x04 \x01(\tR\x12serviceAccountName\x12:\n" +
+	"\x19service_account_namespace\x18\x05 \x01(\tR\x17serviceAccountNamespace\"\xeb\x01\n" +
+	"\x16AzureSecretStoreConfig\x12\x1b\n" +
+	"\tvault_url\x18\x01 \x01(\tR\bvaultUrl\x12\x1b\n" +
+	"\ttenant_id\x18\x02 \x01(\tR\btenantId\x12)\n" +
+	"\x10environment_type\x18\x03 \x01(\tR\x0fenvironmentType\x120\n" +
+	"\x14service_account_name\x18\x04 \x01(\tR\x12serviceAccountName\x12:\n" +
+	"\x19service_account_namespace\x18\x05 \x01(\tR\x17serviceAccountNamespace\"\xa3\x01\n" +
+	"\x14GCPSecretStoreConfig\x12\x1d\n" +
+	"\n" +
+	"project_id\x18\x01 \x01(\tR\tprojectId\x120\n" +
+	"\x14service_account_name\x18\x02 \x01(\tR\x12serviceAccountName\x12:\n" +
+	"\x19service_account_namespace\x18\x03 \x01(\tR\x17serviceAccountNamespace\"\x89\x03\n" +
 	"\vSecretStore\x12E\n" +
 	"\bprovider\x18\x01 \x01(\v2).blanketops.common.v1.SecretStoreProviderR\bprovider\x12\x1d\n" +
 	"\n" +
-	"store_name\x18\x02 \x01(\tR\tstoreNameBbZIgithub.com/blanketops/environments-contract/blanketops/common/v1;commonv1\xaa\x02\x14BlanketOps.Common.v1b\x06proto3"
+	"store_name\x18\x02 \x01(\tR\tstoreName\x12D\n" +
+	"\x05vault\x18\x03 \x01(\v2,.blanketops.common.v1.VaultSecretStoreConfigH\x00R\x05vault\x12>\n" +
+	"\x03aws\x18\x04 \x01(\v2*.blanketops.common.v1.AWSSecretStoreConfigH\x00R\x03aws\x12D\n" +
+	"\x05azure\x18\x05 \x01(\v2,.blanketops.common.v1.AzureSecretStoreConfigH\x00R\x05azure\x12>\n" +
+	"\x03gcp\x18\x06 \x01(\v2*.blanketops.common.v1.GCPSecretStoreConfigH\x00R\x03gcpB\b\n" +
+	"\x06configBbZIgithub.com/blanketops/environments-contract/blanketops/common/v1;commonv1\xaa\x02\x14BlanketOps.Common.v1b\x06proto3"
 
 var (
 	file_blanketops_common_v1_environment_proto_rawDescOnce sync.Once
@@ -448,7 +857,7 @@ func file_blanketops_common_v1_environment_proto_rawDescGZIP() []byte {
 }
 
 var file_blanketops_common_v1_environment_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_blanketops_common_v1_environment_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_blanketops_common_v1_environment_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_blanketops_common_v1_environment_proto_goTypes = []any{
 	(EnvironmentPhase_EnvironmentPhase)(0),       // 0: blanketops.common.v1.EnvironmentPhase.EnvironmentPhase
 	(EnvironmentType_EnvironmentType)(0),         // 1: blanketops.common.v1.EnvironmentType.EnvironmentType
@@ -456,18 +865,26 @@ var file_blanketops_common_v1_environment_proto_goTypes = []any{
 	(*EnvironmentPhase)(nil),                     // 3: blanketops.common.v1.EnvironmentPhase
 	(*EnvironmentType)(nil),                      // 4: blanketops.common.v1.EnvironmentType
 	(*SecretStoreProvider)(nil),                  // 5: blanketops.common.v1.SecretStoreProvider
-	(*SecretStore)(nil),                          // 6: blanketops.common.v1.SecretStore
+	(*VaultSecretStoreConfig)(nil),               // 6: blanketops.common.v1.VaultSecretStoreConfig
+	(*AWSSecretStoreConfig)(nil),                 // 7: blanketops.common.v1.AWSSecretStoreConfig
+	(*AzureSecretStoreConfig)(nil),               // 8: blanketops.common.v1.AzureSecretStoreConfig
+	(*GCPSecretStoreConfig)(nil),                 // 9: blanketops.common.v1.GCPSecretStoreConfig
+	(*SecretStore)(nil),                          // 10: blanketops.common.v1.SecretStore
 }
 var file_blanketops_common_v1_environment_proto_depIdxs = []int32{
 	0, // 0: blanketops.common.v1.EnvironmentPhase.phase:type_name -> blanketops.common.v1.EnvironmentPhase.EnvironmentPhase
 	1, // 1: blanketops.common.v1.EnvironmentType.type:type_name -> blanketops.common.v1.EnvironmentType.EnvironmentType
 	2, // 2: blanketops.common.v1.SecretStoreProvider.secret_store_provider:type_name -> blanketops.common.v1.SecretStoreProvider.SecretStoreProvider
 	5, // 3: blanketops.common.v1.SecretStore.provider:type_name -> blanketops.common.v1.SecretStoreProvider
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	6, // 4: blanketops.common.v1.SecretStore.vault:type_name -> blanketops.common.v1.VaultSecretStoreConfig
+	7, // 5: blanketops.common.v1.SecretStore.aws:type_name -> blanketops.common.v1.AWSSecretStoreConfig
+	8, // 6: blanketops.common.v1.SecretStore.azure:type_name -> blanketops.common.v1.AzureSecretStoreConfig
+	9, // 7: blanketops.common.v1.SecretStore.gcp:type_name -> blanketops.common.v1.GCPSecretStoreConfig
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_blanketops_common_v1_environment_proto_init() }
@@ -475,13 +892,19 @@ func file_blanketops_common_v1_environment_proto_init() {
 	if File_blanketops_common_v1_environment_proto != nil {
 		return
 	}
+	file_blanketops_common_v1_environment_proto_msgTypes[7].OneofWrappers = []any{
+		(*SecretStore_Vault)(nil),
+		(*SecretStore_Aws)(nil),
+		(*SecretStore_Azure)(nil),
+		(*SecretStore_Gcp)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_blanketops_common_v1_environment_proto_rawDesc), len(file_blanketops_common_v1_environment_proto_rawDesc)),
 			NumEnums:      3,
-			NumMessages:   4,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
