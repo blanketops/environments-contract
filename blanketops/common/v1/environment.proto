@@ -60,11 +60,54 @@ message SecretStoreProvider {
  }
   SecretStoreProvider secret_store_provider = 1;
 }
-// SecretStore declares which external secrets backend backs a resource.
+// VaultSecretStoreConfig declares HashiCorp Vault connection and auth settings.
+message VaultSecretStoreConfig {
+  string address = 1;
+  string path = 2;
+  string role = 3;
+  string mount_path = 4;
+  string version = 5;
+  string service_account_name = 6;
+}
+
+// AWSSecretStoreConfig declares AWS Secrets Manager / Parameter Store settings.
+message AWSSecretStoreConfig {
+  string region = 1;
+  string service = 2;
+  string role = 3;
+  string service_account_name = 4;
+  string service_account_namespace = 5;
+}
+
+// AzureSecretStoreConfig declares Azure Key Vault connection and auth settings.
+message AzureSecretStoreConfig {
+  string vault_url = 1;
+  string tenant_id = 2;
+  string environment_type = 3;
+  string service_account_name = 4;
+  string service_account_namespace = 5;
+}
+
+// GCPSecretStoreConfig declares GCP Secret Manager connection and auth settings.
+message GCPSecretStoreConfig {
+  string project_id = 1;
+  string service_account_name = 2;
+  string service_account_namespace = 3;
+}
+
+// SecretStore declares which external secrets backend backs a resource and
+// carries the active provider's configuration.
 message SecretStore {
   // Backend provider. Drives ESO ClusterSecretStore selection.
   SecretStoreProvider provider = 1;
   // Optional override for the SecretStore name.
   // If empty, the platform default for the provider is used.
   string store_name = 2;
+
+  oneof config {
+    VaultSecretStoreConfig vault = 3;
+    AWSSecretStoreConfig aws = 4;
+    AzureSecretStoreConfig azure = 5;
+    GCPSecretStoreConfig gcp = 6;
+  }
 }

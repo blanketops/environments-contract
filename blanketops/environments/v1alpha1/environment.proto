@@ -20,6 +20,7 @@ option csharp_namespace = "BlanketOps.Environments.V1Alpha1";
 option go_package = "github.com/blanketops/environments-contract/blanketops/environments/v1alpha1;v1alpha1";
 option java_outer_classname = "EnvironmentProto";
 option java_package = "v1alpha1.blanketops.environments";
+
 // Environment
 //
 // The envelope of the delivery chain: a versioned, isolated execution
@@ -37,19 +38,16 @@ message Environment {
   // Observed state set by the controller. Never manually edited.
   EnvironmentStatus status = 3;
 }
+
 // Contract
 // EnvironmentContract — platform-level bindings declared per environment.
-// Drives ESO ClusterSecretStore selection at reconciliation time.
-// Each composed CR owns its own credential secrets — this declares only
-// which provider backs the environment so the platform can select the
-// correct ClusterSecretStore. Users may reference their own store by
-// setting provider accordingly.
+// Carries the external secrets backend selection and provider-specific
+// store configuration used to provision/select the backing secret store.
 message EnvironmentContract {
-  // External secrets backend for this environment.
-  // Drives ESO ClusterSecretStore selection.
-  // Each CR manages its own credential secrets independently.
+  // External secrets backend and provider configuration for this environment.
   blanketops.common.v1.SecretStore secret_store = 1;
 }
+
 // Spec (intent)
 message EnvironmentSpec {
   // Human-readable application identifier.
@@ -81,12 +79,15 @@ message EnvironmentSpec {
   // Git repository associated with this environment.
   // The GitRepository CR owns branch, owner, and clone config.
   ObjectRef git_repository = 12;
-  // Platform-level bindings — secret store provider selection.
+  // Platform-level bindings — secret store selection and provider config.
   EnvironmentContract contract = 13;
   // GitHub event source for this environment.
   // The GitHubEvent CR owns webhook event routing and Argo Events config.
   ObjectRef git_hub_event = 14;
+  // Domain binding for this environment. Optional.
+  ObjectRef domain = 15;
 }
+
 // References (composition, not ownership)
 // Reference to a CR composed into this environment.
 // Resolved in the same namespace as the Environment.
@@ -94,6 +95,7 @@ message ObjectRef {
   // Name of the referenced CR.
   string name = 1;
 }
+
 // Status (observed state)
 message EnvironmentStatus {
   // Current aggregate phase. Set by the controller.
@@ -106,6 +108,7 @@ message EnvironmentStatus {
   // When the controller last updated this status.
   google.protobuf.Timestamp last_updated_at = 4;
 }
+
 message EnvironmentCondition {
   // Condition type. e.g. BuildReady, DeploymentReady, RouteReady
   string type = 1;
@@ -118,30 +121,37 @@ message EnvironmentCondition {
   // When the condition last changed status.
   google.protobuf.Timestamp last_transition_time = 5;
 }
+
 // Requests / Responses
 message CreateEnvironmentRequest {
   // Desired spec for the new Environment.
   EnvironmentSpec spec = 1;
 }
+
 message CreateEnvironmentResponse {
   // The created Environment including generated metadata and initial status.
   Environment environment = 1;
 }
+
 message GetEnvironmentRequest {
   // Name of the Environment CR to fetch.
   string name = 1;
 }
+
 message GetEnvironmentResponse {
   Environment environment = 1;
 }
+
 message UpdateEnvironmentRequest {
   // Full Environment object including metadata and desired spec.
   Environment environment = 1;
 }
+
 message UpdateEnvironmentResponse {
   // The updated Environment as observed by the controller.
   Environment environment = 1;
 }
+
 message PatchEnvironmentRequest {
   // Name of the Environment CR to patch.
   string name = 1;
@@ -149,10 +159,12 @@ message PatchEnvironmentRequest {
   // e.g. {"spec":{"version":"v1.3.0"}}
   string patch = 2;
 }
+
 message PatchEnvironmentResponse {
   // The patched Environment as observed by the controller.
   Environment environment = 1;
 }
+
 message ListEnvironmentsRequest {
   // Filter by current aggregate phase.
   optional blanketops.common.v1.EnvironmentPhase phase = 1;
@@ -166,30 +178,36 @@ message ListEnvironmentsRequest {
   // Omit for the first request.
   optional string page_token = 5;
 }
+
 message ListEnvironmentsResponse {
   // The list of Environment CRs matching the request filters.
   repeated Environment environments = 1;
   // Token to retrieve the next page. Empty if no more results.
   optional string next_page_token = 2;
 }
+
 message DeleteEnvironmentRequest {
   // Name of the Environment CR to delete.
   string name = 1;
 }
+
 message DeleteEnvironmentResponse {
   // True if the Environment was successfully deleted.
   bool success = 1;
 }
+
 message WatchEnvironmentRequest {
   // Name of the Environment CR to watch.
   string name = 1;
 }
+
 message WatchEnvironmentResponse {
   // Current state of the Environment at this point in the stream.
   Environment environment = 1;
   // The type of change that triggered this event.
   blanketops.common.v1.EventType type = 2;
 }
+
 // Service
 service EnvironmentService {
   // ── CRUD — aligned with BuildService pattern ─────────────────────────────
