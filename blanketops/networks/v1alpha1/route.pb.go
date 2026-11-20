@@ -158,9 +158,7 @@ type RouteSpec struct {
 	Runtime *v1.RouteRuntime `protobuf:"bytes,5,opt,name=runtime,proto3" json:"runtime,omitempty"`
 	// Required. The ServiceUnit this route exposes.
 	// Controller derives the ksvc/K8s service name by convention:
-	//
-	//	ksvc name == service_unit_ref.name
-	//
+	//   ksvc name == service_unit_ref.name
 	// No ServiceUnit status lookup required — convention is enforced
 	// by the ServiceUnit controller at materialisation time.
 	ServiceUnitRef *ServiceUnitRef `protobuf:"bytes,6,opt,name=service_unit_ref,json=serviceUnitRef,proto3" json:"service_unit_ref,omitempty"`
